@@ -1,0 +1,130 @@
+/*
+ * The enclosed letter: one ruled rectangle with the officers down the left and
+ * the letter on the right. The height is shared so every member of the family
+ * ends at the same place on the sheet.
+ *
+ * It is a table and never a positioned box: dompdf draws an absolutely
+ * positioned box against the page edge, which would put the frame outside the
+ * page margin the sheet prints inside.
+ */
+
+.doc-frame {
+    width: 100%;
+    table-layout: auto;
+    border: 0.75pt solid #000;
+    border-collapse: collapse;
+}
+
+.doc-frame td {
+    vertical-align: top;
+    padding: 0;
+}
+
+/* The sidebar: a measurement in millimetres, so the letter beside it keeps to
+   the rest of the sheet whatever the board's names are. */
+
+.doc-frame__sidebar {
+    width: 36mm;
+    border-right: 0.75pt solid #000;
+    padding: 4mm;
+    text-align: center;
+    font-size: 8pt;
+    line-height: 1.2;
+}
+
+/* The letter: the rest of the frame. The width is stated so a long line can
+   never widen the table past the sheet. */
+
+.doc-frame__main {
+    width: 115mm;
+    padding: 4mm;
+}
+
+/* ===== The sidebar ===== */
+
+.doc-sidebar {
+    width: 100%;
+    font-size: 7.5pt;
+}
+
+.doc-sidebar__control {
+    margin-top: 4mm;
+    text-align: left;
+    font-size: 8pt;
+}
+
+.doc-sidebar__photo {
+    margin-bottom: 2mm;
+    text-align: center;
+}
+
+.doc-sidebar__entry {
+    margin-top: 3mm;
+}
+
+.doc-sidebar__name {
+    font-weight: bold;
+    word-wrap: break-word;
+}
+
+.doc-sidebar__role {
+    font-weight: normal;
+}
+
+.doc-sidebar__heading {
+    margin-top: 4mm;
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+/* ===== The page's own title ===== */
+
+.doc-title {
+    font-size: 19pt;
+    line-height: 1.15;
+    text-align: center;
+    margin: 0 0 4mm;
+}
+
+.doc-title--plain {
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 18pt;
+    font-weight: normal;
+    text-transform: uppercase;
+}
+
+.doc-title--condensed {
+    font-family: Helvetica, Arial, sans-serif;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: -0.4pt;
+}
+
+.doc-title--slab {
+    font-family: "DejaVu Serif", "Times New Roman", serif;
+    font-weight: bold;
+    letter-spacing: 0.4pt;
+    text-transform: uppercase;
+}
+
+.doc-title--letterspaced {
+    font-family: "DejaVu Serif", "Times New Roman", serif;
+    font-weight: bold;
+    letter-spacing: 4pt;
+    text-transform: uppercase;
+}
+
+.doc-title--underlined {
+    border-bottom: 1pt solid #000;
+    padding-bottom: 1mm;
+}
+
+/* A title the paper rules under with a heavier bar, the bar only as wide as
+   the words: the wrapper centres it. */
+
+.doc-title--barred {
+    display: inline-block;
+    border-bottom: 2pt solid #000;
+    padding-bottom: 1mm;
+    margin-bottom: 0;
+}

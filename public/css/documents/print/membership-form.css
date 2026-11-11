@@ -1,0 +1,77 @@
+/* ===== Fields ===== */
+
+.thha-pdf-field {
+    font-size: 8.2pt;
+    line-height: 10.2pt;
+    height: 3.6mm;
+}
+
+.thha-f-date { left: 24.5mm; top: 64.74mm; width: 20.82mm; font-size: 7pt; line-height: 8.7pt; }
+.thha-f-type-owner { left: 144.15mm; top: 59.52mm; width: 7.69mm; height: 7.21mm; line-height: 7.21mm; font-size: 11pt; text-align: center; font-weight: bold; }
+.thha-f-type-tenant { left: 158.24mm; top: 58.7mm; width: 7.69mm; height: 7.21mm; line-height: 7.21mm; font-size: 11pt; text-align: center; font-weight: bold; }
+.thha-f-type-caretaker { left: 171.86mm; top: 58.21mm; width: 7.69mm; height: 7.21mm; line-height: 7.21mm; font-size: 11pt; text-align: center; font-weight: bold; }
+.thha-f-type-informal-settler { left: 185.15mm; top: 57.89mm; width: 8.01mm; height: 7.69mm; line-height: 7.69mm; font-size: 11pt; text-align: center; font-weight: bold; }
+.thha-f-surname { left: 18.58mm; top: 82.19mm; width: 41.48mm; }
+.thha-f-first-name { left: 70.15mm; top: 80.56mm; width: 42.12mm; }
+.thha-f-middle-name { left: 123.01mm; top: 78.93mm; width: 43.24mm; }
+.thha-f-religion { left: 173.46mm; top: 78.11mm; width: 21.62mm; }
+.thha-f-sex-male { left: 30.99mm; top: 91.72mm; width: 4mm; height: 4.6mm; line-height: 4.6mm; }
+.thha-f-sex-female { left: 45.41mm; top: 91.39mm; width: 4mm; height: 4.6mm; line-height: 4.6mm; }
+.thha-f-citizenship { left: 64.23mm; top: 91.48mm; width: 21.14mm; }
+.thha-f-age { left: 93.05mm; top: 90.67mm; width: 7.21mm; }
+.thha-f-birth-date { left: 108.59mm; top: 90.01mm; width: 26.91mm; }
+.thha-f-birth-place { left: 143.83mm; top: 88.38mm; width: 51.25mm; }
+.thha-f-civil-single { left: 35.48mm; top: 101.34mm; width: 4mm; height: 4.6mm; line-height: 4.6mm; }
+.thha-f-civil-married { left: 49.73mm; top: 100.69mm; width: 4mm; height: 4.6mm; line-height: 4.6mm; }
+.thha-f-civil-separated { left: 66.55mm; top: 100.52mm; width: 4mm; height: 4.6mm; line-height: 4.6mm; }
+.thha-f-civil-widow { left: 84.97mm; top: 100.2mm; width: 4mm; height: 4.6mm; line-height: 4.6mm; }
+.thha-f-spouse-name { left: 137.42mm; top: 98.49mm; width: 58.14mm; }
+.thha-f-block { left: 47.73mm; top: 108.11mm; width: 9.29mm; }
+.thha-f-lot { left: 62.94mm; top: 107.79mm; width: 8.01mm; }
+.thha-f-previous-address { left: 40.84mm; top: 112.19mm; width: 153.44mm; }
+.thha-f-education { left: 56.06mm; top: 120.34mm; width: 88.57mm; }
+.thha-f-occupation { left: 32.99mm; top: 127.84mm; width: 38.76mm; }
+.thha-f-mobile-no { left: 95.46mm; top: 126.54mm; width: 42.76mm; }
+.thha-f-owner-name { left: 35.72mm; top: 224.05mm; width: 85.69mm; }
+
+/* ===== Household Table ===== */
+
+.thha-pdf-cell {
+    position: absolute;
+    font-size: 9pt;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.thha-hh-c1 { left: 12.17mm; width: 70.8mm; }
+.thha-hh-c2 { left: 84.57mm; width: 9.61mm; }
+.thha-hh-c3 { left: 95.78mm; width: 16.82mm; }
+.thha-hh-c4 { left: 114.2mm; width: 24.98mm; }
+.thha-hh-c5 { left: 140.78mm; width: 18.58mm; }
+.thha-hh-c6 { left: 160.96mm; width: 41.33mm; }
+.thha-hh-r1 { top: 145.12mm; height: 5.49mm; line-height: 5.49mm; }
+.thha-hh-r2 { top: 150.61mm; height: 5.48mm; line-height: 5.48mm; }
+.thha-hh-r3 { top: 156.09mm; height: 5.48mm; line-height: 5.48mm; }
+.thha-hh-r4 { top: 161.57mm; height: 5.48mm; line-height: 5.48mm; }
+.thha-hh-r5 { top: 167.05mm; height: 5.48mm; line-height: 5.48mm; }
+.thha-hh-r6 { top: 172.53mm; height: 5.48mm; line-height: 5.48mm; }
+.thha-hh-r7 { top: 178.01mm; height: 5.48mm; line-height: 5.48mm; }
+.thha-hh-r8 { top: 183.49mm; height: 5.49mm; line-height: 5.49mm; }
+.thha-hh-r9 { top: 188.98mm; height: 5.48mm; line-height: 5.48mm; }
+.thha-hh-r10 { top: 194.46mm; height: 5.48mm; line-height: 5.48mm; }
+.thha-hh-r11 { top: 199.94mm; height: 5.48mm; line-height: 5.48mm; }
+.thha-hh-r12 { top: 205.42mm; height: 5.48mm; line-height: 5.48mm; }
+.thha-hh-r13 { top: 210.9mm; height: 5.48mm; line-height: 5.48mm; }
+
+/* ===== Dynamic ===== */
+
+.thha-d-checker-1-name { position: absolute; left: -2.72mm; width: 90mm; text-align: center; top: 259.34mm; font-family: Times, serif; font-size: 9.99pt; line-height: 12.49pt; font-weight: bold; text-decoration: underline; white-space: nowrap; }
+.thha-d-checker-1-position { position: absolute; left: 1.93mm; width: 90mm; text-align: center; top: 263.82mm; font-family: Times, serif; font-size: 7.72pt; line-height: 9.65pt; font-weight: bold; white-space: nowrap; }
+.thha-d-checker-1-committee { position: absolute; left: -3.04mm; width: 90mm; text-align: center; top: 267.73mm; font-family: Times, serif; font-size: 7.72pt; line-height: 9.65pt; font-weight: bold; white-space: nowrap; }
+.thha-d-checker-2-name { position: absolute; left: 83.61mm; width: 90mm; text-align: center; top: 260.97mm; font-family: Times, serif; font-size: 9.99pt; line-height: 12.49pt; font-weight: bold; text-decoration: underline; white-space: nowrap; }
+.thha-d-checker-2-position { position: absolute; left: 84.89mm; width: 90mm; text-align: center; top: 265.29mm; font-family: Times, serif; font-size: 7.72pt; line-height: 9.65pt; font-weight: bold; white-space: nowrap; }
+.thha-d-checker-2-committee { position: absolute; left: 84.89mm; width: 90mm; text-align: center; top: 269.36mm; font-family: Times, serif; font-size: 7.72pt; line-height: 9.65pt; font-weight: bold; white-space: nowrap; }
+.thha-d-approver-name { position: absolute; left: -1.76mm; width: 90mm; text-align: center; top: 294.4mm; font-family: Times, serif; font-size: 9.99pt; line-height: 12.49pt; font-weight: bold; text-decoration: underline; white-space: nowrap; }
+.thha-d-approver-title { position: absolute; left: -1.76mm; width: 90mm; text-align: center; top: 298.88mm; font-family: Times, serif; font-size: 7.72pt; line-height: 9.65pt; font-weight: bold; white-space: nowrap; }
+.thha-d-membership-fee { position: absolute; left: 58.94mm; width: 90mm; text-align: left; top: 314.7mm; font-family: Times, serif; font-size: 7.72pt; line-height: 9.65pt; font-weight: bold; font-style: italic; white-space: nowrap; }
+.thha-d-monthly-dues { position: absolute; left: 56.54mm; width: 90mm; text-align: left; top: 318.28mm; font-family: Times, serif; font-size: 7.72pt; line-height: 9.65pt; font-weight: bold; font-style: italic; white-space: nowrap; }

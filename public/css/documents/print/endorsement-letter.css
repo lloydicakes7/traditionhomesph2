@@ -1,0 +1,25 @@
+/* ===== Fields ===== */
+
+.thha-pdf-field {
+    font-size: 11.8pt;
+    line-height: 14.8pt;
+    height: 5.22mm;
+}
+
+.thha-f-control-no { left: 26.11mm; top: 303.06mm; width: 18.34mm; font-size: 8pt; line-height: 10pt; }
+.thha-f-or-no { left: 23.99mm; top: 307.65mm; width: 20.46mm; font-size: 8pt; line-height: 10pt; }
+.thha-f-date { left: 154.05mm; top: 55.04mm; width: 42.68mm; }
+.thha-f-complainant-name { left: 135.7mm; top: 102.83mm; width: 69.43mm; }
+.thha-f-complainant-block { left: 129.59mm; top: 107.93mm; width: 10.49mm; }
+.thha-f-complainant-lot { left: 146.59mm; top: 107.93mm; width: 7.95mm; }
+.thha-f-respondent-name { left: 73.9mm; top: 122.74mm; width: 85.84mm; }
+.thha-f-respondent-block { left: 71.65mm; top: 128.32mm; width: 10.19mm; }
+.thha-f-respondent-lot { left: 89.52mm; top: 128.32mm; width: 14.52mm; }
+.thha-f-problem-1 { left: 118.69mm; top: 142.34mm; width: 62.67mm; }
+.thha-f-problem-2 { left: 63.02mm; top: 148.23mm; width: 132.21mm; }
+
+/* ===== Dynamic ===== */
+
+.thha-d-addressee-name { position: absolute; left: 61.23mm; width: 90mm; text-align: left; top: 70.96mm; font-size: 11.84pt; line-height: 14.8pt; white-space: nowrap; }
+.thha-d-signatory-name { position: absolute; left: 64.81mm; width: 90mm; text-align: left; top: 228.34mm; font-size: 11.84pt; line-height: 14.8pt; font-weight: bold; white-space: nowrap; }
+.thha-d-signatory-title { position: absolute; left: 64.81mm; width: 90mm; text-align: left; top: 233.44mm; font-size: 11.84pt; line-height: 14.8pt; }

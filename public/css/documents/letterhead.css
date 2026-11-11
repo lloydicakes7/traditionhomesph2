@@ -1,0 +1,71 @@
+/*
+ * The letterhead and the footer: the association's own header text between its
+ * two marks, and its footer line with the brand image. Both draw the print
+ * settings and nothing else.
+ */
+
+.doc-letterhead {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+}
+
+.doc-letterhead td {
+    vertical-align: middle;
+    padding: 0;
+}
+
+.doc-letterhead__logo {
+    text-align: center;
+}
+
+.doc-letterhead__text {
+    text-align: center;
+    font-family: Helvetica, Arial, sans-serif;
+    line-height: 1.25;
+}
+
+.doc-letterhead__text div,
+.doc-letterhead__text p {
+    line-height: 1.25;
+    margin: 0;
+}
+
+/* ===== A logo, drawn or framed empty ===== */
+
+.doc-logo {
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.doc-logo--empty {
+    border: 0.75pt dashed #999;
+}
+
+/* ===== The footer ===== */
+
+.doc-footer {
+    width: 100%;
+    table-layout: fixed;
+}
+
+.doc-footer td {
+    vertical-align: bottom;
+    padding: 0;
+}
+
+.doc-footer__text {
+    font-size: 8pt;
+    text-align: left;
+    line-height: 1.2;
+}
+
+.doc-footer__text div,
+.doc-footer__text p {
+    margin: 0;
+}
+
+.doc-footer__logo {
+    text-align: right;
+}

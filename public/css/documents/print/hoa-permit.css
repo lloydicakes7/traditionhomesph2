@@ -1,0 +1,23 @@
+/* ===== Fields ===== */
+
+.thha-pdf-field {
+    font-size: 13.1pt;
+    line-height: 16.4pt;
+    height: 5.79mm;
+}
+
+.thha-f-control-no { left: 26.11mm; top: 302.64mm; width: 18.34mm; font-size: 8pt; line-height: 10pt; }
+.thha-f-or-no { left: 23.99mm; top: 307.23mm; width: 20.46mm; font-size: 8pt; line-height: 10pt; }
+.thha-f-granted-to { left: 66.27mm; top: 71.85mm; width: 91.69mm; }
+.thha-f-address-1 { left: 79.5mm; top: 83.78mm; width: 118.76mm; font-size: 11pt; line-height: 13.8pt; }
+.thha-f-address-2 { left: 61.35mm; top: 96.85mm; width: 136.92mm; font-size: 11pt; line-height: 13.8pt; }
+.thha-f-purpose-1 { left: 80.12mm; top: 103.06mm; width: 118.15mm; }
+.thha-f-purpose-2 { left: 62.12mm; top: 115.64mm; width: 136.15mm; }
+.thha-f-location { left: 81.04mm; top: 127.9mm; width: 117.23mm; }
+.thha-f-event-date { left: 75.19mm; top: 153.23mm; width: 123.07mm; }
+.thha-f-date-issued { left: 77.19mm; top: 164.18mm; width: 121.07mm; }
+
+/* ===== Dynamic ===== */
+
+.thha-d-signatory-name { position: absolute; left: 61.81mm; width: 90mm; text-align: left; top: 271.76mm; font-size: 11.34pt; line-height: 14.18pt; font-weight: bold; white-space: nowrap; }
+.thha-d-signatory-title { position: absolute; left: 61.81mm; width: 90mm; text-align: left; top: 276.33mm; font-size: 11.34pt; line-height: 14.18pt; }

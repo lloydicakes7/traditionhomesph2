@@ -1,0 +1,13 @@
+/* ===== Components ===== */
+
+.thha-view-photo {
+    width: 96px;
+    height: 96px;
+    object-fit: cover;
+    border: 3px solid #fff;
+}
+
+.thha-view-label {
+    width: 1%;
+    white-space: nowrap;
+}

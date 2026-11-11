@@ -1,0 +1,796 @@
+/* ============================================================
+   REPORTS
+
+   The suite's own presentation: a report's headline figures, the
+   financial-position band at the top of a statement, the monthly
+   trend bars, and what a report looks like on paper. Built from the
+   tokens above, so a report reads as part of the panel rather than
+   as a screen of its own.
+   ============================================================ */
+
+.report-toolbar {
+    margin-bottom: 1rem;
+}
+
+.report-toolbar .report-toolbar-controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.report-filters {
+    margin-bottom: 1rem;
+}
+
+.report-filters .report-filters-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.report-filters .report-filter-field {
+    flex: 1 1 11rem;
+    min-width: 0;
+    max-width: 22rem;
+}
+
+.report-filters .report-filter-field-sm {
+    flex: 0 1 7rem;
+    min-width: 0;
+}
+
+.report-kpi {
+    position: relative;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-card);
+    min-height: 120px;
+}
+
+.report-kpi-inner {
+    padding: 1rem 1.25rem;
+    position: relative;
+    z-index: 1;
+    width: 100%;
+}
+
+.report-kpi-value {
+    font-family: var(--font-serif);
+    font-size: 1.75rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 0.15rem;
+    overflow-wrap: anywhere;
+}
+
+.report-kpi-label {
+    font-size: 10.5px;
+    font-weight: 500;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+    opacity: 0.9;
+}
+
+.report-kpi-note {
+    font-size: 10.5px;
+    opacity: 0.85;
+    margin-top: 0.5rem;
+}
+
+.report-kpi-icon {
+    position: absolute;
+    top: 50%;
+    right: 6px;
+    transform: translateY(-50%);
+    font-size: 4.5rem;
+    line-height: 1;
+    opacity: 0.18;
+    transition: all 0.3s linear;
+}
+
+.report-kpi:hover .report-kpi-icon {
+    font-size: 5rem;
+    opacity: 0.25;
+}
+
+.report-band {
+    background: linear-gradient(135deg, var(--success) 0%, var(--success-deep) 100%);
+    border-radius: var(--radius-lg);
+    color: var(--white);
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.report-band h3 {
+    font-size: 0.95rem;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    color: var(--white);
+}
+
+.report-band .report-band-tile {
+    background: rgba(255, 255, 255, 0.14);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    border-radius: var(--radius-md);
+    padding: 0.75rem 1rem;
+    height: 100%;
+}
+
+.report-band .report-band-label {
+    font-size: 10.5px;
+    letter-spacing: 1.6px;
+    text-transform: uppercase;
+    opacity: 0.9;
+}
+
+.report-band .report-band-value {
+    font-family: var(--font-serif);
+    font-size: 1.4rem;
+    font-weight: 700;
+    overflow-wrap: anywhere;
+}
+
+/* ------------------------------------------------------------
+   On a phone
+   ------------------------------------------------------------ */
+@media (max-width: 575.98px) {
+    .report-kpi {
+        min-height: 92px;
+    }
+
+    .report-kpi-inner {
+        padding: 0.75rem 0.9rem;
+    }
+
+    .report-kpi-value {
+        font-size: 1.35rem;
+    }
+
+    .report-kpi-label {
+        letter-spacing: 1.2px;
+    }
+
+    .report-kpi-icon {
+        font-size: 3rem;
+    }
+
+    .report-toolbar .report-toolbar-controls {
+        width: 100%;
+        justify-content: flex-end;
+    }
+
+    .report-bars-horizontal .report-bar-label {
+        flex: 0 0 42%;
+        font-size: 10.5px;
+    }
+
+    .report-bars-horizontal .report-bar-amount {
+        flex: 0 0 3.75rem;
+    }
+
+    .report-pie {
+        width: 148px;
+        height: 148px;
+    }
+
+    .report-boxplot-label {
+        flex: 0 0 26%;
+    }
+
+    .report-line-label {
+        font-size: 9px;
+        letter-spacing: 0;
+    }
+}
+
+/* ------------------------------------------------------------
+   Charts — bars, a pie, a line, a box plot and a bubble. Every
+   one draws from the same palette (see App\Utility\ChartHelper)
+   so the same category reads the same colour in every chart on
+   the page.
+   ------------------------------------------------------------ */
+
+.report-chart-empty {
+    color: var(--muted);
+}
+
+/* --- Bars ---------------------------------------------------- */
+
+.report-bars-vertical {
+    display: flex;
+    align-items: stretch;
+    gap: 6px;
+    height: 220px;
+    padding-top: 0.5rem;
+}
+
+.report-bars-vertical .report-bar-col {
+    flex: 1 1 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    min-width: 0;
+    height: 100%;
+}
+
+.report-bars-vertical .report-bar-track {
+    flex: 1 1 auto;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+.report-bars-vertical .report-bar {
+    width: 100%;
+    max-width: 46px;
+    min-height: 2px;
+    border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+}
+
+.report-bar-amount {
+    font-family: var(--font-mono);
+    font-size: 9.5px;
+    color: var(--muted);
+    margin-bottom: 4px;
+    white-space: nowrap;
+    text-align: center;
+}
+
+.report-bar-label {
+    font-size: 10px;
+    color: var(--muted);
+    margin-top: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    text-align: center;
+}
+
+.report-bars-horizontal {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.report-bars-horizontal .report-bar-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.report-bars-horizontal .report-bar-label {
+    flex: 0 0 34%;
+    margin: 0;
+    text-align: right;
+    text-transform: none;
+    letter-spacing: 0;
+    font-size: 11.5px;
+    color: var(--ink);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.report-bars-horizontal .report-bar-track {
+    flex: 1 1 auto;
+    height: 16px;
+    background: var(--cream);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+}
+
+.report-bars-horizontal .report-bar {
+    height: 100%;
+    min-width: 2px;
+    border-radius: var(--radius-sm);
+}
+
+.report-bars-horizontal .report-bar-amount {
+    flex: 0 0 4.5rem;
+    margin: 0;
+    text-align: right;
+}
+
+/* --- Pie / donut --------------------------------------------- */
+
+.report-pie-wrap {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.report-pie {
+    position: relative;
+    flex: 0 0 auto;
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.04);
+}
+
+.report-pie-hole {
+    position: absolute;
+    inset: 27%;
+    background: var(--white);
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    line-height: 1.1;
+    text-align: center;
+}
+
+.report-pie-total {
+    font-family: var(--font-serif);
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: var(--ink);
+}
+
+.report-pie-total-label {
+    font-size: 9.5px;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: var(--muted);
+}
+
+.report-legend {
+    flex: 1 1 220px;
+    min-width: 200px;
+}
+
+.report-legend-inline {
+    flex: 1 1 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem 1.25rem;
+    margin-top: 0.75rem;
+}
+
+.report-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 2px 0;
+    font-size: 12px;
+}
+
+.report-legend-swatch {
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    flex: 0 0 auto;
+}
+
+.report-legend-label {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.report-legend-value {
+    font-size: 11.5px;
+    color: var(--ink);
+}
+
+.report-legend-share {
+    flex: 0 0 3.25rem;
+    text-align: right;
+    color: var(--muted);
+    font-size: 11px;
+}
+
+/* --- Line ---------------------------------------------------- */
+
+.report-line {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.report-line-grid {
+    stroke: var(--border-soft);
+    stroke-width: 1;
+}
+
+.report-line-axis {
+    stroke: var(--border);
+    stroke-width: 1;
+}
+
+.report-line-area {
+    opacity: 0.12;
+    stroke: none;
+}
+
+.report-line-path {
+    fill: none;
+    stroke-width: 3;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+}
+
+.report-line-dot {
+    stroke: var(--white);
+    stroke-width: 2;
+}
+
+.report-line-labels {
+    display: flex;
+    gap: 4px;
+    margin-top: 0.5rem;
+}
+
+.report-line-label {
+    flex: 1 1 0;
+    text-align: center;
+    font-size: 10px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+}
+
+/* --- Box plot ------------------------------------------------ */
+
+.report-boxplots {
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+}
+
+.report-boxplot-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.report-boxplot-label {
+    flex: 0 0 16%;
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: var(--muted);
+    text-align: right;
+}
+
+.report-boxplot-track {
+    position: relative;
+    flex: 1 1 auto;
+    height: 34px;
+}
+
+.report-boxplot-whisker {
+    position: absolute;
+    top: 50%;
+    height: 2px;
+    background: var(--border);
+    transform: translateY(-50%);
+}
+
+.report-boxplot-box {
+    position: absolute;
+    top: 5px;
+    bottom: 5px;
+    border-radius: var(--radius-sm);
+    opacity: 0.85;
+}
+
+.report-boxplot-median {
+    position: absolute;
+    top: 3px;
+    bottom: 3px;
+    width: 2px;
+    background: var(--white);
+}
+
+.report-boxplot-cap {
+    position: absolute;
+    top: 22%;
+    bottom: 22%;
+    width: 2px;
+    background: var(--muted-soft);
+}
+
+.report-boxplot-note {
+    flex: 0 0 4.5rem;
+    font-size: 10.5px;
+    color: var(--muted);
+    text-align: right;
+}
+
+.report-boxplot-axis {
+    align-items: flex-start;
+}
+
+.report-boxplot-axis .report-boxplot-track {
+    height: auto;
+    color: var(--muted);
+    font-size: 10px;
+}
+
+/* --- Bubble -------------------------------------------------- */
+
+.report-bubble {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.report-bubble-dot {
+    opacity: 0.6;
+    stroke: var(--white);
+    stroke-width: 2;
+}
+
+.report-bubble-tick {
+    fill: var(--muted);
+    font-size: 20px;
+    font-family: var(--font-mono);
+}
+
+.card .table-report thead th {
+    background: var(--paper-dim);
+    border-top: 0;
+    font-size: 10.5px;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--muted);
+}
+
+.card .table-report tfoot td {
+    font-weight: 700;
+    border-top: 2px solid var(--border);
+}
+
+.card .table-report .table-group-row td {
+    background: var(--cream);
+    font-family: var(--font-serif);
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    font-size: 11px;
+}
+
+.amount-mono {
+    font-family: var(--font-mono);
+}
+
+/* ------------------------------------------------------------
+   A table, or one card per record when the screen is small
+
+   A report table is two to fifteen columns of money, which no phone
+   can hold and a tablet cannot hold comfortably: below `xl` the table
+   gives way to the same records as cards (x-reports.cards), stacked
+   and read label beside figure. The two are always both rendered —
+   the stylesheet decides which one the reader sees — so a report never
+   grows a sideways scroll (there is no `.table-responsive` anywhere in
+   the suite) and no figure is ever off the edge of the page.
+   ------------------------------------------------------------ */
+
+.report-table-view {
+    display: none;
+}
+
+.report-card-view {
+    display: block;
+}
+
+@media (min-width: 1200px) {
+    .report-table-view {
+        display: block;
+    }
+
+    .report-card-view {
+        display: none;
+    }
+}
+
+.report-card {
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+}
+
+.report-card + .report-card,
+.report-card-group + .report-card {
+    margin-top: 0.75rem;
+}
+
+.report-card-head {
+    padding: 0.6rem 0.9rem;
+    border-bottom: 1px solid var(--border-soft);
+    background: var(--paper-dim);
+}
+
+.report-card-title {
+    font-weight: 700;
+    overflow-wrap: anywhere;
+}
+
+.report-card-subtitle {
+    color: var(--muted);
+    font-size: 0.8rem;
+    overflow-wrap: anywhere;
+}
+
+.report-card-body {
+    padding: 0.5rem 0.9rem;
+}
+
+.report-card-group {
+    font-family: var(--font-serif);
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    font-size: 11px;
+    background: var(--cream);
+    border-radius: var(--radius-sm);
+    padding: 0.4rem 0.75rem;
+    margin-top: 1rem;
+}
+
+.report-card-group:first-child {
+    margin-top: 0;
+}
+
+.report-card-facts {
+    margin: 0;
+    font-size: 0.85rem;
+}
+
+.report-card-fact {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 0.15rem 0;
+}
+
+.report-card-fact + .report-card-fact {
+    border-top: 1px dashed var(--border-soft);
+}
+
+.report-card-fact dt {
+    color: var(--muted);
+    font-weight: 400;
+    min-width: 0;
+}
+
+.report-card-fact dd {
+    margin: 0;
+    text-align: right;
+    overflow-wrap: anywhere;
+}
+
+.report-card-total {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 0.5rem 0.9rem;
+    border-top: 1px solid var(--border-soft);
+    background: var(--cream);
+    font-size: 0.85rem;
+}
+
+.report-card-empty {
+    padding: 1rem 0.9rem;
+    text-align: center;
+    color: var(--muted);
+}
+
+/* ------------------------------------------------------------
+   On paper
+   ------------------------------------------------------------ */
+@media print {
+    .main-sidebar,
+    .main-header,
+    .main-footer,
+    .content-header,
+    .report-filters,
+    .report-toolbar-controls,
+    .btn,
+    .no-print {
+        display: none !important;
+    }
+
+    .content-wrapper {
+        margin-left: 0 !important;
+        background: var(--white) !important;
+    }
+
+    .card {
+        box-shadow: none !important;
+        border: 1px solid var(--border) !important;
+    }
+
+    .report-kpi,
+    .report-band,
+    .report-band .report-band-tile {
+        break-inside: avoid;
+    }
+
+    .card-header {
+        break-after: avoid;
+    }
+
+    .table-responsive {
+        overflow: visible !important;
+    }
+
+    /* A printed sheet is wider than a phone, so a report prints its table —
+       except where the table is wider than the sheet as well, which is the
+       twelve months of the monthly breakdown: that card says so with
+       `report-prints-cards` and prints its cards instead. */
+    .report-table-view {
+        display: block !important;
+    }
+
+    .report-card-view {
+        display: none !important;
+    }
+
+    .report-prints-cards .report-table-view {
+        display: none !important;
+    }
+
+    .report-prints-cards .report-card-view {
+        display: block !important;
+    }
+
+    .report-card {
+        break-inside: avoid;
+    }
+
+    .card .table-report {
+        width: 100% !important;
+        font-size: 8.5pt;
+    }
+
+    .card .table-report thead th {
+        font-size: 7pt;
+        letter-spacing: 0.3px;
+    }
+
+    .table-report thead {
+        display: table-header-group;
+    }
+
+    .table-report tr,
+    .table-report td,
+    .table-report th {
+        break-inside: avoid;
+    }
+
+    .amount-mono {
+        white-space: nowrap;
+    }
+
+    .report-band {
+        background: var(--success-deep) !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    .report-pie,
+    .report-pie-hole,
+    .report-bar,
+    .report-legend-swatch,
+    .report-boxplot-box,
+    .report-boxplot-median,
+    .report-bubble-dot,
+    .report-line-path,
+    .report-line-area,
+    .report-line-dot {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+}

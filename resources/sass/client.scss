@@ -1,0 +1,16 @@
+// ============================================================
+// THHA — Homeowner Portal (client) stylesheet
+// ============================================================
+//
+// The portal is the admin panel's second front end on the same assets: the
+// same master layout, the same themed AdminLTE stylesheet
+// (public/vendor/adminlte/dist/css/adminlte.css, whose overlay carries the THHA
+// design tokens and every component style) and the same app-wide overlay
+// (public/css/app.css).
+//
+// A portal page is therefore built from AdminLTE/Bootstrap classes and the
+// theme tokens — there is nothing portal-specific to restate here, and a rule
+// belongs in this file only when something is genuinely unique to the portal.
+// Everything this file used to hold (its own navbar, page header, cards, small
+// boxes, buttons, alerts, badges, forms) was that same design expressed again,
+// and now comes from the theme.

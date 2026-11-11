@@ -1,0 +1,381 @@
+/*
+ * The fill-in primitives. One underline per blank, and it is drawn here and
+ * nowhere else: no view prints a rule, an underscore or a second border.
+ */
+
+/* ===== U2: one inline blank, fixed width, always one line ===== */
+
+.doc-line {
+    display: inline-block;
+    border-bottom: 0.75pt solid #000;
+    line-height: 1.3;
+    min-height: 1.3em;
+    white-space: nowrap;
+    vertical-align: baseline;
+}
+
+.doc-line--center {
+    text-align: center;
+}
+
+.doc-line--right {
+    text-align: right;
+}
+
+/* ===== U3: a label and the blank that fills the rest of the row ===== */
+
+.doc-row {
+    width: 100%;
+    margin: 0;
+    table-layout: auto;
+}
+
+.doc-row td {
+    vertical-align: bottom;
+    padding: 0;
+}
+
+.doc-row__label {
+    white-space: nowrap;
+    line-height: 1.3;
+    padding-right: 2mm;
+}
+
+.doc-row__label span {
+    display: inline-block;
+    white-space: nowrap;
+}
+
+.doc-row__value {
+    border-bottom: 0.75pt solid #000;
+    overflow: hidden;
+    line-height: 1.3;
+    height: 1.3em;
+    white-space: nowrap;
+}
+
+/* ===== U9: printed alternatives ===== */
+
+.doc-choice {
+    white-space: nowrap;
+}
+
+/* ===== U10: a printed checkbox ===== */
+
+.doc-box {
+    display: inline-block;
+    width: 3.6mm;
+    height: 3.6mm;
+    border: 0.75pt solid #000;
+    text-align: center;
+    line-height: 3.4mm;
+    font-size: 8pt;
+    font-weight: bold;
+    vertical-align: -0.8mm;
+}
+
+/* The membership form's four large boxes, with their captions under them. */
+
+.doc-box-grid {
+    table-layout: fixed;
+}
+
+.doc-box-grid td {
+    text-align: center;
+    vertical-align: top;
+    padding: 0;
+}
+
+.doc-box--large {
+    width: 12mm;
+    height: 12mm;
+    line-height: 11.5mm;
+    font-size: 11pt;
+}
+
+.doc-box-grid__label {
+    font-size: 6pt;
+    line-height: 1.2;
+    margin-top: 1mm;
+}
+
+/* ===== Ruled lines for free text ===== */
+
+.doc-ruled {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+}
+
+.doc-ruled td {
+    height: 7mm;
+    border-bottom: 0.75pt solid #000;
+    vertical-align: bottom;
+    padding: 0 1mm;
+    line-height: 1.3;
+}
+
+/* ===== Signatures ===== */
+
+.doc-sign {
+    font-family: Helvetica, Arial, sans-serif;
+}
+
+.doc-sign__line {
+    border-bottom: 0.75pt solid #000;
+    font-weight: bold;
+    text-align: center;
+    line-height: 1.3;
+    height: 1.3em;
+    white-space: nowrap;
+}
+
+.doc-sign__role {
+    text-align: center;
+    font-size: 10pt;
+    margin-top: 1mm;
+}
+
+/* ===== A filled grid, such as the household-members table ===== */
+
+.doc-grid {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+}
+
+.doc-grid th,
+.doc-grid td {
+    border: 0.75pt solid #000;
+    padding: 0 1mm;
+    vertical-align: middle;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.doc-grid th {
+    font-size: 8pt;
+    font-weight: normal;
+    text-align: center;
+    height: 6mm;
+}
+
+.doc-grid td {
+    font-size: 8pt;
+    height: 7mm;
+}
+
+/* ===== The membership form's label-under-its-line field ===== */
+
+.doc-field {
+    display: inline-block;
+    vertical-align: bottom;
+}
+
+.doc-field__label {
+    text-align: center;
+    font-size: 8pt;
+    line-height: 1.2;
+    margin-top: 1mm;
+}
+
+.doc-field__caption {
+    font-size: 9pt;
+    white-space: nowrap;
+}
+
+/* ===== The invitation's addressee block ===== */
+
+.doc-invitation__address {
+    table-layout: fixed;
+}
+
+.doc-invitation__address td {
+    vertical-align: bottom;
+    padding: 0;
+}
+
+/* ===== The invitation's acknowledgement block ===== */
+
+.doc-acknowledgement {
+    width: 100%;
+    table-layout: fixed;
+}
+
+.doc-acknowledgement td {
+    vertical-align: bottom;
+    padding: 0 0 2mm;
+}
+
+.doc-acknowledgement__label {
+    font-size: 9pt;
+    white-space: nowrap;
+    padding-right: 2mm;
+}
+
+/* ===== Several labelled fields on one row ===== */
+
+/* The business permit asks for the applicant's name and gender on one line, and
+   for three fields on the next. Each group is a label cell and a value cell, so
+   the rule under the value is one border and the groups keep their own widths
+   whatever the values are. */
+
+.doc-field-row {
+    width: 100%;
+    table-layout: fixed;
+}
+
+.doc-field-row td {
+    vertical-align: bottom;
+    padding: 0;
+}
+
+.doc-field-label {
+    white-space: nowrap;
+    padding-right: 2mm;
+    line-height: 1.3;
+}
+
+.doc-field-line {
+    border-bottom: 0.75pt solid #000;
+    height: 1.3em;
+    line-height: 1.3;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+/* ===== The two-column tick list ===== */
+
+.doc-check-list {
+    width: 100%;
+    table-layout: fixed;
+}
+
+.doc-check-list__cell {
+    height: 7mm;
+    vertical-align: middle;
+    padding: 0;
+    white-space: nowrap;
+}
+
+.doc-check-list__label {
+    font-size: 10pt;
+    padding-left: 1mm;
+}
+
+/* ===== A caption under a signature rule ===== */
+
+.doc-caption {
+    font-size: 9pt;
+    text-align: center;
+    line-height: 1.3;
+}
+
+/* The signature rule itself, with the name printed under it. */
+
+.doc-sign__rule {
+    display: inline-block;
+    border-bottom: 0.75pt solid #000;
+    height: 1.3em;
+}
+
+.doc-sign__name {
+    text-align: center;
+    line-height: 1.3;
+    min-height: 1.3em;
+}
+
+/* ===== Certification ===== */
+
+.doc-certification__body {
+    margin-left: 6mm;
+    margin-right: 4mm;
+    font-size: 10pt;
+}
+
+.doc-certification__body p {
+    margin-bottom: 3mm;
+}
+
+.doc-certification__purpose {
+    font-weight: bold;
+    margin-bottom: 2mm;
+}
+
+/* ===== Business permit ===== */
+
+.doc-business-permit {
+    font-size: 10pt;
+}
+
+.doc-business-permit p {
+    text-align: justify;
+    margin-bottom: 4mm;
+}
+
+.doc-business-permit__purpose {
+    font-weight: bold;
+    margin-bottom: 2mm;
+}
+
+/* Two signatories side by side, each in half the content column. */
+
+.doc-signatures {
+    width: 100%;
+    table-layout: fixed;
+    margin-top: 6mm;
+}
+
+.doc-signatures td {
+    width: 50%;
+    vertical-align: top;
+    padding: 0 4mm 0 0;
+}
+
+/* ===== Sinumpaang Salaysay ===== */
+
+/* The case block sits at the right edge, above the title. */
+
+.doc-salaysay__case {
+    width: 100%;
+    table-layout: fixed;
+}
+
+.doc-salaysay__case > tbody > tr > td {
+    vertical-align: top;
+    padding: 0;
+}
+
+.doc-salaysay__case-inner {
+    width: 100%;
+    table-layout: fixed;
+}
+
+.doc-salaysay__case-inner td {
+    vertical-align: bottom;
+    padding: 0.5mm 0;
+}
+
+.doc-salaysay {
+    font-size: 8pt;
+    line-height: 1.15;
+}
+
+.doc-salaysay p {
+    text-align: justify;
+    margin-bottom: 1mm;
+}
+
+.doc-salaysay__item {
+    margin-left: 8mm;
+}
+
+.doc-salaysay__ruled td {
+    height: 2.5mm;
+}
+
+.doc-salaysay__sign {
+    margin-left: 55%;
+    width: 45%;
+    text-align: center;
+}

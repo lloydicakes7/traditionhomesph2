@@ -1,0 +1,163 @@
+/*
+ * The base of every printed document: the reset, the type scale and the
+ * spacing scale. The @page rule lives in the page component, so the paper is
+ * stated once and changing it is one configuration line.
+ *
+ * No flex, no grid, no custom properties and no !important: this file is read
+ * by DomPDF, not by a browser.
+ */
+
+/* The page margin is the @page rule's, and dompdf keeps it on the html frame:
+   resetting that frame's margin would print the sheet edge to edge. Only the
+   body is reset here. */
+
+html {
+    padding: 0;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 11pt;
+    line-height: 1.4;
+    color: #000;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    table-layout: fixed;
+}
+
+td,
+th {
+    padding: 0;
+    vertical-align: top;
+    text-align: left;
+}
+
+p {
+    margin: 0;
+    padding: 0;
+}
+
+img {
+    border: 0;
+}
+
+.doc-sheet {
+    width: 100%;
+}
+
+/* ===== Type ===== */
+
+.doc-small {
+    font-size: 8pt;
+}
+
+.doc-tiny {
+    font-size: 6pt;
+}
+
+.doc-bold {
+    font-weight: bold;
+}
+
+.doc-italic {
+    font-style: italic;
+}
+
+.doc-center {
+    text-align: center;
+}
+
+.doc-right {
+    text-align: right;
+}
+
+.doc-upper {
+    text-transform: uppercase;
+}
+
+/* ===== Spacing, in mm only ===== */
+
+.doc-gap-1  { height: 1mm; }
+.doc-gap-2  { height: 2mm; }
+.doc-gap-3  { height: 3mm; }
+.doc-gap-4  { height: 3mm; }
+.doc-gap-6  { height: 4mm; }
+.doc-gap-8  { height: 6mm; }
+.doc-gap-12 { height: 12mm; }
+
+.doc-mt-2 { margin-top: 2mm; }
+.doc-mt-4 { margin-top: 4mm; }
+.doc-mt-6 { margin-top: 6mm; }
+.doc-mt-8 { margin-top: 8mm; }
+
+/* ===== Body copy of the framed letters ===== */
+
+.doc-letter {
+    font-size: 10pt;
+    line-height: 1.4;
+}
+
+.doc-letter p {
+    text-align: justify;
+    margin-bottom: 4mm;
+}
+
+.doc-letter p:last-child {
+    margin-bottom: 0;
+}
+
+.doc-indent {
+    text-indent: 8mm;
+}
+
+.doc-note {
+    font-style: italic;
+    text-align: justify;
+}
+
+/* ===== Layout helpers ===== */
+
+.doc-no-indent {
+    text-indent: 0;
+}
+
+.doc-page-break {
+    page-break-before: always;
+}
+
+.doc-cell-right {
+    text-align: right;
+}
+
+.doc-cell-nowrap {
+    white-space: nowrap;
+}
+
+.doc-mb-0 {
+    margin-bottom: 0;
+}
+
+.doc-mb-1 {
+    margin-bottom: 1mm;
+}
+
+.doc-mb-2 {
+    margin-bottom: 2mm;
+}
+
+.doc-mb-4 {
+    margin-bottom: 4mm;
+}
+
+/* A full-width rule that separates the letterhead from the form below it. It
+   is the sheet's own printed rule, not a field: no data ever sits on it. */
+
+.doc-rule {
+    height: 0;
+    border-top: 3pt solid #000;
+}

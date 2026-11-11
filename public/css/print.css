@@ -1,0 +1,228 @@
+/* ==========================================================================
+   print.css — every THHA printable document (dompdf 2.x safe)
+
+   Inlined into each PDF by resources/views/pdf/partials/styles.blade.php.
+   dompdf rules this file respects: no flexbox, no grid, no CSS variables,
+   no calc(), no ::after tricks. Layout is tables + inline-block only.
+
+   Sections
+     1. Page + base          7. Fill-in lines + checkbox options
+     2. Running header       8. Data tables + key/value grids
+     3. Letterhead           9. Signatures
+     4. Paper frame          10. Notes, panels, footers
+     5. Titles               11. Document specifics
+     6. Body text
+   ========================================================================== */
+
+/* 1. Page + base -------------------------------------------------------- */
+/* The page margin is the print settings' own measure: every view states it in
+   its own @page rule, so a sheet is never ruled by this file. */
+
+* { font-family: "DejaVu Sans", sans-serif; }
+html { padding: 0; }
+body { margin: 0; padding: 0; }
+body { font-size: 10px; line-height: 1.35; color: #111; }
+table { border-collapse: collapse; }
+img { border: 0; }
+p { margin: 0; }
+
+.page { width: 100%; }
+.page-break { page-break-before: always; }
+.avoid-break { page-break-inside: avoid; }
+
+.center { text-align: center; }
+.left { text-align: left; }
+.right { text-align: right; }
+.bold { font-weight: bold; }
+.nowrap { white-space: nowrap; }
+.muted { color: #444; font-weight: normal; }
+.spacer-s { height: 8px; }
+.spacer-m { height: 16px; }
+.spacer-l { height: 30px; }
+
+/* 2. Running header (title left, SAMPLE centre, page number right) ------- */
+.running { position: fixed; top: -9mm; left: 0; right: 0; font-size: 7.5px; color: #444; }
+.running table { width: 100%; }
+.running td { padding: 0; vertical-align: top; }
+.running .r-left { text-align: left; }
+.running .r-mid { text-align: center; font-weight: bold; letter-spacing: 1px; }
+.running .r-right { text-align: right; }
+.running .pagenum:before { content: counter(page); }
+
+/* 3. Letterhead --------------------------------------------------------- */
+.lh { width: 100%; }
+.lh td { vertical-align: middle; padding: 0; }
+.lh-side { text-align: center; }
+.lh-side img { display: block; margin: 0 auto; }
+.lh-center { text-align: center; line-height: 1.25; }
+.lh-center div, .lh-center p { margin: 0; line-height: 1.25; }
+.lh-center strong, .lh-center b { letter-spacing: 0.4px; }
+.lh-rule { border: 0; border-top: 2px solid #111; margin: 5px 0 0; }
+
+/* 4. Paper frame: officers on the left, content on the right -------------- */
+/* The frame holds the whole officers column, so its type is set to fit the
+   sheet once the page margin is taken out: a smaller column and a tighter
+   list keep the permit on the one page it is designed for. */
+.frame { width: 100%; margin-top: 6px; border: 1px solid #111; }
+.frame td { vertical-align: top; }
+.frame-side { width: 40mm; padding: 6px 4px; border-right: 1px solid #111; text-align: center; font-size: 6.8px; line-height: 1.15; }
+.frame-main { padding: 8px 12px 10px; }
+
+.officer { margin-bottom: 4px; }
+.officer-name { font-weight: bold; }
+.officer-pos { color: #222; }
+.board-label { font-weight: bold; text-decoration: underline; margin: 4px 0 3px; }
+
+.control { margin-top: 10px; font-size: 7.5px; line-height: 1.8; text-align: left; font-weight: bold; }
+.control .fill { font-weight: normal; min-width: 60px; font-size: 8px; }
+
+/* 5. Titles ------------------------------------------------------------- */
+.title { font-size: 19px; font-weight: bold; text-align: center; text-transform: uppercase; letter-spacing: 0.6px; margin: 4px 0 16px; }
+.title--serif { font-family: "DejaVu Serif", serif; }
+.title--sans { font-size: 16px; }
+.title--light { font-size: 15px; font-weight: normal; }
+.title-u { display: inline-block; border-bottom: 3px solid #333; padding: 0 10px 2px; }
+
+.form-title { font-family: "DejaVu Serif", serif; font-size: 14px; text-align: center; text-transform: uppercase; letter-spacing: 9px; margin: 12px 0 2px; }
+.form-rule { border: 0; border-top: 1.5px solid #111; margin: 0 40px 8px; }
+
+.report-title { font-size: 13px; text-align: center; margin: 14px 0 4px; text-transform: uppercase; letter-spacing: 2px; }
+.report-subtitle { text-align: center; color: #444; font-size: 8.5px; margin: 0 0 12px; }
+
+.sect { font-size: 8.5px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.6px; border-bottom: 1px solid #111; margin: 12px 0 6px; padding-bottom: 2px; }
+.list-title { text-align: center; font-weight: bold; font-size: 9.5px; margin: 14px 0 4px; }
+
+/* 6. Body text ---------------------------------------------------------- */
+.body-text { font-size: 10.5px; line-height: 1.9; }
+.body-text p { margin: 0 0 10px; text-align: justify; }
+.body-text p.left { text-align: left; }
+.body-text p.center { text-align: center; }
+.body-text p.right { text-align: right; }
+.indent { text-indent: 26px; }
+.address-block { line-height: 1.6; text-align: left; margin-bottom: 14px; }
+
+/* 7. Fill-in lines + checkbox options ------------------------------------ */
+/* inline: a value written ON an underline */
+.fill { display: inline-block; border-bottom: 1px solid #111; padding: 0 4px; min-width: 50px; text-align: center; font-weight: bold; line-height: 1.25; }
+.fill--left { text-align: left; }
+.fill--xs { min-width: 30px; }
+.fill--sm { min-width: 70px; }
+.fill--md { min-width: 130px; }
+.fill--lg { min-width: 230px; }
+
+/* An address is the longest value a line can hold, so it is printed one size
+   smaller than the line around it: it stays on its own underlined line instead
+   of wrapping onto a second one that shares a single underline. */
+.address-value { font-size: 8.5px; }
+
+/* row: label then underlined value(s) */
+table.lines { width: 100%; margin-top: 12px; }
+table.lines td { padding: 0; vertical-align: bottom; }
+table.lines td.lbl { width: 1%; white-space: nowrap; padding-right: 5px; font-size: 10.5px; }
+table.lines td.val { border-bottom: 1px solid #111; font-weight: bold; font-size: 10.5px; padding: 0 4px 1px; height: 17px; }
+table.lines td.gap { width: 14px; }
+table.lines td.cap { text-align: center; font-size: 8px; color: #333; padding-top: 2px; }
+table.lines.loose { margin-top: 20px; }
+table.lines.tight { margin-top: 4px; }
+/* smaller type for the dense membership form */
+table.lines.small { margin-top: 11px; }
+table.lines.small td.lbl { font-size: 9px; }
+table.lines.small td.val { font-size: 9.5px; height: 15px; }
+
+/* checkboxes (an X is printed inside a ticked box) */
+.box { display: inline-block; width: 11px; height: 11px; border: 1px solid #111; text-align: center; font-size: 9px; line-height: 11px; font-weight: bold; vertical-align: middle; margin-right: 5px; }
+.opt { margin-right: 10px; white-space: nowrap; }
+table.opts { width: 100%; margin: 4px 0 10px 18px; }
+table.opts td { width: 50%; padding: 5px 0; font-size: 10.5px; vertical-align: middle; }
+.opts-label { margin: 16px 0 2px; font-weight: bold; }
+
+/* 8. Data tables + key/value grids --------------------------------------- */
+table.tbl { width: 100%; }
+table.tbl th, table.tbl td { border: 1px solid #333; padding: 3px 5px; vertical-align: top; }
+table.tbl th { background: #f0f0f0; text-align: left; font-size: 8px; text-transform: uppercase; letter-spacing: 0.4px; }
+table.tbl th.center { text-align: center; }
+table.tbl td.num { text-align: center; width: 20px; color: #555; }
+table.tbl td.blank { height: 15px; }
+table.tbl tr.row-head td { font-weight: bold; }
+table.tbl tfoot td { font-weight: bold; background: #f7f7f7; }
+/* A statement reads column by column, not cell by cell: the same table laid out
+   with no boxes around its figures — a rule under the header, one above a total,
+   and nothing else. The financial report is the document that reads this way. */
+table.tbl.plain th, table.tbl.plain td { border: 0; }
+table.tbl.plain th { background: none; border-bottom: 1px solid #333; }
+table.tbl.plain tfoot td { background: none; border-top: 1px solid #333; }
+
+table.kv { width: 100%; }
+table.kv td { padding: 3px 5px; vertical-align: top; }
+table.kv td.k { width: 20%; color: #333; font-size: 8px; padding-top: 4px; }
+table.kv td.v { border-bottom: 1px solid #999; font-weight: bold; padding-bottom: 2px; }
+table.kv.wide td.k { width: 26%; }
+table.kv.meta td.v { border-bottom: none; }
+table.kv td.v.plain { border-bottom: none; font-weight: normal; }
+
+/* 9. Signatures --------------------------------------------------------- */
+table.sigs { width: 100%; margin-top: 26px; }
+table.sigs td { padding: 0 8px; text-align: center; vertical-align: bottom; }
+table.sigs td.sig-label { text-align: left; font-size: 10.5px; padding-bottom: 22px; }
+.sig-name { font-weight: bold; font-size: 10px; text-decoration: underline; text-transform: uppercase; }
+.sig-title { font-size: 10px; margin-top: 4px; }
+.sig-line { border-top: 1px solid #111; padding-top: 3px; font-size: 8px; color: #333; }
+.sig-line strong { color: #111; }
+.sig-date { font-size: 8px; text-align: left; padding-top: 6px; }
+/* single signatory: rule with the name beneath */
+.sig-solo { width: 190px; border-top: 1px solid #111; padding-top: 3px; font-weight: bold; font-size: 10.5px; }
+.sig-role { font-size: 10.5px; }
+
+/* 10. Notes, panels, footers --------------------------------------------- */
+.note { font-size: 10.5px; margin-top: 14px; }
+.note ol { margin: 6px 0 0; padding-left: 22px; font-weight: bold; font-style: italic; line-height: 2; }
+.panel { border: 1px solid #777; padding: 6px 8px; font-size: 9px; line-height: 1.5; margin-top: 4px; }
+.ack { border: 1px solid #111; padding: 6px 8px; font-size: 9px; margin-top: 12px; }
+.small-note { font-size: 8px; color: #444; margin-top: 12px; }
+
+.foot-paper { width: 100%; margin-top: 10px; font-size: 8px; color: #333; page-break-inside: avoid; }
+.foot-paper td { padding: 0; vertical-align: top; }
+.foot-paper-text { text-align: left; vertical-align: top; line-height: 1; }
+.foot-paper-text div, .foot-paper-text p { margin: 0; }
+.foot-brand { text-align: right; }
+.foot-brand img { display: block; margin: 0 0 0 auto; }
+.printed-note { margin-top: 20px; border-top: 1px solid #999; padding-top: 5px; font-size: 7.5px; color: #444; }
+
+/* 11. Document specifics ------------------------------------------------- */
+
+/* Membership form: types row, fee note */
+table.types { width: 100%; }
+table.types td { text-align: center; font-size: 6.5px; color: #333; padding: 0 2px; vertical-align: top; }
+table.types .box { width: 15px; height: 15px; line-height: 15px; font-size: 10px; margin: 0; }
+table.fees { margin-top: 10px; font-size: 8.5px; }
+table.fees td { padding: 0 6px 0 0; vertical-align: top; }
+
+/* Sinumpaang Salaysay */
+.salaysay-rule { border: 0; border-top: 3px solid #111; margin: 7px 0 4px; }
+table.case-box { width: 34%; margin-left: 66%; }
+.ruled { border-bottom: 1px solid #111; height: 19px; line-height: 1.5; font-size: 10.5px; }
+.salaysay p { text-align: left; }
+.pad-l { padding-left: 18px; }
+
+/* Residents list (landscape) */
+table.tbl.residents td, table.tbl.residents th { font-size: 8.5px; }
+
+/* Money columns — the journal voucher, the financial report, the summary
+   report: an amount is read on the right and never wraps off its line. */
+table.tbl td.amount, table.tbl th.amount { text-align: right; white-space: nowrap; }
+.out-of-balance { color: #b00020; font-weight: bold; }
+
+/* Summary report: thirteen money columns and an account on one sheet, so the
+   cell padding and the type are cut to what a figure needs — a six-figure
+   amount still fits its own column. */
+table.tbl.matrix th, table.tbl.matrix td { padding: 1px 2px; font-size: 6.5px; }
+table.tbl.matrix th { font-size: 6.5px; letter-spacing: 0; }
+
+/* A report's own closing lines: the label on the right of the sheet and the
+   amount under the column it belongs to. The last line is ruled, because it is
+   what the report comes to. */
+table.totals { width: 100%; margin-top: 8px; }
+table.totals td { padding: 2px 5px; font-size: 9.5px; }
+table.totals td.k { text-align: right; font-weight: bold; }
+table.totals td.v { width: 26%; text-align: right; font-weight: bold; white-space: nowrap; }
+table.totals tr.grand td { border-top: 1px solid #111; font-size: 10.5px; }

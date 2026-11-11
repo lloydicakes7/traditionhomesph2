@@ -1,0 +1,87 @@
+/*
+ * The membership form's own layout: the label-under-its-line fields, the
+ * member-type boxes and the household table. Everything is a fixed table
+ * column, so a filled and a blank form occupy the same space.
+ */
+
+.doc-membership {
+    font-family: "Times New Roman", Times, serif;
+    font-size: 8pt;
+}
+
+.doc-membership .doc-line {
+    font-family: "Times New Roman", Times, serif;
+    font-size: 8pt;
+    line-height: 1.15;
+    min-height: 1.15em;
+}
+
+.doc-membership__row {
+    margin-bottom: 1mm;
+}
+
+.doc-membership__label {
+    font-size: 8pt;
+    white-space: nowrap;
+}
+
+.doc-membership__section {
+    margin-bottom: 1mm;
+}
+
+.doc-membership__table {
+    width: 100%;
+    table-layout: fixed;
+}
+
+.doc-membership__table td {
+    padding: 0 2mm 0 0;
+    vertical-align: bottom;
+}
+
+.doc-membership__heading {
+    text-align: center;
+    font-weight: bold;
+    font-size: 10pt;
+    margin: 1mm 0;
+}
+
+.doc-membership__note {
+    font-size: 7.5pt;
+    line-height: 1.25;
+}
+
+.doc-membership__signature {
+    text-align: right;
+}
+
+.doc-membership__checker {
+    width: 100%;
+    table-layout: fixed;
+}
+
+.doc-membership__checker td {
+    text-align: center;
+    vertical-align: top;
+    padding: 0 4mm;
+}
+
+.doc-membership__checker-name {
+    font-weight: bold;
+    text-decoration: underline;
+    font-size: 10pt;
+}
+
+.doc-membership__checker-role {
+    font-size: 9pt;
+}
+
+/* The form is one sheet: its rows are slightly tighter than a letter's. */
+
+.doc-membership .doc-grid td {
+    height: 3mm;
+}
+
+.doc-membership .doc-grid th {
+    height: 3mm;
+}

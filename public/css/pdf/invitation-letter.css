@@ -1,0 +1,36 @@
+/* ===== Page ===== */
+
+@page { size: 215.9mm 330.2mm; margin: 0; }
+
+.thha-pdf-page { position: relative; width: 215.9mm; height: 330.2mm; overflow: hidden; page-break-after: always; }
+.thha-pdf-bg { position: absolute; left: 0; top: 0; width: 215.9mm; height: 330.2mm; }
+
+/* ===== Fields ===== */
+
+.thha-pdf-field { position: absolute; font-family: Helvetica, Arial, sans-serif; font-size: 13.4pt; line-height: 16.8pt; height: 5.93mm; white-space: nowrap; overflow: hidden; color: #000; }
+.thha-pdf-mark { position: absolute; font-family: Helvetica, Arial, sans-serif; font-weight: bold; font-size: 11pt; text-align: center; color: #000; }
+
+.thha-f-control-no { left: 26.11mm; top: 302.55mm; width: 18.34mm; }
+.thha-f-or-no { left: 23.99mm; top: 307.14mm; width: 20.46mm; }
+.thha-f-date { left: 157.6mm; top: 57.19mm; width: 44.25mm; }
+.thha-f-to-name { left: 79.02mm; top: 72.8mm; width: 69.27mm; }
+.thha-f-address-1 { left: 80.54mm; top: 86.45mm; width: 69.73mm; }
+.thha-f-address-2 { left: 80.24mm; top: 92.2mm; width: 69.73mm; }
+.thha-f-meeting-date { left: 61.36mm; top: 132.8mm; width: 89.32mm; }
+.thha-f-meeting-time { left: 174.0mm; top: 132.8mm; width: 17.6mm; }
+.thha-f-signature-line { left: 63.91mm; top: 199.03mm; width: 44.4mm; }
+.thha-f-received-by { left: 118.69mm; top: 237.49mm; width: 46.84mm; }
+.thha-f-received-at { left: 82.07mm; top: 245.71mm; width: 81.94mm; }
+.thha-f-given-by { left: 112.13mm; top: 252.94mm; width: 53.4mm; }
+
+/* ===== Dynamic ===== */
+
+.thha-d-sidebar-photo { position: absolute; left: 16.58mm; top: 43.04mm; width: 33.51mm; height: 29.63mm; }
+.thha-d-sidebar-list { position: absolute; left: 9.17mm; top: 76.2mm; width: 48.33mm; height: 227.89mm; text-align: center; font-family: Helvetica, Arial, sans-serif; overflow: hidden; }
+.thha-sb-name { font-weight: bold; font-size: 7.6pt; line-height: 9pt; }
+.thha-sb-title { font-size: 7.4pt; line-height: 9pt; }
+.thha-sb-heading { font-weight: bold; font-size: 7.6pt; line-height: 9pt; text-decoration: underline; }
+.thha-d-signatory-name { position: absolute; left: 64.22mm; width: 90mm; text-align: left; top: 205.16mm; font-family: Helvetica, Arial, sans-serif; font-size: 12.11pt; line-height: 15.14pt; font-weight: bold; font-style: normal; text-decoration: none; white-space: nowrap; color: #000; }
+.thha-d-signatory-title { position: absolute; left: 67.42mm; width: 90mm; text-align: left; top: 210.42mm; font-family: Helvetica, Arial, sans-serif; font-size: 12.11pt; line-height: 15.14pt; font-weight: normal; font-style: normal; text-decoration: none; white-space: nowrap; color: #000; }
+.thha-d-letterhead { position: absolute; left: 0.0mm; top: 0.0mm; width: 215.9mm; height: 38.0mm; }
+.thha-d-footer { position: absolute; left: 104.0mm; top: 303.0mm; width: 104.0mm; height: 20.0mm; }

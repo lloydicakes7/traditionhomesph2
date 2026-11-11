@@ -1,0 +1,521 @@
+/*
+|--------------------------------------------------------------------------
+| RBI forms
+|--------------------------------------------------------------------------
+| The printed look of the three Registry of Barangay Inhabitants forms, drawn
+| from the DILG forms revised in 2024:
+|
+|   Form A  Records of Barangay Inhabitants by Household   (legal, landscape)
+|   Form B  Individual Records of Barangay Inhabitant       (A4, portrait)
+|   Form C  Monitoring Report                               (letter, portrait)
+|
+| The stylesheet is inlined into the document, so the preview page and the PDF
+| are always the same page. DomPDF lays the sheet out itself: no flex, no grid,
+| no gap and no sticky positioning anywhere below, because DomPDF silently
+| drops all four.
+*/
+
+/* ===== Sheet ===== */
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background: #ffffff;
+    color: #000000;
+    font-family: 'DejaVu Sans', Helvetica, sans-serif;
+    line-height: 1.2;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+}
+
+.rbi-page {
+    margin: 0;
+    background: #ffffff;
+}
+
+.rbi-page + .rbi-page {
+    page-break-before: always;
+}
+
+/* A filled-in value, on the ruled line the paper form provides. */
+.rbi-value {
+    border-bottom: 1px solid #000000;
+    padding: 0 2pt;
+}
+
+.rbi-box {
+    display: inline-block;
+    width: 8pt;
+    height: 8pt;
+    margin: 0 2pt 0 8pt;
+    border: 1px solid #000000;
+    font-size: 8pt;
+    line-height: 8pt;
+    text-align: center;
+    vertical-align: -1pt;
+}
+
+/* ===== Form A: by household ===== */
+
+.rbi-a {
+    padding: 10pt 14pt;
+    font-size: 7.5pt;
+}
+
+.rbi-a-title {
+    margin: 0;
+    text-align: center;
+    font-size: 11pt;
+    font-weight: bold;
+    letter-spacing: 1pt;
+}
+
+.rbi-a-subtitle {
+    margin: 1pt 0 6pt;
+    text-align: center;
+    font-size: 9pt;
+}
+
+.rbi-a-meta {
+    width: 100%;
+    margin-bottom: 4pt;
+    border-collapse: collapse;
+}
+
+.rbi-a-meta th,
+.rbi-a-meta td {
+    padding: 1pt 0;
+    height: 13pt;
+    font-size: 7.5pt;
+    font-weight: normal;
+    text-align: left;
+    vertical-align: bottom;
+}
+
+.rbi-a-meta th {
+    width: 17%;
+}
+
+.rbi-a-meta td {
+    width: 30%;
+    border-bottom: 1px solid #000000;
+}
+
+.rbi-a-table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+}
+
+.rbi-a-table th,
+.rbi-a-table td {
+    border: 1px solid #000000;
+    padding: 1pt 2pt;
+    font-size: 6.5pt;
+    vertical-align: middle;
+}
+
+.rbi-a-table th {
+    font-weight: bold;
+    text-align: center;
+}
+
+.rbi-a-table td {
+    height: 14pt;
+}
+
+.rbi-a-name th {
+    height: 12pt;
+}
+
+.rbi-a-indicator {
+    font-size: 6pt;
+}
+
+.rbi-a-sign {
+    width: 100%;
+    margin-top: 6pt;
+    border-collapse: collapse;
+}
+
+.rbi-a-sign td {
+    width: 33.33%;
+    padding: 0 10pt;
+    font-size: 7pt;
+    text-align: center;
+    vertical-align: bottom;
+}
+
+.rbi-a-sign-head {
+    padding-top: 4pt;
+    text-align: left;
+}
+
+.rbi-a-line {
+    height: 18pt;
+    border-bottom: 1px solid #000000;
+}
+
+.rbi-a-sign-name {
+    margin: 2pt 0 1pt;
+    font-weight: bold;
+}
+
+.rbi-a-note {
+    margin: 5pt 0 0;
+    font-size: 6.5pt;
+    text-align: justify;
+}
+
+/* ===== Form B: individual ===== */
+
+.rbi-b {
+    padding: 20pt 24pt;
+    font-size: 8pt;
+}
+
+.rbi-b-title {
+    margin: 0;
+    text-align: center;
+    font-size: 10pt;
+    font-weight: bold;
+}
+
+.rbi-b-subtitle {
+    margin: 1pt 0 14pt;
+    text-align: center;
+    font-size: 10pt;
+    font-weight: bold;
+}
+
+.rbi-b-loc {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.rbi-b-loc td {
+    width: 25%;
+    padding: 1pt 4pt;
+    font-size: 7.5pt;
+    vertical-align: bottom;
+}
+
+.rbi-b-loc .rbi-b-fill {
+    width: 25%;
+    border-bottom: 1px solid #000000;
+}
+
+.rbi-b-section {
+    margin: 16pt 0 8pt;
+    text-align: center;
+    font-size: 9pt;
+    font-weight: bold;
+}
+
+.rbi-b-name {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.rbi-b-name td {
+    padding: 0 6pt;
+    vertical-align: bottom;
+}
+
+.rbi-b-name .field {
+    height: 16pt;
+    border-bottom: 1px solid #000000;
+}
+
+.rbi-b-name .caption {
+    padding-top: 1pt;
+    font-size: 7pt;
+    text-align: center;
+}
+
+.rbi-b-details {
+    width: 100%;
+    margin-top: 8pt;
+    border-collapse: collapse;
+}
+
+.rbi-b-details td {
+    padding: 0 6pt;
+    vertical-align: bottom;
+}
+
+.rbi-b-details .field {
+    height: 16pt;
+    border-bottom: 1px solid #000000;
+}
+
+.rbi-b-details .caption {
+    padding-top: 1pt;
+    font-size: 7pt;
+    text-align: center;
+}
+
+.rbi-b-address {
+    width: 100%;
+    margin-top: 10pt;
+    border-collapse: collapse;
+}
+
+.rbi-b-address td {
+    padding: 3pt 6pt;
+    border: 1px solid #000000;
+    font-size: 8pt;
+    vertical-align: bottom;
+}
+
+.rbi-b-address .caption {
+    padding-top: 1pt;
+    font-size: 7pt;
+}
+
+.rbi-b-contact {
+    width: 100%;
+    margin-top: 10pt;
+    border-collapse: collapse;
+}
+
+.rbi-b-contact td {
+    padding: 0 6pt;
+    vertical-align: bottom;
+}
+
+.rbi-b-contact .field {
+    height: 16pt;
+    border-bottom: 1px solid #000000;
+}
+
+.rbi-b-contact .caption {
+    padding-top: 1pt;
+    font-size: 7pt;
+    text-align: center;
+}
+
+.rbi-b-education {
+    margin: 14pt 0 0;
+    font-size: 8pt;
+}
+
+.rbi-b-education-line {
+    padding: 3pt 0;
+}
+
+.rbi-b-specify {
+    padding: 2pt 0 0 40pt;
+    font-size: 7.5pt;
+    font-style: italic;
+}
+
+.rbi-b-privacy {
+    margin: 16pt 0 14pt;
+    font-size: 7.5pt;
+    text-align: justify;
+}
+
+.rbi-b-accomplished {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.rbi-b-accomplished td {
+    width: 50%;
+    padding: 0 10pt;
+    font-size: 7.5pt;
+    text-align: center;
+    vertical-align: bottom;
+}
+
+.rbi-b-accomplished .line {
+    height: 18pt;
+    border-bottom: 1px solid #000000;
+}
+
+.rbi-b-attested {
+    margin: 16pt 0 2pt;
+    font-size: 8pt;
+}
+
+.rbi-b-attested-line {
+    width: 100%;
+    margin-top: 22pt;
+    border-collapse: collapse;
+}
+
+.rbi-b-attested-line td {
+    padding: 0 8pt;
+    font-size: 7.5pt;
+    text-align: center;
+    vertical-align: bottom;
+}
+
+.rbi-b-attested-line .line {
+    height: 16pt;
+    border-bottom: 1px solid #000000;
+}
+
+.rbi-b-attested-line .left {
+    text-align: left;
+}
+
+.rbi-b-thumb {
+    padding-top: 6pt;
+    font-size: 7pt;
+}
+
+.rbi-b-household {
+    margin: 26pt 0 2pt;
+    font-size: 8pt;
+    font-weight: bold;
+}
+
+.rbi-b-household .rbi-value {
+    height: 14pt;
+    padding: 0 30pt;
+    font-weight: normal;
+}
+
+.rbi-b-note {
+    margin: 6pt 0 0;
+    font-size: 7pt;
+    font-style: italic;
+}
+
+/* ===== Form C: monitoring report ===== */
+
+.rbi-c {
+    padding: 12pt 16pt;
+    font-size: 7.5pt;
+}
+
+.rbi-c-title {
+    margin: 0;
+    text-align: center;
+    font-size: 11pt;
+    font-weight: bold;
+    letter-spacing: 1pt;
+}
+
+.rbi-c-subtitle {
+    margin: 1pt 0 0;
+    text-align: center;
+    font-size: 9pt;
+    font-weight: bold;
+    letter-spacing: 1pt;
+}
+
+.rbi-c-term {
+    margin: 1pt 0 6pt;
+    text-align: center;
+    font-size: 7.5pt;
+    font-style: italic;
+}
+
+.rbi-c-meta {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.rbi-c-meta td {
+    padding: 0;
+    height: 12pt;
+    font-size: 7.5pt;
+    vertical-align: bottom;
+}
+
+.rbi-c-meta .label {
+    width: 46%;
+}
+
+.rbi-c-meta .fill {
+    border-bottom: 1px solid #000000;
+}
+
+.rbi-c-table {
+    width: 100%;
+    margin-top: 6pt;
+    table-layout: fixed;
+    border-collapse: collapse;
+}
+
+.rbi-c-table th,
+.rbi-c-table td {
+    border: 1px solid #000000;
+    padding: 1pt 3pt;
+    font-size: 6.5pt;
+    vertical-align: middle;
+}
+
+.rbi-c-table th {
+    font-weight: bold;
+    text-align: center;
+}
+
+.rbi-c-table td {
+    height: 12pt;
+}
+
+.rbi-c-section td {
+    height: 12pt;
+    font-weight: bold;
+}
+
+.rbi-c-number {
+    text-align: center;
+}
+
+.rbi-c-remarks {
+    width: 26%;
+}
+
+.rbi-c-sign {
+    width: 100%;
+    margin-top: 8pt;
+    border-collapse: collapse;
+}
+
+.rbi-c-sign td {
+    width: 50%;
+    padding: 0 12pt;
+    font-size: 7pt;
+    vertical-align: bottom;
+}
+
+.rbi-c-sign .label {
+    padding-bottom: 16pt;
+}
+
+.rbi-c-sign .line {
+    border-bottom: 1px solid #000000;
+}
+
+.rbi-c-sign .name {
+    margin: 2pt 0 0;
+    font-weight: bold;
+}
+
+.rbi-c-date {
+    margin-top: 8pt;
+    font-size: 7.5pt;
+}
+
+.rbi-c-date .rbi-value {
+    padding: 0 30pt;
+}
+
+.rbi-c-note {
+    margin-top: 6pt;
+    font-size: 6.5pt;
+    font-style: italic;
+}

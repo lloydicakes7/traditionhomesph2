@@ -1,0 +1,33 @@
+/* ===== Fields ===== */
+
+.thha-pdf-field {
+    font-size: 10.3pt;
+    line-height: 12.9pt;
+    height: 4.55mm;
+}
+
+.thha-f-control-no { left: 25.4mm; top: 307.77mm; width: 21.87mm; font-size: 8pt; line-height: 10pt; }
+.thha-f-applicant-name { left: 91.35mm; top: 75.48mm; width: 70.99mm; }
+.thha-f-gender { left: 175.72mm; top: 73.78mm; width: 28.33mm; }
+.thha-f-block { left: 86.51mm; top: 84.78mm; width: 8.42mm; }
+.thha-f-lot { left: 100.9mm; top: 84.78mm; width: 8.42mm; }
+.thha-f-birth-date { left: 82.69mm; top: 101.2mm; width: 37.15mm; }
+.thha-f-age { left: 128.81mm; top: 101.2mm; width: 9.13mm; }
+.thha-f-mobile-no { left: 158.25mm; top: 98.49mm; width: 46.12mm; }
+.thha-f-purpose-business-permit { left: 74.82mm; top: 130.34mm; width: 4.41mm; height: 2.68mm; line-height: 2.68mm; font-size: 6.8pt; text-align: center; font-weight: bold; }
+.thha-f-purpose-franchising { left: 74.82mm; top: 139.99mm; width: 4.41mm; height: 2.68mm; line-height: 2.68mm; font-size: 6.8pt; text-align: center; font-weight: bold; }
+.thha-f-purpose-internet { left: 74.82mm; top: 149.64mm; width: 4.41mm; height: 2.68mm; line-height: 2.68mm; font-size: 6.8pt; text-align: center; font-weight: bold; }
+.thha-f-purpose-electrical { left: 133.06mm; top: 128.65mm; width: 4.41mm; height: 2.68mm; line-height: 2.68mm; font-size: 6.8pt; text-align: center; font-weight: bold; }
+.thha-f-purpose-water { left: 133.06mm; top: 138.97mm; width: 4.41mm; height: 2.68mm; line-height: 2.68mm; font-size: 6.8pt; text-align: center; font-weight: bold; }
+.thha-f-purpose-other { left: 133.37mm; top: 148.62mm; width: 4.41mm; height: 2.68mm; line-height: 2.68mm; font-size: 6.8pt; text-align: center; font-weight: bold; }
+.thha-f-purpose-other-text { left: 150.85mm; top: 148.25mm; width: 28.33mm; }
+.thha-f-day { left: 120.36mm; top: 185.49mm; width: 14.56mm; }
+.thha-f-month { left: 145.06mm; top: 185.49mm; width: 18.81mm; }
+.thha-f-year { left: 170.35mm; top: 185.49mm; width: 3.7mm; }
+
+/* ===== Dynamic ===== */
+
+.thha-d-left-name { position: absolute; left: 45.24mm; width: 90mm; text-align: center; top: 272.98mm; font-size: 10.71pt; line-height: 13.39pt; font-weight: bold; text-decoration: underline; white-space: nowrap; }
+.thha-d-left-title { position: absolute; left: 43.67mm; width: 90mm; text-align: center; top: 278.4mm; font-size: 10.71pt; line-height: 13.39pt; }
+.thha-d-right-name { position: absolute; left: 117.97mm; width: 90mm; text-align: center; top: 274.68mm; font-size: 10.71pt; line-height: 13.39pt; font-weight: bold; text-decoration: underline; white-space: nowrap; }
+.thha-d-right-title { position: absolute; left: 117.65mm; width: 90mm; text-align: center; top: 280.09mm; font-size: 10.71pt; line-height: 13.39pt; }

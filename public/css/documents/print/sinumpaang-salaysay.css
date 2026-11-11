@@ -1,0 +1,47 @@
+/* ===== Fields ===== */
+
+.thha-pdf-field {
+    font-size: 11pt;
+    line-height: 13.8pt;
+    height: 4.87mm;
+}
+
+.thha-f-case-no { left: 138.31mm; top: 41.47mm; width: 38.63mm; }
+.thha-f-case-title-1 { left: 138.31mm; top: 46.18mm; width: 38.63mm; }
+.thha-f-case-title-2 { left: 134.57mm; top: 50.72mm; width: 43.18mm; }
+.thha-f-affiant-surname { left: 51.76mm; top: 83.19mm; width: 96.69mm; }
+.thha-f-affiant-first-name { left: 150.24mm; top: 83.19mm; width: 29.33mm; }
+.thha-f-affiant-address { left: 24.35mm; top: 91.96mm; width: 152.92mm; font-size: 9pt; line-height: 11.3pt; }
+.thha-f-respondent-surname { left: 80.13mm; top: 109.17mm; width: 68.29mm; }
+.thha-f-respondent-first-name { left: 150.2mm; top: 109.17mm; width: 20.4mm; }
+.thha-f-respondent-address-1 { left: 64.61mm; top: 115.5mm; width: 130.51mm; }
+.thha-f-respondent-address-2 { left: 37.34mm; top: 119.23mm; width: 159.08mm; }
+.thha-f-incident-day { left: 66.06mm; top: 124.1mm; width: 13.09mm; }
+.thha-f-incident-month { left: 84.19mm; top: 124.1mm; width: 26.08mm; }
+.thha-f-incident-year { left: 118.56mm; top: 124.1mm; width: 4.98mm; }
+.thha-f-incident-time { left: 167.12mm; top: 124.1mm; width: 22.02mm; }
+.thha-f-statement-1 { left: 36.52mm; top: 140.34mm; width: 162.33mm; }
+.thha-f-statement-2 { left: 36.52mm; top: 145.58mm; width: 162.33mm; }
+.thha-f-statement-3 { left: 36.52mm; top: 150.82mm; width: 162.33mm; }
+.thha-f-statement-4 { left: 36.52mm; top: 156.07mm; width: 162.33mm; }
+.thha-f-statement-5 { left: 36.52mm; top: 161.31mm; width: 162.33mm; }
+.thha-f-statement-6 { left: 36.52mm; top: 166.55mm; width: 162.33mm; }
+.thha-f-statement-7 { left: 36.52mm; top: 171.8mm; width: 162.33mm; }
+.thha-f-statement-8 { left: 36.52mm; top: 177.04mm; width: 162.33mm; }
+.thha-f-statement-9 { left: 36.52mm; top: 182.28mm; width: 162.33mm; }
+.thha-f-statement-10 { left: 36.52mm; top: 187.53mm; width: 162.33mm; }
+.thha-f-statement-11 { left: 36.52mm; top: 192.77mm; width: 162.33mm; }
+.thha-f-statement-12 { left: 36.52mm; top: 198.01mm; width: 162.33mm; }
+.thha-f-statement-13 { left: 36.52mm; top: 203.26mm; width: 162.33mm; }
+.thha-f-sign-day { left: 57.08mm; top: 228mm; width: 60.17mm; }
+.thha-f-sworn-day { left: 132.3mm; top: 256.08mm; width: 50.92mm; }
+.thha-f-sworn-month { left: 33.14mm; top: 263.71mm; width: 21.7mm; }
+.thha-f-sworn-year { left: 62.32mm; top: 263.71mm; width: 10.98mm; }
+
+/* ===== Dynamic ===== */
+
+.thha-d-left-name { position: absolute; left: 10.19mm; width: 90mm; text-align: center; top: 291.61mm; font-size: 11.04pt; line-height: 13.8pt; white-space: nowrap; }
+.thha-d-left-title-1 { position: absolute; left: 11.82mm; width: 90mm; text-align: center; top: 296.16mm; font-size: 11.04pt; line-height: 13.8pt; white-space: nowrap; }
+.thha-d-left-title-2 { position: absolute; left: 6.62mm; width: 90mm; text-align: center; top: 300.71mm; font-size: 11.04pt; line-height: 13.8pt; white-space: nowrap; }
+.thha-d-right-name { position: absolute; left: 120.58mm; width: 90mm; text-align: center; top: 292.91mm; font-size: 11.04pt; line-height: 13.8pt; font-weight: bold; white-space: nowrap; }
+.thha-d-right-title { position: absolute; left: 120.9mm; width: 90mm; text-align: center; top: 297.46mm; font-size: 11.04pt; line-height: 13.8pt; white-space: nowrap; }

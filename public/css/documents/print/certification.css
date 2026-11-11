@@ -1,0 +1,32 @@
+/* ===== Fields ===== */
+
+.thha-pdf-field {
+    font-size: 11.2pt;
+    line-height: 14pt;
+    height: 4.94mm;
+}
+
+.thha-f-control-no { left: 26.11mm; top: 303.25mm; width: 18.34mm; font-size: 8pt; line-height: 10pt; }
+.thha-f-or-no { left: 23.99mm; top: 307.84mm; width: 20.46mm; font-size: 8pt; line-height: 10pt; }
+.thha-f-block { left: 119.15mm; top: 64.83mm; width: 5.89mm; }
+.thha-f-lot { left: 131.25mm; top: 64.83mm; width: 4.9mm; }
+.thha-f-occupant-name { left: 119.83mm; top: 80.22mm; width: 50.95mm; }
+.thha-f-purpose-residency { left: 81.41mm; top: 144.17mm; width: 4.95mm; height: 2.8mm; line-height: 2.8mm; font-size: 7.1pt; text-align: center; font-weight: bold; }
+.thha-f-purpose-employment { left: 81.41mm; top: 151.71mm; width: 4.95mm; height: 2.8mm; line-height: 2.8mm; font-size: 7.1pt; text-align: center; font-weight: bold; }
+.thha-f-purpose-burial { left: 81.41mm; top: 158.95mm; width: 4.95mm; height: 2.8mm; line-height: 2.8mm; font-size: 7.1pt; text-align: center; font-weight: bold; }
+.thha-f-purpose-indigency { left: 81.41mm; top: 166.49mm; width: 4.62mm; height: 2.31mm; line-height: 2.31mm; font-size: 5.9pt; text-align: center; font-weight: bold; }
+.thha-f-purpose-others { left: 81.41mm; top: 171.11mm; width: 4.62mm; height: 2.31mm; line-height: 2.31mm; font-size: 5.9pt; text-align: center; font-weight: bold; }
+.thha-f-purpose-financial { left: 148.69mm; top: 142.78mm; width: 4.95mm; height: 2.8mm; line-height: 2.8mm; font-size: 7.1pt; text-align: center; font-weight: bold; }
+.thha-f-purpose-educational { left: 148.69mm; top: 150.48mm; width: 4.95mm; height: 2.8mm; line-height: 2.8mm; font-size: 7.1pt; text-align: center; font-weight: bold; }
+.thha-f-purpose-loan { left: 148.69mm; top: 158.02mm; width: 4.95mm; height: 2.8mm; line-height: 2.8mm; font-size: 7.1pt; text-align: center; font-weight: bold; }
+.thha-f-purpose-moved-out { left: 149.35mm; top: 165.11mm; width: 4.95mm; height: 2.31mm; line-height: 2.31mm; font-size: 5.9pt; text-align: center; font-weight: bold; }
+.thha-f-day { left: 84.52mm; top: 191.52mm; width: 8.53mm; }
+.thha-f-month { left: 104.53mm; top: 191.52mm; width: 21.22mm; }
+.thha-f-year { left: 133.07mm; top: 191.52mm; width: 3.58mm; }
+
+/* ===== Dynamic ===== */
+
+.thha-d-left-name { position: absolute; left: 52.9mm; width: 90mm; text-align: center; top: 262.83mm; font-size: 11.69pt; line-height: 14.61pt; font-weight: bold; text-decoration: underline; white-space: nowrap; }
+.thha-d-left-title { position: absolute; left: 52.9mm; width: 90mm; text-align: center; top: 271.76mm; font-size: 11.69pt; line-height: 14.61pt; }
+.thha-d-right-name { position: absolute; left: 132.87mm; width: 90mm; text-align: center; top: 264.06mm; font-size: 11.69pt; line-height: 14.61pt; font-weight: bold; text-decoration: underline; white-space: nowrap; }
+.thha-d-right-title { position: absolute; left: 132.87mm; width: 90mm; text-align: center; top: 272.99mm; font-size: 11.69pt; line-height: 14.61pt; }

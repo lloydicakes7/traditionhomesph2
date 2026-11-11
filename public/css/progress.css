@@ -1,0 +1,142 @@
+/* ===== Components ===== */
+
+.thha-progress-stack {
+    position: fixed;
+    right: 16px;
+    bottom: 16px;
+    z-index: 9998;
+    display: flex;
+    flex-direction: column;
+    width: 360px;
+    max-width: calc(100% - 32px);
+    pointer-events: none;
+}
+
+.thha-progress-item {
+    pointer-events: auto;
+    padding: 12px 14px;
+    margin-top: 10px;
+    background: #fff;
+    border-left: 5px solid #17a2b8;
+    border-radius: 8px;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.18), 0 2px 8px rgba(0, 0, 0, 0.08);
+    animation: thha-progress-in 0.25s ease-out;
+}
+
+.thha-progress-item.is-done {
+    border-left-color: #28a745;
+}
+
+.thha-progress-item.is-warning {
+    border-left-color: #ffc107;
+}
+
+.thha-progress-item.is-failed {
+    border-left-color: #dc3545;
+}
+
+.thha-progress-item.is-leaving {
+    animation: thha-progress-out 0.25s ease-in forwards;
+}
+
+.thha-progress-head {
+    display: flex;
+    align-items: center;
+}
+
+.thha-progress-icon {
+    flex-shrink: 0;
+    margin-right: 8px;
+    font-size: 14px;
+    color: #17a2b8;
+}
+
+.thha-progress-item.is-done .thha-progress-icon {
+    color: #28a745;
+}
+
+.thha-progress-item.is-warning .thha-progress-icon {
+    color: #ffc107;
+}
+
+.thha-progress-item.is-failed .thha-progress-icon {
+    color: #dc3545;
+}
+
+.thha-progress-title {
+    flex: 1;
+    min-width: 0;
+    font-size: 13px;
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.thha-progress-close {
+    flex-shrink: 0;
+    padding: 0;
+    margin-left: 8px;
+    font-size: 18px;
+    line-height: 1;
+    color: #94a3b8;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.thha-progress-close:hover {
+    color: #475569;
+}
+
+.thha-progress-bar {
+    height: 6px;
+    margin-top: 8px;
+    margin-bottom: 0;
+    border-radius: 3px;
+    background: #e9ecef;
+}
+
+.thha-progress-bar .progress-bar {
+    border-radius: 3px;
+    transition: width 0.3s ease;
+}
+
+.thha-progress-message {
+    margin-top: 4px;
+    font-size: 12px;
+    line-height: 1.4;
+    color: #475569;
+}
+
+.thha-progress-message:empty {
+    display: none;
+}
+
+@keyframes thha-progress-in {
+    from {
+        transform: translateY(16px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes thha-progress-out {
+    from {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateY(16px);
+        opacity: 0;
+    }
+}
+
+@media (max-width: 576px) {
+    .thha-progress-stack {
+        right: 10px;
+        bottom: 10px;
+        max-width: calc(100% - 20px);
+    }
+}

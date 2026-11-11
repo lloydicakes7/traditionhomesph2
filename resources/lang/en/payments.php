@@ -1,0 +1,42 @@
+<?php
+
+return [
+
+    'receipt' => [
+        'title'            => 'OFFICIAL RECEIPT',
+        'no'               => 'Receipt No.',
+        'date'             => 'Date Paid',
+        'received_from'    => 'Received from',
+        'unit'             => 'Block / Lot',
+        'payment_for'      => 'Payment for',
+        'bill'             => 'Bill',
+        'bill_description' => 'Description',
+        'period'           => 'Billing Period',
+        'item'             => 'Particulars',
+        'qty'              => 'Qty',
+        'unit_price'       => 'Unit Price',
+        'amount'           => 'Amount',
+        'bill_total'       => 'Bill Total',
+        'details'          => 'Payment Details',
+        'method'           => 'Payment Method',
+        'reference'        => 'Reference No.',
+        'amount_paid'      => 'Amount Paid',
+        'amount_in_words'  => 'Amount in Words',
+        'balance_after'    => 'Balance After Payment',
+        'notes'            => 'Notes',
+        'received_by'      => 'Received by',
+        'payer_signature'  => "Payer's signature over printed name",
+        'footer'           => 'Not valid without HOA Dry Seal.',
+        'advance_deposit'  => 'Applied from advance deposit',
+        'print'            => 'Print Receipt',
+        'print_title'      => 'Print the official receipt for this payment',
+        'download'         => 'Download Receipt',
+        'print_a4'         => 'Print A4',
+        'print_thermal'    => 'Print Thermal',
+        'download_a4'      => 'Download A4',
+        'download_thermal' => 'Download Thermal',
+        'column'           => 'Receipt',
+        'not_recorded'     => 'No receipt yet',
+    ],
+
+];

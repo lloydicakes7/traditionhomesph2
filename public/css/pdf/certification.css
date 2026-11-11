@@ -1,0 +1,43 @@
+/* ===== Page ===== */
+
+@page { size: 215.9mm 330.2mm; margin: 0; }
+
+.thha-pdf-page { position: relative; width: 215.9mm; height: 330.2mm; overflow: hidden; page-break-after: always; }
+.thha-pdf-bg { position: absolute; left: 0; top: 0; width: 215.9mm; height: 330.2mm; }
+
+/* ===== Fields ===== */
+
+.thha-pdf-field { position: absolute; font-family: Helvetica, Arial, sans-serif; font-size: 11.2pt; line-height: 14.0pt; height: 4.94mm; white-space: nowrap; overflow: hidden; color: #000; }
+.thha-pdf-mark { position: absolute; font-family: Helvetica, Arial, sans-serif; font-weight: bold; font-size: 11pt; text-align: center; color: #000; }
+
+.thha-f-control-no { left: 26.11mm; top: 303.25mm; width: 18.34mm; }
+.thha-f-or-no { left: 23.99mm; top: 307.84mm; width: 20.46mm; }
+.thha-f-block { left: 119.15mm; top: 64.83mm; width: 5.89mm; }
+.thha-f-lot { left: 131.25mm; top: 64.83mm; width: 4.9mm; }
+.thha-f-occupant-name { left: 119.83mm; top: 80.22mm; width: 50.95mm; }
+.thha-f-purpose-residency { left: 81.41mm; top: 144.17mm; width: 4.95mm; height: 2.8mm; line-height: 2.8mm; font-size: 7.1pt; text-align: center; font-weight: bold; }
+.thha-f-purpose-employment { left: 81.41mm; top: 151.71mm; width: 4.95mm; height: 2.8mm; line-height: 2.8mm; font-size: 7.1pt; text-align: center; font-weight: bold; }
+.thha-f-purpose-burial { left: 81.41mm; top: 158.95mm; width: 4.95mm; height: 2.8mm; line-height: 2.8mm; font-size: 7.1pt; text-align: center; font-weight: bold; }
+.thha-f-purpose-indigency { left: 81.41mm; top: 166.49mm; width: 4.62mm; height: 2.31mm; line-height: 2.31mm; font-size: 5.9pt; text-align: center; font-weight: bold; }
+.thha-f-purpose-others { left: 81.41mm; top: 171.11mm; width: 4.62mm; height: 2.31mm; line-height: 2.31mm; font-size: 5.9pt; text-align: center; font-weight: bold; }
+.thha-f-purpose-financial { left: 148.69mm; top: 142.78mm; width: 4.95mm; height: 2.8mm; line-height: 2.8mm; font-size: 7.1pt; text-align: center; font-weight: bold; }
+.thha-f-purpose-educational { left: 148.69mm; top: 150.48mm; width: 4.95mm; height: 2.8mm; line-height: 2.8mm; font-size: 7.1pt; text-align: center; font-weight: bold; }
+.thha-f-purpose-loan { left: 148.69mm; top: 158.02mm; width: 4.95mm; height: 2.8mm; line-height: 2.8mm; font-size: 7.1pt; text-align: center; font-weight: bold; }
+.thha-f-purpose-moved-out { left: 149.35mm; top: 165.11mm; width: 4.95mm; height: 2.31mm; line-height: 2.31mm; font-size: 5.9pt; text-align: center; font-weight: bold; }
+.thha-f-day { left: 84.52mm; top: 191.52mm; width: 8.53mm; }
+.thha-f-month { left: 104.53mm; top: 191.52mm; width: 21.22mm; }
+.thha-f-year { left: 133.07mm; top: 191.52mm; width: 3.58mm; }
+
+/* ===== Dynamic ===== */
+
+.thha-d-sidebar-photo { position: absolute; left: 16.58mm; top: 43.04mm; width: 33.51mm; height: 29.63mm; }
+.thha-d-sidebar-list { position: absolute; left: 9.17mm; top: 76.2mm; width: 48.33mm; height: 227.89mm; text-align: center; font-family: Helvetica, Arial, sans-serif; overflow: hidden; }
+.thha-sb-name { font-weight: bold; font-size: 7.6pt; line-height: 9pt; }
+.thha-sb-title { font-size: 7.4pt; line-height: 9pt; }
+.thha-sb-heading { font-weight: bold; font-size: 7.6pt; line-height: 9pt; text-decoration: underline; }
+.thha-d-left-name { position: absolute; left: 52.9mm; width: 90mm; text-align: center; top: 262.83mm; font-family: Helvetica, Arial, sans-serif; font-size: 11.69pt; line-height: 14.61pt; font-weight: bold; font-style: normal; text-decoration: underline; white-space: nowrap; color: #000; }
+.thha-d-left-title { position: absolute; left: 52.9mm; width: 90mm; text-align: center; top: 271.76mm; font-family: Helvetica, Arial, sans-serif; font-size: 11.69pt; line-height: 14.61pt; font-weight: normal; font-style: normal; text-decoration: none; white-space: nowrap; color: #000; }
+.thha-d-right-name { position: absolute; left: 132.87mm; width: 90mm; text-align: center; top: 264.06mm; font-family: Helvetica, Arial, sans-serif; font-size: 11.69pt; line-height: 14.61pt; font-weight: bold; font-style: normal; text-decoration: underline; white-space: nowrap; color: #000; }
+.thha-d-right-title { position: absolute; left: 132.87mm; width: 90mm; text-align: center; top: 272.99mm; font-family: Helvetica, Arial, sans-serif; font-size: 11.69pt; line-height: 14.61pt; font-weight: normal; font-style: normal; text-decoration: none; white-space: nowrap; color: #000; }
+.thha-d-letterhead { position: absolute; left: 0.0mm; top: 0.0mm; width: 215.9mm; height: 38.0mm; }
+.thha-d-footer { position: absolute; left: 104.0mm; top: 303.0mm; width: 104.0mm; height: 20.0mm; }

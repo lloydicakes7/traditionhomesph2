@@ -1,0 +1,21 @@
+/* ===== Fields ===== */
+
+.thha-pdf-field {
+    font-size: 13.4pt;
+    line-height: 16.8pt;
+    height: 5.93mm;
+}
+
+.thha-f-control-no { left: 26.11mm; top: 302.55mm; width: 18.34mm; font-size: 8pt; line-height: 10pt; }
+.thha-f-or-no { left: 23.99mm; top: 307.14mm; width: 20.46mm; font-size: 8pt; line-height: 10pt; }
+.thha-f-date { left: 157.6mm; top: 57.19mm; width: 44.25mm; }
+.thha-f-to-name { left: 79.02mm; top: 72.8mm; width: 69.27mm; }
+.thha-f-address-1 { left: 80.54mm; top: 86.45mm; width: 69.73mm; font-size: 8pt; line-height: 10pt; }
+.thha-f-address-2 { left: 80.24mm; top: 92.2mm; width: 69.73mm; font-size: 8pt; line-height: 10pt; }
+.thha-f-meeting-date { left: 61.36mm; top: 132.8mm; width: 89.32mm; }
+.thha-f-meeting-time { left: 174mm; top: 132.8mm; width: 17.6mm; }
+
+/* ===== Dynamic ===== */
+
+.thha-d-signatory-name { position: absolute; left: 64.22mm; width: 90mm; text-align: left; top: 205.16mm; font-size: 12.11pt; line-height: 15.14pt; font-weight: bold; white-space: nowrap; }
+.thha-d-signatory-title { position: absolute; left: 67.42mm; width: 90mm; text-align: left; top: 210.42mm; font-size: 12.11pt; line-height: 15.14pt; }

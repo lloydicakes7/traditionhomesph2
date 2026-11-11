@@ -1,0 +1,148 @@
+/* ===== Page ===== */
+
+@page {
+    size: 215.9mm 330.2mm;
+    margin: 0;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Helvetica, Arial, sans-serif;
+    color: #000;
+}
+
+.thha-pdf-page {
+    position: relative;
+    width: 215.9mm;
+    height: 330.2mm;
+    overflow: hidden;
+}
+
+.thha-pdf-bg {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 215.9mm;
+    height: 330.2mm;
+}
+
+/* ===== Letterhead ===== */
+
+.thha-d-letterhead {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 215.9mm;
+    height: 38mm;
+}
+
+.thha-letterhead {
+    width: 100%;
+    height: 38mm;
+    border-collapse: collapse;
+}
+
+.thha-letterhead__mark {
+    width: 19%;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.thha-letterhead__text {
+    width: 62%;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 9pt;
+    line-height: 12pt;
+}
+
+/* ===== Footer ===== */
+
+.thha-d-footer {
+    position: absolute;
+    left: 104mm;
+    top: 303mm;
+    width: 104mm;
+    height: 20mm;
+}
+
+.thha-footer {
+    width: 100%;
+    border-collapse: collapse;
+    vertical-align: bottom;
+}
+
+.thha-footer__text {
+    width: 66%;
+    font-size: 8pt;
+    line-height: 10pt;
+    vertical-align: bottom;
+}
+
+.thha-footer__mark {
+    width: 34%;
+    text-align: right;
+    vertical-align: bottom;
+}
+
+/* ===== Sidebar ===== */
+
+.thha-d-sidebar-photo {
+    position: absolute;
+    left: 16.58mm;
+    top: 43.04mm;
+    width: 33.51mm;
+    height: 29.63mm;
+    text-align: center;
+}
+
+.thha-d-sidebar-list {
+    position: absolute;
+    left: 9.17mm;
+    top: 76.2mm;
+    width: 48.33mm;
+    height: 227.89mm;
+    text-align: center;
+    overflow: hidden;
+}
+
+.thha-sb-name {
+    font-weight: bold;
+    font-size: 7.6pt;
+    line-height: 9pt;
+}
+
+.thha-sb-title {
+    font-size: 7.4pt;
+    line-height: 9pt;
+}
+
+.thha-sb-heading {
+    font-weight: bold;
+    font-size: 7.6pt;
+    line-height: 9pt;
+    text-decoration: underline;
+}
+
+/* ===== Fields ===== */
+
+.thha-pdf-field {
+    position: absolute;
+    font-size: 11pt;
+    line-height: 13.8pt;
+    white-space: nowrap;
+    overflow: hidden;
+    color: #000;
+}
+
+.thha-pdf-mark {
+    position: absolute;
+    font-weight: bold;
+    font-size: 11pt;
+    text-align: center;
+    color: #000;
+}
