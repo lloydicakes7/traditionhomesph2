@@ -305,14 +305,21 @@ class MembershipFormDocumentQuery
     // =====================================================================
 
     /**
-     * Every member of the household except the one this form is about.
+     * Every member of the household, the one this form is about included.
+     *
+     * The member's own row is part of the household list; printing the form for
+     * the head must not leave the head out of the list that names their family.
+     * A resident whose household record is missing still prints their own row,
+     * with the relation left for the office to complete.
      *
      * @return array<int, array<string, string>>
      */
     private function members(?Household $household, ?Resident $subject): array
     {
         if (! $household) {
-            return $this->emptyRows(self::MEMBER_ROWS);
+            $rows = $subject ? [$this->memberRow($subject, '')] : [];
+
+            return $this->pad($rows);
         }
 
         $household->loadMissing('memberRecords.resident', 'headMember.resident');
@@ -324,10 +331,7 @@ class MembershipFormDocumentQuery
 
         if ($head) {
             $seen[] = $head->id;
-
-            if (! $subject || $head->id !== $subject->id) {
-                $rows[] = $this->memberRow($head, 'Head');
-            }
+            $rows[] = $this->memberRow($head, 'Head');
         }
 
         foreach ($household->memberRecords as $record) {
@@ -338,12 +342,13 @@ class MembershipFormDocumentQuery
             }
 
             $seen[] = $member->id;
-
-            if ($subject && $member->id === $subject->id) {
-                continue;
-            }
-
             $rows[] = $this->memberRow($member, ucfirst(DocumentText::clean($record->relationship)));
+        }
+
+        // A resident linked to the household only through their account still
+        // belongs on the form; their membership row has not been written yet.
+        if ($subject && ! in_array($subject->id, $seen, true)) {
+            $rows[] = $this->memberRow($subject, '');
         }
 
         return $this->pad($rows);

@@ -1,23 +1,278 @@
-/* ===== Fields ===== */
+/* ==========================================================================
+   HOMEOWNERS ASSOCIATION PERMIT — A4 portrait.
+   DomPDF 2.x safe. Same construct as endorsement-letter: the two-column frame
+   is a relative box holding two ABSOLUTE blocks (sidebar 50mm + letter 140mm).
+   A table cannot be used for it: DomPDF splits the columns 50/50.
+   DomPDF measures width/height as content-box, so padding and borders are
+   added on top of them; every size below is worked out with that in mind.
+   ========================================================================== */
 
-.thha-pdf-field {
-    font-size: 13.1pt;
-    line-height: 16.4pt;
-    height: 5.79mm;
+@page {
+    size: A4 portrait;
+    margin: 0;
 }
 
-.thha-f-control-no { left: 26.11mm; top: 302.64mm; width: 18.34mm; font-size: 8pt; line-height: 10pt; }
-.thha-f-or-no { left: 23.99mm; top: 307.23mm; width: 20.46mm; font-size: 8pt; line-height: 10pt; }
-.thha-f-granted-to { left: 66.27mm; top: 71.85mm; width: 91.69mm; }
-.thha-f-address-1 { left: 79.5mm; top: 83.78mm; width: 118.76mm; font-size: 11pt; line-height: 13.8pt; }
-.thha-f-address-2 { left: 61.35mm; top: 96.85mm; width: 136.92mm; font-size: 11pt; line-height: 13.8pt; }
-.thha-f-purpose-1 { left: 80.12mm; top: 103.06mm; width: 118.15mm; }
-.thha-f-purpose-2 { left: 62.12mm; top: 115.64mm; width: 136.15mm; }
-.thha-f-location { left: 81.04mm; top: 127.9mm; width: 117.23mm; }
-.thha-f-event-date { left: 75.19mm; top: 153.23mm; width: 123.07mm; }
-.thha-f-date-issued { left: 77.19mm; top: 164.18mm; width: 121.07mm; }
+html,
+body {
+    margin: 0;
+    padding: 0;
+}
 
-/* ===== Dynamic ===== */
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    color: #111;
+}
 
-.thha-d-signatory-name { position: absolute; left: 61.81mm; width: 90mm; text-align: left; top: 271.76mm; font-size: 11.34pt; line-height: 14.18pt; font-weight: bold; white-space: nowrap; }
-.thha-d-signatory-title { position: absolute; left: 61.81mm; width: 90mm; text-align: left; top: 276.33mm; font-size: 11.34pt; line-height: 14.18pt; }
+.thha-hp-sheet {
+    position: relative;
+    /* 190mm + 2 x 10mm padding = 210mm; 281.2mm + 7.8mm + 8mm = 297mm */
+    width: 190mm;
+    height: 281.2mm;
+    margin: 0;
+    padding: 7.8mm 10mm 8mm;
+    background: #fff;
+    overflow: hidden;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #111;
+}
+
+.thha-hp-sheet * {
+    box-sizing: border-box;
+}
+
+/* ===== Header ============================================================ */
+
+.thha-hp-header {
+    position: relative;
+    height: 32mm;
+    text-align: center;
+    padding: 0 29mm;
+    font-size: 8.8pt;
+    line-height: 1.12;
+}
+
+.thha-hp-logo-hoa {
+    position: absolute;
+    left: 3mm;
+    top: 0;
+    width: 24mm;
+    height: 24mm;
+}
+
+.thha-hp-logo-hope {
+    position: absolute;
+    right: 0;
+    top: 2mm;
+    width: 30mm;
+    height: 20mm;
+}
+
+.thha-hp-header .thha-hp-org {
+    font-size: 10.2pt;
+    font-weight: 700;
+    line-height: 1.12;
+    margin: 0 0 1mm;
+}
+
+.thha-hp-header .thha-hp-line {
+    font-weight: 700;
+}
+
+.thha-hp-header .thha-hp-email {
+    margin-top: 1mm;
+}
+
+/* ===== Frame (absolute blocks: 50mm sidebar + 140mm letter) =============== */
+
+.thha-hp-frame {
+    position: relative;
+    /* 189.4mm + 2 x 1px border = 190mm */
+    width: 189.4mm;
+    height: 240.4mm;
+    border: 1px solid #111;
+}
+
+/* ===== Sidebar =========================================================== */
+
+.thha-hp-sidebar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    /* content 46mm + 2mm padding each side = 50mm */
+    width: 46mm;
+    /* 237mm + 3mm top padding = 240mm */
+    height: 237mm;
+    padding: 3mm 2mm 0;
+    border-right: 1px solid #111;
+    text-align: center;
+    font-size: 8.8pt;
+    line-height: 1.23;
+}
+
+.thha-hp-portrait {
+    width: 31mm;
+    height: 31mm;
+    margin: 0 auto 2mm;
+    text-align: center;
+}
+
+.thha-hp-person {
+    margin: 0 0 1.4mm;
+}
+
+.thha-hp-person strong,
+.thha-hp-committee strong {
+    display: block;
+    font-weight: 700;
+}
+
+.thha-hp-role {
+    display: block;
+    margin-top: 0.5mm;
+}
+
+.thha-hp-board-title {
+    font-weight: 700;
+    margin: 5mm 0;
+}
+
+.thha-hp-committee {
+    margin: 0 0 1.25mm;
+}
+
+.thha-hp-control {
+    position: absolute;
+    left: 2mm;
+    bottom: 2mm;
+    width: 42mm;
+    text-align: left;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+.thha-hp-control .thha-hp-blank {
+    display: inline-block;
+    min-width: 26mm;
+    border-bottom: 1px solid #111;
+    font-weight: 700;
+    text-align: center;
+    white-space: nowrap;
+}
+
+/* ===== Letter ============================================================ */
+
+.thha-hp-main {
+    position: absolute;
+    /* sidebar 50mm + its 1px border */
+    left: 50.3mm;
+    top: 0;
+    /* content 132.7mm + 3.2mm padding each side = 139.1mm -> ends on the frame */
+    width: 132.7mm;
+    /* 234mm + 3mm padding top and bottom = 240mm */
+    height: 234mm;
+    padding: 3mm 3.2mm;
+}
+
+.thha-hp-title-text {
+    font-family: "Times New Roman", Times, serif;
+    font-size: 17pt;
+    font-weight: bold;
+    text-align: center;
+    margin: 0 0 8mm;
+    white-space: nowrap;
+}
+
+.thha-hp-fields {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12pt;
+    line-height: 1.35;
+}
+
+.thha-hp-fields td {
+    padding: 0;
+    vertical-align: bottom;
+}
+
+.thha-hp-fields .thha-hp-label {
+    width: 27mm;
+    padding-bottom: 1.6mm;
+    vertical-align: bottom;
+    white-space: nowrap;
+}
+
+.thha-hp-fields .thha-hp-value {
+    padding: 0 1mm 1.6mm;
+    border-bottom: 1px solid #111;
+    vertical-align: bottom;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12pt;
+    font-weight: 700;
+    line-height: 1.25;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.thha-hp-fields .thha-hp-value--wrap {
+    white-space: normal;
+    line-height: 1.2;
+}
+
+.thha-hp-fields .thha-hp-value--multi {
+    height: 7mm;
+}
+
+.thha-hp-intro {
+    margin: 0 0 1mm;
+    font-size: 12pt;
+}
+
+.thha-hp-explanation {
+    font-size: 11.5pt;
+    line-height: 1.45;
+    margin-top: 6mm;
+}
+
+.thha-hp-note {
+    font-size: 11.5pt;
+    margin-top: 10mm;
+    line-height: 1.6;
+}
+
+.thha-hp-certified {
+    font-size: 11.5pt;
+    margin-top: 8mm;
+}
+
+.thha-hp-signature {
+    margin-top: 17mm;
+    width: 65mm;
+    font-size: 11.5pt;
+    line-height: 1.35;
+}
+
+.thha-hp-signature .thha-hp-rule {
+    border-top: 1px solid #111;
+    width: 65mm;
+    margin-bottom: 1mm;
+}
+
+.thha-hp-signature strong {
+    display: block;
+}
+
+.thha-hp-logo-bagong {
+    position: absolute;
+    width: 48mm;
+    height: 22mm;
+    right: 4mm;
+    bottom: 5mm;
+}
+
+.thha-hp-footer {
+    position: absolute;
+    left: 8mm;
+    bottom: 3mm;
+    font-size: 8.5pt;
+    font-weight: 700;
+}

@@ -24,6 +24,13 @@
                 </div>
             @endif
 
+            @if ($requestNotice !== '')
+                <div class="alert alert-warning border small">
+                    <i class="fas fa-fw fa-exclamation-triangle mr-1"></i>
+                    {{ $requestNotice }}
+                </div>
+            @endif
+
             <form data-print-form autocomplete="off" onsubmit="return false;">
                 @php($today = $today ?? now()->format('Y-m-d'))
 
@@ -31,8 +38,7 @@
                 {{-- Membership Form                                        --}}
                 {{-- ------------------------------------------------------ --}}
                 @if ($document->value === \App\Enums\PrintDocument::MEMBERSHIP_FORM)
-                    <x-adminlte-select2 name="residentId" label="Member" igroup-size="sm"
-                        wire:model="memberId">
+                    <x-adminlte-select2 name="residentId" label="Member" igroup-size="sm">
                         <option value="">— Print a blank form —</option>
                         @foreach ($residents as $id => $name)
                             <option value="{{ $id }}">{{ $name }}</option>
@@ -460,18 +466,18 @@
                 <div>
                     @can('print.export')
                         <a href="{{ $pdfUrl }}" target="_blank" rel="noopener"
-                            data-print-link="{{ $pdfUrl }}" class="btn btn-sm btn-info">
+                            data-print-link="{{ $plainPdfUrl }}" class="btn btn-sm btn-info">
                             <i class="fas fa-fw fa-print"></i> Print
                         </a>
-                        <a href="{{ $pdfUrl }}?download=1"
-                            data-print-link="{{ $pdfUrl }}?download=1"
+                        <a href="{{ $pdfUrl }}{{ strpos($pdfUrl, '?') === false ? '?' : '&' }}download=1"
+                            data-print-link="{{ $plainPdfUrl }}?download=1"
                             data-thha-progress-download="Preparing the PDF download…"
                             class="btn btn-sm btn-secondary">
                             <i class="fas fa-fw fa-download"></i> Download
                         </a>
                         @if ($document->hasBlankForm())
-                            <a href="{{ $pdfUrl }}?blank=1" target="_blank" rel="noopener"
-                                data-print-link="{{ $pdfUrl }}?blank=1" class="btn btn-sm btn-outline-secondary">
+                            <a href="{{ $blankUrl }}" target="_blank" rel="noopener"
+                                data-print-link="{{ $blankUrl }}" class="btn btn-sm btn-outline-secondary">
                                 <i class="fas fa-fw fa-file"></i> {{ __('documents.errors.blank') }}
                             </a>
                         @endif
@@ -482,7 +488,7 @@
 
             <div class="position-relative border"
                 style="width:100%; aspect-ratio: {{ $document->paperRatio() }}; max-height: 87vh; overflow: hidden;">
-                <iframe data-print-frame data-print-src="{{ $pdfUrl }}" src="{{ $pdfUrl }}"
+                <iframe data-print-frame data-print-src="{{ $plainPdfUrl }}" src="{{ $pdfUrl }}"
                     style="width:100%; height:100%; border:0;" title="{{ $document->label() }}"></iframe>
             </div>
         </x-adminlte-card>

@@ -26,6 +26,24 @@ class DocumentPreview extends AdminComponent
      */
     public $prefill = [];
 
+    /**
+     * The request the page was opened with (`?request={id}`), or null when it
+     * was opened without one.
+     *
+     * The PDF route is given this id as well, so the preview is drawn from the
+     * record on its first load instead of waiting for Update Preview.
+     *
+     * @var int|null
+     */
+    public $requestId = null;
+
+    /**
+     * Why the request named on the page could not fill this document, if it
+     * could not — shown above the form so the officer knows the sheet stayed
+     * blank instead of wondering why.
+     */
+    public $requestNotice = '';
+
     /** The member the Membership Form is about, or blank for empty paper. */
     public $memberId = '';
 
@@ -121,10 +139,14 @@ class DocumentPreview extends AdminComponent
         $mapped = $request->printDocument();
 
         if (! $mapped || $mapped->value !== $document->value) {
+            $this->requestNotice = 'The selected request does not issue a ' . $document->label() . '.';
+
             return [];
         }
 
-        return array_filter($request->printParams(), function ($value) {
+        $this->requestId = $request->id;
+
+        return array_filter($request->documentParams(), function ($value) {
             return $value !== null && $value !== '';
         });
     }
@@ -205,9 +227,20 @@ class DocumentPreview extends AdminComponent
         $isSummaryReport = $document->value === PrintDocument::SUMMARY_REPORT;
         $isOccupancyList = $document->value === PrintDocument::OCCUPANCY_LIST;
 
+        $pdfUrl = route('print.pdf', ['document' => $document->slug()]);
+
+        // The preview is handed the request id as well as its details: the PDF
+        // route reads the record itself, so the first sheet is already filled
+        // in when the page opens.
+        $requestPdfUrl = $this->requestId
+            ? $pdfUrl . '?request=' . $this->requestId
+            : $pdfUrl;
+
         return view('livewire.admin.print.document-preview', [
             'document'              => $document,
-            'pdfUrl'                => route('print.pdf', ['document' => $document->slug()]),
+            'pdfUrl'                => $requestPdfUrl,
+            'plainPdfUrl'           => $pdfUrl,
+            'blankUrl'              => $pdfUrl . '?blank=1',
             'residents'             => $usesResidents ? $this->options->residentOptions() : [],
             'addresses'             => $isResidentsList ? $this->options->addressOptions() : [],
             'blocks'                => $isResidentsList ? $this->options->blockOptions() : [],

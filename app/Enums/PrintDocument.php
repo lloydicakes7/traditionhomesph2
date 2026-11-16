@@ -172,12 +172,14 @@ class PrintDocument extends Enum
             return '297 / 210';
         }
 
-        // The certification, the invitation and the permit are drawn on A4,
+        // The certification, the letters and the permits are drawn on A4,
         // whether they are filled in or blank.
         if (in_array($this->value, [
             self::CERTIFICATION,
             self::INVITATION_LETTER,
             self::BUSINESS_PERMIT,
+            self::HOA_PERMIT,
+            self::SINUMPAANG_SALAYSAY,
         ], true)) {
             return '210 / 297';
         }

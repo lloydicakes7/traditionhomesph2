@@ -1,77 +1,368 @@
-/* ===== Fields ===== */
+/* ==========================================================================
+   MEMBERSHIP FORM — 8.5in x 13in, full-width form.
+   DomPDF 2.x safe: tables and inline-blocks only, no flexbox, grid, calc() or
+   CSS variables. Font: Arial throughout.
 
-.thha-pdf-field {
-    font-size: 8.2pt;
-    line-height: 10.2pt;
-    height: 3.6mm;
+   Rules learned from endorsement-letter:
+   - never use `table-layout: fixed` (DomPDF then splits columns equally and
+     ignores widths); put the widths on the cells instead.
+   - blanks are inline-blocks aligned on the text baseline, with no fixed
+     height and no overflow:hidden (both move the baseline), and the Blade view
+     puts a non-breaking space inside so an empty blank keeps its underline.
+   - width/height are content-box: padding and borders are added on top.
+   ========================================================================== */
+
+@page {
+    size: 8.5in 13in;
+    margin: 0;
 }
 
-.thha-f-date { left: 24.5mm; top: 64.74mm; width: 20.82mm; font-size: 7pt; line-height: 8.7pt; }
-.thha-f-type-owner { left: 144.15mm; top: 59.52mm; width: 7.69mm; height: 7.21mm; line-height: 7.21mm; font-size: 11pt; text-align: center; font-weight: bold; }
-.thha-f-type-tenant { left: 158.24mm; top: 58.7mm; width: 7.69mm; height: 7.21mm; line-height: 7.21mm; font-size: 11pt; text-align: center; font-weight: bold; }
-.thha-f-type-caretaker { left: 171.86mm; top: 58.21mm; width: 7.69mm; height: 7.21mm; line-height: 7.21mm; font-size: 11pt; text-align: center; font-weight: bold; }
-.thha-f-type-informal-settler { left: 185.15mm; top: 57.89mm; width: 8.01mm; height: 7.69mm; line-height: 7.69mm; font-size: 11pt; text-align: center; font-weight: bold; }
-.thha-f-surname { left: 18.58mm; top: 82.19mm; width: 41.48mm; }
-.thha-f-first-name { left: 70.15mm; top: 80.56mm; width: 42.12mm; }
-.thha-f-middle-name { left: 123.01mm; top: 78.93mm; width: 43.24mm; }
-.thha-f-religion { left: 173.46mm; top: 78.11mm; width: 21.62mm; }
-.thha-f-sex-male { left: 30.99mm; top: 91.72mm; width: 4mm; height: 4.6mm; line-height: 4.6mm; }
-.thha-f-sex-female { left: 45.41mm; top: 91.39mm; width: 4mm; height: 4.6mm; line-height: 4.6mm; }
-.thha-f-citizenship { left: 64.23mm; top: 91.48mm; width: 21.14mm; }
-.thha-f-age { left: 93.05mm; top: 90.67mm; width: 7.21mm; }
-.thha-f-birth-date { left: 108.59mm; top: 90.01mm; width: 26.91mm; }
-.thha-f-birth-place { left: 143.83mm; top: 88.38mm; width: 51.25mm; }
-.thha-f-civil-single { left: 35.48mm; top: 101.34mm; width: 4mm; height: 4.6mm; line-height: 4.6mm; }
-.thha-f-civil-married { left: 49.73mm; top: 100.69mm; width: 4mm; height: 4.6mm; line-height: 4.6mm; }
-.thha-f-civil-separated { left: 66.55mm; top: 100.52mm; width: 4mm; height: 4.6mm; line-height: 4.6mm; }
-.thha-f-civil-widow { left: 84.97mm; top: 100.2mm; width: 4mm; height: 4.6mm; line-height: 4.6mm; }
-.thha-f-spouse-name { left: 137.42mm; top: 98.49mm; width: 58.14mm; }
-.thha-f-block { left: 47.73mm; top: 108.11mm; width: 9.29mm; }
-.thha-f-lot { left: 62.94mm; top: 107.79mm; width: 8.01mm; }
-.thha-f-previous-address { left: 40.84mm; top: 112.19mm; width: 153.44mm; }
-.thha-f-education { left: 56.06mm; top: 120.34mm; width: 88.57mm; }
-.thha-f-occupation { left: 32.99mm; top: 127.84mm; width: 38.76mm; }
-.thha-f-mobile-no { left: 95.46mm; top: 126.54mm; width: 42.76mm; }
-.thha-f-owner-name { left: 35.72mm; top: 224.05mm; width: 85.69mm; }
+html,
+body {
+    margin: 0;
+    padding: 0;
+}
 
-/* ===== Household Table ===== */
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    color: #111;
+}
 
-.thha-pdf-cell {
+.thha-mf-page {
+    position: relative;
+    /* 8.18in + 2 x 0.16in = 8.5in; 12.76in + 2 x 0.12in = 13in */
+    width: 8.18in;
+    height: 12.76in;
+    margin: 0;
+    padding: 0.12in 0.16in;
+    background: #fff;
+    overflow: hidden;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #111;
+}
+
+.thha-mf-page * {
+    box-sizing: border-box;
+}
+
+/* ===== Letterhead logos ================================================== */
+
+.thha-mf-logo-hoa {
     position: absolute;
-    font-size: 9pt;
+    top: 0.14in;
+    left: 0.30in;
+    width: 0.94in;
+    height: 0.94in;
+}
+
+.thha-mf-logo-hope {
+    position: absolute;
+    top: 0.22in;
+    right: 0.43in;
+    width: 1.28in;
+    height: 0.64in;
+}
+
+.thha-mf-logo-trece {
+    position: absolute;
+    right: 0.16in;
+    bottom: 0.08in;
+    width: 1.52in;
+    height: 0.60in;
+}
+
+/* ===== Header ============================================================ */
+
+.thha-mf-header {
+    text-align: center;
+    font-weight: 700;
+    line-height: 1.15;
+    font-size: 9.3pt;
+    padding-top: 0.08in;
+}
+
+.thha-mf-header .thha-mf-org {
+    font-size: 10.1pt;
+}
+
+.thha-mf-header .thha-mf-small {
+    font-size: 8.2pt;
+}
+
+.thha-mf-title {
+    margin-top: 0.28in;
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 17pt;
+    font-weight: bold;
+    letter-spacing: 5px;
+    text-decoration: underline;
+}
+
+.thha-mf-date {
+    margin-top: 0.26in;
+    font-size: 9.5pt;
+}
+
+/* ===== Owner / tenant boxes ============================================= */
+
+.thha-mf-status {
+    position: absolute;
+    top: 2.04in;
+    right: 0.48in;
+    width: 3.04in;
+    font-size: 7.4pt;
+    line-height: 1.05;
+    text-align: center;
+}
+
+.thha-mf-status table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.thha-mf-status td {
+    width: 25%;
+    padding: 0 0.135in;
+    vertical-align: top;
+    text-align: center;
+}
+
+.thha-mf-box {
+    display: block;
+    width: 10px;
+    height: 10px;
+    border: 1px solid #111;
+    margin: 0 auto 3px;
+    font-size: 7pt;
+    font-weight: bold;
+    line-height: 10px;
+    text-align: center;
+}
+
+/* ===== Fields ============================================================ */
+
+.thha-mf-fields {
+    margin-top: 0.45in;
+    font-size: 9.2pt;
+    line-height: 1.48;
+    font-weight: 600;
+}
+
+/* Gaps between the four name boxes are cell padding, not border-spacing, so
+   the percentage widths on the cells add up to exactly 100%. */
+.thha-mf-name-row {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0 0 0.10in;
+    text-align: center;
+}
+
+.thha-mf-name-row td {
+    padding: 0 0.10in;
+    vertical-align: bottom;
+}
+
+.thha-mf-name-row td.thha-mf-first {
+    padding-left: 0;
+}
+
+.thha-mf-name-row td.thha-mf-last {
+    padding-right: 0;
+}
+
+.thha-mf-name-row .thha-mf-write {
+    border-bottom: 1px solid #111;
+    height: 0.17in;
+    line-height: 0.17in;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 9.2pt;
+    font-weight: 700;
     white-space: nowrap;
     overflow: hidden;
+    text-align: center;
 }
 
-.thha-hh-c1 { left: 12.17mm; width: 70.8mm; }
-.thha-hh-c2 { left: 84.57mm; width: 9.61mm; }
-.thha-hh-c3 { left: 95.78mm; width: 16.82mm; }
-.thha-hh-c4 { left: 114.2mm; width: 24.98mm; }
-.thha-hh-c5 { left: 140.78mm; width: 18.58mm; }
-.thha-hh-c6 { left: 160.96mm; width: 41.33mm; }
-.thha-hh-r1 { top: 145.12mm; height: 5.49mm; line-height: 5.49mm; }
-.thha-hh-r2 { top: 150.61mm; height: 5.48mm; line-height: 5.48mm; }
-.thha-hh-r3 { top: 156.09mm; height: 5.48mm; line-height: 5.48mm; }
-.thha-hh-r4 { top: 161.57mm; height: 5.48mm; line-height: 5.48mm; }
-.thha-hh-r5 { top: 167.05mm; height: 5.48mm; line-height: 5.48mm; }
-.thha-hh-r6 { top: 172.53mm; height: 5.48mm; line-height: 5.48mm; }
-.thha-hh-r7 { top: 178.01mm; height: 5.48mm; line-height: 5.48mm; }
-.thha-hh-r8 { top: 183.49mm; height: 5.49mm; line-height: 5.49mm; }
-.thha-hh-r9 { top: 188.98mm; height: 5.48mm; line-height: 5.48mm; }
-.thha-hh-r10 { top: 194.46mm; height: 5.48mm; line-height: 5.48mm; }
-.thha-hh-r11 { top: 199.94mm; height: 5.48mm; line-height: 5.48mm; }
-.thha-hh-r12 { top: 205.42mm; height: 5.48mm; line-height: 5.48mm; }
-.thha-hh-r13 { top: 210.9mm; height: 5.48mm; line-height: 5.48mm; }
+.thha-mf-label {
+    font-size: 8pt;
+    font-weight: 400;
+}
 
-/* ===== Dynamic ===== */
+.thha-mf-line {
+    white-space: nowrap;
+    overflow: hidden;
+    height: 0.23in;
+    line-height: 0.23in;
+}
 
-.thha-d-checker-1-name { position: absolute; left: -2.72mm; width: 90mm; text-align: center; top: 259.34mm; font-family: Times, serif; font-size: 9.99pt; line-height: 12.49pt; font-weight: bold; text-decoration: underline; white-space: nowrap; }
-.thha-d-checker-1-position { position: absolute; left: 1.93mm; width: 90mm; text-align: center; top: 263.82mm; font-family: Times, serif; font-size: 7.72pt; line-height: 9.65pt; font-weight: bold; white-space: nowrap; }
-.thha-d-checker-1-committee { position: absolute; left: -3.04mm; width: 90mm; text-align: center; top: 267.73mm; font-family: Times, serif; font-size: 7.72pt; line-height: 9.65pt; font-weight: bold; white-space: nowrap; }
-.thha-d-checker-2-name { position: absolute; left: 83.61mm; width: 90mm; text-align: center; top: 260.97mm; font-family: Times, serif; font-size: 9.99pt; line-height: 12.49pt; font-weight: bold; text-decoration: underline; white-space: nowrap; }
-.thha-d-checker-2-position { position: absolute; left: 84.89mm; width: 90mm; text-align: center; top: 265.29mm; font-family: Times, serif; font-size: 7.72pt; line-height: 9.65pt; font-weight: bold; white-space: nowrap; }
-.thha-d-checker-2-committee { position: absolute; left: 84.89mm; width: 90mm; text-align: center; top: 269.36mm; font-family: Times, serif; font-size: 7.72pt; line-height: 9.65pt; font-weight: bold; white-space: nowrap; }
-.thha-d-approver-name { position: absolute; left: -1.76mm; width: 90mm; text-align: center; top: 294.4mm; font-family: Times, serif; font-size: 9.99pt; line-height: 12.49pt; font-weight: bold; text-decoration: underline; white-space: nowrap; }
-.thha-d-approver-title { position: absolute; left: -1.76mm; width: 90mm; text-align: center; top: 298.88mm; font-family: Times, serif; font-size: 7.72pt; line-height: 9.65pt; font-weight: bold; white-space: nowrap; }
-.thha-d-membership-fee { position: absolute; left: 58.94mm; width: 90mm; text-align: left; top: 314.7mm; font-family: Times, serif; font-size: 7.72pt; line-height: 9.65pt; font-weight: bold; font-style: italic; white-space: nowrap; }
-.thha-d-monthly-dues { position: absolute; left: 56.54mm; width: 90mm; text-align: left; top: 318.28mm; font-family: Times, serif; font-size: 7.72pt; line-height: 9.65pt; font-weight: bold; font-style: italic; white-space: nowrap; }
+/* Baseline-aligned blank (same as .thha-e-blank): the box is only as tall as
+   the text, so its underline sits right under the typed value. */
+.thha-mf-longline {
+    display: inline-block;
+    line-height: 0.75;
+    vertical-align: baseline;
+    border-bottom: 1px solid #111;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 700;
+    font-size: 9.2pt;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.thha-mf-date .thha-mf-longline {
+    font-size: 9.5pt;
+}
+
+.thha-mf-w1 { width: 1.95in; }
+.thha-mf-w2 { width: 2.20in; }
+.thha-mf-w3 { width: 4.70in; }
+.thha-mf-w4 { width: 6.90in; }
+
+/* ===== Household table =================================================== */
+
+.thha-mf-house-title {
+    text-align: center;
+    font-size: 10pt;
+    font-weight: bold;
+    margin: 0.16in 0 0.06in;
+}
+
+.thha-mf-household {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 8pt;
+}
+
+/* content-box: 0.18in + 4px padding + 1px border = about 0.235in per row */
+.thha-mf-household th,
+.thha-mf-household td {
+    border: 1px solid #222;
+    height: 0.18in;
+    padding: 2px 3px;
+    text-align: center;
+    vertical-align: middle;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.thha-mf-household th {
+    height: 0.19in;
+    font-weight: bold;
+}
+
+/* ===== Signatures ======================================================== */
+
+.thha-mf-owner-sign {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 0.22in;
+    font-size: 9pt;
+    font-weight: 600;
+}
+
+.thha-mf-owner-sign td {
+    padding: 0;
+    vertical-align: bottom;
+}
+
+/* lifts "Name of owner" so its line sits level with the signature line */
+.thha-mf-owner-sign td:first-child {
+    padding-bottom: 0.14in;
+}
+
+.thha-mf-owner-line {
+    display: inline-block;
+    width: 3.95in;
+    line-height: 0.75;
+    vertical-align: baseline;
+    border-bottom: 1px solid #111;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 700;
+    font-size: 9pt;
+    white-space: nowrap;
+}
+
+.thha-mf-sig {
+    width: 2.30in;
+    text-align: center;
+    border-bottom: 1px solid #111;
+    height: 0.26in;
+}
+
+.thha-mf-sig-label {
+    font-size: 8pt;
+    text-align: center;
+    font-weight: 600;
+    padding-right: 0.10in;
+}
+
+.thha-mf-checked {
+    margin-top: 0.32in;
+    font-size: 9pt;
+    font-weight: 600;
+}
+
+.thha-mf-approvers {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+    margin-top: 0.10in;
+    font-size: 8.5pt;
+    line-height: 1.15;
+}
+
+.thha-mf-approvers td {
+    width: 50%;
+    padding: 0;
+    vertical-align: top;
+    text-align: center;
+}
+
+.thha-mf-approver {
+    width: 3.00in;
+    margin: 0 auto;
+}
+
+.thha-mf-signline {
+    border-bottom: 1px solid #111;
+    width: 2.15in;
+    height: 0.26in;
+    margin: 0 auto 2px;
+}
+
+.thha-mf-approver strong {
+    text-decoration: underline;
+}
+
+.thha-mf-approved {
+    margin-top: 0.30in;
+    font-size: 9pt;
+    font-weight: 600;
+}
+
+.thha-mf-president {
+    margin-top: 0.08in;
+    width: 2.40in;
+    font-size: 8.5pt;
+    line-height: 1.15;
+}
+
+.thha-mf-president .thha-mf-signline {
+    width: 2.15in;
+    margin-left: 0;
+}
+
+.thha-mf-president strong {
+    text-decoration: underline;
+}
+
+.thha-mf-note {
+    position: absolute;
+    left: 0.16in;
+    bottom: 0.38in;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 8pt;
+    font-style: italic;
+    font-weight: bold;
+    line-height: 1.25;
+}

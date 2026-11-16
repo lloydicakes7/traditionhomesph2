@@ -7,6 +7,7 @@ namespace App\Http\Controllers\Admin;
 use App\Enums\PrintDocument;
 use App\Exceptions\MissingDocumentDataException;
 use App\Http\Controllers\Controller;
+use App\Models\Request as RequestModel;
 use App\Services\PrintDocuments\PrintDocumentService;
 use App\Queries\Settings\PrintSettingsQuery;
 use App\Utility\PdfBuilder;
@@ -56,11 +57,33 @@ class PrintDocumentController extends Controller
         $document = $this->resolve($document);
 
         $letterhead = app(PrintSettingsQuery::class)->letterhead();
+        $params = $request->query();
 
         try {
-            $data = $request->query('blank')
-                ? $service->blank($document, $letterhead)
-                : $service->build($document, $request->query(), $letterhead);
+            if ($request->query('blank')) {
+                $data = $service->blank($document, $letterhead);
+            } else {
+                // A document opened from a homeowner's request is drawn from
+                // that record: the request's own details fill the sheet before
+                // the preview loads, and anything the officer typed on the
+                // print form still wins for this print.
+                $record = $this->requestedRecord($params['request'] ?? null);
+
+                if ($record) {
+                    $issued = $record->printDocument();
+
+                    if (! $issued || $issued->value !== $document->value) {
+                        return $this->unprintable($document, [
+                            'The selected request does not issue a ' . $document->label() . '.',
+                        ]);
+                    }
+
+                    $params = array_merge($record->documentParams(), $params);
+                    unset($params['request']);
+                }
+
+                $data = $service->build($document, $params, $letterhead);
+            }
         } catch (ValidationException $e) {
             return $this->unprintable($document, $this->messages($e));
         } catch (MissingDocumentDataException $e) {
@@ -126,6 +149,32 @@ class PrintDocumentController extends Controller
         }, $exception->missing());
 
         return [__('documents.errors.missing', ['items' => implode(', ', $items)])];
+    }
+
+    /**
+     * The homeowner request the page was opened from, or null for none.
+     *
+     * A missing or unknown id is left alone rather than refusing the print: the
+     * officer can still print the sheet by hand. A request that exists is read
+     * only through the Requests policy, the same permission the queue uses.
+     *
+     * @param  mixed  $id
+     */
+    private function requestedRecord($id): ?RequestModel
+    {
+        if (! is_numeric($id)) {
+            return null;
+        }
+
+        $record = RequestModel::find((int) $id);
+
+        if (! $record) {
+            return null;
+        }
+
+        $this->authorize('view', RequestModel::class);
+
+        return $record;
     }
 
     /**
