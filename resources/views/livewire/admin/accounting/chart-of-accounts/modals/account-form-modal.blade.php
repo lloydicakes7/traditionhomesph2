@@ -27,7 +27,7 @@
             <div class="row">
                 <div class="col-12">
                     <x-adminlte-input name="form.name" label="Account Name"
-                        placeholder="e.g., BPI Checking — Operating"
+                        placeholder="e.g., BPI Checking"
                         wire:model.defer="form.name" igroup-size="sm"
                         :disabled="$readOnly" />
                 </div>

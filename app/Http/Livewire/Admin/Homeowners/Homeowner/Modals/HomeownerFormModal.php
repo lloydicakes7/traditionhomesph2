@@ -12,6 +12,7 @@ use App\Actions\Homeowners\Users\CreateUserAccount;
 use App\Actions\Homeowners\Users\UpdateUserAccount;
 use App\Enums\CivilStatus;
 use App\Enums\HouseholdType;
+use App\Enums\PropertyType;
 use App\Http\Livewire\AdminModalComponent;
 use App\Http\Requests\Homeowners\ResidentRequest;
 use App\Models\Admin;
@@ -37,13 +38,20 @@ class HomeownerFormModal extends AdminModalComponent
     /** @var array The account and profile fields, in one form */
     public $form = [];
 
-    /** @var array<string, mixed> The unit and household the homeowner heads */
+    /** @var array<string, mixed> The unit the household lives in */
+    public $property = [
+        'block' => '',
+        'lot'   => '',
+        'sqm'   => '',
+        'type'  => '',
+    ];
+
+    /** @var array<string, mixed> The household's own facts */
     public $household = [
-        'block'          => '',
-        'lot'            => '',
-        'type'           => HouseholdType::OWNER,
-        'prev_address'   => '',
-        'link_household' => false,
+        'type'         => HouseholdType::OWNER,
+        'prev_address' => '',
+        'relationship' => '',
+        'be_head'      => false,
     ];
 
     /** @var int|null Household on file for the resident being edited */
@@ -133,17 +141,30 @@ class HomeownerFormModal extends AdminModalComponent
     protected function rules(): array
     {
         return [
-            'form.email'               => [
+            'form.email'             => [
                 'required', 'email', 'max:255',
                 'unique:users,email,' . ($this->editingUserId ?? 'NULL') . ',id',
             ],
-            'form.is_active'           => ['boolean'],
-            'profilePhoto'             => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
-            'household.block'          => [$this->editingUserId ? 'nullable' : 'required', 'integer', 'min:1', 'max:9999'],
-            'household.lot'            => [$this->editingUserId ? 'nullable' : 'required', 'integer', 'min:1', 'max:9999'],
-            'household.type'           => ['required', Rule::in(HouseholdType::values())],
-            'household.prev_address'   => ['nullable', 'string', 'max:500'],
-            'household.link_household' => ['boolean'],
+            'form.is_active'         => ['boolean'],
+            'profilePhoto'           => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
+            'property.block'         => [$this->editingUserId ? 'nullable' : 'required', 'integer', 'min:1', 'max:9999'],
+            'property.lot'           => [$this->editingUserId ? 'nullable' : 'required', 'integer', 'min:1', 'max:9999'],
+            'property.sqm'           => [
+                Rule::requiredIf(function () {
+                    return $this->householdIsNewUnit();
+                }),
+                'nullable', 'numeric', 'min:1', 'max:99999',
+            ],
+            'property.type'          => [
+                Rule::requiredIf(function () {
+                    return $this->householdIsNewUnit();
+                }),
+                'nullable', Rule::in(PropertyType::values()),
+            ],
+            'household.type'         => ['required', Rule::in(HouseholdType::values())],
+            'household.prev_address' => ['nullable', 'string', 'max:500'],
+            'household.relationship' => ['nullable', 'string', 'max:100'],
+            'household.be_head'      => ['boolean'],
         ] + ResidentRequest::rulesFor('form');
     }
 
@@ -184,12 +205,17 @@ class HomeownerFormModal extends AdminModalComponent
     {
         $this->editingUserId = null;
         $this->form = [];
+        $this->property = [
+            'block' => '',
+            'lot'   => '',
+            'sqm'   => '',
+            'type'  => '',
+        ];
         $this->household = [
-            'block'          => '',
-            'lot'            => '',
-            'type'           => HouseholdType::OWNER,
-            'prev_address'   => '',
-            'link_household' => false,
+            'type'         => HouseholdType::OWNER,
+            'prev_address' => '',
+            'relationship' => '',
+            'be_head'      => false,
         ];
         $this->householdId = null;
         $this->unit = null;
@@ -203,19 +229,25 @@ class HomeownerFormModal extends AdminModalComponent
     /** A changed block or lot is read back from the office's own records. */
     public function updated($name): void
     {
-        if ($name !== 'household.block' && $name !== 'household.lot') {
+        if ($name !== 'property.block' && $name !== 'property.lot') {
             return;
         }
 
-        $this->household['link_household'] = false;
-        $this->unit = null;
+        $this->household['be_head'] = false;
         $this->resetErrorBag();
+        $this->refreshUnit();
+    }
 
-        if (! $this->unitIsNamed()) {
-            return;
-        }
+    private function refreshUnit(): void
+    {
+        $this->unit = $this->unitIsNamed()
+            ? $this->units->atUnit((int) $this->property['block'], (int) $this->property['lot'])
+            : null;
+    }
 
-        $this->unit = $this->units->atUnit((int) $this->household['block'], (int) $this->household['lot']);
+    private function householdIsNewUnit(): bool
+    {
+        return $this->unitIsNamed() && $this->unit === null;
     }
 
     // ===== Actions =====
@@ -227,9 +259,10 @@ class HomeownerFormModal extends AdminModalComponent
         }
 
         $this->authorizeSave();
+        $this->refreshUnit();
         $this->validate();
 
-        if (! $this->addressIsResolvable()) {
+        if (! $this->unitIsResolvable()) {
             return;
         }
 
@@ -294,12 +327,18 @@ class HomeownerFormModal extends AdminModalComponent
     {
         $property = $household?->property;
 
+        $this->property = [
+            'block' => $property ? (string) $property->block : '',
+            'lot'   => $property ? (string) $property->lot : '',
+            'sqm'   => '',
+            'type'  => '',
+        ];
+
         $this->household = [
-            'block'          => $property ? (string) $property->block : '',
-            'lot'            => $property ? (string) $property->lot : '',
-            'type'           => $household?->type ?: HouseholdType::OWNER,
-            'prev_address'   => $household?->prev_address ?? '',
-            'link_household' => false,
+            'type'         => $household?->type ?: HouseholdType::OWNER,
+            'prev_address' => $household?->prev_address ?? '',
+            'relationship' => '',
+            'be_head'      => false,
         ];
 
         $this->householdId = $household ? (int) $household->id : null;
@@ -310,7 +349,7 @@ class HomeownerFormModal extends AdminModalComponent
 
     private function unitIsNamed(): bool
     {
-        return (int) ($this->household['block'] ?? 0) > 0 && (int) ($this->household['lot'] ?? 0) > 0;
+        return (int) ($this->property['block'] ?? 0) > 0 && (int) ($this->property['lot'] ?? 0) > 0;
     }
 
     private function unitIsOwnHousehold(): bool
@@ -321,47 +360,66 @@ class HomeownerFormModal extends AdminModalComponent
     }
 
     /**
-     * Refuse a unit held by another household, and a link the officer did not
-     * confirm. An unnamed unit is only allowed while editing: the homeowner then
-     * has no household on file yet.
+     * A named unit is read back first, so the form asks only for what is still
+     * missing: a new unit's floor area and type, and the household's own facts.
+     * The household on file moves with this homeowner, so an occupied unit is
+     * refused only while editing; a new homeowner joins it instead.
      */
-    private function addressIsResolvable(): bool
+    private function unitIsResolvable(): bool
     {
         if (! $this->unitIsNamed()) {
-            $this->unit = null;
-
             return (bool) $this->editingUserId;
         }
 
-        $block = (int) $this->household['block'];
-        $lot = (int) $this->household['lot'];
+        if (! $this->unit && $this->units->associationAddress() === null) {
+            $this->addError('property.block', __('households.note.no_association_address'));
 
-        $this->unit = $this->units->atUnit($block, $lot);
-
-        if ($this->unit && $this->unit['is_occupied'] && ! $this->unitIsOwnHousehold()) {
-            if ($this->householdId !== null) {
-                $this->addError('household.block', 'Another household already lives at this address. Choose another unit.');
-
-                return false;
-            }
-
-            if (empty($this->household['link_household'])) {
-                $this->addError(
-                    'household.link_household',
-                    'Confirm that the homeowner lives in the household at this address, or choose another unit.'
-                );
-
-                return false;
-            }
+            return false;
         }
 
-        if (! $this->unit && $this->units->associationAddress() === null) {
-            $this->addError('household.block', 'The association address is not recorded.');
+        if ($this->unit && $this->unit['is_occupied'] && ! $this->unitIsOwnHousehold() && $this->householdId !== null) {
+            $this->addError('property.block', __('households.note.occupied_move'));
 
             return false;
         }
 
         return true;
+    }
+
+    private function unitNote(): string
+    {
+        if (! $this->unitIsNamed()) {
+            return $this->editingUserId
+                ? __('households.note.not_placed')
+                : __('households.note.name_unit');
+        }
+
+        if ($this->unit === null) {
+            return __('households.note.new_unit');
+        }
+
+        if ($this->unitIsOwnHousehold()) {
+            return __('households.note.own_household');
+        }
+
+        if ($this->unit['is_occupied']) {
+            return $this->householdId !== null
+                ? __('households.note.occupied_move')
+                : __('households.note.occupied');
+        }
+
+        return __('households.note.vacant');
+    }
+
+    private function unitCanJoin(): bool
+    {
+        return ! $this->unitIsOwnHousehold()
+            && ! ($this->unit !== null && $this->unit['is_occupied'] && $this->householdId !== null);
+    }
+
+    private function unitCanChangeTenure(): bool
+    {
+        return $this->unit === null || ! $this->unit['is_occupied'] || $this->unitIsOwnHousehold();
     }
 
     private function persistResident(Admin $by): Resident
@@ -390,7 +448,13 @@ class HomeownerFormModal extends AdminModalComponent
         $householdId = $resident->household ? (int) $resident->household->id : null;
 
         if ($this->unit && $this->unit['is_occupied'] && (int) $this->unit['household_id'] !== $householdId) {
-            $this->addMember->handle((int) $this->unit['household_id'], $resident->id, null, false, $by);
+            $this->addMember->handle(
+                (int) $this->unit['household_id'],
+                $resident->id,
+                $this->household['relationship'] ?: null,
+                (bool) $this->household['be_head'],
+                $by
+            );
 
             return;
         }
@@ -409,7 +473,7 @@ class HomeownerFormModal extends AdminModalComponent
 
         $this->createHousehold->handle($payload + [
             'head_resident_id' => $resident->id,
-            'relationship'     => null,
+            'relationship'     => $this->household['relationship'] ?: null,
         ], $by);
     }
 
@@ -420,9 +484,11 @@ class HomeownerFormModal extends AdminModalComponent
         }
 
         return $this->createProperty->handle([
-            'block'      => (int) $this->household['block'],
-            'lot'        => (int) $this->household['lot'],
+            'block'      => (int) $this->property['block'],
+            'lot'        => (int) $this->property['lot'],
             'address_id' => $this->units->associationAddress()->id,
+            'sqm'        => $this->property['sqm'] ?: null,
+            'type'       => $this->property['type'] ?: null,
         ], null, $by)->id;
     }
 
@@ -449,11 +515,14 @@ class HomeownerFormModal extends AdminModalComponent
         return view(
             'livewire.admin.homeowners.homeowner.modals.homeowner-form-modal',
             [
-                'editing'            => $this->editingUserId !== null,
-                'ownHousehold'       => $this->unitIsOwnHousehold(),
-                'showSpouse'         => CivilStatus::isMarried((string) ($this->form['civil_status'] ?? '')),
-                'householdTypes'     => $this->loaded ? HouseholdType::labels() : [],
-                'associationAddress' => $this->loaded ? $this->units->associationAddress() : null,
+                'editing'              => $this->editingUserId !== null,
+                'canJoin'              => $this->unitCanJoin(),
+                'canChangeTenure'      => $this->unitCanChangeTenure(),
+                'note'                 => $this->unitNote(),
+                'showSpouse'           => CivilStatus::isMarried((string) ($this->form['civil_status'] ?? '')),
+                'householdTypeOptions' => $this->loaded ? HouseholdType::labels() : [],
+                'propertyTypeOptions'  => $this->loaded ? PropertyType::labels() : [],
+                'address'              => $this->loaded ? $this->units->associationAddress() : null,
             ] + ($this->loaded ? $this->formQuery->options() : $this->formQuery->blank())
         );
     }

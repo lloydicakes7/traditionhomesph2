@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Portal\PersonalInformation;
 
+use App\Actions\Homeowners\Profiles\UpdateOwnProfile;
 use App\Enums\CivilStatus;
 use App\Http\Livewire\Concerns\ResolvesHomeownerAccount;
 use App\Http\Livewire\PortalComponent;
@@ -61,7 +62,7 @@ class PersonalInformationForm extends PortalComponent
 
         $this->validate();
 
-        $resident->update(Resident::payloadFrom($this->form));
+        app(UpdateOwnProfile::class)->handle($resident, $this->form);
 
         $this->form = $this->formFor($resident->fresh());
 

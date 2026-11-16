@@ -3,11 +3,13 @@
 namespace App\Models;
 
 use App\Casts\EnumCast;
+use App\Enums\ProfileStatus;
 use App\Enums\RegistrationStatus;
 use App\Models\Amenity\AmenityBooking;
 use App\Models\Bill\Bill;
 use App\Models\Household\Household;
 use App\Models\Household\HouseholdMember;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -15,9 +17,19 @@ use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use Notifiable;
+
+    /**
+     * The attributes every new account starts with, matching the columns' own
+     * defaults: an account the office opens is already checked.
+     *
+     * @var array
+     */
+    protected $attributes = [
+        'profile_status' => 'verified',
+    ];
 
     /**
      * The attributes that are mass assignable.
@@ -25,8 +37,10 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'resident_id', 'email', 'password', 'password_changed_at',
+        'resident_id', 'email', 'email_verified_at', 'password', 'password_changed_at',
         'terms_accepted_at', 'privacy_accepted_at', 'is_active', 'registration_status',
+        'profile_status', 'profile_submitted_at', 'profile_verified_at',
+        'profile_verified_by_admin_id', 'profile_rejection_note',
     ];
 
     /**
@@ -51,6 +65,9 @@ class User extends Authenticatable
         'last_login_at'       => 'datetime',
         'is_active'           => 'boolean',
         'registration_status' => EnumCast::class . ':' . RegistrationStatus::class,
+        'profile_status'      => EnumCast::class . ':' . ProfileStatus::class,
+        'profile_submitted_at' => 'datetime',
+        'profile_verified_at'  => 'datetime',
     ];
 
     // =====================================================================
@@ -174,6 +191,14 @@ class User extends Authenticatable
         return $this->registration_status?->value === RegistrationStatus::PENDING;
     }
 
+    /**
+     * Whether the office has checked this account's profile and household.
+     */
+    public function hasCompletedProfile(): bool
+    {
+        return (bool) $this->profile_status?->isVerified();
+    }
+
     // =====================================================================
     // Scopes
     // =====================================================================
@@ -186,6 +211,11 @@ class User extends Authenticatable
     public function scopePendingRegistration(Builder $query): Builder
     {
         return $query->where('registration_status', RegistrationStatus::PENDING);
+    }
+
+    public function scopeAwaitingProfileVerification(Builder $query): Builder
+    {
+        return $query->whereIn('profile_status', [ProfileStatus::SUBMITTED, ProfileStatus::REJECTED]);
     }
 
     public function scopeAvailableHouseholdsFor(Builder $query, ?int $userId = null): Builder

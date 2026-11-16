@@ -25,23 +25,23 @@
         </x-adminlte-input>
 
         {{-- Password field --}}
-        <x-adminlte-input name="password" type="password" label="{{ __('adminlte::adminlte.password') }}"
+        <x-adminlte-input-password name="password" label="{{ __('adminlte::adminlte.password') }}"
             placeholder="{{ __('adminlte::adminlte.password') }}"
             autocomplete="new-password">
             <x-slot name="prependSlot">
                 <div class="input-group-text"><i class="fas fa-fw fa-lock"></i></div>
             </x-slot>
-        </x-adminlte-input>
+        </x-adminlte-input-password>
 
         {{-- Password confirmation field --}}
-        <x-adminlte-input name="password_confirmation" type="password"
+        <x-adminlte-input-password name="password_confirmation"
             label="{{ __('adminlte::adminlte.retype_password') }}"
             placeholder="{{ __('adminlte::adminlte.retype_password') }}"
             autocomplete="new-password">
             <x-slot name="prependSlot">
                 <div class="input-group-text"><i class="fas fa-fw fa-lock"></i></div>
             </x-slot>
-        </x-adminlte-input>
+        </x-adminlte-input-password>
 
         {{-- Confirm password reset button --}}
         <x-adminlte-button type="submit" theme="primary" icon="fas fa-fw fa-sync-alt"

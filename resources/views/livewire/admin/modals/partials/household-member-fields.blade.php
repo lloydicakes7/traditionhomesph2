@@ -54,19 +54,9 @@
                 'removeAction' => null,
             ])
 
-            @include('livewire.admin.homeowners.partials.personal-info-fields', ['prefix' => 'memberForm'])
-
-            @include('livewire.admin.homeowners.partials.rbi-profile-fields', [
-                'prefix' => 'memberForm',
-                'sectorOptions' => $sectorOptions,
-            ])
+            @include('partials.personal-fields', ['prefix' => 'memberForm'])
         </div>
     @endif
-
-    {{-- ===== Relationship ===== --}}
-    <h6 class="text-uppercase text-muted font-weight-bold small border-bottom pb-1 mt-4 mb-3">
-        <i class="fas fa-fw fa-user mr-1"></i>Relationships
-    </h6>
 
     <div class="form-group mb-2">
         <label class="small font-weight-bold mb-1">Relationship</label>

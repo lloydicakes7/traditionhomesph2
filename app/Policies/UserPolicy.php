@@ -69,6 +69,22 @@ class UserPolicy
     }
 
     /**
+     * Determine whether the admin may open the profile verification queue.
+     */
+    public function viewProfileVerifications(Admin $admin): bool
+    {
+        return $admin->hasPermission('Homeowners', 'Edit');
+    }
+
+    /**
+     * Determine whether the admin may accept or send back a submitted profile.
+     */
+    public function verifyProfile(Admin $admin, User $account): bool
+    {
+        return $admin->hasPermission('Homeowners', 'Edit');
+    }
+
+    /**
      * Determine whether the admin may issue a new set-password link.
      *
      * The officer never sees or chooses the password: this ability only allows

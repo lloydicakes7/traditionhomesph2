@@ -26,6 +26,18 @@ class NotificationHandler extends Component
     ];
 
     /**
+     * Show a message a redirect left behind, such as a page that stayed closed.
+     */
+    public function mount(): void
+    {
+        $flash = session('notify');
+
+        if (is_array($flash) && isset($flash['type'], $flash['message'])) {
+            $this->pushNotification($flash['type'], $flash['message']);
+        }
+    }
+
+    /**
      * Push a new notification onto the stack.
      *
      * @param  string  $type    success|error|warning|info

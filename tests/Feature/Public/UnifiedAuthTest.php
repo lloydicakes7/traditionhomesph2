@@ -144,14 +144,14 @@ class UnifiedAuthTest extends TestCase
         ])->assertSee(explode(':seconds', trans('auth.throttle'))[0]);
     }
 
-    public function test_a_pending_homeowner_cannot_sign_in_and_sees_the_pending_notice(): void
+    public function test_a_deactivated_homeowner_cannot_sign_in(): void
     {
         $user = factory(User::class)->create(['is_active' => false]);
 
         $this->post('/login', [
             'email'    => $user->email,
             'password' => 'password',
-        ])->assertRedirect(route('registration.pending'));
+        ])->assertSessionHasErrors('email');
 
         $this->assertGuest('homeowner');
 

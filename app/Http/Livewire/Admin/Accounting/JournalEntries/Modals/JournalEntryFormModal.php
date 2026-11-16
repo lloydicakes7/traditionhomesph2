@@ -275,7 +275,6 @@ class JournalEntryFormModal extends AdminModalComponent
     public function render()
     {
         return view('livewire.admin.accounting.journal-entries.modals.journal-entry-form-modal', [
-            'accountOptions'       => $this->loaded ? $this->accountOptions() : [],
             'manualAccountOptions' => $this->loaded ? $this->manualAccountOptions() : [],
             'classifications'      => JournalClassification::options(),
             'totals'               => $this->totals(),

@@ -29,7 +29,7 @@ class UpdateAccount
 
         if ($managedBy = $account->managedByLabel()) {
             throw ValidationException::withMessages([
-                'account' => 'This account is managed from ' . $managedBy . ' — rename it there.',
+                'account' => 'This account is managed from ' . $managedBy . '.',
             ]);
         }
 

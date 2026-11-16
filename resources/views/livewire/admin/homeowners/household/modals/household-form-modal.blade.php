@@ -11,11 +11,7 @@
         <div data-modal-content class="{{ ! $loaded ? 'd-none' : '' }}">
             <form>
                 {{-- ===== Head of the Family ===== --}}
-                <div class="mb-4">
-                    <h6 class="text-uppercase text-muted font-weight-bold small border-bottom pb-1 mb-3">
-                        <i class="fas fa-fw fa-crown mr-1"></i>Head of the Family
-                    </h6>
-
+                <div>
                     <x-adminlte-select2 id="householdFormHead" name="form.head_resident_id" label="Resident"
                         wire:model.defer="form.head_resident_id" igroup-size="sm"
                         :config="['placeholder' => '— Select Resident —']">
@@ -36,14 +32,8 @@
                         placeholder="e.g., Son, Mother, Uncle" wire:model.defer="form.relationship" igroup-size="sm">
                         <x-slot name="prependSlot"><div class="input-group-text"><i class="fas fa-fw fa-link"></i></div></x-slot>
                     </x-adminlte-input>
-                </div>
 
-                {{-- ===== Household ===== --}}
-                <div class="mb-4">
-                    <h6 class="text-uppercase text-muted font-weight-bold small border-bottom pb-1 mb-3">
-                        <i class="fas fa-fw fa-home mr-1"></i>Household
-                    </h6>
-
+                    {{-- ===== Household ===== --}}
                     <x-adminlte-select2 id="householdFormPropertyId" name="form.property_id" label="Property"
                         wire:model.defer="form.property_id" igroup-size="sm"
                         :config="['placeholder' => '— Select Property —']">

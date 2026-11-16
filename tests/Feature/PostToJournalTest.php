@@ -57,15 +57,24 @@ class PostToJournalTest extends TestCase
     {
         $this->signIn();
 
-        $payment = $this->recordedPayment();
         $cash = Account::cashOnHand();
+        $payment = $this->recordedPayment();
+
+        $bank = Account::create([
+            'code'        => '1010',
+            'name'        => 'Cash in Bank — BPI',
+            'type'        => 'asset',
+            'description' => '',
+            'is_cash'     => true,
+        ]);
 
         Livewire::test(PostToJournalModal::class)
             ->emit('openPostToJournal', ['source' => 'payment', 'id' => $payment->id])
             ->assertSet('loaded', true)
             ->assertSet('source', 'payment')
             ->assertSet('sourceId', $payment->id)
-            ->set('account_id', (string) $cash->id)
+            ->assertSet('lines.0.account_id', (string) $cash->id)
+            ->set('lines.0.account_id', (string) $bank->id)
             ->call('confirm')
             ->assertHasNoErrors()
             ->assertEmitted('journal-entry-posted');
@@ -75,6 +84,7 @@ class PostToJournalTest extends TestCase
         $this->assertNotNull($payment->journal_entry_id);
         $this->assertSame(JournalSource::PAYMENT, $payment->journalEntry->source_type);
         $this->assertSame($payment->id, (int) $payment->journalEntry->source_id);
+        $this->assertSame($bank->id, (int) $payment->journalEntry->lines()->where('side', 'debit')->value('account_id'));
     }
 
     // ===== Expenses =====
@@ -95,15 +105,14 @@ class PostToJournalTest extends TestCase
     {
         $this->signIn();
 
+        Account::cashOnHand();
         $expense = $this->approvedExpense();
-        $cash = Account::cashOnHand();
 
         Livewire::test(PostToJournalModal::class)
             ->emit('openPostToJournal', ['source' => 'expense', 'id' => $expense->id])
             ->assertSet('loaded', true)
             ->assertSet('source', 'expense')
             ->assertSet('sourceId', $expense->id)
-            ->set('account_id', (string) $cash->id)
             ->call('confirm')
             ->assertHasNoErrors()
             ->assertEmitted('journal-entry-posted');

@@ -39,6 +39,7 @@ class RbiProfileFieldsTest extends TestCase
             'province' => 'Cavite',
             'region' => 'Region IV-A (CALABARZON)',
             'zip_code' => '4107',
+            'is_primary' => true,
         ]);
 
         $this->unit = Property::create([
@@ -85,9 +86,8 @@ class RbiProfileFieldsTest extends TestCase
             ->set('form.educational_attainment', 'college_graduate')
             ->set('form.philsys_card_no', '1234-5678-9101-1213')
             ->set('form.sectors', ['pwd', 'senior_citizen'])
-            ->set('household.block', (string) $this->unit->block)
-            ->set('household.lot', (string) $this->unit->lot)
-            ->set('household.link_household', true)
+            ->set('property.block', (string) $this->unit->block)
+            ->set('property.lot', (string) $this->unit->lot)
             ->set('household.relationship', 'son')
             ->call('save')
             ->assertHasNoErrors();
@@ -196,8 +196,8 @@ class RbiProfileFieldsTest extends TestCase
             ->set('form.civil_status', 'married')
             ->set('form.educational_attainment', 'high_school_graduate')
             ->set('form.sectors', ['labor_force_employed'])
-            ->set('household.block', (string) $this->unit->block)
-            ->set('household.lot', (string) $this->unit->lot)
+            ->set('property.block', (string) $this->unit->block)
+            ->set('property.lot', (string) $this->unit->lot)
             ->call('save')
             ->assertHasNoErrors();
 
@@ -210,6 +210,106 @@ class RbiProfileFieldsTest extends TestCase
         $household = Household::where('property_id', $this->unit->id)->firstOrFail();
 
         $this->assertSame($resident->id, (int) $household->head_resident?->id);
+    }
+
+    public function test_the_homeowner_dialog_creates_a_new_unit_with_its_floor_area_and_type(): void
+    {
+        Livewire::test(HomeownerFormModal::class)
+            ->call('openCreate')
+            ->set('form.email', 'new.unit@example.test')
+            ->set('form.surname', 'Bautista')
+            ->set('form.first_name', 'Rico')
+            ->set('form.sex', 'male')
+            ->set('form.birth_date', '1980-03-03')
+            ->set('form.citizenship', 'Filipino')
+            ->set('form.civil_status', 'single')
+            ->set('form.educational_attainment', 'college_graduate')
+            ->set('property.block', '11')
+            ->set('property.lot', '4')
+            ->set('property.sqm', '88.50')
+            ->set('property.type', 'duplex')
+            ->call('save')
+            ->assertHasNoErrors();
+
+        $unit = Property::query()->atUnit(11, 4)->firstOrFail();
+
+        $this->assertSame('88.50', $unit->sqm);
+        $this->assertSame('duplex', $unit->type);
+        $this->assertSame('Rico', $unit->currentHousehold->head_resident->first_name);
+    }
+
+    public function test_the_homeowner_dialog_asks_for_the_floor_area_of_a_new_unit(): void
+    {
+        Livewire::test(HomeownerFormModal::class)
+            ->call('openCreate')
+            ->set('form.email', 'no.area@example.test')
+            ->set('form.surname', 'Bautista')
+            ->set('form.first_name', 'Rico')
+            ->set('form.sex', 'male')
+            ->set('form.birth_date', '1980-03-03')
+            ->set('form.citizenship', 'Filipino')
+            ->set('form.civil_status', 'single')
+            ->set('form.educational_attainment', 'college_graduate')
+            ->set('property.block', '11')
+            ->set('property.lot', '4')
+            ->set('property.type', 'duplex')
+            ->call('save')
+            ->assertHasErrors(['property.sqm']);
+
+        $this->assertSame(0, Property::query()->atUnit(11, 4)->count());
+    }
+
+    public function test_the_homeowner_dialog_keeps_the_household_on_file_while_editing(): void
+    {
+        $user = $this->homeownerAccount();
+        $household = Household::create([
+            'property_id' => $this->unit->id,
+            'type'        => 'owner',
+        ]);
+
+        $household->placeHead($user->resident_id, 'mother');
+
+        Livewire::test(HomeownerFormModal::class)
+            ->call('load', $user->id)
+            ->assertSet('property.block', (string) $this->unit->block)
+            ->assertSee('Tenure')
+            ->assertDontSee('This person heads the household')
+            ->call('save')
+            ->assertHasNoErrors();
+
+        $this->assertSame($this->unit->id, (int) $household->fresh()->property_id);
+    }
+
+    public function test_the_resident_dialog_can_make_the_new_resident_the_household_head(): void
+    {
+        $head = $this->homeownerAccount();
+
+        $household = Household::create([
+            'property_id' => $this->unit->id,
+            'type'        => 'owner',
+        ]);
+
+        $household->placeHead($head->resident_id, 'mother');
+
+        Livewire::test(ResidentFormModal::class)
+            ->call('openCreate')
+            ->set('form.surname', 'Dela Cruz')
+            ->set('form.first_name', 'Juan')
+            ->set('form.sex', 'male')
+            ->set('form.birth_date', '1985-06-14')
+            ->set('form.citizenship', 'Filipino')
+            ->set('form.civil_status', 'single')
+            ->set('form.educational_attainment', 'college_graduate')
+            ->set('property.block', (string) $this->unit->block)
+            ->set('property.lot', (string) $this->unit->lot)
+            ->set('household.relationship', 'father')
+            ->set('household.be_head', true)
+            ->call('save')
+            ->assertHasNoErrors();
+
+        $resident = Resident::where('first_name', 'Juan')->firstOrFail();
+
+        $this->assertSame((int) $resident->id, (int) $household->fresh()->head_resident->id);
     }
 
     // =====================================================================
@@ -249,21 +349,23 @@ class RbiProfileFieldsTest extends TestCase
         $this->assertNull($resident->fresh()->philsys_card_no);
     }
 
-    public function test_the_spouse_field_shows_only_for_a_married_applicant(): void
+    public function test_the_spouse_field_is_enabled_only_for_a_married_applicant(): void
     {
         $resident = $this->completeResident('Santos', 'Mario');
         $resident->forceFill(['civil_status' => 'married', 'spouse_name' => 'Rosa Santos'])->save();
         $user = $this->accountFor($resident);
 
-        Livewire::test(HomeownerFormModal::class)
+        $component = Livewire::test(HomeownerFormModal::class)
             ->call('load', $user->id)
-            ->assertSee('Spouse Name')
-            ->set('form.civil_status', 'single')
-            ->assertDontSee('Spouse Name')
-            ->set('form.civil_status', 'married')
-            ->assertSee('Spouse Name')
-            ->call('save')
-            ->assertHasNoErrors();
+            ->assertSee('Spouse Name');
+
+        $this->assertFalse($this->spouseFieldIsDisabled($component->lastRenderedDom));
+
+        $component->set('form.civil_status', 'single');
+
+        $this->assertTrue($this->spouseFieldIsDisabled($component->lastRenderedDom));
+
+        $component->set('form.civil_status', 'married')->call('save')->assertHasNoErrors();
 
         $this->assertSame('Rosa Santos', $resident->fresh()->spouse_name);
     }
@@ -283,16 +385,20 @@ class RbiProfileFieldsTest extends TestCase
         $this->assertNull($resident->fresh()->spouse_name);
     }
 
-    public function test_the_resident_edit_dialog_shows_the_spouse_field_only_when_married(): void
+    public function test_the_resident_edit_dialog_enables_the_spouse_field_only_when_married(): void
     {
         $resident = $this->completeResident('Reyes', 'Liza');
         $resident->forceFill(['civil_status' => 'single'])->save();
 
-        Livewire::test(ResidentFormModal::class)
+        $component = Livewire::test(ResidentFormModal::class)
             ->call('load', $resident->id)
-            ->assertDontSee('Spouse Name')
-            ->set('form.civil_status', 'married')
             ->assertSee('Spouse Name');
+
+        $this->assertTrue($this->spouseFieldIsDisabled($component->lastRenderedDom));
+
+        $component->set('form.civil_status', 'married');
+
+        $this->assertFalse($this->spouseFieldIsDisabled($component->lastRenderedDom));
     }
 
     // =====================================================================
@@ -387,6 +493,11 @@ class RbiProfileFieldsTest extends TestCase
     // =====================================================================
     // Fixtures
     // =====================================================================
+
+    private function spouseFieldIsDisabled(string $html): bool
+    {
+        return (bool) preg_match('/name="form\.spouse_name"[^>]*\sdisabled/', $html);
+    }
 
     private function completeResident(string $surname, string $firstName): Resident
     {

@@ -76,11 +76,6 @@
                                     <span class="badge badge-{{ $row['account']->kind() ? $row['account']->kind()->badgeTheme() : 'secondary' }}">
                                         {{ $row['account']->kind_label }}
                                     </span>
-                                    @if ($row['account']->managedByLabel())
-                                        <div class="small text-muted mt-1">
-                                            Managed from {{ $row['account']->managedByLabel() }}
-                                        </div>
-                                    @endif
                                 </td>
                                 <td class="align-middle text-right font-weight-medium">
                                     {{ \App\Utility\MoneyHelper::format($row['amount']) }}
@@ -178,9 +173,6 @@
                                     </div>
                                     <div class="small text-muted">
                                         {{ $row['account']->code }} · {{ $row['account']->kind_label }}
-                                        @if ($row['account']->managedByLabel())
-                                            · Managed from {{ $row['account']->managedByLabel() }}
-                                        @endif
                                     </div>
                                 </div>
                                 <div class="text-right flex-shrink-0">

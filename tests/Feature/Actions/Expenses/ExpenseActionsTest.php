@@ -18,6 +18,7 @@ use App\Models\Expense\ExpenseCategory;
 use App\Models\JournalEntry\JournalEntry;
 use App\Models\JournalEntry\JournalLine;
 use App\Models\Supplier;
+use App\Services\Accounting\ExpensePostingService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
@@ -145,11 +146,7 @@ class ExpenseActionsTest extends TestCase
 
         app(ApproveExpense::class)->handle($expense, $admin);
 
-        $posted = app(PostExpenseJournal::class)->handle(
-            $expense->fresh(),
-            ['account_id' => $this->account()->id],
-            $admin
-        );
+        $posted = $this->postExpense($expense->fresh(), $this->account(), $admin);
 
         $this->assertNotNull($posted->journal_entry_id);
         $this->assertSame(1, JournalEntry::count());
@@ -177,11 +174,7 @@ class ExpenseActionsTest extends TestCase
         $this->expectException(ValidationException::class);
 
         try {
-            app(PostExpenseJournal::class)->handle(
-                $expense,
-                ['account_id' => $this->account()->id],
-                $admin
-            );
+            $this->postExpense($expense, $this->account(), $admin);
         } finally {
             $this->assertSame(0, JournalEntry::count());
             $this->assertNull($expense->fresh()->journal_entry_id);
@@ -200,11 +193,7 @@ class ExpenseActionsTest extends TestCase
         $this->expectException(ValidationException::class);
 
         try {
-            app(PostExpenseJournal::class)->handle(
-                $expense->fresh(),
-                ['account_id' => $income->id],
-                $admin
-            );
+            $this->postExpense($expense->fresh(), $income, $admin);
         } finally {
             $this->assertSame(0, JournalEntry::count());
             $this->assertNull($expense->fresh()->journal_entry_id);
@@ -218,8 +207,8 @@ class ExpenseActionsTest extends TestCase
 
         app(ApproveExpense::class)->handle($expense, $admin);
 
-        app(PostExpenseJournal::class)->handle($expense->fresh(), ['account_id' => $this->account()->id], $admin);
-        app(PostExpenseJournal::class)->handle($expense->fresh(), ['account_id' => $this->account()->id], $admin);
+        $this->postExpense($expense->fresh(), $this->account(), $admin);
+        $this->postExpense($expense->fresh(), $this->account(), $admin);
 
         $this->assertSame(1, JournalEntry::count());
     }
@@ -237,7 +226,7 @@ class ExpenseActionsTest extends TestCase
         ]);
 
         try {
-            app(PostExpenseJournal::class)->handle($expense->fresh(), ['account_id' => $this->account()->id], $admin);
+            $this->postExpense($expense->fresh(), $this->account(), $admin);
             $this->fail('Posting into a closed month should be refused.');
         } catch (ValidationException $exception) {
             $this->assertNull($expense->fresh()->journal_entry_id);
@@ -269,7 +258,7 @@ class ExpenseActionsTest extends TestCase
         $expense = $this->logged($admin, $this->category('Security'), 'Gate guard', 350);
 
         app(ApproveExpense::class)->handle($expense, $admin);
-        app(PostExpenseJournal::class)->handle($expense->fresh(), ['account_id' => $this->account()->id], $admin);
+        $this->postExpense($expense->fresh(), $this->account(), $admin);
 
         $this->assertSame(1, app(DeleteExpenses::class)->handle([$expense->id], $admin));
 
@@ -291,7 +280,7 @@ class ExpenseActionsTest extends TestCase
         $expense = $this->logged($admin, $this->category('Security'), 'Gate guard', 350);
 
         app(ApproveExpense::class)->handle($expense, $admin);
-        app(PostExpenseJournal::class)->handle($expense->fresh(), ['account_id' => $this->account()->id], $admin);
+        $this->postExpense($expense->fresh(), $this->account(), $admin);
 
         AccountingPeriod::create([
             'period' => now()->format('Y-m'),
@@ -308,6 +297,19 @@ class ExpenseActionsTest extends TestCase
     }
 
     // ===== Helpers =====
+
+    private function postExpense(Expense $expense, Account $account, Admin $admin): Expense
+    {
+        $draft = app(ExpensePostingService::class)->draft($expense, $account);
+
+        return app(PostExpenseJournal::class)->handle($expense, [
+            'entry_date'     => $draft['entry_date'],
+            'classification' => $draft['classification'],
+            'reference_no'   => $draft['reference_no'],
+            'memo'           => $draft['memo'],
+            'lines'          => $draft['lines'],
+        ], $admin);
+    }
 
     private function logged(Admin $admin, ExpenseCategory $category, string $description, float $amount): Expense
     {

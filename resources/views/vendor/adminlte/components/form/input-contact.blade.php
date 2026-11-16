@@ -8,10 +8,12 @@
 
 @section('input_group_item')
 
-    {{-- A Philippine mobile number: eleven digits at most, the leading 0 kept --}}
+    {{-- A Philippine mobile number: eleven digits, the leading 0 kept --}}
     <input id="{{ $id }}" name="{{ $name }}" type="tel" inputmode="numeric"
-        maxlength="11" pattern="0[0-9]{10}" autocomplete="tel" data-thha-contact
+        minlength="11" maxlength="11" pattern="09[0-9]{9}" autocomplete="tel"
+        placeholder="{{ $attributes->get('placeholder', '09XXXXXXXXX') }}"
+        data-thha-contact
         value="{{ $getOldValue($errorKey, $attributes->get('value')) }}"
-        {{ $attributes->except('value')->merge(['class' => $makeItemClass()]) }}>
+        {{ $attributes->except(['value', 'placeholder'])->merge(['class' => $makeItemClass()]) }}>
 
 @overwrite

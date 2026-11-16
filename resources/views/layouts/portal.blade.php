@@ -20,5 +20,6 @@
     @include('layouts.partials.sidebar-scroll')
     <script src="{{ asset('js/modal-loader.js') }}"></script>
     <script src="{{ asset('js/contact-input.js') }}"></script>
+    <script src="{{ asset('js/password-toggle.js') }}"></script>
     <script src="{{ asset('js/progress.js') }}"></script>
 @stop

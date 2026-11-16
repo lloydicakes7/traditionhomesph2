@@ -11,7 +11,7 @@ use App\Http\Controllers\Controller;
 class RegisterController extends Controller
 {
     /**
-     * Show the five-step registration wizard.
+     * Show the three-step registration wizard.
      *
      * @return \Illuminate\View\View
      */

@@ -11,13 +11,13 @@ use Illuminate\Support\Facades\Storage;
  * The one way a submitted valid ID is read back.
  *
  * The file is on the private disk and has no public URL; an officer with the
- * Residents view permission downloads it here, and every other request is
+ * Residents view permission previews it here, and every other request is
  * refused before a byte of the image is read.
  */
 class ResidentValidIdController extends Controller
 {
     /**
-     * Stream the resident's submitted ID.
+     * Stream the resident's submitted ID for a preview in the browser.
      *
      * @return \Symfony\Component\HttpFoundation\StreamedResponse
      */
@@ -29,7 +29,7 @@ class ResidentValidIdController extends Controller
 
         abort_unless($path && StorageHelper::privateExists($path), 404);
 
-        return Storage::disk('local')->download(
+        return Storage::disk('local')->response(
             $path,
             'valid-id-' . $resident->id . '.' . pathinfo($path, PATHINFO_EXTENSION)
         );

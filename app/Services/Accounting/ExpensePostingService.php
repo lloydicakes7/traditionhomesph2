@@ -15,12 +15,38 @@ class ExpensePostingService
 {
     // ===== Operations =====
 
-    public function post(Expense $expense, ?Account $money, int $adminId): JournalEntry
+    public function post(Expense $expense, array $entry, int $adminId): JournalEntry
     {
         if ($expense->journal_entry_id) {
             return $expense->journalEntry()->firstOrFail();
         }
 
+        $this->assertMoneyAccount($entry['lines']);
+
+        $entry = array_merge($entry, [
+            'source_type' => JournalSource::EXPENSE,
+            'source_id'   => $expense->id,
+        ]);
+
+        return DB::transaction(function () use ($expense, $entry, $adminId) {
+            $posted = JournalEntry::post($entry, $adminId);
+
+            $expense->update(['journal_entry_id' => $posted->id]);
+
+            return $posted;
+        });
+    }
+
+    /**
+     * The entry this expense writes, before it reaches the books.
+     *
+     * The posting modal opens on these figures, so the officer starts from the
+     * entry the system would post and may change it before confirming.
+     *
+     * @return array<string, mixed>
+     */
+    public function draft(Expense $expense, ?Account $money): array
+    {
         if (! $money || ! $money->is_cash) {
             throw ValidationException::withMessages([
                 'account_id' => 'Choose a cash account — cash on hand or a bank account.',
@@ -29,25 +55,37 @@ class ExpensePostingService
 
         $expense->loadMissing('items.category');
 
-        return DB::transaction(function () use ($expense, $money, $adminId) {
-            $entry = JournalEntry::post([
-                'entry_date'     => $expense->expense_date ?: now(),
-                'classification' => JournalClassification::STANDARD,
-                'source_type'    => JournalSource::EXPENSE,
-                'source_id'      => $expense->id,
-                'reference_no'   => $expense->reference,
-                'memo'           => 'Expense ' . $expense->reference
-                    . ($expense->supplier ? ' — ' . $expense->supplier->name : ''),
-                'lines'          => $this->lines($expense, $money),
-            ], $adminId);
-
-            $expense->update(['journal_entry_id' => $entry->id]);
-
-            return $entry;
-        });
+        return [
+            'entry_date'     => $expense->expense_date ?: now(),
+            'classification' => JournalClassification::STANDARD,
+            'source_type'    => JournalSource::EXPENSE,
+            'source_id'      => $expense->id,
+            'reference_no'   => $expense->reference,
+            'memo'           => 'Expense ' . $expense->reference
+                . ($expense->supplier ? ' — ' . $expense->supplier->name : ''),
+            'lines'          => $this->lines($expense, $money),
+        ];
     }
 
     // ===== Helpers =====
+
+    /**
+     * Refuse an entry that never names the cash or bank the money came out of.
+     *
+     * @param  array<int, array<string, mixed>>  $lines
+     */
+    private function assertMoneyAccount(array $lines): void
+    {
+        $ids = array_map(function (array $line) {
+            return (int) ($line['account_id'] ?? 0);
+        }, $lines);
+
+        if (! Account::query()->cash()->whereIn('id', $ids)->exists()) {
+            throw ValidationException::withMessages([
+                'lines' => 'Choose a cash account — cash on hand or a bank account.',
+            ]);
+        }
+    }
 
     private function lines(Expense $expense, Account $money): array
     {

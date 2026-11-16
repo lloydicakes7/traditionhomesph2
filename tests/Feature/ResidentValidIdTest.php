@@ -19,7 +19,7 @@ class ResidentValidIdTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_an_officer_with_the_residents_permission_downloads_the_id(): void
+    public function test_an_officer_with_the_residents_permission_previews_the_id(): void
     {
         Storage::fake('local');
 
@@ -27,9 +27,11 @@ class ResidentValidIdTest extends TestCase
 
         Storage::disk('local')->put('ids/residents/id.jpg', 'image-bytes');
 
-        $this->actingAs($this->officer(['residents.view']), 'web')
-            ->get(route('homeowners.residents.valid-id', $resident))
-            ->assertOk();
+        $response = $this->actingAs($this->officer(['residents.view']), 'web')
+            ->get(route('homeowners.residents.valid-id', $resident));
+
+        $response->assertOk();
+        $this->assertStringContainsString('inline', (string) $response->headers->get('content-disposition'));
     }
 
     public function test_an_officer_without_the_permission_is_refused(): void

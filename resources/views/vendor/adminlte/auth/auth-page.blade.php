@@ -75,4 +75,5 @@
 @section('adminlte_js')
     @stack('js')
     @yield('js')
+    <script src="{{ asset('js/password-toggle.js') }}"></script>
 @stop

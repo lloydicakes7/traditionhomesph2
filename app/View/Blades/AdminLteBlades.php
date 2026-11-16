@@ -3,6 +3,7 @@
 namespace App\View\Blades;
 
 use App\View\Components\Adminlte\Form\InputContact;
+use App\View\Components\Adminlte\Form\InputPassword;
 use App\View\Components\Adminlte\Widget\Accordion;
 use App\View\Components\Adminlte\Widget\AccordionItem;
 use App\View\Components\Adminlte\Widget\InfoBox;
@@ -20,6 +21,7 @@ class AdminLteBlades
     public static function component($blade)
     {
         $blade->component(InputContact::class, 'input-contact', 'adminlte');
+        $blade->component(InputPassword::class, 'input-password', 'adminlte');
         $blade->component(InfoBox::class, 'info-box', 'adminlte');
         $blade->component(Accordion::class, 'accordion', 'adminlte');
         $blade->component(AccordionItem::class, 'accordion-item', 'adminlte');

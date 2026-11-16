@@ -192,7 +192,7 @@ class SecuritySettingsTest extends TestCase
     // 5. Authentication settings screen
     // ---------------------------------------------------------------
 
-    public function test_the_authentication_page_saves_the_three_switches()
+    public function test_the_authentication_page_saves_the_two_switches()
     {
         $this->seedRoles();
         $admin = $this->makeAdmin(['role_id' => $this->makeRole('Administrator')->id]);
@@ -201,7 +201,6 @@ class SecuritySettingsTest extends TestCase
         Livewire::test(AuthenticationSettings::class)
             ->set('allow_admin_registration', true)
             ->set('allow_resident_registration', false)
-            ->set('auto_accept_registration', true)
             ->call('save')
             ->assertHasNoErrors();
 
@@ -209,7 +208,6 @@ class SecuritySettingsTest extends TestCase
 
         $this->assertTrue($settings->adminRegistrationAllowed());
         $this->assertFalse($settings->residentRegistrationAllowed());
-        $this->assertTrue($settings->autoAccept());
     }
 
     public function test_the_authentication_page_is_closed_to_a_role_other_than_the_administrator()

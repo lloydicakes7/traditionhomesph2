@@ -2,6 +2,8 @@
 
 namespace App\Queries\Collections\MonthlyDues;
 
+use App\Enums\BillStatus;
+use App\Enums\MonthlyDueGenerationStatus;
 use App\Models\Bill\Bill;
 use App\Models\Property;
 use App\Queries\Collections\Settings\CollectionSettingsQuery;
@@ -28,20 +30,19 @@ class MonthlyDueGenerationQuery
 
         $properties = $this->properties();
 
-        $generated = $this->billedUserIds($month);
+        $generated = $this->billedBills($month);
 
         $rows = [];
-        $total = 0.0;
+        $total = '0.00';
         $generatedCount = 0;
 
         foreach ($properties as $property) {
             $amount = $this->settings->dueFor($property);
-            $total += $amount;
+            $total = bcadd($total, (string) $amount, 2);
 
-            $userId = $property->currentHousehold?->user_id;
-            $isGenerated = $userId !== null && isset($generated[(int) $userId]);
+            $bill = $property->owner ? ($generated[(int) $property->owner->id] ?? null) : null;
 
-            if ($isGenerated) {
+            if ($bill) {
                 $generatedCount++;
             }
 
@@ -56,7 +57,7 @@ class MonthlyDueGenerationQuery
                 'rate'           => MoneyHelper::format($this->settings->rate()),
                 'amount'         => $amount,
                 'amount_display' => MoneyHelper::format($amount),
-                'generated'      => $isGenerated,
+                'status'         => $this->statusFor($bill),
             ];
         }
 
@@ -90,15 +91,14 @@ class MonthlyDueGenerationQuery
             ->get();
     }
 
-    public function billedUserIds(string $month): array
+    public function billedBills(string $month): array
     {
-        $ids = [];
-
-        foreach (Bill::query()->monthlyDues()->where('billing_period', $month)->pluck('user_id') as $id) {
-            $ids[(int) $id] = true;
-        }
-
-        return $ids;
+        return Bill::query()
+            ->monthlyDues()
+            ->where('billing_period', $month)
+            ->get(['id', 'user_id', 'status'])
+            ->keyBy('user_id')
+            ->all();
     }
 
     // ===== Options =====
@@ -109,6 +109,17 @@ class MonthlyDueGenerationQuery
     }
 
     // ===== Helpers =====
+
+    private function statusFor(?Bill $bill): MonthlyDueGenerationStatus
+    {
+        if (! $bill) {
+            return MonthlyDueGenerationStatus::TO_BILL();
+        }
+
+        return $bill->status_enum && $bill->status_enum->is(BillStatus::PAID())
+            ? MonthlyDueGenerationStatus::PAID()
+            : MonthlyDueGenerationStatus::BILLED();
+    }
 
     private function rateCards(): array
     {

@@ -3,13 +3,20 @@
 namespace App\Actions\Accounting\JournalEntries;
 
 use App\Enums\ExpenseStatus;
-use App\Models\Account\Account;
 use App\Models\Admin;
 use App\Models\Expense\Expense;
 use App\Services\Accounting\ExpensePostingService;
 use App\Services\ActivityLogService;
 use Illuminate\Validation\ValidationException;
 
+/**
+ * Post an approved expense to the books.
+ *
+ * The entry is the one accounting confirmed in the posting dialog, starting
+ * from the draft the system wrote for the expense. The expense is the source:
+ * the service stamps it on the entry and links the two, and the money side must
+ * still come out of a cash account.
+ */
 class PostExpenseJournal
 {
     private ActivityLogService $activity;
@@ -24,7 +31,7 @@ class PostExpenseJournal
 
     // ===== Handle =====
 
-    public function handle(Expense $expense, array $data, Admin $by): Expense
+    public function handle(Expense $expense, array $entry, Admin $by): Expense
     {
         if (! $expense->status_enum || ! $expense->status_enum->is(ExpenseStatus::APPROVED())) {
             throw ValidationException::withMessages([
@@ -36,22 +43,14 @@ class PostExpenseJournal
             return $expense;
         }
 
-        $account = Account::query()->cash()->find((int) ($data['account_id'] ?? 0));
-
-        if (! $account) {
-            throw ValidationException::withMessages([
-                'account_id' => 'Choose a cash account — cash on hand or a bank account.',
-            ]);
-        }
-
-        $entry = $this->posting->post($expense, $account, $by->id);
+        $posted = $this->posting->post($expense, $entry, $by->id);
 
         $this->activity->log(
             $by,
             'posted',
             'expense',
-            "Posted expense {$expense->reference} to journal entry {$entry->entry_no}",
-            ['expense_id' => $expense->id, 'journal_entry_id' => $entry->id]
+            "Posted expense {$expense->reference} to journal entry {$posted->entry_no}",
+            ['expense_id' => $expense->id, 'journal_entry_id' => $posted->id]
         );
 
         return $expense->fresh('journalEntry');

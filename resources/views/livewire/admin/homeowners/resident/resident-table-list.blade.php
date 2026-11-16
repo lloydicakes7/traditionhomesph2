@@ -3,7 +3,7 @@
     {{-- SEARCH + ADD BUTTON                                                 --}}
     {{-- =================================================================== --}}
     <x-adminlte-card>
-        <div class="row align-items-centerr">
+        <div class="row align-items-center">
             <div class="col-12 col-sm-6 col-lg-4 mb-2 mb-sm-0">
                 <x-adminlte-input name="search" placeholder="Search by name, email, mobile no..."
                     wire:model.debounce.500ms="search" igroup-size="sm" fgroup-class="mb-0">
@@ -55,18 +55,15 @@
                                 </div>
                             </th>
                         @endcan
-                        <th class="cursor-pointer align-middle" wire:click="sortBy('surname')" style="width:21%;">
+                        <th class="cursor-pointer align-middle" wire:click="sortBy('surname')" style="width:32%;">
                             Name
                             @if ($sortField === 'surname')
                                 <i class="fas fa-fw fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }}"></i>
                             @endif
                         </th>
-                        <th class="align-middle" style="width:11%;">Unit</th>
-                        <th class="align-middle" style="width:11%;">Civil Status</th>
-                        <th class="align-middle" style="width:13%;">Mobile No.</th>
-                        <th class="align-middle" style="width:8%;">Sex</th>
-                        <th class="align-middle text-center" style="width:6%;">Age</th>
-                        <th class="align-middle" style="width:17%;">Account</th>
+                        <th class="align-middle" style="width:20%;">Mobile No.</th>
+                        <th class="align-middle text-center" style="width:10%;">Age</th>
+                        <th class="align-middle" style="width:28%;">Account</th>
                         <th style="width:130px;" class="text-right align-middle">Actions</th>
                     </tr>
                 </thead>
@@ -97,25 +94,12 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="align-middle text-nowrap">
-                                @if ($resident->household?->property)
-                                    <small>{{ $resident->household->property->block_lot_label }}</small>
-                                @else
-                                    <span class="text-muted">None</span>
-                                @endif
-                            </td>
-                            <td class="align-middle text-nowrap">
-                                <small>{{ $resident->civil_status_label }}</small>
-                            </td>
                             <td class="align-middle">
                                 @if ($resident->mobile_no)
                                     <small>{{ $resident->mobile_no }}</small>
                                 @else
                                     <span class="text-muted">None</span>
                                 @endif
-                            </td>
-                            <td class="align-middle">
-                                <small>{{ $resident->sex_label }}</small>
                             </td>
                             <td class="text-center align-middle">
                                 <span class="font-weight-medium">{{ $resident->age ?? '—' }}</span>
@@ -134,7 +118,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="9" class="text-center text-muted py-4">
+                            <td colspan="6" class="text-center text-muted py-4">
                                 <i class="fas fa-fw fa-users fa-2x mb-2"></i>
                                 <p class="mb-0">{{ $search ? 'No residents match your search.' : 'No residents added yet.' }}</p>
                             </td>
@@ -175,11 +159,6 @@
                         @if ($resident->mobile_no)
                             <span class="small"><i class="fas fa-fw fa-mobile-alt text-muted mr-1" style="width:14px;"></i>{{ $resident->mobile_no }}</span>
                         @endif
-                        <span class="small"><i class="fas fa-fw fa-venus-mars text-muted mr-1" style="width:14px;"></i>{{ $resident->sex_label }}</span>
-                        <span class="small"><i class="fas fa-fw fa-home text-muted mr-1" style="width:14px;"></i>
-                            Unit: {{ $resident->household?->property?->block_lot_label ?? 'None' }}
-                        </span>
-                        <span class="small"><i class="fas fa-fw fa-ring text-muted mr-1" style="width:14px;"></i>{{ $resident->civil_status_label }}</span>
                         <span class="small"><i class="fas fa-fw fa-calendar text-muted mr-1" style="width:14px;"></i>Age: {{ $resident->age ?? '—' }}</span>
                         <span class="small">
                             <i class="fas fa-fw fa-user-circle text-muted mr-1" style="width:14px;"></i>

@@ -13,6 +13,7 @@ use App\Models\Bill\Bill;
 use App\Models\Payment;
 use App\Models\Product\Product;
 use App\Models\Product\ProductCategory;
+use App\Services\Accounting\PaymentPostingService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
@@ -75,8 +76,14 @@ class PaymentJournalTest extends TestCase
 
     private function postPayment(Payment $payment, Account $account, Admin $admin): Payment
     {
+        $draft = app(PaymentPostingService::class)->draft($payment, $account);
+
         return app(PostPaymentJournal::class)->handle($payment, [
-            'account_id' => $account->id,
+            'entry_date'     => $draft['entry_date'],
+            'classification' => $draft['classification'],
+            'reference_no'   => $draft['reference_no'],
+            'memo'           => $draft['memo'],
+            'lines'          => $draft['lines'],
         ], $admin);
     }
 

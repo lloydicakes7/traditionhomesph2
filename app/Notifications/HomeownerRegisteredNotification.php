@@ -41,11 +41,11 @@ class HomeownerRegisteredNotification extends OfficerNotification
         $property = $this->account->resident?->household?->property;
 
         return ($property ? $property->phase_block_lot_label . ' · ' : '')
-            . 'Waiting for the office to approve the account.';
+            . 'Waiting for the applicant to verify their email address.';
     }
 
     protected function url($notifiable): ?string
     {
-        return route('homeowners.pending-registrations');
+        return route('homeowners.homeowners');
     }
 }

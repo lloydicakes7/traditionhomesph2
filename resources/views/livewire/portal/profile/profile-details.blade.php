@@ -79,27 +79,27 @@
             <form wire:submit.prevent="updatePassword">
                 <div class="row">
                     <div class="col-12 col-md-6">
-                        <x-adminlte-input name="current_password" label="Current Password" type="password"
+                        <x-adminlte-input-password name="current_password" label="Current Password"
                             placeholder="Enter current password" wire:model="current_password" igroup-size="sm">
                             <x-slot name="prependSlot">
                                 <div class="input-group-text"><i class="fas fa-fw fa-key"></i></div>
                             </x-slot>
-                        </x-adminlte-input>
+                        </x-adminlte-input-password>
 
-                        <x-adminlte-input name="new_password" label="New Password" type="password"
+                        <x-adminlte-input-password name="new_password" label="New Password"
                             placeholder="Enter new password" wire:model="new_password" igroup-size="sm">
                             <x-slot name="prependSlot">
                                 <div class="input-group-text"><i class="fas fa-fw fa-lock"></i></div>
                             </x-slot>
-                        </x-adminlte-input>
+                        </x-adminlte-input-password>
 
-                        <x-adminlte-input name="new_password_confirmation" label="Confirm New Password"
-                            type="password" placeholder="Confirm new password"
+                        <x-adminlte-input-password name="new_password_confirmation"
+                            label="Confirm New Password" placeholder="Confirm new password"
                             wire:model="new_password_confirmation" igroup-size="sm">
                             <x-slot name="prependSlot">
                                 <div class="input-group-text"><i class="fas fa-fw fa-check-circle"></i></div>
                             </x-slot>
-                        </x-adminlte-input>
+                        </x-adminlte-input-password>
                     </div>
                 </div>
 

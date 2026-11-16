@@ -6,9 +6,9 @@
     <div>
         @can('viewAny', \App\Models\User::class)
             <div class="d-flex justify-content-end mb-3">
-                <a href="{{ route('homeowners.pending-registrations') }}"
+                <a href="{{ route('homeowners.profile-verifications') }}"
                     class="btn btn-primary btn-sm">
-                    <i class="fas fa-fw fa-user-clock mr-1"></i>Pending Registrations
+                    <i class="fas fa-fw fa-user-check mr-1"></i>Profile Verification
                 </a>
             </div>
         @endcan

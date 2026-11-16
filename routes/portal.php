@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\Portal\ConfirmPasswordController;
 use App\Http\Controllers\Portal\HomeController;
 use App\Http\Controllers\Portal\ProfileController;
+use App\Http\Controllers\Portal\OnboardingController;
 use App\Http\Controllers\Portal\PersonalInformationController;
 use App\Http\Controllers\Portal\HouseholdPropertyController;
 use App\Http\Controllers\Portal\AnnouncementController;
@@ -30,6 +31,7 @@ use App\Http\Controllers\Portal\ManualController;
 | These routes are for the homeowner portal. They are loaded by the
 | RouteServiceProvider within the "web" middleware group and prefixed
 | with "portal".
+|
 */
 
 Route::middleware(['guest:web', 'guest:homeowner'])->group(function () {
@@ -61,10 +63,19 @@ Route::middleware([
     Route::post('password/confirm', [ConfirmPasswordController::class, 'confirm']);
 
     // ---------------------------------------------------------------
-    // Home
+    // Open while the profile waits for the office
     // ---------------------------------------------------------------
 
+    Route::get('onboarding', [OnboardingController::class, 'index'])->name('portal.onboarding');
     Route::get('/', [HomeController::class, 'index'])->name('portal.dashboard');
+    Route::get('statement-of-account', [StatementOfAccountController::class, 'index'])->name('portal.statement-of-account');
+    Route::get('payments', [PaymentController::class, 'index'])->name('portal.payments');
+
+    // ---------------------------------------------------------------
+    // My Account
+    // ---------------------------------------------------------------
+
+    Route::get('account-details', [ProfileController::class, 'index'])->name('portal.profile');
 
     // ---------------------------------------------------------------
     // User Manual
@@ -80,6 +91,14 @@ Route::middleware([
     Route::get('notifications', [NotificationController::class, 'index'])->name('portal.notifications');
     Route::get('notifications/feed', [NotificationController::class, 'feed'])->name('portal.notifications.feed');
     Route::get('notifications/{id}', [NotificationController::class, 'read'])->name('portal.notifications.read');
+});
+
+Route::middleware([
+    'auth:homeowner',
+    'account.active:homeowner',
+    'password.expiry:homeowner,portal.profile',
+    'profile.verified',
+])->group(function () {
 
     // ---------------------------------------------------------------
     // Services
@@ -91,19 +110,6 @@ Route::middleware([
     Route::get('requests/{id}/slip', [RequestSlipController::class, 'download'])->name('portal.requests.slip');
     Route::get('complaints', [ComplaintController::class, 'index'])->name('portal.complaints');
     Route::get('violations', [ViolationController::class, 'index'])->name('portal.violations');
-
-    // ---------------------------------------------------------------
-    // Finance
-    // ---------------------------------------------------------------
-
-    Route::get('statement-of-account', [StatementOfAccountController::class, 'index'])->name('portal.statement-of-account');
-    Route::get('payments', [PaymentController::class, 'index'])->name('portal.payments');
-
-    // ---------------------------------------------------------------
-    // My Account
-    // ---------------------------------------------------------------
-
-    Route::get('account-details', [ProfileController::class, 'index'])->name('portal.profile');
 
     // ---------------------------------------------------------------
     // RBI Forms
@@ -118,6 +124,11 @@ Route::middleware([
         Route::get('form-b/{resident}/sheet', [RbiFormController::class, 'formBSheet'])->name('form-b.sheet');
         Route::get('form-b/{resident}/download', [RbiFormController::class, 'formBDownload'])->name('form-b.download');
     });
+
+    // ---------------------------------------------------------------
+    // My Records
+    // ---------------------------------------------------------------
+
     Route::get('personal-information', [PersonalInformationController::class, 'index'])->name('portal.personal-information');
     Route::get('household-property', [HouseholdPropertyController::class, 'index'])->name('portal.household-property');
 

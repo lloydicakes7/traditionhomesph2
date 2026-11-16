@@ -98,18 +98,21 @@
                         </div>
                     </div>
 
-                    @if ($showSpouse)
-                        <div class="row">
-                            <div class="col-12 col-md-7">
-                                <x-adminlte-input name="form.spouse_name" label="Spouse Name" placeholder="Name of spouse"
-                                    wire:model.defer="form.spouse_name" igroup-size="sm">
-                                    <x-slot name="prependSlot">
+                    <div class="row">
+                        <div class="col-12 col-md-7">
+                            <div class="form-group">
+                                <label for="form.spouse_name">Spouse Name</label>
+                                <div class="input-group input-group-sm">
+                                    <div class="input-group-prepend">
                                         <div class="input-group-text"><i class="fas fa-fw fa-heart"></i></div>
-                                    </x-slot>
-                                </x-adminlte-input>
+                                    </div>
+                                    <input id="form.spouse_name" name="form.spouse_name" class="form-control"
+                                        placeholder="Name of spouse" wire:model.defer="form.spouse_name"
+                                        {{ $showSpouse ? '' : 'disabled' }}>
+                                </div>
                             </div>
                         </div>
-                    @endif
+                    </div>
 
                 </x-adminlte-card>
 

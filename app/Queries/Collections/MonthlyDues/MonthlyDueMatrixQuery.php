@@ -59,23 +59,25 @@ class MonthlyDueMatrixQuery
         $dues = Bill::query()->monthlyDues()
             ->where('billing_period', 'like', $year . '-%')
             ->get()
-            ->groupBy('user_id');
+            ->groupBy(function (Bill $bill) {
+                return (int) $bill->user_id;
+            });
 
         $rows = [];
-        $totals = array_fill_keys(array_column($months, 'value'), 0.0);
-        $collected = array_fill_keys(array_column($months, 'value'), 0.0);
-        $yearTotal = 0.0;
-        $yearCollected = 0.0;
-        $yearBalance = 0.0;
+        $totals = array_fill_keys(array_column($months, 'value'), '0.00');
+        $collected = array_fill_keys(array_column($months, 'value'), '0.00');
+        $yearTotal = '0.00';
+        $yearCollected = '0.00';
+        $yearBalance = '0.00';
 
         foreach ($properties as $property) {
             $cells = [];
-            $rowTotal = 0.0;
-            $rowCollected = 0.0;
-            $rowBalance = 0.0;
+            $rowTotal = '0.00';
+            $rowCollected = '0.00';
+            $rowBalance = '0.00';
 
-            $userId = $property->currentHousehold?->user_id;
-            $bills = $userId !== null ? ($dues->get((string) $userId) ?? $dues->get($userId) ?? collect()) : collect();
+            $userId = $property->owner?->id;
+            $bills = $userId ? ($dues->get($userId) ?? collect()) : collect();
 
             foreach ($months as $month) {
                 $due = $bills->firstWhere('billing_period', $month['value']);
@@ -83,17 +85,17 @@ class MonthlyDueMatrixQuery
                 $cells[$month['value']] = $due;
 
                 if ($due) {
-                    $rowTotal += (float) $due->total;
-                    $rowCollected += (float) $due->paid_amount;
-                    $rowBalance += (float) $due->balance;
-                    $totals[$month['value']] += (float) $due->total;
-                    $collected[$month['value']] += (float) $due->paid_amount;
+                    $rowTotal = bcadd($rowTotal, (string) $due->total, 2);
+                    $rowCollected = bcadd($rowCollected, (string) $due->paid_amount, 2);
+                    $rowBalance = bcadd($rowBalance, (string) $due->balance, 2);
+                    $totals[$month['value']] = bcadd($totals[$month['value']], (string) $due->total, 2);
+                    $collected[$month['value']] = bcadd($collected[$month['value']], (string) $due->paid_amount, 2);
                 }
             }
 
-            $yearTotal += $rowTotal;
-            $yearCollected += $rowCollected;
-            $yearBalance += $rowBalance;
+            $yearTotal = bcadd($yearTotal, $rowTotal, 2);
+            $yearCollected = bcadd($yearCollected, $rowCollected, 2);
+            $yearBalance = bcadd($yearBalance, $rowBalance, 2);
 
             $rows[] = [
                 'property'       => $property,

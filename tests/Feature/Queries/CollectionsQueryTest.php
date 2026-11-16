@@ -4,13 +4,20 @@ namespace Tests\Feature\Queries;
 
 use App\Enums\AdvanceDepositStatus;
 use App\Enums\BillType;
+use App\Enums\HouseholdType;
+use App\Enums\MonthlyDueGenerationStatus;
 use App\Enums\PaymentStatus;
+use App\Enums\PropertyType;
+use App\Models\Address;
 use App\Models\AdvanceDeposit;
 use App\Models\Bill\Bill;
+use App\Models\Household\Household;
 use App\Models\Payment;
 use App\Models\PaymentMethod;
 use App\Models\Product\Product;
 use App\Models\Product\ProductCategory;
+use App\Models\Property;
+use App\Models\Resident;
 use App\Models\SoaEmail;
 use App\Models\User;
 use App\Queries\Collections\AdvanceDeposits\AdvanceDepositListQuery;
@@ -29,6 +36,7 @@ use App\Queries\Collections\ProductCategories\ProductCategoryListQuery;
 use App\Queries\Collections\Products\ProductListQuery;
 use App\Queries\Collections\Soa\StatementDataQuery;
 use App\Queries\Collections\Soa\StatementListQuery;
+use App\Utility\MoneyHelper;
 use App\Utility\SettingsHelper;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
@@ -133,18 +141,30 @@ class CollectionsQueryTest extends TestCase
         $this->assertSame(0, $query->paginate(['filters' => ['month' => '2026-08']])->total());
     }
 
-    public function test_the_matrix_reads_one_row_per_property(): void
+    public function test_the_matrix_reads_each_propertys_dues_and_what_was_collected(): void
     {
-        $homeowner = factory(User::class)->create();
-        $this->due($homeowner, 'DUE-2026-09', '2026-09');
+        $homeowner = $this->occupiedUnit();
 
-        $matrix = app(MonthlyDueMatrixQuery::class)->matrix('2026');
+        $this->due($homeowner, 'DUE-2026-12', '2026-12')->settle(['amount' => 1200]);
+        $this->due($homeowner, 'DUE-2026-10', '2026-10');
+
+        $matrix = app(MonthlyDueMatrixQuery::class)->report('2026');
 
         $this->assertSame('2026', $matrix['year']);
         $this->assertCount(12, $matrix['months']);
-        $this->assertArrayHasKey('rows', $matrix);
-        $this->assertArrayHasKey('year_total', $matrix);
-        $this->assertArrayHasKey('rows', app(MonthlyDueMatrixQuery::class)->report('2026'));
+
+        $row = $matrix['rows'][0];
+
+        $this->assertSame($homeowner->id, $row['property']->owner->id);
+        $this->assertNotNull($row['cells']['2026-12']);
+        $this->assertNotNull($row['cells']['2026-10']);
+        $this->assertNull($row['cells']['2026-11']);
+        $this->assertSame('1200.00', $row['year_collected']);
+        $this->assertSame('1200.00', $row['year_balance']);
+        $this->assertSame(MoneyHelper::format(1200), $row['row_collected']);
+        $this->assertSame(MoneyHelper::format(1200), $matrix['collected_display']['2026-12']);
+        $this->assertSame(MoneyHelper::format(0), $matrix['collected_display']['2026-10']);
+        $this->assertArrayHasKey('rows', app(MonthlyDueMatrixQuery::class)->matrix('2026'));
     }
 
     // =====================================================================
@@ -345,42 +365,36 @@ class CollectionsQueryTest extends TestCase
 
     public function test_the_generator_preview_prices_every_unit(): void
     {
-        $resident = factory(\App\Models\Resident::class)->create();
-        $homeowner = factory(User::class)->create(['resident_id' => $resident->id]);
-
-        $address = \App\Models\Address::create([
-            'label'       => 'Unit 1-2-test',
-            'subdivision' => 'Tradition Homes',
-            'barangay'    => 'Poblacion',
-            'city'        => 'Santa Rosa',
-            'province'    => 'Laguna',
-            'region'      => 'IV-A',
-        ]);
-
-        $property = \App\Models\Property::create([
-            'block'      => 1,
-            'lot'        => 2,
-            'sqm'        => 100,
-            'type'       => \App\Enums\PropertyType::HOUSE,
-            'address_id' => $address->id,
-        ]);
-
-        $household = \App\Models\Household\Household::create([
-            'property_id'      => $property->id,
-            'type'             => \App\Enums\HouseholdType::OWNER,
-        ]);
-
-        $household->placeHead($homeowner->resident_id, 'father');
+        $this->occupiedUnit();
 
         $preview = app(MonthlyDueGenerationQuery::class)->preview('2026-09');
 
         $this->assertSame('2026-09', $preview['month']);
         $this->assertSame(1, $preview['property_count']);
         $this->assertSame(0, $preview['generated_count']);
+        $this->assertSame(MonthlyDueGenerationStatus::TO_BILL, $preview['rows']->first()['status']->value);
         $this->assertCount(1, $preview['rows']);
         $this->assertArrayHasKey('rate_cards', $preview);
         $this->assertArrayHasKey('method', $preview);
         $this->assertArrayHasKey('month_options', $preview);
+    }
+
+    public function test_the_generator_preview_reports_a_billed_unit_and_a_paid_one(): void
+    {
+        $homeowner = $this->occupiedUnit();
+
+        $query = app(MonthlyDueGenerationQuery::class);
+
+        $bill = $this->due($homeowner, 'DUE-2026-09', '2026-09');
+
+        $preview = $query->preview('2026-09');
+
+        $this->assertSame(1, $preview['generated_count']);
+        $this->assertSame(MonthlyDueGenerationStatus::BILLED, $preview['rows']->first()['status']->value);
+
+        $bill->settle(['amount' => 1200]);
+
+        $this->assertSame(MonthlyDueGenerationStatus::PAID, $query->preview('2026-09')['rows']->first()['status']->value);
     }
 
     public function test_the_settings_query_reads_the_form_and_renders_the_instructions(): void
@@ -403,6 +417,38 @@ class CollectionsQueryTest extends TestCase
     // =====================================================================
     // Helpers
     // =====================================================================
+
+    private function occupiedUnit(): User
+    {
+        $resident = factory(Resident::class)->create();
+        $homeowner = factory(User::class)->create(['resident_id' => $resident->id]);
+
+        $address = Address::create([
+            'label'       => 'Unit 1-2-test',
+            'subdivision' => 'Tradition Homes',
+            'barangay'    => 'Poblacion',
+            'city'        => 'Santa Rosa',
+            'province'    => 'Laguna',
+            'region'      => 'IV-A',
+        ]);
+
+        $property = Property::create([
+            'block'      => 1,
+            'lot'        => 2,
+            'sqm'        => 100,
+            'type'       => PropertyType::HOUSE,
+            'address_id' => $address->id,
+        ]);
+
+        $household = Household::create([
+            'property_id' => $property->id,
+            'type'        => HouseholdType::OWNER,
+        ]);
+
+        $household->placeHead($resident->id, 'father');
+
+        return $homeowner;
+    }
 
     private function method(string $name, bool $active = true): PaymentMethod
     {

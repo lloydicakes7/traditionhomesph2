@@ -1,20 +1,36 @@
 (function ($) {
     'use strict';
 
-    const MAX_LENGTH = 11;
+    // ===== Setup =====
+
+    const PREFIX = '0';
+
+    const COUNTRY = '63';
+
+    const LENGTH = 11;
+
+    // ===== Handlers =====
+
+    function digitsOf(value) {
+        return String(value).replace(/\D/g, '');
+    }
 
     function normalise(value) {
-        let digits = String(value).replace(/\D/g, '');
+        let digits = digitsOf(value);
 
         if (digits === '') {
             return '';
         }
 
-        if (digits.indexOf('0') !== 0) {
-            digits = '0' + digits;
+        if (digits.indexOf(COUNTRY) === 0 && digits.length > LENGTH) {
+            digits = digits.slice(COUNTRY.length);
         }
 
-        return digits.slice(0, MAX_LENGTH);
+        if (digits.charAt(0) !== PREFIX) {
+            digits = PREFIX + digits;
+        }
+
+        return digits.slice(0, LENGTH);
     }
 
     $(document).on('input', '[data-thha-contact]', function () {

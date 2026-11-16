@@ -69,11 +69,18 @@ class LoginController extends Controller
             return $this->failedLogin($request, __('auth.failed'));
         }
 
-        $this->clearLoginAttempts($request);
-
-        if ($outcome === SignInAccount::PENDING) {
-            return redirect()->route('registration.pending');
+        if ($outcome === SignInAccount::INACTIVE) {
+            return $this->failedLogin($request, __('auth.inactive'));
         }
+
+        if ($outcome === SignInAccount::UNVERIFIED) {
+            return $this->failedLogin(
+                $request,
+                __('auth.verify_email', ['email' => (string) $request->input('email')])
+            );
+        }
+
+        $this->clearLoginAttempts($request);
 
         return redirect()->intended(
             $outcome === SignInAccount::HOMEOWNER

@@ -9,10 +9,8 @@ use App\Services\ActivityLogService;
 /**
  * Enable or disable one homeowner account.
  *
- * The switch only opens or closes the login: accepting a registration is
- * AcceptRegistration's job, and telling the applicant about it is that action's
- * side effect. Nothing is mailed here, so the row answers as fast as any other
- * list toggle.
+ * The switch only opens or closes the login. Nothing is mailed here, so the
+ * row answers as fast as any other list toggle.
  */
 class ToggleUserAccount
 {

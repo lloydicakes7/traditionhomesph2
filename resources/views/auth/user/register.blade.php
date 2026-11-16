@@ -21,5 +21,5 @@
 @section('adminlte_js')
     @stack('js')
     <script src="{{ asset('js/contact-input.js') }}"></script>
-    <script src="{{ asset('js/camera.js') }}"></script>
+    <script src="{{ asset('js/password-toggle.js') }}"></script>
 @stop

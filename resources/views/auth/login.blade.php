@@ -23,13 +23,13 @@
             </x-slot>
         </x-adminlte-input>
 
-        <x-adminlte-input name="password" type="password" label="{{ __('adminlte::adminlte.password') }}"
+        <x-adminlte-input-password name="password" label="{{ __('adminlte::adminlte.password') }}"
             placeholder="{{ __('adminlte::adminlte.password') }}"
             autocomplete="current-password" disable-feedback>
             <x-slot name="prependSlot">
                 <div class="input-group-text"><i class="fas fa-fw fa-lock"></i></div>
             </x-slot>
-        </x-adminlte-input>
+        </x-adminlte-input-password>
 
         <div class="form-group d-flex justify-content-between align-items-center mb-3">
             <div class="form-check" title="{{ __('adminlte::adminlte.remember_me_hint') }}">

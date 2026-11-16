@@ -147,14 +147,6 @@ trait EditsJournalLines
     /**
      * @return array<int, string>
      */
-    protected function accountOptions(): array
-    {
-        return $this->optionsFrom(Account::query());
-    }
-
-    /**
-     * @return array<int, string>
-     */
     protected function manualAccountOptions(): array
     {
         return $this->optionsFrom(Account::query()->notSystem());

@@ -7,6 +7,7 @@ use App\Models\Household\Household;
 use App\Models\Property;
 use App\Models\Resident;
 use App\Models\User;
+use App\Services\Homeowners\ProfileVerificationService;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -19,6 +20,14 @@ use Illuminate\Support\Facades\DB;
  */
 class CreateOwnHousehold
 {
+    /** @var ProfileVerificationService */
+    private $profiles;
+
+    public function __construct(ProfileVerificationService $profiles)
+    {
+        $this->profiles = $profiles;
+    }
+
     // ===== Handle =====
 
     public function handle(User $user, array $data): Household
@@ -35,7 +44,7 @@ class CreateOwnHousehold
 
         $property = $this->propertyFor((int) $data['block'], (int) $data['lot']);
 
-        return DB::transaction(function () use ($property, $resident, $data) {
+        $household = DB::transaction(function () use ($property, $resident, $data) {
             $household = Household::create(Household::payloadFrom([
                 'property_id'  => $property->id,
                 'type'         => $data['type'],
@@ -46,6 +55,10 @@ class CreateOwnHousehold
 
             return $household;
         });
+
+        $this->profiles->requireReview($user);
+
+        return $household;
     }
 
     // ===== Helpers =====

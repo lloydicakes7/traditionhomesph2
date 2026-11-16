@@ -23,7 +23,6 @@ class UpdateAuthenticationSettings
         SettingsHelper::bulkSet([
             AuthenticationSettingsQuery::ALLOW_ADMIN_REGISTRATION    => ($data['allow_admin_registration'] ?? false) ? '1' : '0',
             AuthenticationSettingsQuery::ALLOW_RESIDENT_REGISTRATION => ($data['allow_resident_registration'] ?? false) ? '1' : '0',
-            AuthenticationSettingsQuery::AUTO_ACCEPT_REGISTRATION    => ($data['auto_accept_registration'] ?? false) ? '1' : '0',
         ], AuthenticationSettingsQuery::GROUP);
 
         $this->activity->log($by, 'updated', 'settings', 'Updated the authentication settings');

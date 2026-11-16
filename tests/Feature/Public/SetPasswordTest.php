@@ -111,9 +111,10 @@ class SetPasswordTest extends TestCase
     private function account(): User
     {
         return User::create([
-            'email'     => 'homeowner@example.com',
-            'password'  => Hash::make('Unusable1!'),
-            'is_active' => true,
+            'email'             => 'homeowner@example.com',
+            'password'          => Hash::make('Unusable1!'),
+            'is_active'         => true,
+            'email_verified_at' => now(),
         ]);
     }
 

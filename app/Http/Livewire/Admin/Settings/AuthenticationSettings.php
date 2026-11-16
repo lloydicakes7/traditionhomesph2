@@ -15,8 +15,6 @@ class AuthenticationSettings extends AdminComponent
 
     public $allow_resident_registration = true;
 
-    public $auto_accept_registration = false;
-
     // ===== Collaborators =====
 
     /** @var AuthenticationSettingsQuery */
@@ -41,7 +39,6 @@ class AuthenticationSettings extends AdminComponent
 
         $this->allow_admin_registration = $settings[AuthenticationSettingsQuery::ALLOW_ADMIN_REGISTRATION];
         $this->allow_resident_registration = $settings[AuthenticationSettingsQuery::ALLOW_RESIDENT_REGISTRATION];
-        $this->auto_accept_registration = $settings[AuthenticationSettingsQuery::AUTO_ACCEPT_REGISTRATION];
     }
 
     // ===== Validation =====
@@ -51,7 +48,6 @@ class AuthenticationSettings extends AdminComponent
         return [
             'allow_admin_registration'    => ['boolean'],
             'allow_resident_registration' => ['boolean'],
-            'auto_accept_registration'    => ['boolean'],
         ];
     }
 
@@ -65,7 +61,6 @@ class AuthenticationSettings extends AdminComponent
         $this->updateSettings->handle([
             AuthenticationSettingsQuery::ALLOW_ADMIN_REGISTRATION    => $this->allow_admin_registration,
             AuthenticationSettingsQuery::ALLOW_RESIDENT_REGISTRATION => $this->allow_resident_registration,
-            AuthenticationSettingsQuery::AUTO_ACCEPT_REGISTRATION    => $this->auto_accept_registration,
         ], auth('web')->user());
 
         $this->emit('notify', 'success', 'Registration settings updated successfully.');

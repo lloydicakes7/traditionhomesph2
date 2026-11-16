@@ -21,13 +21,13 @@ class HomeownerController extends Controller
     }
 
     /**
-     * Show the accounts waiting for the office to accept their registration.
+     * Show the profiles a resident submitted for the office to check.
      */
-    public function pendingRegistrations()
+    public function profileVerifications()
     {
-        $this->authorize('viewAny', User::class);
+        $this->authorize('viewProfileVerifications', User::class);
 
-        return view('admin.homeowners.pending-registrations');
+        return view('admin.homeowners.profile-verifications');
     }
 
     /**

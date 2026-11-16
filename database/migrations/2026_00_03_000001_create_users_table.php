@@ -20,6 +20,11 @@
                 $table->timestamp('email_verified_at')->nullable();
                 $table->string('registration_status', 20)->default('approved');
                 $table->boolean('is_active')->default(true);
+                $table->string('profile_status', 20)->default('verified');
+                $table->timestamp('profile_submitted_at')->nullable();
+                $table->timestamp('profile_verified_at')->nullable();
+                $table->foreignId('profile_verified_by_admin_id')->nullable()->constrained('admins')->nullOnDelete();
+                $table->string('profile_rejection_note')->nullable();
                 $table->string('password');
                 $table->timestamp('password_changed_at')->nullable();
                 $table->boolean('must_change_password')->default(false);
@@ -32,6 +37,7 @@
                 $table->index('email', 'idx_users_email');
                 $table->index('resident_id', 'idx_users_resident_id');
                 $table->index('registration_status', 'idx_users_registration_status');
+                $table->index('profile_status', 'idx_users_profile_status');
             });
         }
 

@@ -112,11 +112,9 @@
                             <td class="align-middle text-truncate" style="max-width:0;">
                                 <div class="font-weight-medium text-truncate">Blk {{ $row['block'] }} Lot {{ $row['lot'] }}</div>
                                 <div class="text-muted small text-truncate">{{ $row['location'] }}</div>
-                                @if ($row['generated'])
-                                    <span class="badge badge-success mt-1">Billed</span>
-                                @else
-                                    <span class="badge badge-warning mt-1">To bill</span>
-                                @endif
+                                <span class="badge badge-{{ $row['status']->badgeTheme() }} mt-1">
+                                    {{ $row['status']->label() }}
+                                </span>
                             </td>
                             <td class="align-middle text-truncate" style="max-width:0;">
                                 <span class="small">{{ $row['owner'] }}</span>
@@ -131,7 +129,7 @@
                     @empty
                         <tr>
                             <td colspan="5" class="text-center text-muted py-4">
-                                No properties with a household on file yet — there is nothing to bill.
+                                No properties with a household on file yet.
                             </td>
                         </tr>
                     @endforelse
@@ -160,11 +158,9 @@
                             </div>
                             <div class="small text-muted text-truncate">{{ $row['location'] }}</div>
                         </div>
-                        @if ($row['generated'])
-                            <span class="badge badge-success flex-shrink-0">Billed</span>
-                        @else
-                            <span class="badge badge-warning flex-shrink-0">To bill</span>
-                        @endif
+                        <span class="badge badge-{{ $row['status']->badgeTheme() }} flex-shrink-0">
+                            {{ $row['status']->label() }}
+                        </span>
                     </div>
                 </div>
                 <div class="card-body px-3 py-3">
@@ -190,7 +186,7 @@
         @empty
             <div class="card">
                 <div class="card-body text-center text-muted py-4">
-                    No properties with a household on file yet — there is nothing to bill.
+                    No properties with a household on file yet.
                 </div>
             </div>
         @endforelse

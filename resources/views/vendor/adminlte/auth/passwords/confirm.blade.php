@@ -20,13 +20,13 @@
         @csrf
 
         {{-- Password field --}}
-        <x-adminlte-input name="password" type="password" label="{{ __('adminlte::adminlte.password') }}"
+        <x-adminlte-input-password name="password" label="{{ __('adminlte::adminlte.password') }}"
             placeholder="{{ __('adminlte::adminlte.password') }}"
             autocomplete="current-password" autofocus required>
             <x-slot name="prependSlot">
                 <div class="input-group-text"><i class="fas fa-fw fa-lock"></i></div>
             </x-slot>
-        </x-adminlte-input>
+        </x-adminlte-input-password>
 
         {{-- Confirm password button --}}
         <x-adminlte-button type="submit" theme="primary" icon="fas fa-fw fa-check"

@@ -11,9 +11,9 @@ use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
 /**
- * The three registration switches: each one is enforced on the route, not by
- * hiding a link. A closed screen answers as not found (or with a notice), and a
- * registration that is not auto-accepted cannot sign in until approved.
+ * The registration switches: each one is enforced on the route, not by hiding
+ * a link. A closed screen answers as not found (or with a notice), and an
+ * officer registration cannot sign in until an Administrator opens it.
  */
 class RegistrationSettingsTest extends TestCase
 {
@@ -40,24 +40,6 @@ class RegistrationSettingsTest extends TestCase
 
         $this->get('/')->assertDontSee('href="' . route('register') . '"', false);
         $this->get('/login')->assertDontSee('href="' . route('register') . '"', false);
-    }
-
-    public function test_auto_accept_off_files_a_pending_account_that_cannot_sign_in(): void
-    {
-        $this->setAuth(['auto_accept_registration' => '0']);
-
-        $user = \App\Models\User::create([
-            'email'     => 'pending@example.com',
-            'password'  => Hash::make('ChosenPass1!'),
-            'is_active' => false,
-        ]);
-
-        $this->post('/login', [
-            'email'    => 'pending@example.com',
-            'password' => 'ChosenPass1!',
-        ])->assertRedirect(route('registration.pending'));
-
-        $this->assertGuest('homeowner');
     }
 
     // ===== Officer registration =====
@@ -105,7 +87,7 @@ class RegistrationSettingsTest extends TestCase
         $this->post('/login', [
             'email'    => 'officer.pending@example.com',
             'password' => 'ChosenPass1!',
-        ])->assertRedirect(route('registration.pending'));
+        ])->assertSessionHasErrors('email');
 
         $this->assertGuest('web');
     }

@@ -106,8 +106,8 @@ Route::middleware([
         Route::get('/residents', [HomeownerController::class, 'residents'])->name('residents');
         Route::get('/residents/{resident}/valid-id', [ResidentValidIdController::class, 'show'])
             ->name('residents.valid-id');
-        Route::get('/pending-registrations', [HomeownerController::class, 'pendingRegistrations'])
-            ->name('pending-registrations');
+        Route::get('/profile-verifications', [HomeownerController::class, 'profileVerifications'])
+            ->name('profile-verifications');
         Route::get('/', [HomeownerController::class, 'homeowners'])->name('homeowners');
     });
 

@@ -2,13 +2,20 @@
 
 namespace App\Actions\Accounting\JournalEntries;
 
-use App\Models\Account\Account;
 use App\Models\Admin;
 use App\Models\Payment;
 use App\Services\Accounting\PaymentPostingService;
 use App\Services\ActivityLogService;
 use Illuminate\Validation\ValidationException;
 
+/**
+ * Post a recorded receipt to the books.
+ *
+ * The entry is the one accounting confirmed in the posting dialog, starting
+ * from the draft the system wrote for the receipt. The payment itself is the
+ * source: the service stamps it on the entry and links the two, and the money
+ * side must still land in a cash account.
+ */
 class PostPaymentJournal
 {
     private ActivityLogService $activity;
@@ -23,7 +30,7 @@ class PostPaymentJournal
 
     // ===== Handle =====
 
-    public function handle(Payment $payment, array $data, Admin $by): Payment
+    public function handle(Payment $payment, array $entry, Admin $by): Payment
     {
         if (! $payment->is_recorded) {
             throw ValidationException::withMessages([
@@ -35,22 +42,14 @@ class PostPaymentJournal
             return $payment;
         }
 
-        $account = Account::query()->cash()->find((int) ($data['account_id'] ?? 0));
-
-        if (! $account) {
-            throw ValidationException::withMessages([
-                'account_id' => 'Choose a cash account — cash on hand or a bank account.',
-            ]);
-        }
-
-        $entry = $this->posting->post($payment, $account, $by->id);
+        $posted = $this->posting->post($payment, $entry, $by->id);
 
         $this->activity->log(
             $by,
             'posted',
             'payment',
-            "Posted payment {$payment->receipt_no} to journal entry {$entry->entry_no}",
-            ['payment_id' => $payment->id, 'journal_entry_id' => $entry->id]
+            "Posted payment {$payment->receipt_no} to journal entry {$posted->entry_no}",
+            ['payment_id' => $payment->id, 'journal_entry_id' => $posted->id]
         );
 
         return $payment->fresh('journalEntry');

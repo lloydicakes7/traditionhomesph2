@@ -513,7 +513,7 @@ class Account extends Model
     // =====================================================================
 
     /**
-     * How a select writes the account: "1010 · BPI Checking — Operating".
+     * How a select writes the account: "1010 · BPI Checking".
      */
     public function getLabelAttribute(): string
     {

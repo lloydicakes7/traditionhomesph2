@@ -19,8 +19,7 @@ class UserObserver
      * An account was issued: it starts with something in its bell.
      *
      * Only an account that may sign in is welcomed. A disabled account hears
-     * nothing until it is enabled, and a self-registration waiting for the
-     * office is welcomed by AcceptRegistration once it is accepted.
+     * nothing until it is enabled.
      */
     public function created(User $user): void
     {

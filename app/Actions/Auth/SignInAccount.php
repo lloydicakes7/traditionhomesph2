@@ -21,7 +21,9 @@ class SignInAccount
 
     const HOMEOWNER = 'homeowner';
 
-    const PENDING = 'pending';
+    const UNVERIFIED = 'unverified';
+
+    const INACTIVE = 'inactive';
 
     const FAILED = 'failed';
 
@@ -42,18 +44,24 @@ class SignInAccount
         $admin = $this->match(Auth::guard('web')->getProvider(), $email, $password, Admin::class);
 
         if ($admin instanceof Admin) {
-            return $admin->is_active ? $this->signInAdmin($admin, $remember, $ip) : self::PENDING;
+            return $admin->is_active ? $this->signInAdmin($admin, $remember, $ip) : self::INACTIVE;
         }
 
         $user = $this->match(Auth::guard('homeowner')->getProvider(), $email, $password, User::class);
 
-        if ($user instanceof User) {
-            $maySignIn = $user->is_active && ! $user->isPendingRegistration();
-
-            return $maySignIn ? $this->signInHomeowner($user, $remember) : self::PENDING;
+        if (! $user instanceof User) {
+            return self::FAILED;
         }
 
-        return self::FAILED;
+        if (! $user->is_active) {
+            return self::INACTIVE;
+        }
+
+        if (! $user->hasVerifiedEmail()) {
+            return self::UNVERIFIED;
+        }
+
+        return $this->signInHomeowner($user, $remember);
     }
 
     // ===== Sign in =====

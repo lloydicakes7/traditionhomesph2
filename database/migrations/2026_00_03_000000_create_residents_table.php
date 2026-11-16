@@ -28,7 +28,7 @@ class CreateResidentsTable extends Migration
             $table->enum('sex', Sex::values());
             $table->enum('civil_status', CivilStatus::values());
             $table->string('spouse_name')->nullable();
-            $table->string('citizenship');
+            $table->string('citizenship')->nullable();
             $table->string('religion')->nullable();
             $table->string('occupation')->nullable();
             $table->string('mobile_no')->nullable();

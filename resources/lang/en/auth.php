@@ -21,8 +21,22 @@ return [
     'email' => 'Email Address',
     'password' => 'Password',
     'password_confirmation' => 'Confirm Password',
-    'password_placeholder' => 'At least 6 characters',
+    'password_placeholder' => 'At least 8 characters',
     'password_confirmation_placeholder' => 'Type the password again',
+
+    'password_requirements' => [
+        'At least 8 characters',
+        'One uppercase letter',
+        'One lowercase letter',
+        'One number',
+        'One special character',
+    ],
+
+    // ===== Email verification =====
+
+    'verify_email' => 'Verify your email address first. Open the message we sent to :email and click the button in it.',
+    'verified_sign_in' => 'Your email address is verified. Sign in with the password you chose.',
+    'registered_verify_body' => 'We emailed a verification link to your :email. Open it to verify your account. Check your spam if you can\'t find it anywhere.',
 
     // ===== Address step =====
 
@@ -72,6 +86,35 @@ return [
     'registration_received_pending' => 'Your account is checked by the office before it is opened. You will be able to sign in once it is approved.',
     'registration_received_ignore' => 'If you did not file this registration, please tell the office.',
     'registration_received_regards' => 'Best Regards,',
+
+    // ===== Onboarding =====
+
+    'onboarding' => [
+        'submitted'           => 'Thank you. The office will check your details and your household.',
+        'waiting'             => 'Your profile is with the office. Every portal service opens once it is verified.',
+        'rejected'            => 'The office asked for a correction.',
+        'failed'              => 'We could not save your profile. Please try again, or contact the office.',
+        'id_required'         => 'Upload one valid ID so the office can check it.',
+        'choose_id'           => 'Choose a JPG or PNG image',
+        'id_on_file'          => 'Your ID is already on file. Upload a new one only if you want to replace it.',
+        'available_title'     => 'What you can use now',
+        'locked_title'        => 'What opens after verification',
+        'available'           => [
+            'Dashboard',
+            'Statement of Account',
+            'My Payments',
+            'Account Details',
+            'Notifications',
+            'User Manual',
+        ],
+        'locked'              => [
+            'Amenity Bookings',
+            'Document Requests',
+            'Complaints',
+            'Violations',
+        ],
+        'gate_notice'         => 'Complete your profile first. The office verifies it before this page opens.',
+    ],
 
     // ===== Set password =====
 

@@ -2,6 +2,7 @@
 
 namespace App\Actions\Homeowners\Users;
 
+use App\Enums\ProfileStatus;
 use App\Enums\RegistrationStatus;
 use App\Models\Admin;
 use App\Models\User;
@@ -31,8 +32,12 @@ class CreateUserAccount
             'email'               => $data['email'],
             'password'            => Hash::make(Str::random(60)),
             'password_changed_at' => now(),
-            'registration_status' => RegistrationStatus::APPROVED,
-            'is_active'           => $data['is_active'] ?? true,
+            'registration_status'       => RegistrationStatus::APPROVED,
+            'is_active'                 => $data['is_active'] ?? true,
+            'email_verified_at'         => now(),
+            'profile_status'            => ProfileStatus::VERIFIED,
+            'profile_verified_at'       => now(),
+            'profile_verified_by_admin_id' => $by->id,
         ]);
 
         $this->passwords->send($user);

@@ -7,26 +7,26 @@
             </p>
 
             <form wire:submit.prevent="save">
-                <x-adminlte-input name="current_password" type="password" label="Temporary Password"
+                <x-adminlte-input-password name="current_password" label="Temporary Password"
                     wire:model.defer="current_password" igroup-size="sm" autocomplete="current-password">
                     <x-slot name="prependSlot">
                         <div class="input-group-text"><i class="fas fa-fw fa-lock"></i></div>
                     </x-slot>
-                </x-adminlte-input>
+                </x-adminlte-input-password>
 
-                <x-adminlte-input name="new_password" type="password" label="New Password"
+                <x-adminlte-input-password name="new_password" label="New Password"
                     wire:model.defer="new_password" igroup-size="sm" autocomplete="new-password">
                     <x-slot name="prependSlot">
                         <div class="input-group-text"><i class="fas fa-fw fa-key"></i></div>
                     </x-slot>
-                </x-adminlte-input>
+                </x-adminlte-input-password>
 
-                <x-adminlte-input name="new_password_confirmation" type="password" label="Confirm New Password"
+                <x-adminlte-input-password name="new_password_confirmation" label="Confirm New Password"
                     wire:model.defer="new_password_confirmation" igroup-size="sm" autocomplete="new-password">
                     <x-slot name="prependSlot">
                         <div class="input-group-text"><i class="fas fa-fw fa-key"></i></div>
                     </x-slot>
-                </x-adminlte-input>
+                </x-adminlte-input-password>
 
                 <x-adminlte-button type="submit" theme="primary" icon="fas fa-fw fa-save"
                     label="Save Password" class="btn-sm" wire:loading.attr="disabled" wire:target="save" />

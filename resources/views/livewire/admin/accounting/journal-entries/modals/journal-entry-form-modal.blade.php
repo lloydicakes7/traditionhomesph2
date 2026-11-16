@@ -53,30 +53,7 @@
             </div>
 
             @if ($isSystemEntry)
-                <div class="table-responsive">
-                    <table class="table table-sm mb-0">
-                        <thead>
-                            <tr>
-                                <th style="width: 56%;">Account</th>
-                                <th class="text-right" style="width: 22%;">To</th>
-                                <th class="text-right" style="width: 22%;">From</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($lines as $line)
-                                <tr>
-                                    <td><x-ui.value :value="$accountOptions[$line['account_id']] ?? (($line['account_name'] ?? '') ?: null)" /></td>
-                                    <td class="text-right">
-                                        <x-ui.value :value="$line['side'] === 'debit' ? \App\Utility\MoneyHelper::format($line['amount']) : null" />
-                                    </td>
-                                    <td class="text-right">
-                                        <x-ui.value :value="$line['side'] === 'credit' ? \App\Utility\MoneyHelper::format($line['amount']) : null" />
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
+                @include('livewire.admin.accounting.partials.journal-entry-system-lines')
             @else
                 @include('livewire.admin.accounting.partials.journal-entry-lines')
             @endif

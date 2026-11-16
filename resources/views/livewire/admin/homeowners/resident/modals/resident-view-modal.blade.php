@@ -58,8 +58,8 @@
                                     @if ($viewResident->valid_id_path)
                                         @can('viewValidId', $viewResident)
                                             <a href="{{ route('homeowners.residents.valid-id', $viewResident) }}"
-                                                class="btn btn-outline-primary btn-xs">
-                                                <i class="fas fa-fw fa-download mr-1"></i>Download
+                                                target="_blank" rel="noopener" class="btn btn-outline-primary btn-xs">
+                                                <i class="fas fa-fw fa-eye mr-1"></i>Preview
                                             </a>
                                         @else
                                             —
