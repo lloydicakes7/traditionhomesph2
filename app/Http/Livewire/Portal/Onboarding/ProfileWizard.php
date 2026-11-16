@@ -54,9 +54,6 @@ class ProfileWizard extends PortalComponent
     /** @var mixed The valid ID, held in Livewire's temporary storage */
     public $idFile;
 
-    /** @var bool The submission was written */
-    public $submitted = false;
-
     // ===== Boot =====
 
     /** @var OnboardingFormQuery */
@@ -186,6 +183,12 @@ class ProfileWizard extends PortalComponent
 
         $this->authorize('updateOwn', $account);
 
+        if ($account->profile_status?->isSubmitted()) {
+            $this->leaveForDashboard();
+
+            return;
+        }
+
         $this->resetErrorBag();
         $this->refreshUnit();
 
@@ -218,9 +221,19 @@ class ProfileWizard extends PortalComponent
             return;
         }
 
-        $this->submitted = true;
-
         $this->reset('idFile');
+
+        $this->leaveForDashboard();
+    }
+
+    private function leaveForDashboard(): void
+    {
+        session()->flash('notify', [
+            'type'    => 'info',
+            'message' => __('auth.onboarding.under_review'),
+        ]);
+
+        $this->redirect(route('portal.dashboard'));
     }
 
     /**

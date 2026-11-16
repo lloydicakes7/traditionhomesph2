@@ -33,6 +33,8 @@ class Kernel extends ConsoleKernel
         $schedule->command('dues:generate-monthly')->dailyAt('06:00');
         $schedule->command('dues:apply-penalties')->dailyAt('06:15');
         $schedule->command('dues:send-reminders')->dailyAt('08:00');
+
+        $schedule->command('homeowners:send-verification-reminders')->twiceDaily(8, 20);
     }
 
     /**

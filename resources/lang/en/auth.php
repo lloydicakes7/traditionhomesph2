@@ -90,8 +90,7 @@ return [
     // ===== Onboarding =====
 
     'onboarding' => [
-        'submitted'           => 'Thank you. The office will check your details and your household.',
-        'waiting'             => 'Your profile is with the office. Every portal service opens once it is verified.',
+        'under_review'        => 'Your information is now being reviewed by the office. Every portal service opens once your account is verified.',
         'rejected'            => 'The office asked for a correction.',
         'failed'              => 'We could not save your profile. Please try again, or contact the office.',
         'id_required'         => 'Upload one valid ID so the office can check it.',

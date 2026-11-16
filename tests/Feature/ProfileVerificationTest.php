@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Actions\Homeowners\Profiles\NotifyPendingProfileVerifications;
 use App\Actions\Homeowners\Profiles\RejectProfile;
 use App\Actions\Homeowners\Profiles\SubmitProfileVerification;
 use App\Actions\Homeowners\Profiles\VerifyProfile;
@@ -15,8 +16,11 @@ use App\Models\Property;
 use App\Models\Resident;
 use App\Models\Role;
 use App\Models\User;
+use App\Notifications\PendingProfileVerifications;
+use App\Notifications\PendingProfileVerificationsDigest;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Livewire;
 use Tests\TestCase;
@@ -91,6 +95,43 @@ class ProfileVerificationTest extends TestCase
         $this->actingAs($user, 'homeowner')
             ->get('/portal/notifications')
             ->assertOk();
+    }
+
+    public function test_a_submitted_profile_cannot_open_the_onboarding_form_again(): void
+    {
+        $user = $this->submitted();
+
+        $this->actingAs($user, 'homeowner')
+            ->get('/portal/onboarding')
+            ->assertRedirect(route('portal.dashboard'))
+            ->assertSessionHas('notify');
+
+        $this->get('/portal')
+            ->assertOk()
+            ->assertSee(__('auth.onboarding.under_review'));
+    }
+
+    public function test_a_submitted_profile_is_sent_back_from_a_closed_service(): void
+    {
+        $user = $this->submitted();
+
+        $this->actingAs($user, 'homeowner')
+            ->get('/portal/requests')
+            ->assertRedirect(route('portal.dashboard'))
+            ->assertSessionHas('notify');
+    }
+
+    public function test_a_submitted_profile_cannot_submit_the_wizard_again(): void
+    {
+        $user = $this->submitted();
+        $submittedAt = $user->profile_submitted_at;
+
+        Livewire::actingAs($user, 'homeowner')
+            ->test(ProfileWizard::class)
+            ->call('submit')
+            ->assertRedirect(route('portal.dashboard'));
+
+        $this->assertSame($submittedAt->toDateTimeString(), $user->fresh()->profile_submitted_at->toDateTimeString());
     }
 
     public function test_the_valid_id_card_offers_the_camera_capture(): void
@@ -428,6 +469,48 @@ class ProfileVerificationTest extends TestCase
 
         $this->assertSame(ProfileStatus::SUBMITTED, $user->fresh()->profile_status->value);
         $this->assertSame('Cruz', $user->fresh()->resident->surname);
+    }
+
+    // ===== Reminders =====
+
+    public function test_the_office_is_reminded_and_mailed_once_every_three_days(): void
+    {
+        Notification::fake();
+
+        $this->submitted();
+        $officer = $this->officer();
+
+        app(NotifyPendingProfileVerifications::class)->handle();
+
+        Notification::assertSentTo($officer, PendingProfileVerifications::class);
+        Notification::assertSentToTimes($officer, PendingProfileVerificationsDigest::class, 1);
+
+        app(NotifyPendingProfileVerifications::class)->handle();
+
+        Notification::assertSentToTimes($officer, PendingProfileVerifications::class, 2);
+        Notification::assertSentToTimes($officer, PendingProfileVerificationsDigest::class, 1);
+    }
+
+    public function test_the_reminder_skips_an_officer_without_the_permission(): void
+    {
+        Notification::fake();
+
+        $this->submitted();
+
+        $role = Role::create(['name' => 'Front Desk', 'permissions' => []]);
+
+        $officer = Admin::create([
+            'name'      => 'Front Desk',
+            'email'     => 'frontdesk@example.com',
+            'password'  => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
+            'role_id'   => $role->id,
+            'is_active' => true,
+        ]);
+
+        app(NotifyPendingProfileVerifications::class)->handle();
+
+        Notification::assertNotSentTo($officer, PendingProfileVerifications::class);
+        Notification::assertNotSentTo($officer, PendingProfileVerificationsDigest::class);
     }
 
     // ===== Fixtures =====

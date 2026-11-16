@@ -47,6 +47,10 @@ class SubmitProfileVerification
      */
     public function handle(User $account, array $data, $idFile): User
     {
+        if ($account->profile_status?->isSubmitted()) {
+            throw new \RuntimeException('Your information is already waiting for the office.');
+        }
+
         $resident = $account->resident;
 
         if ($resident === null) {

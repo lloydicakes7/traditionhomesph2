@@ -50,15 +50,7 @@
         <div class="col-12 col-lg-8">
 
             {{-- ===== Where the profile stands ===== --}}
-            @if ($submitted)
-                <div class="alert alert-success">
-                    <i class="fas fa-fw fa-check-circle mr-1"></i>{{ __('auth.onboarding.submitted') }}
-                </div>
-            @elseif ($account->profile_status->isSubmitted())
-                <div class="alert alert-info">
-                    <i class="fas fa-fw fa-clock mr-1"></i>{{ __('auth.onboarding.waiting') }}
-                </div>
-            @elseif ($account->profile_status->isRejected())
+            @if ($account->profile_status->isRejected())
                 <div class="alert alert-danger">
                     <i class="fas fa-fw fa-exclamation-triangle mr-1"></i>
                     <strong>{{ __('auth.onboarding.rejected') }}</strong>

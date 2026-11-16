@@ -28,6 +28,7 @@ class DashboardQuery
         $stats = $this->statsFor($residentId);
 
         return [
+            'profileUnderReview' => (bool) $account->profile_status?->isSubmitted(),
             'stats' => $stats,
             'charts' => [
                 'year'     => $year,

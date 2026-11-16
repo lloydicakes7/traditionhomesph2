@@ -17,7 +17,16 @@ class OnboardingController extends Controller
      */
     public function index()
     {
-        $this->authorize('updateOwn', Auth::guard('homeowner')->user());
+        $account = Auth::guard('homeowner')->user();
+
+        $this->authorize('updateOwn', $account);
+
+        if ($account->profile_status?->isSubmitted()) {
+            return redirect()->route('portal.dashboard')->with('notify', [
+                'type'    => 'info',
+                'message' => __('auth.onboarding.under_review'),
+            ]);
+        }
 
         return view('portal.onboarding');
     }

@@ -7,6 +7,12 @@
 @endsection
 
 @section('page-content')
+    @if ($profileUnderReview)
+        <div class="alert alert-info">
+            <i class="fas fa-fw fa-clock mr-1"></i>{{ __('auth.onboarding.under_review') }}
+        </div>
+    @endif
+
     {{-- ================================================================== --}}
     {{-- MY FILE — the four things a homeowner files or holds                --}}
     {{-- ================================================================== --}}

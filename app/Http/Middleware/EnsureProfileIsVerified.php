@@ -29,6 +29,13 @@ class EnsureProfileIsVerified
             return $next($request);
         }
 
+        if ($account->profile_status?->isSubmitted()) {
+            return redirect()->route('portal.dashboard')->with('notify', [
+                'type'    => 'info',
+                'message' => __('auth.onboarding.under_review'),
+            ]);
+        }
+
         return redirect()->route('portal.onboarding')->with('notify', [
             'type'    => 'warning',
             'message' => __('auth.onboarding.gate_notice'),
