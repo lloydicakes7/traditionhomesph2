@@ -31,6 +31,7 @@ class BusinessPermitDocumentQuery
         'mobile_no',
         'purposes',
         'issued_date',
+        'or_no',
     ];
 
     /**
@@ -92,6 +93,7 @@ class BusinessPermitDocumentQuery
         );
         $data['issued_date'] = DocumentText::dateParts($params['issuedAt'] ?? now());
         $data['control_no'] = DocumentText::clean($params['controlNumber'] ?? '');
+        $data['or_no'] = DocumentText::clean($params['orNumber'] ?? '');
 
         return $data;
     }
@@ -114,6 +116,7 @@ class BusinessPermitDocumentQuery
             'purposes'       => $this->purposes('', ''),
             'issued_date'    => DocumentText::dateParts(null),
             'control_no'     => '',
+            'or_no'          => '',
         ];
     }
 

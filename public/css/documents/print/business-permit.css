@@ -1,33 +1,329 @@
-/* ===== Fields ===== */
+/* ===== Page ===== */
 
-.thha-pdf-field {
-    font-size: 10.3pt;
-    line-height: 12.9pt;
-    height: 4.55mm;
+* {
+    box-sizing: border-box;
 }
 
-.thha-f-control-no { left: 25.4mm; top: 307.77mm; width: 21.87mm; font-size: 8pt; line-height: 10pt; }
-.thha-f-applicant-name { left: 91.35mm; top: 75.48mm; width: 70.99mm; }
-.thha-f-gender { left: 175.72mm; top: 73.78mm; width: 28.33mm; }
-.thha-f-block { left: 86.51mm; top: 84.78mm; width: 8.42mm; }
-.thha-f-lot { left: 100.9mm; top: 84.78mm; width: 8.42mm; }
-.thha-f-birth-date { left: 82.69mm; top: 101.2mm; width: 37.15mm; }
-.thha-f-age { left: 128.81mm; top: 101.2mm; width: 9.13mm; }
-.thha-f-mobile-no { left: 158.25mm; top: 98.49mm; width: 46.12mm; }
-.thha-f-purpose-business-permit { left: 74.82mm; top: 130.34mm; width: 4.41mm; height: 2.68mm; line-height: 2.68mm; font-size: 6.8pt; text-align: center; font-weight: bold; }
-.thha-f-purpose-franchising { left: 74.82mm; top: 139.99mm; width: 4.41mm; height: 2.68mm; line-height: 2.68mm; font-size: 6.8pt; text-align: center; font-weight: bold; }
-.thha-f-purpose-internet { left: 74.82mm; top: 149.64mm; width: 4.41mm; height: 2.68mm; line-height: 2.68mm; font-size: 6.8pt; text-align: center; font-weight: bold; }
-.thha-f-purpose-electrical { left: 133.06mm; top: 128.65mm; width: 4.41mm; height: 2.68mm; line-height: 2.68mm; font-size: 6.8pt; text-align: center; font-weight: bold; }
-.thha-f-purpose-water { left: 133.06mm; top: 138.97mm; width: 4.41mm; height: 2.68mm; line-height: 2.68mm; font-size: 6.8pt; text-align: center; font-weight: bold; }
-.thha-f-purpose-other { left: 133.37mm; top: 148.62mm; width: 4.41mm; height: 2.68mm; line-height: 2.68mm; font-size: 6.8pt; text-align: center; font-weight: bold; }
-.thha-f-purpose-other-text { left: 150.85mm; top: 148.25mm; width: 28.33mm; }
-.thha-f-day { left: 120.36mm; top: 185.49mm; width: 14.56mm; }
-.thha-f-month { left: 145.06mm; top: 185.49mm; width: 18.81mm; }
-.thha-f-year { left: 170.35mm; top: 185.49mm; width: 3.7mm; }
+@page {
+    size: A4;
+    margin: 0;
+}
 
-/* ===== Dynamic ===== */
+.thha-pdf-page {
+    position: relative;
+    width: 210mm;
+    height: 297mm;
+    overflow: hidden;
+    background: #fff;
+}
 
-.thha-d-left-name { position: absolute; left: 45.24mm; width: 90mm; text-align: center; top: 272.98mm; font-size: 10.71pt; line-height: 13.39pt; font-weight: bold; text-decoration: underline; white-space: nowrap; }
-.thha-d-left-title { position: absolute; left: 43.67mm; width: 90mm; text-align: center; top: 278.4mm; font-size: 10.71pt; line-height: 13.39pt; }
-.thha-d-right-name { position: absolute; left: 117.97mm; width: 90mm; text-align: center; top: 274.68mm; font-size: 10.71pt; line-height: 13.39pt; font-weight: bold; text-decoration: underline; white-space: nowrap; }
-.thha-d-right-title { position: absolute; left: 117.65mm; width: 90mm; text-align: center; top: 280.09mm; font-size: 10.71pt; line-height: 13.39pt; }
+/* ===== Letterhead ===== */
+
+.thha-bp-header {
+    position: absolute;
+    left: 13.2mm;
+    top: 7.6mm;
+    width: 186mm;
+    height: 26.7mm;
+    border-collapse: collapse;
+}
+
+.thha-bp-header td {
+    padding: 0;
+}
+
+.thha-bp-header__mark {
+    text-align: left;
+}
+
+.thha-bp-header__mark--right {
+    text-align: right;
+}
+
+.thha-bp-header__text {
+    text-align: center;
+    line-height: 1.22;
+    font-size: 8pt;
+}
+
+.thha-bp-header__text div {
+    line-height: 1.22;
+}
+
+.thha-bp-header__title {
+    font-size: 11pt;
+    font-weight: bold;
+}
+
+/* ===== Main Document Frame (absolute blocks: 49mm sidebar + 141mm letter) ===== */
+
+.thha-bp-frame {
+    position: absolute;
+    left: 9.9mm;
+    top: 39.6mm;
+    width: 190mm;
+    height: 241.8mm;
+    border: 0.5px solid #000;
+}
+
+/* ===== Sidebar ===== */
+
+.thha-bp-sidebar {
+    position: absolute;
+    left: 0;
+    top: 0;
+
+    /* content width 45mm + 2mm padding each side = 49mm */
+    width: 45mm;
+    height: 236.3mm;
+
+    padding: 2.5mm 2mm 3mm;
+    border-right: 0.5px solid #000;
+
+    text-align: center;
+    font-size: 7.4pt;
+    line-height: 1.22;
+}
+
+.thha-bp-photo {
+    margin: 0 0 2mm;
+    text-align: center;
+}
+
+.thha-bp-officer {
+    margin: 0 0 1.4mm;
+}
+
+.thha-bp-officer__name {
+    display: block;
+    font-weight: bold;
+}
+
+.thha-bp-officer__role {
+    display: block;
+}
+
+.thha-bp-board-heading {
+    font-weight: bold;
+    margin: 4.3mm 0 4.6mm;
+}
+
+.thha-bp-control {
+    position: absolute;
+    left: 2mm;
+    bottom: 2.5mm;
+
+    width: 41mm;
+
+    text-align: left;
+    font-size: 7.4pt;
+    line-height: 1.2;
+    font-weight: bold;
+}
+
+.thha-bp-control__value {
+    display: inline-block;
+    min-width: 17mm;
+    border-bottom: 0.5px solid #000;
+    text-align: center;
+}
+
+/* ===== Letter Content ===== */
+
+.thha-bp-letter {
+    position: absolute;
+    left: 49mm;
+    top: 0;
+
+    /* content width 135mm + 3mm padding each side = 141mm */
+    width: 135mm;
+    height: 234.8mm;
+
+    padding: 2mm 3mm 5mm;
+
+    font-size: 9.4pt;
+    line-height: 1.35;
+}
+
+.thha-bp-title-text {
+    display: block;
+
+    text-align: center;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 19pt;
+    font-weight: bold;
+    letter-spacing: 0.3pt;
+
+    margin: 0.5mm 0 4mm;
+}
+
+/* ===== Blanks (same construction as the endorsement letter) ===== */
+
+.thha-bp-blank {
+    display: inline-block;
+    /* box is only as tall as the text, so its bottom edge (the underline) and the
+       text baseline coincide with the sentence baseline in the PDF renderer */
+    line-height: 0.75;
+    vertical-align: baseline;
+
+    border-bottom: 0.5px solid #000;
+
+    font-weight: bold;
+    text-align: center;
+
+    white-space: nowrap;
+}
+
+.thha-bp-blank--left {
+    text-align: left;
+    padding-left: 1.2mm;
+}
+
+.thha-bp-paragraph {
+    margin: 0 0 4.5mm;
+    text-align: left;
+}
+
+.thha-bp-closing {
+    margin-top: 4.5mm;
+}
+
+/* ===== Signature ===== */
+
+.thha-bp-signature {
+    width: 67mm;
+    margin-top: 6.35mm;
+}
+
+.thha-bp-signature__line {
+    height: 2.5mm;
+    border-bottom: 0.5px solid #000;
+    margin-bottom: 1mm;
+}
+
+.thha-bp-signature__name {
+    font-weight: bold;
+}
+
+/* ===== Branding and Footer ===== */
+
+.thha-bp-brand {
+    position: absolute;
+    right: 4.6mm;
+    bottom: 5.6mm;
+    text-align: right;
+}
+
+.thha-bp-footer {
+    position: absolute;
+    left: 8mm;
+    bottom: 2mm;
+
+    font-size: 7.2pt;
+    font-weight: bold;
+}
+
+.thha-pdf-page .doc-logo {
+    vertical-align: middle;
+}
+
+/* ===== Business Permit ===== */
+
+.thha-bp-title-text { margin-bottom: 15mm; }
+
+.thha-bp-field {
+    margin: 0 0 1.6mm;
+    line-height: 1.7;
+    white-space: nowrap;
+}
+
+.thha-bp-field--details { margin-top: 4mm; }
+
+.thha-bp-blank--name   { width: 52mm; }
+.thha-bp-blank--gender { width: 17mm; }
+.thha-bp-blank--unit   { width: 8mm; }
+.thha-bp-blank--birth  { width: 31mm; }
+.thha-bp-blank--age    { width: 9mm; }
+.thha-bp-blank--mobile { width: 31mm; }
+.thha-bp-blank--day    { width: 14mm; }
+.thha-bp-blank--month  { width: 26mm; }
+.thha-bp-blank--year   { width: 11mm; }
+
+.thha-bp-purpose { margin-top: 12mm; }
+
+.thha-bp-purpose-title {
+    font-weight: bold;
+    margin-bottom: 3.5mm;
+}
+
+.thha-bp-options { margin-left: 14mm; width: 121mm; }
+
+.thha-bp-certification {
+    margin-top: 14mm;
+    line-height: 1.7;
+}
+
+/* ===== Note / Conforme / Signatories ===== */
+
+.thha-bp-note {
+    margin-top: 10mm;
+    font-weight: bold;
+    font-style: italic;
+}
+
+.thha-bp-note ol {
+    margin: 2mm 0 0 7mm;
+    padding-left: 3mm;
+}
+
+.thha-bp-note li {
+    padding-left: 1mm;
+    margin-bottom: 0.8mm;
+}
+
+.thha-bp-conforme {
+    margin-top: 11mm;
+}
+
+.thha-bp-signatories {
+    width: 100%;
+    margin-top: 7mm;
+    border-collapse: collapse;
+    text-align: center;
+    line-height: 1.35;
+}
+
+.thha-bp-signatories td {
+    width: 50%;
+    padding: 0;
+    vertical-align: top;
+}
+
+.thha-bp-signatories strong {
+    text-decoration: underline;
+}
+
+.thha-bp-check {
+    display: inline-block;
+    width: 2.6mm;
+    height: 2.6mm;
+    margin-right: 1.4mm;
+    border: 0.5px solid #000;
+    font-size: 6.8pt;
+    line-height: 2.4mm;
+    text-align: center;
+    font-weight: bold;
+    vertical-align: -1mm;
+}
+
+.thha-bp-options {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.thha-bp-options td {
+    width: 50%;
+    padding: 0 0 2.2mm 0;
+    vertical-align: top;
+    white-space: nowrap;
+}

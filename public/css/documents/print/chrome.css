@@ -128,6 +128,143 @@ body {
     text-decoration: underline;
 }
 
+/* ===== Framed Letters ===== */
+
+/* The bordered sheet the Certification and the Invitation Letter print on, and
+   the officer column at its left. Both letters read these same coordinates. */
+
+.thha-fl-frame {
+    position: absolute;
+    left: 28.32pt;
+    top: 112.34pt;
+    width: 538.92pt;
+    height: 685.18pt;
+    border: 0.72pt solid #222;
+}
+
+.thha-fl-divider {
+    position: absolute;
+    left: 166.58pt;
+    top: 112.34pt;
+    height: 685.18pt;
+    border-left: 0.72pt solid #222;
+}
+
+.thha-fl-mark {
+    position: absolute;
+    line-height: 0;
+}
+
+.thha-fl-mark--left {
+    left: 37.825pt;
+    top: 22.89pt;
+    width: 67.5pt;
+    height: 67.5pt;
+}
+
+.thha-fl-mark--right {
+    left: 478.98pt;
+    top: 37.52pt;
+    width: 92.4pt;
+    height: 46.2pt;
+}
+
+.thha-fl-headline {
+    position: absolute;
+    left: 100pt;
+    width: 395.44pt;
+    text-align: center;
+    line-height: 1;
+    white-space: nowrap;
+}
+
+.thha-fl-tin {
+    position: absolute;
+    left: 23.04pt;
+    top: 823.438pt;
+    font-size: 7.56pt;
+    font-weight: bold;
+    line-height: 1;
+    white-space: nowrap;
+}
+
+.thha-fl-photo {
+    position: absolute;
+    left: 49.55pt;
+    top: 120.891pt;
+    width: 92.05pt;
+    height: 90.529pt;
+    line-height: 0;
+}
+
+.thha-fl-side {
+    position: absolute;
+    left: 28.32pt;
+    top: 217.384pt;
+    width: 138.26pt;
+    height: 535pt;
+    overflow: hidden;
+    text-align: center;
+    font-size: 8.04pt;
+    line-height: 11.79pt;
+}
+
+.thha-fl-officer {
+    margin: 0 0 0.93pt;
+}
+
+.thha-fl-name {
+    font-weight: bold;
+}
+
+.thha-fl-board {
+    font-weight: bold;
+    margin: 12.1pt 0 14.9pt;
+}
+
+.thha-fl-control {
+    position: absolute;
+    left: 34.92pt;
+    top: 769.724pt;
+    width: 131pt;
+    text-align: left;
+    font-size: 8.04pt;
+    font-weight: bold;
+    line-height: 9.72pt;
+    white-space: nowrap;
+}
+
+.thha-fl-under {
+    display: inline-block;
+    height: 8pt;
+    line-height: 8pt;
+    border-bottom: 0.72pt solid #000;
+    text-align: center;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.thha-fl-under--control {
+    width: 74pt;
+}
+
+.thha-fl-under--or {
+    width: 80pt;
+}
+
+/* ===== Inline Blanks ===== */
+
+.thha-blank {
+    display: inline-block;
+    border-bottom: 0.72pt solid #000;
+    padding: 0 1pt;
+    text-align: center;
+    line-height: inherit;
+    vertical-align: baseline;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
 /* ===== Fields ===== */
 
 .thha-pdf-field {

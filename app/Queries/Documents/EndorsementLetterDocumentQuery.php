@@ -26,11 +26,21 @@ class EndorsementLetterDocumentQuery
         'respondent_block',
         'respondent_lot',
         'concern',
+        'concern_line_1',
+        'concern_line_2',
+        'concern_line_3',
+        'addressee_name',
+        'addressee_position',
+        'addressee_office',
+        'addressee_city',
         'date',
     ];
 
-    /** Characters one concern line holds at 11 pt across the content column. */
-    const CONCERN_CHARS = 92;
+    /** Characters one concern line holds at 9.4 pt across the content column. */
+    const CONCERN_CHARS = 80;
+
+    /** The ruled lines the letter carries for the complaint. */
+    const CONCERN_LINES = 3;
 
     /**
      * The view data for one endorsement letter.
@@ -57,7 +67,7 @@ class EndorsementLetterDocumentQuery
         }
 
         $concern = DocumentText::clean($params['problem'] ?? '');
-        $lines = DocumentText::wrap($concern, self::CONCERN_CHARS, 2);
+        $lines = DocumentText::wrap($concern, self::CONCERN_CHARS, self::CONCERN_LINES);
 
         $data = $this->blank();
 
@@ -68,12 +78,19 @@ class EndorsementLetterDocumentQuery
         $data['respondent_block'] = $respondentUnit['block'];
         $data['respondent_lot'] = $respondentUnit['lot'];
         $data['concern'] = $concern;
-        $data['concern_line_1'] = $lines[0] ?? '';
-        $data['concern_line_2'] = DocumentText::fit(implode(' ', array_slice($lines, 1)), self::CONCERN_CHARS);
+        $data['concern_line_1'] = DocumentText::fit($lines[0] ?? '', self::CONCERN_CHARS);
+        $data['concern_line_2'] = DocumentText::fit($lines[1] ?? '', self::CONCERN_CHARS);
+        $data['concern_line_3'] = DocumentText::fit($lines[2] ?? '', self::CONCERN_CHARS);
 
-        if (count($lines) > 2) {
+        if (count($lines) > self::CONCERN_LINES) {
             \Illuminate\Support\Facades\Log::warning('An endorsement concern needed more lines than the paper carries.');
         }
+
+        $data['addressee_name'] = DocumentText::clean($params['addresseeName'] ?? '');
+        $data['addressee_position'] = DocumentText::clean($params['addresseePosition'] ?? '');
+        $data['addressee_office'] = DocumentText::clean($params['addresseeOffice'] ?? '');
+        $data['addressee_city'] = DocumentText::clean($params['addresseeCity'] ?? '');
+
         $data['date'] = DocumentText::dateParts($params['letterDate'] ?? now());
         $data['control_no'] = DocumentText::clean($params['controlNumber'] ?? '');
         $data['or_no'] = DocumentText::clean($params['orNumber'] ?? '');
@@ -98,6 +115,11 @@ class EndorsementLetterDocumentQuery
             'concern'           => '',
             'concern_line_1'    => '',
             'concern_line_2'    => '',
+            'concern_line_3'    => '',
+            'addressee_name'    => '',
+            'addressee_position' => '',
+            'addressee_office'  => '',
+            'addressee_city'    => '',
             'date'              => DocumentText::dateParts(null),
             'control_no'        => '',
             'or_no'             => '',

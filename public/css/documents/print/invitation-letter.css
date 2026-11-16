@@ -1,21 +1,267 @@
-/* ===== Fields ===== */
+/* ===== Page ===== */
 
-.thha-pdf-field {
-    font-size: 13.4pt;
-    line-height: 16.8pt;
-    height: 5.93mm;
+* {
+    box-sizing: border-box;
 }
 
-.thha-f-control-no { left: 26.11mm; top: 302.55mm; width: 18.34mm; font-size: 8pt; line-height: 10pt; }
-.thha-f-or-no { left: 23.99mm; top: 307.14mm; width: 20.46mm; font-size: 8pt; line-height: 10pt; }
-.thha-f-date { left: 157.6mm; top: 57.19mm; width: 44.25mm; }
-.thha-f-to-name { left: 79.02mm; top: 72.8mm; width: 69.27mm; }
-.thha-f-address-1 { left: 80.54mm; top: 86.45mm; width: 69.73mm; font-size: 8pt; line-height: 10pt; }
-.thha-f-address-2 { left: 80.24mm; top: 92.2mm; width: 69.73mm; font-size: 8pt; line-height: 10pt; }
-.thha-f-meeting-date { left: 61.36mm; top: 132.8mm; width: 89.32mm; }
-.thha-f-meeting-time { left: 174mm; top: 132.8mm; width: 17.6mm; }
+@page {
+    size: A4;
+    margin: 0;
+}
 
-/* ===== Dynamic ===== */
+.thha-pdf-page {
+    position: relative;
+    width: 210mm;
+    height: 297mm;
+    overflow: hidden;
+    background: #fff;
+}
 
-.thha-d-signatory-name { position: absolute; left: 64.22mm; width: 90mm; text-align: left; top: 205.16mm; font-size: 12.11pt; line-height: 15.14pt; font-weight: bold; white-space: nowrap; }
-.thha-d-signatory-title { position: absolute; left: 67.42mm; width: 90mm; text-align: left; top: 210.42mm; font-size: 12.11pt; line-height: 15.14pt; }
+/* ===== Letterhead ===== */
+
+.thha-inv-header {
+    position: absolute;
+    left: 13.2mm;
+    top: 7.6mm;
+    width: 186mm;
+    height: 26.7mm;
+    border-collapse: collapse;
+}
+
+.thha-inv-header td {
+    padding: 0;
+}
+
+.thha-inv-header__mark {
+    text-align: left;
+}
+
+.thha-inv-header__mark--right {
+    text-align: right;
+}
+
+.thha-inv-header__text {
+    text-align: center;
+    line-height: 1.22;
+    font-size: 8pt;
+}
+
+.thha-inv-header__text div {
+    line-height: 1.22;
+}
+
+.thha-inv-header__title {
+    font-size: 11pt;
+    font-weight: bold;
+}
+
+/* ===== Main Document Frame (absolute blocks: 49mm sidebar + 141mm letter) ===== */
+
+.thha-inv-frame {
+    position: absolute;
+    left: 9.9mm;
+    top: 39.6mm;
+    width: 190mm;
+    height: 241.8mm;
+    border: 0.5px solid #000;
+}
+
+/* ===== Sidebar ===== */
+
+.thha-inv-sidebar {
+    position: absolute;
+    left: 0;
+    top: 0;
+
+    /* content width 45mm + 2mm padding each side = 49mm */
+    width: 45mm;
+    height: 236.3mm;
+
+    padding: 2.5mm 2mm 3mm;
+    border-right: 0.5px solid #000;
+
+    text-align: center;
+    font-size: 7.4pt;
+    line-height: 1.22;
+}
+
+.thha-inv-photo {
+    margin: 0 0 2mm;
+    text-align: center;
+}
+
+.thha-inv-officer {
+    margin: 0 0 1.4mm;
+}
+
+.thha-inv-officer__name {
+    display: block;
+    font-weight: bold;
+}
+
+.thha-inv-officer__role {
+    display: block;
+}
+
+.thha-inv-board-heading {
+    font-weight: bold;
+    margin: 4.3mm 0 4.6mm;
+}
+
+.thha-inv-control {
+    position: absolute;
+    left: 2mm;
+    bottom: 2.5mm;
+
+    width: 41mm;
+
+    text-align: left;
+    font-size: 7.4pt;
+    line-height: 1.2;
+    font-weight: bold;
+}
+
+.thha-inv-control__value {
+    display: inline-block;
+    min-width: 17mm;
+    border-bottom: 0.5px solid #000;
+    text-align: center;
+}
+
+/* ===== Letter Content ===== */
+
+.thha-inv-letter {
+    position: absolute;
+    left: 49mm;
+    top: 0;
+
+    /* content width 135mm + 3mm padding each side = 141mm */
+    width: 135mm;
+    height: 234.8mm;
+
+    padding: 2mm 3mm 5mm;
+
+    font-size: 10pt;
+    line-height: 1.35;
+}
+
+.thha-inv-title-text {
+    display: block;
+
+    text-align: center;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 19pt;
+    font-weight: bold;
+    letter-spacing: 0.3pt;
+
+    margin: 0.5mm 0 4mm;
+}
+
+/* ===== Blanks (same construction as the endorsement letter) ===== */
+
+.thha-inv-blank {
+    display: inline-block;
+    /* box is only as tall as the text, so its bottom edge (the underline) and the
+       text baseline coincide with the sentence baseline in the PDF renderer */
+    line-height: 0.75;
+    vertical-align: baseline;
+
+    border-bottom: 0.5px solid #000;
+
+    font-weight: bold;
+    text-align: center;
+
+    white-space: nowrap;
+}
+
+.thha-inv-blank--left {
+    text-align: left;
+    padding-left: 1.2mm;
+}
+
+.thha-inv-paragraph {
+    margin: 0 0 4.5mm;
+    text-align: left;
+}
+
+.thha-inv-closing {
+    margin-top: 4.5mm;
+}
+
+/* ===== Signature ===== */
+
+.thha-inv-signature {
+    width: 67mm;
+    margin-top: 6.35mm;
+}
+
+.thha-inv-signature__line {
+    height: 2.5mm;
+    border-bottom: 0.5px solid #000;
+    margin-bottom: 1mm;
+}
+
+.thha-inv-signature__name {
+    font-weight: bold;
+}
+
+/* ===== Branding and Footer ===== */
+
+.thha-inv-brand {
+    position: absolute;
+    right: 4.6mm;
+    bottom: 5.6mm;
+    text-align: right;
+}
+
+.thha-inv-footer {
+    position: absolute;
+    left: 8mm;
+    bottom: 2mm;
+
+    font-size: 7.2pt;
+    font-weight: bold;
+}
+
+.thha-pdf-page .doc-logo {
+    vertical-align: middle;
+}
+
+/* ===== Invitation Letter ===== */
+
+.thha-inv-title-text { margin-bottom: 4mm; }
+
+.thha-inv-row {
+    margin: 0 0 3.2mm;
+    white-space: nowrap;
+}
+
+.thha-inv-row--date { text-align: right; margin-bottom: 7mm; }
+
+.thha-inv-blank--date    { width: 62mm; }
+.thha-inv-blank--to      { width: 105mm; }
+.thha-inv-blank--address { width: 105mm; }
+.thha-inv-blank--address2 { width: 98mm; }
+.thha-inv-blank--name    { width: 55mm; }
+.thha-inv-blank--meeting { width: 55mm; }
+.thha-inv-blank--time    { width: 21mm; }
+.thha-inv-blank--received { width: 66mm; }
+.thha-inv-blank--datetime { width: 97mm; }
+.thha-inv-blank--given    { width: 74mm; }
+
+.thha-inv-address2 { margin-left: 15.5mm; }
+
+.thha-inv-subject {
+    font-weight: bold;
+    margin: 8mm 0 4mm;
+}
+
+.thha-inv-salutation { margin: 0 0 4mm; }
+
+.thha-inv-received-block { margin-top: 9mm; }
+.thha-inv-received-block .thha-inv-row { margin-bottom: 4mm; }
+
+.thha-inv-paragraph { margin: 0 0 4.5mm; text-align: left; }
+.thha-inv-signature { width: 67mm; margin-top: 7mm; }
+.thha-inv-signature__line { height: 2.5mm; border-bottom: 0.5px solid #000; margin-bottom: 1mm; }
+.thha-inv-signature__name { font-weight: bold; }

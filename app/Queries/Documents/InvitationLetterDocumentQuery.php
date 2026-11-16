@@ -130,6 +130,7 @@ class InvitationLetterDocumentQuery
         return [
             'name'      => DocumentText::fit(DocumentText::person($resident->surname, $resident->first_name, $resident->middle_name, $resident->suffix), self::ADDRESS_CHARS),
             'block'     => $unit['block'],
+            'first_name' => DocumentText::clean($resident->first_name),
             'lot'       => $unit['lot'],
             'address'   => $address,
             'address_1' => DocumentText::fit($lines[0] ?? '', self::ADDRESS_CHARS),
@@ -144,7 +145,7 @@ class InvitationLetterDocumentQuery
      */
     private function emptyRecipient(): array
     {
-        return ['name' => '', 'block' => '', 'lot' => '', 'address' => '', 'address_1' => '', 'address_2' => ''];
+        return ['name' => '', 'first_name' => '', 'block' => '', 'lot' => '', 'address' => '', 'address_1' => '', 'address_2' => ''];
     }
 
     // =====================================================================

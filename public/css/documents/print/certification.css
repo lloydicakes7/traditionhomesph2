@@ -1,32 +1,323 @@
-/* ===== Fields ===== */
+/* ===== Page ===== */
 
-.thha-pdf-field {
-    font-size: 11.2pt;
-    line-height: 14pt;
-    height: 4.94mm;
+* {
+    box-sizing: border-box;
 }
 
-.thha-f-control-no { left: 26.11mm; top: 303.25mm; width: 18.34mm; font-size: 8pt; line-height: 10pt; }
-.thha-f-or-no { left: 23.99mm; top: 307.84mm; width: 20.46mm; font-size: 8pt; line-height: 10pt; }
-.thha-f-block { left: 119.15mm; top: 64.83mm; width: 5.89mm; }
-.thha-f-lot { left: 131.25mm; top: 64.83mm; width: 4.9mm; }
-.thha-f-occupant-name { left: 119.83mm; top: 80.22mm; width: 50.95mm; }
-.thha-f-purpose-residency { left: 81.41mm; top: 144.17mm; width: 4.95mm; height: 2.8mm; line-height: 2.8mm; font-size: 7.1pt; text-align: center; font-weight: bold; }
-.thha-f-purpose-employment { left: 81.41mm; top: 151.71mm; width: 4.95mm; height: 2.8mm; line-height: 2.8mm; font-size: 7.1pt; text-align: center; font-weight: bold; }
-.thha-f-purpose-burial { left: 81.41mm; top: 158.95mm; width: 4.95mm; height: 2.8mm; line-height: 2.8mm; font-size: 7.1pt; text-align: center; font-weight: bold; }
-.thha-f-purpose-indigency { left: 81.41mm; top: 166.49mm; width: 4.62mm; height: 2.31mm; line-height: 2.31mm; font-size: 5.9pt; text-align: center; font-weight: bold; }
-.thha-f-purpose-others { left: 81.41mm; top: 171.11mm; width: 4.62mm; height: 2.31mm; line-height: 2.31mm; font-size: 5.9pt; text-align: center; font-weight: bold; }
-.thha-f-purpose-financial { left: 148.69mm; top: 142.78mm; width: 4.95mm; height: 2.8mm; line-height: 2.8mm; font-size: 7.1pt; text-align: center; font-weight: bold; }
-.thha-f-purpose-educational { left: 148.69mm; top: 150.48mm; width: 4.95mm; height: 2.8mm; line-height: 2.8mm; font-size: 7.1pt; text-align: center; font-weight: bold; }
-.thha-f-purpose-loan { left: 148.69mm; top: 158.02mm; width: 4.95mm; height: 2.8mm; line-height: 2.8mm; font-size: 7.1pt; text-align: center; font-weight: bold; }
-.thha-f-purpose-moved-out { left: 149.35mm; top: 165.11mm; width: 4.95mm; height: 2.31mm; line-height: 2.31mm; font-size: 5.9pt; text-align: center; font-weight: bold; }
-.thha-f-day { left: 84.52mm; top: 191.52mm; width: 8.53mm; }
-.thha-f-month { left: 104.53mm; top: 191.52mm; width: 21.22mm; }
-.thha-f-year { left: 133.07mm; top: 191.52mm; width: 3.58mm; }
+@page {
+    size: A4;
+    margin: 0;
+}
 
-/* ===== Dynamic ===== */
+.thha-pdf-page {
+    position: relative;
+    width: 210mm;
+    height: 297mm;
+    overflow: hidden;
+    background: #fff;
+}
 
-.thha-d-left-name { position: absolute; left: 52.9mm; width: 90mm; text-align: center; top: 262.83mm; font-size: 11.69pt; line-height: 14.61pt; font-weight: bold; text-decoration: underline; white-space: nowrap; }
-.thha-d-left-title { position: absolute; left: 52.9mm; width: 90mm; text-align: center; top: 271.76mm; font-size: 11.69pt; line-height: 14.61pt; }
-.thha-d-right-name { position: absolute; left: 132.87mm; width: 90mm; text-align: center; top: 264.06mm; font-size: 11.69pt; line-height: 14.61pt; font-weight: bold; text-decoration: underline; white-space: nowrap; }
-.thha-d-right-title { position: absolute; left: 132.87mm; width: 90mm; text-align: center; top: 272.99mm; font-size: 11.69pt; line-height: 14.61pt; }
+/* ===== Letterhead ===== */
+
+.thha-cert-header {
+    position: absolute;
+    left: 13.2mm;
+    top: 7.6mm;
+    width: 186mm;
+    height: 26.7mm;
+    border-collapse: collapse;
+}
+
+.thha-cert-header td {
+    padding: 0;
+}
+
+.thha-cert-header__mark {
+    text-align: left;
+}
+
+.thha-cert-header__mark--right {
+    text-align: right;
+}
+
+.thha-cert-header__text {
+    text-align: center;
+    line-height: 1.22;
+    font-size: 8pt;
+}
+
+.thha-cert-header__text div {
+    line-height: 1.22;
+}
+
+.thha-cert-header__title {
+    font-size: 11pt;
+    font-weight: bold;
+}
+
+/* ===== Main Document Frame (absolute blocks: 49mm sidebar + 141mm letter) ===== */
+
+.thha-cert-frame {
+    position: absolute;
+    left: 9.9mm;
+    top: 39.6mm;
+    width: 190mm;
+    height: 241.8mm;
+    border: 0.5px solid #000;
+}
+
+/* ===== Sidebar ===== */
+
+.thha-cert-sidebar {
+    position: absolute;
+    left: 0;
+    top: 0;
+
+    /* content width 45mm + 2mm padding each side = 49mm */
+    width: 45mm;
+    height: 236.3mm;
+
+    padding: 2.5mm 2mm 3mm;
+    border-right: 0.5px solid #000;
+
+    text-align: center;
+    font-size: 7.4pt;
+    line-height: 1.22;
+}
+
+.thha-cert-photo {
+    margin: 0 0 2mm;
+    text-align: center;
+}
+
+.thha-cert-officer {
+    margin: 0 0 1.4mm;
+}
+
+.thha-cert-officer__name {
+    display: block;
+    font-weight: bold;
+}
+
+.thha-cert-officer__role {
+    display: block;
+}
+
+.thha-cert-board-heading {
+    font-weight: bold;
+    margin: 4.3mm 0 4.6mm;
+}
+
+.thha-cert-control {
+    position: absolute;
+    left: 2mm;
+    bottom: 2.5mm;
+
+    width: 41mm;
+
+    text-align: left;
+    font-size: 7.4pt;
+    line-height: 1.2;
+    font-weight: bold;
+}
+
+.thha-cert-control__value {
+    display: inline-block;
+    min-width: 17mm;
+    border-bottom: 0.5px solid #000;
+    text-align: center;
+}
+
+/* ===== Letter Content ===== */
+
+.thha-cert-letter {
+    position: absolute;
+    left: 49mm;
+    top: 0;
+
+    /* content width 135mm + 3mm padding each side = 141mm */
+    width: 135mm;
+    height: 234.8mm;
+
+    padding: 2mm 3mm 5mm;
+
+    font-size: 10pt;
+    line-height: 1.35;
+}
+
+.thha-cert-title-text {
+    display: block;
+
+    text-align: center;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 19pt;
+    font-weight: bold;
+    letter-spacing: 0.3pt;
+
+    margin: 0.5mm 0 4mm;
+}
+
+/* ===== Blanks (same construction as the endorsement letter) ===== */
+
+.thha-cert-blank {
+    display: inline-block;
+    /* box is only as tall as the text, so its bottom edge (the underline) and the
+       text baseline coincide with the sentence baseline in the PDF renderer */
+    line-height: 0.75;
+    vertical-align: baseline;
+
+    border-bottom: 0.5px solid #000;
+
+    font-weight: bold;
+    text-align: center;
+
+    white-space: nowrap;
+}
+
+.thha-cert-blank--left {
+    text-align: left;
+    padding-left: 1.2mm;
+}
+
+.thha-cert-paragraph {
+    margin: 0 0 4.5mm;
+    text-align: left;
+}
+
+.thha-cert-closing {
+    margin-top: 4.5mm;
+}
+
+/* ===== Signature ===== */
+
+.thha-cert-signature {
+    width: 67mm;
+    margin-top: 6.35mm;
+}
+
+.thha-cert-signature__line {
+    height: 2.5mm;
+    border-bottom: 0.5px solid #000;
+    margin-bottom: 1mm;
+}
+
+.thha-cert-signature__name {
+    font-weight: bold;
+}
+
+/* ===== Branding and Footer ===== */
+
+.thha-cert-brand {
+    position: absolute;
+    right: 4.6mm;
+    bottom: 5.6mm;
+    text-align: right;
+}
+
+.thha-cert-footer {
+    position: absolute;
+    left: 8mm;
+    bottom: 2mm;
+
+    font-size: 7.2pt;
+    font-weight: bold;
+}
+
+.thha-pdf-page .doc-logo {
+    vertical-align: middle;
+}
+
+/* ===== Certification ===== */
+
+.thha-cert-title-text { margin-bottom: 11mm; }
+
+.thha-cert-center {
+    margin: 0 0 4mm;
+    text-align: center;
+    line-height: 1.6;
+}
+
+.thha-cert-occupant {
+    margin: 0 0 8mm;
+    text-align: center;
+}
+
+.thha-cert-blank--unit  { width: 12mm; }
+.thha-cert-blank--name  { width: 72mm; }
+.thha-cert-blank--day   { width: 14mm; }
+.thha-cert-blank--month { width: 30mm; }
+.thha-cert-blank--year  { width: 12mm; }
+
+.thha-cert-purpose-title { margin: 6mm 0 3mm; }
+
+.thha-cert-options { margin-left: 1mm; }
+
+.thha-cert-given { margin: 9mm 0 0; line-height: 1.6; }
+
+/* ===== Note / Conforme / Signatories ===== */
+
+.thha-cert-note {
+    margin-top: 10mm;
+    font-weight: bold;
+    font-style: italic;
+}
+
+.thha-cert-note ol {
+    margin: 2mm 0 0 7mm;
+    padding-left: 3mm;
+}
+
+.thha-cert-note li {
+    padding-left: 1mm;
+    margin-bottom: 0.8mm;
+}
+
+.thha-cert-conforme {
+    margin-top: 11mm;
+}
+
+.thha-cert-signatories {
+    width: 100%;
+    margin-top: 7mm;
+    border-collapse: collapse;
+    text-align: center;
+    line-height: 1.35;
+}
+
+.thha-cert-signatories td {
+    width: 50%;
+    padding: 0;
+    vertical-align: top;
+}
+
+.thha-cert-signatories strong {
+    text-decoration: underline;
+}
+
+.thha-cert-check {
+    display: inline-block;
+    width: 2.6mm;
+    height: 2.6mm;
+    margin-right: 1.4mm;
+    border: 0.5px solid #000;
+    font-size: 6.8pt;
+    line-height: 2.4mm;
+    text-align: center;
+    font-weight: bold;
+    vertical-align: -1mm;
+}
+
+.thha-cert-options {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.thha-cert-options td {
+    width: 50%;
+    padding: 0 0 2.2mm 0;
+    vertical-align: top;
+    white-space: nowrap;
+}
+
+.thha-cert-paragraph { margin: 0 0 4.5mm; text-align: left; }
+.thha-cert-options-table td { padding-bottom: 3mm; }

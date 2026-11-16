@@ -121,10 +121,13 @@
                                 placeholder="left blank prints a fill-in line" />
                         </div>
                         <div class="col-6">
-                            <x-adminlte-input name="issuedAt" type="date" label="Date Issued" value="{{ $today }}"
-                                igroup-size="sm" />
+                            <x-adminlte-input name="orNumber" label="O.R. No." igroup-size="sm"
+                                placeholder="left blank prints a fill-in line" />
                         </div>
                     </div>
+
+                    <x-adminlte-input name="issuedAt" type="date" label="Date Issued" value="{{ $today }}"
+                        igroup-size="sm" />
                 @endif
 
                 {{-- ------------------------------------------------------ --}}
@@ -205,7 +208,7 @@
                     <x-adminlte-input name="addresseeCity" label="City" igroup-size="sm"
                         placeholder="Trece Martires City, Cavite" />
 
-                    <x-adminlte-textarea name="problem" label="The problem is with regards to" rows="2"
+                    <x-adminlte-textarea name="problem" label="The complaint is regarding" rows="2"
                         igroup-size="sm" placeholder="excessive noise (videoke) beyond quiet hours" />
 
                     <div class="custom-control custom-switch mb-2">
@@ -313,6 +316,15 @@
                         <div class="col-6">
                             <x-adminlte-input name="meetingTime" type="time" label="Time" value="15:00"
                                 igroup-size="sm" />
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-6">
+                            <x-adminlte-input name="controlNumber" label="Control No." igroup-size="sm" />
+                        </div>
+                        <div class="col-6">
+                            <x-adminlte-input name="orNumber" label="O.R. No." igroup-size="sm" />
                         </div>
                     </div>
 

@@ -172,6 +172,16 @@ class PrintDocument extends Enum
             return '297 / 210';
         }
 
+        // The certification, the invitation and the permit are drawn on A4,
+        // whether they are filled in or blank.
+        if (in_array($this->value, [
+            self::CERTIFICATION,
+            self::INVITATION_LETTER,
+            self::BUSINESS_PERMIT,
+        ], true)) {
+            return '210 / 297';
+        }
+
         return $this->hasBlankForm() ? '215.9 / 330.2' : '210 / 297';
     }
 
@@ -231,6 +241,7 @@ class PrintDocument extends Enum
                     'purpose'       => ['nullable', 'in:' . implode(',', BusinessPermitPurpose::values())],
                     'purposeOther'  => ['nullable', 'string', 'max:80', 'required_if:purpose,' . BusinessPermitPurpose::OTHER],
                     'controlNumber' => ['nullable', 'string', 'max:30'],
+                    'orNumber'      => ['nullable', 'string', 'max:30'],
                     'issuedAt'      => ['nullable', 'date'],
                 ];
 
@@ -284,6 +295,8 @@ class PrintDocument extends Enum
                     'venue'         => ['nullable', 'string', 'max:200'],
                     'meetingDate'   => ['nullable', 'date'],
                     'meetingTime'   => ['nullable', 'date_format:H:i'],
+                    'controlNumber' => ['nullable', 'string', 'max:30'],
+                    'orNumber'      => ['nullable', 'string', 'max:30'],
                     'letterDate'    => ['nullable', 'date'],
                 ];
 
