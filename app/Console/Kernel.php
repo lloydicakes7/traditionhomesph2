@@ -8,6 +8,18 @@ use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 class Kernel extends ConsoleKernel
 {
     /**
+     * Use our deprecation-tolerant HandleExceptions bootstrapper.
+     */
+    protected function bootstrappers()
+    {
+        return array_map(function ($bootstrapper) {
+            return $bootstrapper === \Illuminate\Foundation\Bootstrap\HandleExceptions::class
+                ? \App\Bootstrap\HandleExceptions::class
+                : $bootstrapper;
+        }, parent::bootstrappers());
+    }
+
+    /**
      * The Artisan commands provided by your application.
      *
      * @var array
@@ -25,15 +37,9 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('notifications:prune')->dailyAt('02:00');
-
-        // The dues configuration, run on its own. Each of these does nothing
-        // unless the officer has asked for it in Settings → Collections: the
-        // month is raised only in automatic mode, a penalty only where one is
-        // configured, a reminder only where the switch is on.
         $schedule->command('dues:generate-monthly')->dailyAt('06:00');
         $schedule->command('dues:apply-penalties')->dailyAt('06:15');
         $schedule->command('dues:send-reminders')->dailyAt('08:00');
-
         $schedule->command('homeowners:send-verification-reminders')->twiceDaily(8, 20);
     }
 
