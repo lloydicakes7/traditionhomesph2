@@ -64,3 +64,20 @@ Route::post('/password/reset', [ResetPasswordController::class, 'reset'])->name(
 // Password Set
 Route::get('/password/set/{token}', [SetPasswordController::class, 'show'])->middleware('signed')->name('password.set');
 Route::post('/password/set', [SetPasswordController::class, 'update'])->name('password.set.update');
+
+/*
+|--------------------------------------------------------------------------
+| Storage Link
+|--------------------------------------------------------------------------
+*/
+
+Route::get('storage/{path}', function ($path) {
+    $base = realpath(storage_path('app/public'));
+    $file = realpath($base.DIRECTORY_SEPARATOR.$path);
+
+    if ($file === false || strpos($file, $base) !== 0 || ! is_file($file)) {
+        abort(404);
+    }
+
+    return response()->file($file);
+})->where('path', '.*');

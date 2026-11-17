@@ -29,6 +29,7 @@ use Illuminate\Support\Facades\Auth;
 class ComplaintRequestModal extends PortalModalComponent
 {
     use ResolvesHomeownerAccount;
+    use WithComplaintRules;
 
     const MODAL_ID = 'complaintRequestModal';
 
