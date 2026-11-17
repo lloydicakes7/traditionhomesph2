@@ -7,11 +7,29 @@
 @endsection
 
 @section('page-content')
-    @if ($profileUnderReview)
-        <div class="alert alert-info">
-            <i class="fas fa-fw fa-clock mr-1"></i>{{ __('auth.onboarding.under_review') }}
+    <div class="card shadow-sm mb-3">
+        <div class="card-body d-flex align-items-center py-3">
+            <i class="fas fa-fw fa-user-check fa-2x text-{{ $profileStatus->badgeTheme() }} mr-3"></i>
+            <div>
+                <div class="font-weight-bold">
+                    <span class="badge badge-{{ $profileStatus->badgeTheme() }} ml-1">
+                        {{ $profileStatus->label() }}
+                    </span>
+                </div>
+                <div class="small text-muted">
+                    @if ($profileStatus->isVerified())
+                        {{ __('auth.onboarding.verified') }}
+                    @elseif ($profileStatus->isRejected())
+                        {{ __('auth.onboarding.rejected') }}
+                    @elseif ($profileStatus->isSubmitted())
+                        {{ __('auth.onboarding.under_review') }}
+                    @else
+                        {{ __('auth.onboarding.gate_notice') }}
+                    @endif
+                </div>
+            </div>
         </div>
-    @endif
+    </div>
 
     {{-- ================================================================== --}}
     {{-- MY FILE — the four things a homeowner files or holds                --}}

@@ -2,14 +2,17 @@
 
 namespace App\Actions\Homeowners\Profiles;
 
+use App\Enums\HouseholdLinkStatus;
 use App\Enums\HouseholdType;
 use App\Enums\ProfileStatus;
 use App\Models\Address;
 use App\Models\Household\Household;
+use App\Models\Household\HouseholdLinkRequest;
 use App\Models\Household\HouseholdMember;
 use App\Models\Property;
 use App\Models\Resident;
 use App\Models\User;
+use App\Notifications\HouseholdLinkRequested;
 use App\Notifications\ProfileSubmittedForVerification;
 use App\Services\NotificationService;
 use App\Utility\StorageHelper;
@@ -57,14 +60,14 @@ class SubmitProfileVerification
             throw new \RuntimeException('Your account has no resident record yet.');
         }
 
-        DB::transaction(function () use ($account, $resident, $data, $idFile) {
+        $link = DB::transaction(function () use ($account, $resident, $data, $idFile) {
             $resident->update(Resident::payloadFrom((array) $data['form']));
 
             $this->storeId($resident, $idFile);
 
             $property = $this->propertyFor((int) $data['property']['block'], (int) $data['property']['lot'], (array) $data['property']);
 
-            $this->placeInHousehold($property, $resident, (array) ($data['household'] ?? []));
+            $link = $this->placeInHousehold($property, $resident, (array) ($data['household'] ?? []));
 
             $account->forceFill([
                 'profile_status'               => ProfileStatus::SUBMITTED,
@@ -73,8 +76,11 @@ class SubmitProfileVerification
                 'profile_verified_by_admin_id' => null,
                 'profile_rejection_note'       => null,
             ])->save();
+
+            return $link;
         });
 
+        $this->tellTheHead($link);
         $this->tellTheOfficers($account);
 
         return $account;
@@ -140,7 +146,7 @@ class SubmitProfileVerification
      *
      * @param  array<string, mixed>  $details
      */
-    private function placeInHousehold(Property $property, Resident $resident, array $details): void
+    private function placeInHousehold(Property $property, Resident $resident, array $details): ?HouseholdLinkRequest
     {
         $relationship = $details['relationship'] ?? null;
         $beHead = (bool) ($details['be_head'] ?? false);
@@ -155,7 +161,7 @@ class SubmitProfileVerification
 
             $household->placeHead($resident->id, $relationship);
 
-            return;
+            return null;
         }
 
         if ($household->memberRecords()->where('resident_id', $resident->id)->exists()) {
@@ -163,24 +169,66 @@ class SubmitProfileVerification
                 $household->placeHead($resident->id, $relationship);
             }
 
-            return;
+            return null;
         }
 
         if ($beHead || ! $household->hasHead()) {
             $household->placeHead($resident->id, $relationship);
 
-            return;
+            return null;
         }
 
-        HouseholdMember::create([
-            'household_id' => $household->id,
-            'resident_id'  => $resident->id,
-            'relationship' => HouseholdMember::valueFrom($relationship),
-            'is_head'      => false,
-        ]);
+        if ($household->head_resident?->user === null) {
+            HouseholdMember::create([
+                'household_id' => $household->id,
+                'resident_id'  => $resident->id,
+                'relationship' => HouseholdMember::valueFrom($relationship),
+                'is_head'      => false,
+            ]);
+
+            return null;
+        }
+
+        return $this->requestTheHead($household, $resident, $relationship);
+    }
+
+    private function requestTheHead(Household $household, Resident $resident, ?string $relationship): ?HouseholdLinkRequest
+    {
+        $link = HouseholdLinkRequest::query()
+            ->where('household_id', $household->id)
+            ->where('resident_id', $resident->id)
+            ->first();
+
+        $waiting = $link !== null && $link->isPending();
+
+        $link = HouseholdLinkRequest::updateOrCreate(
+            ['household_id' => $household->id, 'resident_id' => $resident->id],
+            [
+                'relationship' => HouseholdMember::valueFrom($relationship),
+                'status'       => HouseholdLinkStatus::PENDING,
+                'decided_at'   => null,
+            ]
+        );
+
+        return $waiting ? null : $link;
     }
 
     // ===== Side effects =====
+
+    private function tellTheHead(?HouseholdLinkRequest $link): void
+    {
+        $head = $link?->headAccount();
+
+        if ($head === null) {
+            return;
+        }
+
+        try {
+            $this->notifications->toHomeowner($head, new HouseholdLinkRequested($link));
+        } catch (\Throwable $exception) {
+            Log::error('Household link notification failed: ' . get_class($exception));
+        }
+    }
 
     private function tellTheOfficers(User $account): void
     {

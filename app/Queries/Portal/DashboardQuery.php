@@ -3,6 +3,7 @@
 namespace App\Queries\Portal;
 
 use App\Enums\ComplaintStatus;
+use App\Enums\ProfileStatus;
 use App\Enums\RequestStatus;
 use App\Enums\ViolationStatus;
 use App\Models\Amenity\AmenityBooking;
@@ -28,7 +29,7 @@ class DashboardQuery
         $stats = $this->statsFor($residentId);
 
         return [
-            'profileUnderReview' => (bool) $account->profile_status?->isSubmitted(),
+            'profileStatus' => $account->profile_status ?: ProfileStatus::INCOMPLETE(),
             'stats' => $stats,
             'charts' => [
                 'year'     => $year,

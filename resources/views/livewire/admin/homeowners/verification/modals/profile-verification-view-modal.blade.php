@@ -11,7 +11,8 @@
             @if ($verificationAccount)
                 @php
                     $resident = $verificationAccount->resident;
-                    $household = $resident?->household;
+                    $link = $resident?->householdLinkRequest;
+                    $household = $resident?->household ?? $link?->household;
                     $property = $household?->property;
                     $head = $household?->headMember?->resident;
                     $validIdUrl = $resident && $resident->valid_id_path
@@ -165,6 +166,20 @@
 
                                     <dt class="col-sm-5 text-muted font-weight-normal">Household Head</dt>
                                     <dd class="col-sm-7 text-break">{!! $v($head?->full_name) !!}</dd>
+
+                                    <dt class="col-sm-5 text-muted font-weight-normal">Head Confirmation</dt>
+                                    <dd class="col-sm-7 text-break">
+                                        @if ($link)
+                                            <span class="badge badge-{{ $link->status?->badgeTheme() ?? 'secondary' }}">
+                                                {{ $link->status?->label() ?? '—' }}
+                                            </span>
+                                            @if ($link->decided_at)
+                                                <div class="text-muted">{{ $link->decided_at->format('M d, Y g:i A') }}</div>
+                                            @endif
+                                        @else
+                                            <span class="text-muted font-italic">Not required</span>
+                                        @endif
+                                    </dd>
 
                                     <dt class="col-sm-5 text-muted font-weight-normal">Previous Address</dt>
                                     <dd class="col-sm-7 mb-0 text-break">{!! $v($household?->prev_address) !!}</dd>

@@ -95,8 +95,14 @@ class ProfileWizard extends PortalComponent
 
     private function refreshUnit(): void
     {
+        $residentId = $this->account()->resident_id;
+
         $this->unit = $this->unitIsNamed()
-            ? $this->units->atUnit((int) $this->property['block'], (int) $this->property['lot'])
+            ? $this->units->atUnit(
+                (int) $this->property['block'],
+                (int) $this->property['lot'],
+                $residentId !== null ? (int) $residentId : null
+            )
             : null;
     }
 

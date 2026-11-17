@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\CivilStatus;
 use App\Models\Household\Household;
+use App\Models\Household\HouseholdLinkRequest;
 use App\Models\Household\HouseholdMember;
 use App\Enums\EducationalAttainment;
 use App\Enums\SectorType;
@@ -110,6 +111,14 @@ class Resident extends Model
             'id',
             'household_id'
         );
+    }
+
+    /**
+     * The resident's latest request to join a household.
+     */
+    public function householdLinkRequest(): HasOne
+    {
+        return $this->hasOne(HouseholdLinkRequest::class, 'resident_id')->orderByDesc('id');
     }
 
     /**

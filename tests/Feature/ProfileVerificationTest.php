@@ -289,6 +289,29 @@ class ProfileVerificationTest extends TestCase
         $this->assertSame((int) $resident->id, (int) $household->fresh()->head_resident->id);
     }
 
+    public function test_the_household_head_of_the_named_unit_is_told_so(): void
+    {
+        $user = $this->registered();
+        $address = $this->primaryAddress();
+
+        $unit = Property::create([
+            'block'      => 9,
+            'lot'        => 3,
+            'address_id' => $address->id,
+            'sqm'        => 90,
+            'type'       => 'townhouse',
+        ]);
+
+        $household = Household::create(['property_id' => $unit->id, 'type' => 'owner']);
+        $household->placeHead($user->resident_id, 'father');
+
+        Livewire::actingAs($user, 'homeowner')
+            ->test(ProfileWizard::class)
+            ->assertSee(__('households.note.own_head'))
+            ->assertDontSee(__('households.note.occupied'))
+            ->assertDontSee(__('households.be_head'));
+    }
+
     public function test_an_occupied_unit_lets_the_resident_take_over_as_head(): void
     {
         $user = $this->registered();
@@ -320,6 +343,28 @@ class ProfileVerificationTest extends TestCase
 
         $this->assertSame((int) $user->resident_id, (int) $household->fresh()->head_resident->id);
         $this->assertSame(1, $household->memberRecords()->where('is_head', true)->count());
+    }
+
+    public function test_the_verification_page_counts_accounts_by_profile_status(): void
+    {
+        $this->submitted();
+
+        $this->actingAs($this->officer(), 'web')
+            ->get(route('homeowners.profile-verifications'))
+            ->assertOk()
+            ->assertSee(ProfileStatus::SUBMITTED()->label())
+            ->assertSee(ProfileStatus::VERIFIED()->label());
+    }
+
+    public function test_the_portal_dashboard_shows_the_account_status(): void
+    {
+        $user = $this->submitted();
+
+        $this->actingAs($user, 'homeowner')
+            ->get('/portal')
+            ->assertOk()
+            ->assertSee(ProfileStatus::SUBMITTED()->label())
+            ->assertSee(__('auth.onboarding.under_review'));
     }
 
     public function test_a_submission_without_an_id_is_refused(): void

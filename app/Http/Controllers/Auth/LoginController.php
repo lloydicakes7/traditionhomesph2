@@ -74,10 +74,9 @@ class LoginController extends Controller
         }
 
         if ($outcome === SignInAccount::UNVERIFIED) {
-            return $this->failedLogin(
-                $request,
-                __('auth.verify_email', ['email' => (string) $request->input('email')])
-            );
+            return redirect()
+                ->route('verification.resend')
+                ->with('verification_email', (string) $request->input('email'));
         }
 
         $this->clearLoginAttempts($request);

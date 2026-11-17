@@ -1,4 +1,14 @@
 <div>
+    {{-- ===== Status ===== --}}
+    <div class="row">
+        @foreach ($counts as $count)
+            <div class="col-12 col-sm-6 col-lg-3">
+                <x-adminlte-small-box theme="{{ $count['theme'] }}" icon="{{ $count['icon'] }}"
+                    text="{{ $count['label'] }}" title="{{ number_format($count['count']) }}" />
+            </div>
+        @endforeach
+    </div>
+
     {{-- ===== Search ===== --}}
     <x-adminlte-card>
         <div class="row align-items-center">

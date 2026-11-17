@@ -99,16 +99,18 @@
                                 @php
                                     $unitNamed = (int) ($property['block'] ?? 0) > 0 && (int) ($property['lot'] ?? 0) > 0;
                                     $note = match (true) {
-                                        ! $unitNamed       => __('households.note.name_unit'),
-                                        $unit === null     => __('households.note.new_unit'),
+                                        ! $unitNamed         => __('households.note.name_unit'),
+                                        $unit === null       => __('households.note.new_unit'),
+                                        $unit['is_head']     => __('households.note.own_head'),
                                         $unit['is_occupied'] => __('households.note.occupied'),
-                                        default            => __('households.note.vacant'),
+                                        default              => __('households.note.vacant'),
                                     };
                                 @endphp
 
                                 @include('partials.household-unit-fields', [
                                     'address' => $primaryAddress,
                                     'note' => $note,
+                                    'ownHead' => $unit['is_head'] ?? false,
                                 ])
                             @endif
 

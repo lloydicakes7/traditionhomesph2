@@ -48,4 +48,42 @@ class ProfileVerificationListQuery
             ->orderByDesc('profile_submitted_at')
             ->paginate($perPage);
     }
+
+    /**
+     * Every account by where its profile stands, for the page's status boxes.
+     *
+     * @return array<int, array{label: string, theme: string, icon: string, count: int}>
+     */
+    public function statusCounts(): array
+    {
+        $counts = User::query()
+            ->selectRaw('profile_status, count(*) as total')
+            ->groupBy('profile_status')
+            ->pluck('total', 'profile_status');
+
+        $icons = [
+            ProfileStatus::VERIFIED   => 'fas fa-fw fa-user-check',
+            ProfileStatus::SUBMITTED  => 'fas fa-fw fa-clock',
+            ProfileStatus::REJECTED   => 'fas fa-fw fa-user-edit',
+            ProfileStatus::INCOMPLETE => 'fas fa-fw fa-user',
+        ];
+
+        $rows = [];
+
+        foreach ([
+            ProfileStatus::VERIFIED(),
+            ProfileStatus::SUBMITTED(),
+            ProfileStatus::REJECTED(),
+            ProfileStatus::INCOMPLETE(),
+        ] as $status) {
+            $rows[] = [
+                'label' => $status->label(),
+                'theme' => $status->badgeTheme(),
+                'icon'  => $icons[$status->value] ?? 'fas fa-fw fa-user',
+                'count' => (int) ($counts[$status->value] ?? 0),
+            ];
+        }
+
+        return $rows;
+    }
 }

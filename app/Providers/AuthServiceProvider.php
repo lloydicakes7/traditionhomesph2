@@ -22,6 +22,7 @@ class AuthServiceProvider extends ServiceProvider
         \App\Models\Property::class => \App\Policies\PropertyPolicy::class,
         \App\Models\AdminActivity::class => \App\Policies\AdminActivityPolicy::class,
         \App\Models\Household\Household::class => \App\Policies\HouseholdPolicy::class,
+        \App\Models\Household\HouseholdLinkRequest::class => \App\Policies\HouseholdLinkRequestPolicy::class,
         \App\Models\Directory\DirectoryEntry::class => \App\Policies\DirectoryPolicy::class,
         \App\Models\HoaMember::class => \App\Policies\HoaMemberPolicy::class,
         \App\Models\Announcement::class => \App\Policies\AnnouncementPolicy::class,

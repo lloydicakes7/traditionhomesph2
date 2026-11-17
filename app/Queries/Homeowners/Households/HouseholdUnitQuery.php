@@ -19,9 +19,12 @@ class HouseholdUnitQuery
     /**
      * The unit at this block and lot, with the household that holds it.
      *
+     * The resident is named only to tell whether they already head that
+     * household, which the form says instead of offering to place them in it.
+     *
      * @return array<string, mixed>|null
      */
-    public function atUnit(int $block, int $lot): ?array
+    public function atUnit(int $block, int $lot, ?int $residentId = null): ?array
     {
         $property = Property::query()
             ->atUnit($block, $lot)
@@ -46,6 +49,7 @@ class HouseholdUnitQuery
             'household_id' => $household ? $household->id : null,
             'head_name'    => $head ? $head->full_name : null,
             'member_count' => $household ? $household->memberRecords->count() : 0,
+            'is_head'      => $head !== null && $residentId !== null && (int) $head->id === $residentId,
         ];
     }
 

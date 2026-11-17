@@ -21,6 +21,7 @@ use App\Http\Controllers\Portal\Amenities\BookingSlipController;
 use App\Http\Controllers\Portal\Support\RequestSlipController;
 use App\Http\Controllers\Portal\Rbi\RbiFormController;
 use App\Http\Controllers\Portal\NotificationController;
+use App\Http\Controllers\Portal\HouseholdLinkRequestController;
 use App\Http\Controllers\Portal\ManualController;
 
 /*
@@ -67,6 +68,7 @@ Route::middleware([
     // ---------------------------------------------------------------
 
     Route::get('onboarding', [OnboardingController::class, 'index'])->name('portal.onboarding');
+    Route::get('household-requests', [HouseholdLinkRequestController::class, 'index'])->name('portal.household-requests');
     Route::get('/', [HomeController::class, 'index'])->name('portal.dashboard');
     Route::get('statement-of-account', [StatementOfAccountController::class, 'index'])->name('portal.statement-of-account');
     Route::get('payments', [PaymentController::class, 'index'])->name('portal.payments');

@@ -1,7 +1,8 @@
 @php
     $unitNamed = (int) ($property['block'] ?? 0) > 0 && (int) ($property['lot'] ?? 0) > 0;
     $occupied = $unit !== null && $unit['is_occupied'];
-    $canJoin = $canJoin ?? true;
+    $ownHead = $ownHead ?? false;
+    $canJoin = ($canJoin ?? true) && ! $ownHead;
     $canChangeTenure = $canChangeTenure ?? ! $occupied;
 @endphp
 
@@ -95,7 +96,7 @@
 
 <div class="alert alert-info small py-2 mt-4 mb-0">
     <i class="fas fa-fw fa-info-circle mr-1"></i>{{ $note }}
-    @if ($unitNamed && $occupied)
+    @if ($unitNamed && $occupied && ! $ownHead)
         <span class="d-block mt-1">
             {{ __('households.head') }} <strong>{{ $unit['head_name'] ?? '—' }}</strong>
             <span class="text-muted">· {{ __('households.member_count', ['count' => $unit['member_count']]) }}</span>

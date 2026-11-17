@@ -34,7 +34,14 @@ return [
 
     // ===== Email verification =====
 
-    'verify_email' => 'Verify your email address first. Open the message we sent to :email and click the button in it.',
+    'unverified' => 'Your email isn\'t verified yet.',
+    'verification_resend_intro' => 'Enter the address you registered with and we will send you a new link.',
+    'resend_verification' => 'Resend verification email',
+    'return_to_login' => 'Return to login',
+    'verification_resent' => 'We sent a new link. Check your inbox and spam folder.',
+    'verify_expired_title' => 'This link has expired',
+    'verify_expired_body' => 'Verification links are short-lived. Ask for a new one and open it soon after it arrives.',
+    'back_to_sign_in' => 'Back to sign in',
     'verified_sign_in' => 'Your email address is verified. Sign in with the password you chose.',
     'registered_verify_body' => 'We emailed a verification link to your :email. Open it to verify your account. Check your spam if you can\'t find it anywhere.',
 
@@ -91,6 +98,7 @@ return [
 
     'onboarding' => [
         'under_review'        => 'Your information is now being reviewed by the office. Every portal service opens once your account is verified.',
+        'verified'            => 'Your profile is verified. Every portal service is open to you.',
         'rejected'            => 'The office asked for a correction.',
         'failed'              => 'We could not save your profile. Please try again, or contact the office.',
         'id_required'         => 'Upload one valid ID so the office can check it.',

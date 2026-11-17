@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\PendingApprovalController;
 use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Http\Controllers\Auth\ResendVerificationController;
 use App\Http\Controllers\Auth\SetPasswordController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\Public\ContactController;
@@ -48,7 +49,11 @@ Route::get('/pending-approval', [PendingApprovalController::class, 'show'])->nam
 
 // Email Verification
 Route::get('/email/verify/{id}/{hash}', [VerifyEmailController::class, 'verify'])
-    ->middleware('signed')->name('verification.verify');
+    ->name('verification.verify');
+Route::get('/email/verification-notification', [ResendVerificationController::class, 'create'])
+    ->name('verification.resend');
+Route::post('/email/verification-notification', [ResendVerificationController::class, 'store'])
+    ->middleware('throttle:6,1')->name('verification.resend.store');
 
 // Password Reset
 Route::get('/password/reset', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');

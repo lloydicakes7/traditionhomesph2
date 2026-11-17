@@ -60,6 +60,7 @@ class ProfileVerificationTableList extends AdminComponent
     public function render()
     {
         return view('livewire.admin.homeowners.verification.profile-verification-table-list', [
+            'counts'   => $this->query->statusCounts(),
             'accounts' => $this->query->paginate($this->search),
         ]);
     }

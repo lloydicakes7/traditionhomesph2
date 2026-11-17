@@ -19,6 +19,8 @@ class ProfileVerificationDetailQuery
                 'resident',
                 'resident.household.property.address',
                 'resident.household.headMember.resident',
+                'resident.householdLinkRequest.household.property.address',
+                'resident.householdLinkRequest.household.headMember.resident',
             ])
             ->find($id);
     }

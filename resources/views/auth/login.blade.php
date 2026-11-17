@@ -6,6 +6,12 @@
 @section('password_reset_url', route('password.request'))
 
 @section('auth_body')
+    @if (session('status'))
+        <div class="alert alert-success" role="alert">
+            <i class="fas fa-fw fa-check-circle mr-1"></i>{{ session('status') }}
+        </div>
+    @endif
+
     @if ($errors->any())
         <div class="alert alert-danger" role="alert">
             <i class="fas fa-fw fa-exclamation-circle mr-1"></i>{{ $errors->first() }}

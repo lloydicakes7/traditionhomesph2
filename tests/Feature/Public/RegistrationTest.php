@@ -134,7 +134,7 @@ class RegistrationTest extends TestCase
         $this->post('/login', [
             'email'    => 'applicant@example.com',
             'password' => 'ChosenPass1!',
-        ])->assertSessionHasErrors('email');
+        ])->assertRedirect(route('verification.resend'));
 
         $this->assertGuest('homeowner');
         $this->assertFalse($user->fresh()->hasVerifiedEmail());
@@ -154,6 +154,59 @@ class RegistrationTest extends TestCase
         ])->assertRedirect('/portal');
 
         $this->assertAuthenticated('homeowner');
+    }
+
+    public function test_an_unverified_sign_in_offers_a_new_verification_link(): void
+    {
+        Notification::fake();
+
+        $user = factory(User::class)->create([
+            'email'             => 'applicant@example.com',
+            'password'          => Hash::make('ChosenPass1!'),
+            'email_verified_at' => null,
+            'is_active'         => true,
+        ]);
+
+        $this->post('/login', [
+            'email'    => 'applicant@example.com',
+            'password' => 'ChosenPass1!',
+        ])->assertRedirect(route('verification.resend'))
+            ->assertSessionMissing('errors');
+
+        $this->get(route('verification.resend'))
+            ->assertOk()
+            ->assertSee(__('auth.unverified'))
+            ->assertSee(__('auth.resend_verification'))
+            ->assertSee(__('auth.return_to_login'))
+            ->assertSee($user->email);
+
+        $this->post('/email/verification-notification', ['email' => $user->email])
+            ->assertRedirect(route('verification.resend'))
+            ->assertSessionHas('status', __('auth.verification_resent'));
+
+        Notification::assertSentTo($user, VerifyEmail::class);
+    }
+
+    public function test_an_expired_verification_link_offers_a_new_one(): void
+    {
+        Notification::fake();
+
+        $this->wizard()->call('submit');
+
+        $user = User::where('email', 'applicant@example.com')->firstOrFail();
+
+        $url = URL::temporarySignedRoute('verification.verify', now()->subMinute(), [
+            'id'   => $user->id,
+            'hash' => sha1($user->getEmailForVerification()),
+        ]);
+
+        $this->get($url)
+            ->assertOk()
+            ->assertSee(__('auth.verify_expired_title'))
+            ->assertSee(__('auth.resend_verification'))
+            ->assertSee($user->email);
+
+        $this->assertFalse($user->fresh()->hasVerifiedEmail());
     }
 
     public function test_a_verification_link_for_another_address_is_refused(): void

@@ -143,18 +143,35 @@
     <script>
         var thhaTimers = {};
 
-        window.addEventListener('start-notification-timer', function (e) {
-            var id = e.detail.id;
-            var toast = document.getElementById('toast-' + id);
+        var thhaToastLifetime = 5000;
 
+        function startToastTimer(id) {
             if (thhaTimers[id]) {
                 clearTimeout(thhaTimers[id]);
             }
 
             thhaTimers[id] = setTimeout(function () {
                 dismissToast(id);
-            }, 5000);
+            }, thhaToastLifetime);
+        }
+
+        window.addEventListener('start-notification-timer', function (e) {
+            startToastTimer(e.detail.id);
         });
+
+        function startVisibleToastTimers() {
+            var toasts = document.querySelectorAll('.thha-toast[data-notif-id]');
+
+            for (var i = 0; i < toasts.length; i++) {
+                startToastTimer(toasts[i].getAttribute('data-notif-id'));
+            }
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', startVisibleToastTimers);
+        } else {
+            startVisibleToastTimers();
+        }
 
         function dismissToast(id) {
             var toast = document.getElementById('toast-' + id);
