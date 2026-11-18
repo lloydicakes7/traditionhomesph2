@@ -5,6 +5,7 @@
     'prefix' => 'requestType',
     'membershipProfile' => null,
     'respondentUnit' => null,
+    'detailsInformation' => [],
     'supplyMissing' => false,
 ])
 
@@ -180,10 +181,22 @@
             </div>
         @endif
 
+        {{-- WHY IT IS BEING REQUESTED — optional, for every type --}}
+        <div class="col-12">
+            <x-adminlte-textarea name="{{ $prefix }}_reason" label="Reason for Request" rows="3"
+                placeholder="Optional — explain why you are requesting this document."
+                wire:model.defer="form.reason" igroup-size="sm" />
+            @error('form.reason') <span class="text-danger small">{{ $message }}</span> @enderror
+        </div>
+
         {{-- MEMBERSHIP FORM — nothing to type: the whole form is on file. --}}
         @if ($selectedType->usesProfileRecord())
             <div class="col-12">
                 <x-customs.membership-form-profile :profile="$membershipProfile" :supply="$supplyMissing" />
+            </div>
+        @else
+            <div class="col-12">
+                <x-customs.request-details-information :rows="$detailsInformation" />
             </div>
         @endif
     </div>

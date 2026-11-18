@@ -205,10 +205,6 @@
                 <div class="row">
                     <div class="col-12 col-md-4">
                         <x-adminlte-card title="Presidential Image" icon="fas fa-fw fa-user-tie">
-                            <p class="text-muted small">
-                                The portrait printed above the officers on every request document.
-                            </p>
-
                             <div class="text-center mb-2" style="min-height:90px;">
                                 @if ($this->presidentImagePreview())
                                     <img src="{{ $this->presidentImagePreview() }}" class="img-thumbnail" style="max-height:84px;" alt="">
@@ -238,10 +234,6 @@
 
                     <div class="col-12 col-md-8">
                         <x-adminlte-card title="Signatories" icon="fas fa-fw fa-signature">
-                            <p class="text-muted small">
-                                The printed names under the signature lines every document ends with.
-                            </p>
-
                             <div class="row">
                                 <div class="col-12 col-md-3">
                                     <x-adminlte-input name="presidentName" label="HOA President" wire:model.defer="presidentName" igroup-size="sm" />

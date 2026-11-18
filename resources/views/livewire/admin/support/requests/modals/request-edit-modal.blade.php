@@ -20,7 +20,7 @@
                     <x-customs.request-type-fields :form="$form" :selected-type="$selectedType"
                         :purpose-options="$purposeOptions" prefix="requestEditType"
                         :membership-profile="$membershipProfile" :respondent-unit="$respondentUnit"
-                        :supply-missing="true" />
+                        :details-information="$detailsInformation" :supply-missing="true" />
                 </form>
             @endif
         </div>

@@ -45,8 +45,6 @@
                             <dl class="row small mb-0 mt-3 mt-md-0 ml-md-4 text-center text-md-left" style="min-width:260px;">
                                 <dt class="col-5 text-muted font-weight-normal">Submitted</dt>
                                 <dd class="col-7 mb-1">{!! $v($verificationAccount->profile_submitted_at?->format('M d, Y g:i A')) !!}</dd>
-                                <dt class="col-5 text-muted font-weight-normal">Verified</dt>
-                                <dd class="col-7 mb-0">{!! $verificationAccount->profile_verified_at?->format('M d, Y g:i A') ?? 'N/A' !!}</dd>
                             </dl>
                         </div>
                     </div>

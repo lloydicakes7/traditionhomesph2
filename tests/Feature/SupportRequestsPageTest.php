@@ -107,6 +107,19 @@ class SupportRequestsPageTest extends TestCase
         $list->assertDontSee('data-target="#requestEditModal"', false);
     }
 
+    public function test_the_view_dialog_shows_the_reason_for_request(): void
+    {
+        $this->signInAdmin();
+
+        $request = $this->request(RequestType::CERTIFICATION, RequestStatus::PENDING);
+        $request->update(['reason' => 'Needed for a bank loan.']);
+
+        Livewire::test(RequestViewModal::class)
+            ->call('load', $request->id)
+            ->assertSee('Reason for Request')
+            ->assertSee('Needed for a bank loan.');
+    }
+
     public function test_the_view_dialog_shows_print_only_once_the_request_is_approved(): void
     {
         $this->signInAdmin();
