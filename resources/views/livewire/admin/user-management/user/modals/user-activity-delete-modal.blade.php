@@ -13,7 +13,7 @@
             @if ($deletingActivityId)
                 <p class="text-muted small mb-1">
                     <span class="badge badge-{{ $deletingActivityTheme }}">{{ $deletingActivityLabel }}</span>
-                    &mdash; {{ $deletingActivityDate }}
+                    &middot; {{ $deletingActivityDate }}
                 </p>
                 <p class="mb-0">{{ $deletingActivityDescription }}</p>
             @endif

@@ -32,6 +32,8 @@ class ProfileRejectedNotification extends ThhaNotification
     }
 
     /**
+     * The channels this notification goes out on.
+     *
      * @param  mixed  $notifiable
      * @return array<int, string>
      */
@@ -45,11 +47,12 @@ class ProfileRejectedNotification extends ThhaNotification
      */
     public function toMail($notifiable): MailMessage
     {
-        return (new MailMessage)
+        return (new MailMessage())
             ->subject('Your Tradition Homes profile needs a correction')
-            ->greeting('Hello ' . ($this->account->resident?->first_name ?? 'Homeowner') . ',')
-            ->line('The office checked your profile and asked for a correction.')
-            ->line('What to fix: ' . $this->note)
+            ->greeting('Greetings, ' . ($this->account->resident?->first_name ?? 'Homeowner') . ',')
+            ->line('The office reviewed your profile and requested a correction.')
+            ->line('Details of the correction: ' . $this->note)
+            ->line('Kindly update the information requested, then submit your profile for review again.')
             ->action('Open your profile', route('login'));
     }
 

@@ -11,8 +11,8 @@ use Illuminate\Notifications\Messages\MailMessage;
  *
  * The one notice that is both mailed and kept: it is a document the homeowner
  * has to acknowledge, so the mail carries the full notice and the bell keeps
- * the line until they read it. It is issued by an officer only — never by the
- * homeowner — so no "your own doing" case exists here (see
+ * the line until they read it. It is issued by an officer only, never by the
+ * homeowner, so no "your own doing" case exists here (see
  * App\Actions\Support\Violations\IssueViolation).
  */
 class ViolationIssuedNotification extends ThhaNotification
@@ -43,13 +43,13 @@ class ViolationIssuedNotification extends ThhaNotification
 
     protected function title($notifiable): string
     {
-        return 'Violation recorded — ' . $this->violation->type_label;
+        return 'Violation recorded: ' . $this->violation->type_label;
     }
 
     protected function body($notifiable): string
     {
-        return $this->violation->occurred_display . ' · ' . $this->violation->location
-            . ' — open it to read the notice and acknowledge it.';
+        return 'Recorded on ' . $this->violation->occurred_display . ' at ' . $this->violation->location
+            . '. Open the notice to read it and confirm receipt.';
     }
 
     protected function url($notifiable): ?string
@@ -68,15 +68,15 @@ class ViolationIssuedNotification extends ThhaNotification
         $violation = $this->violation;
 
         return (new MailMessage())
-            ->subject('Notice of Violation — ' . $violation->type_label)
-            ->greeting('Hello, ' . $violation->resident_label . '!')
+            ->subject('Notice of Violation: ' . $violation->type_label)
+            ->greeting('Greetings, ' . $violation->resident_label . ',')
             ->line('The association has recorded a violation against your household.')
             ->line('Violation: ' . $violation->type_label)
-            ->line('When: ' . $violation->occurred_display)
-            ->line('Where: ' . $violation->location)
+            ->line('Date and time: ' . $violation->occurred_display)
+            ->line('Location: ' . $violation->location)
             ->line('Details: ' . $violation->description)
-            ->line('Please sign in to the homeowner portal to read the full notice and acknowledge that you have received it.')
-            ->line('Acknowledging only confirms that you have read this notice — it does not mean you agree with it.')
-            ->salutation(config('app.name'));
+            ->line('Kindly sign in to the homeowner portal to read the full notice and confirm that you have received it.')
+            ->line('Confirming receipt only acknowledges that you have read this notice. It does not mean that you agree with it.')
+            ->action('Read the notice', route('portal.violations'));
     }
 }

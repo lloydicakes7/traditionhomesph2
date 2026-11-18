@@ -32,10 +32,11 @@ class PendingProfileVerificationsDigest extends OfficerNotification
 
     public function toMail($notifiable): MailMessage
     {
-        return (new MailMessage)
-            ->subject('Homeowner accounts waiting for verification')
-            ->greeting('Hello ' . $notifiable->name . ',')
+        return (new MailMessage())
+            ->subject('Homeowner accounts are waiting for verification')
+            ->greeting('Greetings, ' . $notifiable->name . ',')
             ->line($this->summary())
+            ->line('Kindly review the queue so each account can be opened without further delay.')
             ->action('Open the verification queue', route('homeowners.profile-verifications'));
     }
 
@@ -57,7 +58,7 @@ class PendingProfileVerificationsDigest extends OfficerNotification
     private function summary(): string
     {
         return $this->count === 1
-            ? 'There is 1 homeowner account that is still waiting for verification approval.'
-            : 'There are ' . $this->count . ' homeowner accounts that are still waiting for verification approval.';
+            ? 'There is 1 homeowner account that is still waiting for verification.'
+            : 'There are ' . $this->count . ' homeowner accounts that are still waiting for verification.';
     }
 }

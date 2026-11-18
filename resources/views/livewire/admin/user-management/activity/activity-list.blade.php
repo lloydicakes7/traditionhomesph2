@@ -1,112 +1,201 @@
 <div id="activityLogSection">
+    {{-- =================================================================== --}}
+    {{-- SEARCH + DATE/TIME WINDOW                                           --}}
+    {{-- =================================================================== --}}
     <x-adminlte-card>
-        <div class="d-flex justify-content-between align-items-center flex-wrap">
-            <div class="mb-2 mb-sm-0">
-                <h5 class="mb-0 font-weight-bold">Activity Log</h5>
-                <small class="text-muted">What the office has done across the system.</small>
+        <div class="row align-items-end">
+            <div class="col-12 col-md-6 mb-2 mb-lg-0">
+                <x-adminlte-input name="search" label="Search"
+                    placeholder="Search admin, action, module, description..."
+                    wire:model.debounce.500ms="search" igroup-size="sm" fgroup-class="mb-0">
+                    <x-slot name="prependSlot">
+                        <div class="input-group-text"><i class="fas fa-fw fa-search"></i></div>
+                    </x-slot>
+                </x-adminlte-input>
             </div>
 
-            @can('delete', \App\Models\AdminActivity::class)
-                <x-adminlte-button label="Delete All Logs" theme="danger" icon="fas fa-fw fa-trash-alt"
-                    data-toggle="modal" data-target="#deleteAllActivitiesModal" class="btn-sm"
-                    :disabled="$activities->total() === 0" />
-            @endcan
+            <div class="col-12 col-md-2 mb-2 mb-lg-0">
+                <x-adminlte-input name="date" type="date" label="Date"
+                    wire:model="date" igroup-size="sm" fgroup-class="mb-0" />
+            </div>
+
+            <div class="col-6 col-md-2 mb-2 mb-lg-0">
+                <x-adminlte-input name="fromTime" type="time" label="From"
+                    wire:model="fromTime" igroup-size="sm" fgroup-class="mb-0" />
+            </div>
+
+            <div class="col-6 col-md-2 mb-2 mb-lg-0">
+                <x-adminlte-input name="toTime" type="time" label="To"
+                    wire:model="toTime" igroup-size="sm" fgroup-class="mb-0" />
+            </div>
         </div>
     </x-adminlte-card>
 
+    {{-- =================================================================== --}}
+    {{-- MASS DELETE BAR                                                     --}}
+    {{-- =================================================================== --}}
+    @if (!empty($selectedIds))
+        <div class="d-flex justify-content-between align-items-center mb-2 px-1">
+            <span class="text-muted small font-weight-bold">
+                <i class="fas fa-fw fa-check-square"></i>
+                {{ count($selectedIds) }} selected
+            </span>
+            @can('delete', \App\Models\AdminActivity::class)
+                <x-adminlte-button label="Delete Selected" theme="danger" icon="fas fa-fw fa-trash"
+                    data-toggle="modal" data-target="#activityMassDeleteModal"
+                    data-id="{{ implode(',', $selectedIds) }}" class="btn-sm" />
+            @endcan
+        </div>
+    @endif
+
+    {{-- =================================================================== --}}
+    {{-- DESKTOP TABLE (4 columns)                                           --}}
+    {{-- =================================================================== --}}
     <div class="card d-none d-lg-block">
-        <div class="card-body table-responsive p-0">
-            <table class="table table-hover mb-0" style="table-layout:fixed; width:100%;">
-                <thead>
-                    <tr>
-                        <th style="width:18%;" class="align-middle">Date/Time</th>
-                        <th style="width:12%;" class="align-middle">Action</th>
-                        <th style="width:15%;" class="align-middle">Module</th>
-                        <th class="align-middle">Description</th>
-                        <th style="width:70px;" class="text-right align-middle">Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse ($activities as $activity)
-                        <tr wire:key="activity-row-{{ $activity->id }}">
-                            <td class="align-middle text-nowrap small">
-                                {{ $activity->created_at->format('M d, Y h:i A') }}
-                            </td>
-                            <td class="align-middle">
-                                <span class="badge badge-{{ $activity->action_theme }}">
-                                    {{ $activity->action_label }}
-                                </span>
-                            </td>
-                            <td class="align-middle">
-                                <span class="badge badge-light border">{{ ucfirst($activity->module) }}</span>
-                            </td>
-                            <td class="align-middle small text-break">{{ $activity->description }}</td>
-                            <td class="text-right align-middle">
-                                @can('delete', \App\Models\AdminActivity::class)
-                                    <button type="button" class="btn btn-xs btn-danger"
-                                        data-toggle="modal" data-target="#activityDeleteModal"
-                                        data-id="{{ $activity->id }}" title="Delete this activity log">
-                                        <i class="fas fa-fw fa-trash"></i>
-                                    </button>
-                                @endcan
-                            </td>
-                        </tr>
-                    @empty
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead>
                         <tr>
-                            <td colspan="5" class="text-center text-muted py-4">
-                                <i class="fas fa-fw fa-history fa-2x mb-2"></i>
-                                <p class="mb-0">No activities recorded yet.</p>
-                            </td>
+                            {{-- Column 1: select-all + Date/Time --}}
+                            <th style="width:22%;" class="align-middle">
+                                <div class="d-flex align-items-center">
+                                    @can('delete', \App\Models\AdminActivity::class)
+                                        <div class="custom-control custom-checkbox mr-2">
+                                            <input type="checkbox" class="custom-control-input" id="selectAll"
+                                                wire:model="selectAll">
+                                            <label class="custom-control-label" for="selectAll"></label>
+                                        </div>
+                                    @endcan
+                                    <span>Date/Time</span>
+                                </div>
+                            </th>
+                            <th style="width:20%;" class="align-middle">Admin</th>
+                            <th class="align-middle">Activity</th>
+                            <th style="width:80px;" class="text-right align-middle">Actions</th>
                         </tr>
-                    @endforelse
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @forelse ($activities as $activity)
+                            <tr wire:key="activity-row-{{ $activity->id }}">
+                                <td class="align-middle small text-nowrap">
+                                    <div class="d-flex align-items-center">
+                                        @can('delete', \App\Models\AdminActivity::class)
+                                            <div class="custom-control custom-checkbox mr-2">
+                                                <input type="checkbox" class="custom-control-input"
+                                                    id="act-{{ $activity->id }}" value="{{ $activity->id }}"
+                                                    wire:model="selectedIds">
+                                                <label class="custom-control-label" for="act-{{ $activity->id }}"></label>
+                                            </div>
+                                        @endcan
+                                        <span>{{ $activity->created_at->format('M d, Y h:i A') }}</span>
+                                    </div>
+                                </td>
+                                <td class="align-middle small text-break">
+                                    {{ $activity->admin->name ?? 'Not recorded' }}
+                                </td>
+                                <td class="align-middle">
+                                    <div class="mb-1">
+                                        <span class="badge badge-{{ $activity->action_theme }}">
+                                            {{ $activity->action_label }}
+                                        </span>
+                                        <span class="badge badge-secondary">{{ ucfirst($activity->module) }}</span>
+                                    </div>
+                                    <div class="small text-break">{{ $activity->description }}</div>
+                                </td>
+                                <td class="text-right align-middle text-nowrap">
+                                    @can('delete', \App\Models\AdminActivity::class)
+                                        <x-adminlte-button label="" theme="danger" icon="fas fa-fw fa-trash"
+                                            data-toggle="modal" data-target="#activityDeleteModal"
+                                            data-id="{{ $activity->id }}" class="btn-xs" title="Delete" />
+                                    @endcan
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="4" class="text-center text-muted py-4">
+                                    <i class="fas fa-fw fa-history fa-2x mb-2"></i>
+                                    <p class="mb-0">No activities match these filters.</p>
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 
+    {{-- =================================================================== --}}
+    {{-- MOBILE CARDS (hidden on large screens)                              --}}
+    {{-- =================================================================== --}}
     <div class="d-block d-lg-none">
+        {{-- Select all (mobile) --}}
+        @can('delete', \App\Models\AdminActivity::class)
+            @if ($activities->count())
+                <div class="custom-control custom-checkbox mb-2 px-1 pl-4">
+                    <input type="checkbox" class="custom-control-input" id="selectAllMobile"
+                        wire:model="selectAll">
+                    <label class="custom-control-label small font-weight-bold text-muted"
+                        for="selectAllMobile">Select all</label>
+                </div>
+            @endif
+        @endcan
+
         @forelse ($activities as $activity)
             <div class="card mb-3 shadow-sm" wire:key="activity-card-{{ $activity->id }}">
                 <div class="card-body py-3">
-                    <div class="d-flex justify-content-between align-items-start mb-2">
-                        <div>
-                            <div class="font-weight-bold">
-                                <span class="badge badge-{{ $activity->action_theme }}">
-                                    {{ $activity->action_label }}
-                                </span>
-                            </div>
-                            <div class="text-muted small mt-1">
+                    {{-- Header: checkbox + date + delete --}}
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div class="d-flex align-items-center">
+                            @can('delete', \App\Models\AdminActivity::class)
+                                <div class="custom-control custom-checkbox mr-2">
+                                    <input type="checkbox" class="custom-control-input"
+                                        id="act-m-{{ $activity->id }}" value="{{ $activity->id }}"
+                                        wire:model="selectedIds">
+                                    <label class="custom-control-label" for="act-m-{{ $activity->id }}"></label>
+                                </div>
+                            @endcan
+                            <span class="text-muted small">
+                                <i class="far fa-fw fa-clock"></i>
                                 {{ $activity->created_at->format('M d, Y h:i A') }}
-                            </div>
+                            </span>
                         </div>
-                        <span class="badge badge-light border text-nowrap">
-                            {{ ucfirst($activity->module) }}
-                        </span>
+                        @can('delete', \App\Models\AdminActivity::class)
+                            <x-adminlte-button label="" theme="danger" icon="fas fa-fw fa-trash"
+                                data-toggle="modal" data-target="#activityDeleteModal"
+                                data-id="{{ $activity->id }}" class="btn-xs ml-2" title="Delete" />
+                        @endcan
                     </div>
 
-                    <p class="small text-break mb-3">{{ $activity->description }}</p>
+                    {{-- Admin --}}
+                    <div class="font-weight-bold mt-2">
+                        <i class="fas fa-fw fa-user text-muted"></i>
+                        {{ $activity->admin->name ?? 'Not recorded' }}
+                    </div>
 
-                    @can('delete', \App\Models\AdminActivity::class)
-                        <div class="text-right">
-                            <button type="button" class="btn btn-xs btn-outline-danger"
-                                data-toggle="modal" data-target="#activityDeleteModal"
-                                data-id="{{ $activity->id }}" title="Delete this activity log">
-                                <i class="fas fa-fw fa-trash mr-1"></i> Delete
-                            </button>
-                        </div>
-                    @endcan
+                    {{-- Badges --}}
+                    <div class="mt-1">
+                        <span class="badge badge-{{ $activity->action_theme }}">
+                            {{ $activity->action_label }}
+                        </span>
+                        <span class="badge badge-secondary">{{ ucfirst($activity->module) }}</span>
+                    </div>
+
+                    {{-- Description --}}
+                    <div class="small text-break mt-2">{{ $activity->description }}</div>
                 </div>
             </div>
         @empty
             <div class="card shadow-sm">
                 <div class="card-body text-center text-muted py-4">
                     <i class="fas fa-fw fa-history fa-2x mb-2"></i>
-                    <p class="mb-0">No activities recorded yet.</p>
+                    <p class="mb-0">No activities match these filters.</p>
                 </div>
             </div>
         @endforelse
     </div>
 
+    {{-- Pagination (rendered once for both desktop & mobile) --}}
     @if ($activities->hasPages())
         <div class="w-100 mt-3 mb-5">
             {{ $activities->links() }}

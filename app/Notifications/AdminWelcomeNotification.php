@@ -27,7 +27,7 @@ class AdminWelcomeNotification extends ThhaNotification
     protected function body($notifiable): string
     {
         return 'Your account is ready. The sidebar lists the pages your role allows, and this bell keeps what '
-            . 'happens on them — start at the Dashboard.';
+            . 'happens on them. Start at the Dashboard.';
     }
 
     protected function url($notifiable): ?string

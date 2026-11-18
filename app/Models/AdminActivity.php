@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -56,21 +55,5 @@ class AdminActivity extends Model
     public function getActionLabelAttribute(): string
     {
         return ucfirst((string) $this->action);
-    }
-
-    /**
-     * Scope to filter activities by module.
-     */
-    public function scopeModule(Builder $query, string $module): Builder
-    {
-        return $query->where('module', $module);
-    }
-
-    /**
-     * Scope to filter activities by action.
-     */
-    public function scopeAction(Builder $query, string $action): Builder
-    {
-        return $query->where('action', $action);
     }
 }

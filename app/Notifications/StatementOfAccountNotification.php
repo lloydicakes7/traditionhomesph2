@@ -8,7 +8,7 @@ use App\Models\User;
 use Illuminate\Notifications\Messages\MailMessage;
 
 /**
- * A statement of account — the account's own position, sent by the office.
+ * A statement of account: the account's own position, sent by the office.
  *
  * The statement is written to an address on the record, so the send path mails
  * it on demand; the account that address belongs to also keeps a line for the
@@ -42,8 +42,8 @@ class StatementOfAccountNotification extends ThhaNotification
     /**
      * The channels this notification goes out on.
      *
-     * A portal account keeps the statement for the bell; a bare email address —
-     * the on-demand notifiable the send path uses — can only be mailed.
+     * A portal account keeps the statement for the bell; a bare email address,
+     * the on-demand notifiable the send path uses, can only be mailed.
      *
      * @param  mixed  $notifiable
      * @return array<int, string>
@@ -55,7 +55,7 @@ class StatementOfAccountNotification extends ThhaNotification
 
     protected function title($notifiable): string
     {
-        return 'Statement of account — ' . $this->summary['period'];
+        return 'Statement of account for ' . $this->summary['period'];
     }
 
     protected function body($notifiable): string
@@ -70,7 +70,7 @@ class StatementOfAccountNotification extends ThhaNotification
     }
 
     /**
-     * The mail itself — the account, what is outstanding, and how to settle it.
+     * The mail itself: the account, what is outstanding, and how to settle it.
      *
      * The statement is rendered from one view so it reads as a single running
      * account: every bill the homeowner owes for the period, dues and one-off
@@ -82,9 +82,7 @@ class StatementOfAccountNotification extends ThhaNotification
     public function toMail($notifiable)
     {
         return (new MailMessage())
-            ->subject('Statement of Account — ' . $this->summary['period'])
-            ->markdown('emails.statement-of-account', [
-                'summary' => $this->summary,
-            ]);
+            ->subject('Statement of Account for ' . $this->summary['period'])
+            ->markdown('emails.statement-of-account', ['summary' => $this->summary]);
     }
 }

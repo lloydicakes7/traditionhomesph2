@@ -763,6 +763,12 @@ return [
                     'model' => App\Models\Admin::class,
                 ],
                 [
+                    'text' => 'User Activities',
+                    'route' => 'users.activities',
+                    'can' => 'viewAny',
+                    'model' => App\Models\AdminActivity::class,
+                ],
+                [
                     'text' => 'User Roles',
                     'route' => 'users.roles',
                     'can' => 'manageRoles',

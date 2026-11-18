@@ -82,7 +82,7 @@ class StorageHelper
 
     /**
      * Public URL for a stored file, or the given fallback when no path is set
-     * or the file is no longer on disk — the public pages' logo resolution.
+     * or the file is no longer on disk. It is the public pages' logo resolution.
      *
      * @param  string|null  $path
      * @param  string       $fallback  URL to use when there is no stored file
@@ -95,6 +95,21 @@ class StorageHelper
         }
 
         return $fallback;
+    }
+
+    /**
+     * Absolute path of a file on the public disk, or null when the file is not
+     * there. The logo is served through a route, so its address keeps working
+     * on a server that has no public storage link.
+     *
+     * @param  string|null  $path
+     * @return string|null
+     */
+    public static function publicFile(?string $path): ?string
+    {
+        return ! empty($path) && Storage::disk('public')->exists($path)
+            ? Storage::disk('public')->path($path)
+            : null;
     }
 
     /**

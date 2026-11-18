@@ -7,7 +7,7 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
 /**
- * "Your officer account is ready" — mailed once, when the office opens an
+ * "Your officer account is ready", mailed once when the office opens an
  * officer's account. The link in it is the same one the reset flow uses; only
  * the wording is a welcome rather than a notice that a reset was requested.
  *
@@ -25,8 +25,12 @@ class OfficerAccountOpened extends Notification
         $this->url = $url;
     }
 
-    // ===== Channels =====
-
+    /**
+     * The channels this notification goes out on.
+     *
+     * @param  mixed  $notifiable
+     * @return array<int, string>
+     */
     public function via($notifiable): array
     {
         return ['mail'];

@@ -15,6 +15,11 @@ class UserDetailQuery
         return Admin::with('role')->findOrFail($id);
     }
 
+    public function activityCount(int $adminId): int
+    {
+        return AdminActivity::where('admin_id', $adminId)->count();
+    }
+
     public function activities(int $adminId, int $perPage = 10, string $pageName = 'page'): LengthAwarePaginator
     {
         return AdminActivity::query()

@@ -35,7 +35,7 @@ class RequestFiledNotification extends OfficerNotification
 
     protected function title($notifiable): string
     {
-        return 'Request filed — ' . $this->request->type_label;
+        return 'Request filed for ' . $this->request->type_label;
     }
 
     protected function body($notifiable): string

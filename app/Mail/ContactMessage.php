@@ -29,9 +29,15 @@ class ContactMessage extends Mailable
         $this->inquiry = $data['message'];
     }
 
+    /**
+     * The inquiry is sent from the association's own address, and answers go
+     * back to the resident through the Reply-To header. It is written in the
+     * association's mail layout, which produces an HTML and a plain text part.
+     */
     public function build()
     {
         return $this->subject(__('public.contact.mail_subject', ['subject' => $this->subjectLine]))
+            ->from(config('mail.from.address'), config('mail.from.name'))
             ->replyTo($this->senderEmail, $this->senderName)
             ->markdown('emails.contact-message');
     }

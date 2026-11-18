@@ -27,12 +27,12 @@ class HouseholdLinkRequested extends ThhaNotification
 
     public function toMail($notifiable): MailMessage
     {
-        return (new MailMessage)
-            ->subject('Confirm a resident joining your household')
-            ->greeting('Hello ' . ($this->link->headAccount()?->resident?->first_name ?? 'Homeowner') . ',')
-            ->line($this->residentName() . ' named your unit at ' . $this->unitLabel() . ' as their address.')
-            ->line('They asked to be part of your household as ' . ($this->link->relationship ?: 'a member') . '.')
-            ->line('Please confirm whether they belong to your household, or reject the request.')
+        return (new MailMessage())
+            ->subject('A resident has requested to join your household')
+            ->greeting('Greetings, ' . ($this->link->headAccount()?->resident?->first_name ?? 'Homeowner') . ',')
+            ->line($this->residentName() . ' listed your unit at ' . $this->unitLabel() . ' as their address.')
+            ->line('They requested to be recorded as ' . ($this->link->relationship ?: 'a member') . ' of your household.')
+            ->line('Kindly confirm whether this person belongs to your household, or decline the request.')
             ->action('Review the request', route('portal.household-requests'));
     }
 

@@ -28,6 +28,8 @@ class ProfileVerifiedNotification extends ThhaNotification
     }
 
     /**
+     * The channels this notification goes out on.
+     *
      * @param  mixed  $notifiable
      * @return array<int, string>
      */
@@ -41,11 +43,11 @@ class ProfileVerifiedNotification extends ThhaNotification
      */
     public function toMail($notifiable): MailMessage
     {
-        return (new MailMessage)
+        return (new MailMessage())
             ->subject('Your Tradition Homes profile is verified')
-            ->greeting('Hello ' . ($this->account->resident?->first_name ?? 'Homeowner') . ',')
-            ->line('The office checked your personal information, your unit and your household.')
-            ->line('Your portal account now has every service open to it.')
+            ->greeting('Greetings, ' . ($this->account->resident?->first_name ?? 'Homeowner') . ',')
+            ->line('The office has verified your personal information, your unit and your household.')
+            ->line('Every service of the homeowner portal is now open to your account.')
             ->action('Open the portal', route('login'));
     }
 

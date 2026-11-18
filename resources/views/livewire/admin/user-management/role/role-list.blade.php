@@ -33,7 +33,7 @@
                                     <span class="badge badge-info ml-1" title="The software runs on this role">System</span>
                                 @endif
                             </td>
-                            <td class="text-muted">{{ $role->description ?? '—' }}</td>
+                            <td class="text-muted">{{ $role->description ?? 'No description' }}</td>
                             <td class="text-center">
                                 <span class="badge badge-{{ $role->admins_count > 0 ? 'primary' : 'secondary' }}">
                                     {{ $role->admins_count }}

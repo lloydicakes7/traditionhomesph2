@@ -219,6 +219,7 @@ Route::middleware([
     // ---------------------------------------------------------------
     Route::prefix('users')->name('users.')->group(function () {
         Route::get('/', [UserManagementController::class, 'index'])->name('index');
+        Route::get('/activities', [UserManagementController::class, 'activities'])->name('activities');
         Route::get('/roles', [UserManagementController::class, 'roles'])->name('roles');
     });
 

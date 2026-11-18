@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Public Pages')
+@section('title', 'Contents')
 
 @section('plugins.Summernote', true)
 

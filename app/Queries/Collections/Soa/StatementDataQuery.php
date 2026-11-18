@@ -43,8 +43,8 @@ class StatementDataQuery
             $property,
             $user->id,
             $period,
-            $user->resident?->full_name ?: ($user->email ?: '—'),
-            $property ? $property->block_lot_label : '—',
+            $user->resident?->full_name ?: ($user->email ?: 'Not recorded'),
+            $property ? $property->block_lot_label : 'Not recorded',
             PeriodHelper::label($period)
         );
     }
@@ -102,7 +102,7 @@ class StatementDataQuery
         return [
             'owner'           => $owner,
             'property'        => $propertyLabel,
-            'address'         => $property && $property->address ? $property->address->short_address : '—',
+            'address'         => $property && $property->address ? $property->address->short_address : 'No address on record',
             'period'          => $periodLabel,
             'bills'           => $bills,
             'balance'         => $balance,

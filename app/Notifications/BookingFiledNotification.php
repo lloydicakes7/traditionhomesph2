@@ -35,7 +35,7 @@ class BookingFiledNotification extends OfficerNotification
 
     protected function title($notifiable): string
     {
-        return 'Booking filed — ' . optional($this->booking->amenity)->name;
+        return 'Booking filed for ' . optional($this->booking->amenity)->name;
     }
 
     protected function body($notifiable): string

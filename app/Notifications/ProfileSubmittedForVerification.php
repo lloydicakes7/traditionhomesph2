@@ -33,7 +33,7 @@ class ProfileSubmittedForVerification extends OfficerNotification
 
     protected function title($notifiable): string
     {
-        return 'Profile submitted for verification — ' . $this->account->name;
+        return 'Profile submitted for verification by ' . $this->account->name;
     }
 
     protected function body($notifiable): string

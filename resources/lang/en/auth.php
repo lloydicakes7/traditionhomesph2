@@ -76,23 +76,9 @@ return [
     'review_new_unit' => 'This unit is new; it is created together with your registration.',
     'review_head' => 'You will be recorded as the household head.',
 
-    'registered_received' => 'Thank you. Your registration has been received.',
-    'registered_pending' => 'We emailed a receipt to :email. Your account is checked by the office before it is opened.',
-    'registered_active' => 'We emailed a receipt to :email. Your account is active — sign in with the password you chose.',
-
     'pending_title' => 'Your registration is pending approval',
     'pending_body' => 'Your account has not been opened yet. The office reviews every registration; you will be able to sign in once it is approved.',
     'pending_sign_in' => 'Try signing in',
-
-    'registration_received_subject' => 'Your Tradition Homes registration was received',
-    'registration_received_heading' => 'Registration received',
-    'registration_received_greeting' => 'Hello :name,',
-    'registration_received_body' => 'Thank you for registering with the Tradition Homes Phase 2 Homeowners Association, Inc. Your application is now with the office.',
-    'registration_received_email' => 'Registered email address:',
-    'registration_received_active' => 'Your account is already active. Sign in with the password you chose when you registered.',
-    'registration_received_pending' => 'Your account is checked by the office before it is opened. You will be able to sign in once it is approved.',
-    'registration_received_ignore' => 'If you did not file this registration, please tell the office.',
-    'registration_received_regards' => 'Best Regards,',
 
     // ===== Onboarding =====
 
@@ -126,20 +112,20 @@ return [
     // ===== Set password =====
 
     'set_password_title' => 'Choose your password',
-    'set_password_intro' => 'The office opened your homeowner account. Choose the password you will sign in with.',
+    'set_password_intro' => 'The office has opened your homeowner account. Kindly choose the password you will use to sign in.',
     'set_password_subject' => 'Choose your Tradition Homes password',
-    'set_password_mail_intro' => 'The office opened your homeowner account. Choose the password you will sign in with.',
+    'set_password_greeting' => 'Greetings, :name,',
     'set_password_action' => 'Set your password',
     'set_password_expiry' => 'This link expires shortly. If it has expired, ask the office to send a new one.',
-    'set_password_ignore' => 'If you did not expect this, you can ignore this message.',
+    'set_password_ignore' => 'If you did not request this, you may disregard this message.',
     'set_password_submit' => 'Save password',
     'set_password_saved' => 'Your password has been saved. You can now sign in.',
 
     // ===== Officer welcome =====
 
     'officer_welcome_subject' => 'Your Tradition Homes officer account is ready',
-    'officer_welcome_greeting' => 'Hello :name,',
-    'officer_welcome_intro' => 'The office has opened an officer account for you on the Tradition Homes information system. Choose the password you will sign in with.',
+    'officer_welcome_greeting' => 'Greetings, :name,',
+    'officer_welcome_intro' => 'The office has opened an officer account for you in the association information system. Kindly choose the password you will use to sign in.',
     'officer_welcome_action' => 'Choose your password',
 
     'office_register_title' => 'Office Registration',

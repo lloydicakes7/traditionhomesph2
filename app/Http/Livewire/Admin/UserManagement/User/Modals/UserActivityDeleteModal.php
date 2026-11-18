@@ -2,7 +2,7 @@
 
 namespace App\Http\Livewire\Admin\UserManagement\User\Modals;
 
-use App\Actions\UserManagement\Activities\DeleteAdminActivity;
+use App\Actions\UserManagement\Activities\DeleteAdminActivities;
 use App\Http\Livewire\AdminModalComponent;
 use App\Models\AdminActivity;
 
@@ -23,21 +23,13 @@ class UserActivityDeleteModal extends AdminModalComponent
         'closeActivityDeleteModal' => 'closeModal',
     ];
 
-    // =====================================================================
-    // Boot
-    // =====================================================================
+    /** @var DeleteAdminActivities */
+    protected $deleteActivities;
 
-    /** @var DeleteAdminActivity */
-    protected $deleteActivity;
-
-    public function boot(DeleteAdminActivity $deleteActivity)
+    public function boot(DeleteAdminActivities $deleteActivities)
     {
-        $this->deleteActivity = $deleteActivity;
+        $this->deleteActivities = $deleteActivities;
     }
-
-    // =====================================================================
-    // Lazy load
-    // =====================================================================
 
     public function load(?int $id = null): void
     {
@@ -69,10 +61,6 @@ class UserActivityDeleteModal extends AdminModalComponent
         parent::resetModal();
     }
 
-    // =====================================================================
-    // Delete
-    // =====================================================================
-
     public function delete(): void
     {
         if (! $this->loaded || ! $this->deletingActivityId) {
@@ -81,16 +69,12 @@ class UserActivityDeleteModal extends AdminModalComponent
 
         $this->authorize('delete', AdminActivity::class);
 
-        $this->deleteActivity->handle(AdminActivity::findOrFail($this->deletingActivityId));
+        $this->deleteActivities->handle([$this->deletingActivityId]);
 
         $this->emit('notify', 'success', 'Activity log deleted.');
         $this->emit('activity-deleted');
         $this->dispatchBrowserEvent('modal-close', ['id' => 'activityDeleteModal']);
     }
-
-    // =====================================================================
-    // Render
-    // =====================================================================
 
     public function render()
     {

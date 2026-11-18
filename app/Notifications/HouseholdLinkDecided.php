@@ -30,7 +30,7 @@ class HouseholdLinkDecided extends OfficerNotification
 
     protected function title($notifiable): string
     {
-        return ($this->approved() ? 'Household head approved a resident — ' : 'Household head rejected a resident — ')
+        return ($this->approved() ? 'Household head approved ' : 'Household head rejected ')
             . $this->residentName();
     }
 

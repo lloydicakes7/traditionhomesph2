@@ -56,7 +56,7 @@
                             <td>{{ $admin->email }}</td>
                             <td>
                                 <span class="badge badge-{{ $admin->role->badge_theme ?? 'secondary' }}">
-                                    {{ $admin->role->name ?? '—' }}
+                                    {{ $admin->role->name ?? 'No role' }}
                                 </span>
                             </td>
                             <td>
@@ -134,7 +134,7 @@
                         </div>
                         <div class="text-right flex-shrink-0">
                             <span class="badge badge-{{ $admin->role->badge_theme ?? 'secondary' }} d-block mb-1">
-                                {{ $admin->role->name ?? '—' }}
+                                {{ $admin->role->name ?? 'No role' }}
                             </span>
                             <span class="badge badge-{{ $admin->is_active ? 'success' : 'warning' }}">
                                 {{ $admin->is_active ? 'Active' : 'Inactive' }}

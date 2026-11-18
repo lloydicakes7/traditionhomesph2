@@ -7,7 +7,7 @@ use App\Models\Bill\Bill;
 use Illuminate\Notifications\Messages\MailMessage;
 
 /**
- * A monthly due is nearly due and still unpaid — the association's reminder to
+ * A monthly due is nearly due and still unpaid, the association's reminder to
  * settle it.
  *
  * One reminder per bill, sent by the scheduled `dues:send-reminders` command
@@ -44,13 +44,13 @@ class DuesReminderNotification extends ThhaNotification
 
     protected function title($notifiable): string
     {
-        return 'Monthly dues reminder — ' . $this->bill->balance_display . ' due ' . $this->dueDate();
+        return 'Monthly dues reminder for ' . $this->bill->billing_period_display;
     }
 
     protected function body($notifiable): string
     {
-        return $this->bill->reference . ' · ' . $this->bill->billing_period_display
-            . ' — settle it from your statement of account before the due date.';
+        return 'Your monthly dues for ' . $this->bill->billing_period_display . ' have an outstanding balance of '
+            . $this->bill->balance_display . ' due on ' . $this->dueDate() . '.';
     }
 
     protected function url($notifiable): ?string
@@ -59,23 +59,26 @@ class DuesReminderNotification extends ThhaNotification
     }
 
     /**
-     * The mail itself — what is owed, for which month, and when it is due.
+     * The mail itself: what is owed, for which month, and when it is due.
      *
      * @param  mixed  $notifiable
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
     public function toMail($notifiable)
     {
+        $reference = $this->bill->reference ? ' (reference ' . $this->bill->reference . ')' : '';
+
         return (new MailMessage())
-            ->subject('Monthly dues reminder — ' . $this->bill->billing_period_display)
-            ->greeting('Hello, ' . ($notifiable->name ?: 'Homeowner') . '!')
-            ->line('This is a friendly reminder that your monthly dues are almost due.')
-            ->line('Billing period: ' . $this->bill->billing_period_display)
+            ->subject('Monthly Dues Reminder for ' . $this->bill->billing_period_display)
+            ->greeting('Greetings, ' . ($notifiable->name ?: 'Homeowner') . ',')
+            ->line('This is a reminder that your monthly association dues for '
+                . $this->bill->billing_period_display . ' remain unpaid.')
+            ->line('Billing period: ' . $this->bill->billing_period_display . $reference)
             ->line('Amount due: ' . $this->bill->balance_display)
             ->line('Due date: ' . $this->dueDate())
-            ->line('Please settle it using any of the payment methods on your statement of account.')
-            ->action('View my statement', route('portal.statement-of-account'))
-            ->salutation(config('thha.hoa_name'));
+            ->line('Kindly settle the amount through any of the payment methods listed on your statement of account, '
+                . 'or in person at the association office.')
+            ->action('View your statement of account', route('portal.statement-of-account'));
     }
 
     /**
@@ -83,6 +86,6 @@ class DuesReminderNotification extends ThhaNotification
      */
     private function dueDate(): string
     {
-        return $this->bill->due_date ? $this->bill->due_date->format('M j, Y') : '—';
+        return $this->bill->due_date ? $this->bill->due_date->format('M j, Y') : 'not recorded';
     }
 }

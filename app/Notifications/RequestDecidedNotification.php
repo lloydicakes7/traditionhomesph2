@@ -31,7 +31,7 @@ class RequestDecidedNotification extends ThhaNotification
 
     protected function title($notifiable): string
     {
-        return $this->request->status_label . ' — ' . $this->request->type_label . ' request';
+        return $this->request->type_label . ' request ' . strtolower($this->request->status_label);
     }
 
     protected function body($notifiable): string
@@ -43,12 +43,12 @@ class RequestDecidedNotification extends ThhaNotification
         }
 
         if ($this->request->is_completed) {
-            return 'The office completed your request — the document has been released.';
+            return 'The office completed your request. The document has been released.';
         }
 
         return $remarks !== ''
             ? 'The office cancelled your request: ' . $remarks
-            : 'The office cancelled your request — open it for their remarks.';
+            : 'The office cancelled your request. Open it for their remarks.';
     }
 
     protected function url($notifiable): ?string

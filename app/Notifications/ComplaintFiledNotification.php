@@ -35,7 +35,7 @@ class ComplaintFiledNotification extends OfficerNotification
 
     protected function title($notifiable): string
     {
-        return 'Complaint filed — ' . $this->complaint->category_label;
+        return 'Complaint filed about ' . $this->complaint->category_label;
     }
 
     protected function body($notifiable): string

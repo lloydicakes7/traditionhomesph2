@@ -38,7 +38,7 @@
                         <p class="text-muted mb-2">{{ $viewingAdmin->email }}</p>
                         <p class="mb-2">
                             <span class="badge badge-{{ $viewingAdmin->role->badge_theme ?? 'secondary' }}">
-                                {{ $viewingAdmin->role->name ?? '—' }}
+                                {{ $viewingAdmin->role->name ?? 'No role' }}
                             </span>
                             <span class="badge badge-{{ $viewingAdmin->is_active ? 'success' : 'warning' }} ml-1">
                                 {{ $viewingAdmin->is_active ? 'Active' : 'Inactive' }}
@@ -60,6 +60,17 @@
                 {{-- WHAT THEY HAVE DONE                                    --}}
                 {{-- ===================================================== --}}
                 <div class="tab-pane {{ $activeViewTab === 'activities' ? 'active' : '' }}" role="tabpanel">
+                    @can('delete', \App\Models\AdminActivity::class)
+                        @if ($viewingActivities && $viewingActivities->count() > 0)
+                            <div class="d-flex justify-content-end mb-2">
+                                <x-adminlte-button label="Delete All" theme="danger" icon="fas fa-fw fa-trash"
+                                    data-toggle="modal" data-target="#activityDeleteAllModal"
+                                    data-id="{{ $viewingAdmin->id }}" class="btn-sm"
+                                    title="Delete all activity logs of this admin" />
+                            </div>
+                        @endif
+                    @endcan
+
                     @if ($viewingActivities && $viewingActivities->count() > 0)
                         <div class="table-responsive">
                             <table class="table table-hover table-sm">

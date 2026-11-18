@@ -30,7 +30,7 @@ class ComplaintRespondedNotification extends ThhaNotification
 
     protected function title($notifiable): string
     {
-        return 'Complaint ' . strtolower($this->complaint->status_label) . ' — ' . $this->complaint->category_label;
+        return 'Complaint ' . strtolower($this->complaint->status_label) . ' for ' . $this->complaint->category_label;
     }
 
     protected function body($notifiable): string

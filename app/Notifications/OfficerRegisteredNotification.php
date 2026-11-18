@@ -37,7 +37,7 @@ class OfficerRegisteredNotification extends OfficerNotification
 
     protected function title($notifiable): string
     {
-        return 'Officer account — ' . $this->officer->name;
+        return 'Officer account for ' . $this->officer->name;
     }
 
     protected function body($notifiable): string

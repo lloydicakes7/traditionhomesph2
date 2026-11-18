@@ -26,4 +26,14 @@ class UserManagementController extends Controller
     {
         return view('admin.user-management.roles');
     }
+
+    /**
+     * Show the activity trail of what the office has done.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function activities()
+    {
+        return view('admin.user-management.activities');
+    }
 }

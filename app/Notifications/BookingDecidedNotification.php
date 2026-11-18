@@ -35,7 +35,7 @@ class BookingDecidedNotification extends ThhaNotification
 
     protected function title($notifiable): string
     {
-        return 'Booking ' . strtolower($this->status) . ' — ' . optional($this->booking->amenity)->name;
+        return 'Booking ' . strtolower($this->status) . ' for ' . optional($this->booking->amenity)->name;
     }
 
     protected function body($notifiable): string

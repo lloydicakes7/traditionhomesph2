@@ -33,7 +33,7 @@ class HomeownerRegisteredNotification extends OfficerNotification
 
     protected function title($notifiable): string
     {
-        return 'New homeowner registration — ' . $this->account->name;
+        return 'New homeowner registration from ' . $this->account->name;
     }
 
     protected function body($notifiable): string

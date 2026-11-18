@@ -12,6 +12,7 @@ use App\Http\Controllers\Public\ContactController;
 use App\Http\Controllers\Public\ContentController;
 use App\Http\Controllers\Public\AnnouncementController;
 use App\Http\Controllers\Public\HomeController;
+use App\Http\Controllers\Public\LogoController;
 use App\Http\Controllers\Public\MemberController;
 use App\Http\Controllers\Public\ServicesController;
 use Illuminate\Support\Facades\Route;
@@ -31,6 +32,8 @@ Route::get('/members', [MemberController::class, 'index'])->name('members');
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');
 
 Route::get('/services', [ServicesController::class, 'index'])->name('services');
+
+Route::get('/logo', LogoController::class)->name('branding.logo');
 
 Route::get('/content/{slug}', [ContentController::class, 'show'])->name('content.show');
 
