@@ -1,6 +1,6 @@
 <div>
     <x-adminlte-modal id="csvImportModal" title="{{ $title }}" icon="fas fa-fw fa-file-csv"
-        theme="success" size="lg" scrollable v-centered wire:ignore.self>
+        theme="success" size="md" scrollable v-centered wire:ignore.self>
 
         <div data-modal-skeleton class="{{ $loaded ? 'd-none' : '' }}">
             <x-ui.modals.modal-loading message="Loading import options..." />
@@ -50,8 +50,7 @@
         <x-slot name="footerSlot">
             <x-adminlte-button label="Cancel" theme="outline-secondary" class="btn-sm" data-dismiss="modal" />
             <x-adminlte-button label="Import" theme="success" icon="fas fa-fw fa-file-import"
-                class="btn-sm" wire:click="confirm" wire:loading.attr="disabled"
-                data-thha-progress="Importing the CSV file..." data-thha-progress-wait />
+                class="btn-sm" wire:click="confirm" wire:loading.attr="disabled" />
         </x-slot>
     </x-adminlte-modal>
 </div>
