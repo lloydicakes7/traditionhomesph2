@@ -9,7 +9,7 @@ use App\Utility\CsvHelper;
 
 /**
  * The Daily Expenses Report — what a single day spent, by expense account, read
- * from the expenses approved that day so it can be laid beside the day's income.
+ * from the expenses posted that day so it can be laid beside the day's income.
  */
 class DailyExpenses extends AdminComponent
 {

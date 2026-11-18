@@ -2,7 +2,6 @@
 
 namespace App\Actions\Expenses\Expenses;
 
-use App\Enums\ExpenseStatus;
 use App\Models\Admin;
 use App\Models\Expense\Expense;
 use App\Models\Supplier;
@@ -26,9 +25,9 @@ class UpdateExpense
 
     public function handle(Expense $expense, array $data, Admin $by): Expense
     {
-        if (! $expense->status_enum || ! $expense->status_enum->is(ExpenseStatus::DRAFT())) {
+        if (! $expense->canBeEdited()) {
             throw ValidationException::withMessages([
-                'expense' => 'Only a draft expense can be edited. An approved expense is locked to its journal entry.',
+                'expense' => 'An expense already posted to the journal cannot be edited.',
             ]);
         }
 

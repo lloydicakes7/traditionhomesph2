@@ -2,13 +2,12 @@
 
 namespace App\Queries\Expenses;
 
-use App\Enums\ExpenseStatus;
 use App\Models\Expense\Expense;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class ExpenseListQuery
 {
-    const SORTABLE = ['expense_date', 'reference', 'subtotal', 'status'];
+    const SORTABLE = ['expense_date', 'reference', 'subtotal'];
 
     // ===== Rows =====
 
@@ -45,10 +44,9 @@ class ExpenseListQuery
     public function summary(): array
     {
         return [
-            'month_total'    => (float) Expense::query()->forMonth(now()->format('Y-m'))
-                ->where('status', ExpenseStatus::APPROVED)->sum('subtotal'),
-            'awaiting_total' => (float) Expense::query()->where('status', ExpenseStatus::DRAFT)->sum('subtotal'),
-            'approved_total' => (float) Expense::query()->where('status', ExpenseStatus::APPROVED)->sum('subtotal'),
+            'month_total'    => (float) Expense::query()->forMonth(now()->format('Y-m'))->sum('subtotal'),
+            'posted_total'   => (float) Expense::query()->whereNotNull('journal_entry_id')->sum('subtotal'),
+            'unposted_total' => (float) Expense::query()->whereNull('journal_entry_id')->sum('subtotal'),
             'total_count'    => Expense::query()->count(),
         ];
     }
@@ -61,7 +59,6 @@ class ExpenseListQuery
 
         return Expense::query()
             ->search((string) ($criteria['search'] ?? ''))
-            ->withStatus($filters['status'] ?? null)
             ->inCategory($filters['category'] ?? null)
             ->forMonth($filters['month'] ?? null);
     }

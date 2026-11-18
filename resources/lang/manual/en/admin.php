@@ -575,7 +575,7 @@ return [
                     'title'  => 'What the spending pages cover',
                     'body'   => 'The association\'s outgoings and the catalogues behind them.',
                     'fields' => [
-                        'Expenses'           => 'Money spent. An expense is drafted, then approved — and accounting posts it to the books separately.',
+                        'Expenses'           => 'Money spent. An expense is recorded, and accounting posts it to the books separately.',
                         'Expense Categories' => 'The headings expenses are grouped under. A category decides which account the spend posts against.',
                         'Suppliers'          => 'The payees an expense can name.',
                     ],
@@ -588,18 +588,16 @@ return [
                     'steps'  => [
                         'Open Expenses and select Record Expense.',
                         'Choose the supplier and the dates the wizard asks for.',
-                        'Add the lines: what was bought, the quantity and the price.',
-                        'Save it as a draft.',
-                        'Open it and approve it once the figures are agreed.',
+                        'Add the lines: a description and the amount.',
+                        'Save it.',
                     ],
                     'result' => [
-                        'The expense moves Draft → Approved, and the list and its totals follow.',
+                        'The expense is recorded and the list and its totals follow.',
                         'Accounting then posts it from the expense row with Post to Journal, choosing the account the money came from.',
                     ],
                     'notes'  => [
-                        'A draft is the pending state — nothing needs sending anywhere for an expense to wait for approval.',
                         'A line keeps the category name it was filed under, so a removed category never rewrites an old expense.',
-                        'Only a draft can be edited. Deleting a posted expense posts its reversal first, so the books keep both postings; an approved expense with no entry is simply removed.',
+                        'Only an unposted expense can be edited. Deleting a posted expense posts its reversal first, so the books keep both postings; an expense with no entry is simply removed.',
                     ],
                 ],
                 [
@@ -646,7 +644,7 @@ return [
                 ],
                 [
                     'title'  => 'The journal',
-                    'body'   => 'A bill raised is not a posting: income is recognised when accounting posts the receipt that collects it. An approved expense is posted the same way, from the expense row. A journal entry has one amount, an account it goes to and an account it comes from, so its two sides are equal by construction.',
+                    'body'   => 'A bill raised is not a posting: income is recognised when accounting posts the receipt that collects it. An expense is posted the same way, from the expense row. A journal entry has one amount, an account it goes to and an account it comes from, so its two sides are equal by construction.',
                     'steps'  => [
                         'Open Accounting → Journal Entries and search for the posting you want.',
                         'View it to read Goes To and Comes From, or print its voucher from the row\'s Actions menu.',
@@ -1022,7 +1020,7 @@ return [
                     'fields' => [
                         'A bill still shows a balance though money was handed over' => 'The receipt is either still pending, or was recorded against another bill.',
                         'Income looks lower than the collections' => 'Income is recognised when accounting posts a payment, not when a bill is raised — check the journal for posted payments.',
-                        'An expense does not show on the books' => 'An expense posts when accounting posts it, not when it is approved. An unposted expense has no journal entry yet.',
+                        'An expense does not show on the books' => 'An expense does not post itself: it posts when accounting posts it. An unposted expense has no journal entry yet.',
                         'A month looks short on the report' => 'Check whether the month is still open, and whether anything was voided or reversed after the fact.',
                     ],
                 ],

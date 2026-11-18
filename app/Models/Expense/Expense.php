@@ -2,7 +2,6 @@
 
 namespace App\Models\Expense;
 
-use App\Enums\ExpenseStatus;
 use App\Models\Admin;
 use App\Models\JournalEntry\JournalEntry;
 use App\Models\Supplier;
@@ -14,9 +13,9 @@ use Illuminate\Database\Eloquent\Model;
  * under a category.
  *
  * An expense is logged through the office's two-step wizard: the details
- * (date, supplier, description), then the line items by category. Approval
- * locks the record; accounting posts it to the books separately, and deleting
- * an expense that was already posted reverses its entry.
+ * (date, supplier, description), then the line items by category. Accounting
+ * posts it to the books separately; a posted expense is locked, and deleting
+ * it reverses its entry.
  */
 class Expense extends Model
 {
@@ -26,7 +25,6 @@ class Expense extends Model
         'supplier_id',
         'description',
         'subtotal',
-        'status',
         'created_by_admin_id',
         'journal_entry_id',
     ];
@@ -100,14 +98,6 @@ class Expense extends Model
     }
 
     /**
-     * Only the expenses in one status.
-     */
-    public function scopeWithStatus($query, ?string $status)
-    {
-        return $status ? $query->where('status', $status) : $query;
-    }
-
-    /**
      * Only the expenses carrying one category on their items.
      */
     public function scopeInCategory($query, $categoryId)
@@ -156,34 +146,6 @@ class Expense extends Model
     // =====================================================================
 
     /**
-     * The ExpenseStatus enum instance for this expense.
-     */
-    public function getStatusEnumAttribute(): ?ExpenseStatus
-    {
-        return $this->status ? ExpenseStatus::tryFrom($this->status) : null;
-    }
-
-    /**
-     * AdminLTE badge theme class for this expense's status.
-     */
-    public function getStatusBadgeAttribute(): string
-    {
-        return $this->status_enum
-            ? $this->status_enum->badgeTheme()
-            : 'secondary';
-    }
-
-    /**
-     * The label of this expense's status, or the raw value when unknown.
-     */
-    public function getStatusLabelAttribute(): string
-    {
-        return $this->status_enum
-            ? $this->status_enum->label()
-            : (string) $this->status;
-    }
-
-    /**
      * The subtotal as a list writes it: "₱1,500.00".
      */
     public function getSubtotalDisplayAttribute(): string
@@ -196,7 +158,26 @@ class Expense extends Model
      */
     public function getExpenseDateDisplayAttribute(): string
     {
-        return $this->expense_date ? $this->expense_date->format('M j, Y') : '—';
+        return $this->expense_date ? $this->expense_date->format('M j, Y') : 'Not provided';
+    }
+
+    /**
+     * What the expense was for, as a list writes it: its own note, else the
+     * first line's.
+     */
+    public function getDescriptionLabelAttribute(): string
+    {
+        return $this->description
+            ?: ($this->items->first()->description ?? '')
+            ?: 'None';
+    }
+
+    /**
+     * The categories the expense's lines are filed under.
+     */
+    public function getCategoryLabelAttribute(): string
+    {
+        return $this->items->pluck('category_name')->filter()->unique()->implode(', ') ?: 'None';
     }
 
     /**
@@ -204,7 +185,15 @@ class Expense extends Model
      */
     public function getSupplierLabelAttribute(): string
     {
-        return $this->supplier ? $this->supplier->name : '—';
+        return $this->supplier ? $this->supplier->name : 'None';
+    }
+
+    /**
+     * Whether the expense may still be corrected — not once it is posted.
+     */
+    public function canBeEdited(): bool
+    {
+        return $this->journal_entry_id === null;
     }
 
 }

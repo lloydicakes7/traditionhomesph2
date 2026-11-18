@@ -65,7 +65,6 @@ class CatalogActionsTest extends TestCase
             'reference'    => 'EXP-' . now()->year . '-0001',
             'expense_date' => now()->toDateString(),
             'subtotal'     => 120,
-            'status'       => 'draft',
         ]);
 
         ExpenseItem::create([
@@ -125,7 +124,6 @@ class CatalogActionsTest extends TestCase
             'expense_date' => now()->toDateString(),
             'supplier_id'  => $supplier->id,
             'subtotal'     => 120,
-            'status'       => 'draft',
         ]);
 
         $this->expectException(ValidationException::class);

@@ -9,7 +9,7 @@ class CreateExpensesTables extends Migration
     /**
      * The Expenses module — everything the association spends.
      *
-     * An expense is raised through the office's own three-step wizard and made
+     * An expense is raised through the office's own two-step wizard and made
      * of line items filed under a category (security, utilities, repairs…).
      * The category is office-managed data — a table, not an enum — exactly
      * like the products' categories, because the office names and retires its
@@ -55,13 +55,11 @@ class CreateExpensesTables extends Migration
             $table->foreignId('supplier_id')->nullable()->constrained('suppliers')->nullOnDelete();
             $table->text('description')->nullable();
             $table->decimal('subtotal', 12, 2)->default(0);
-            $table->string('status', 30)->default('draft')->comment('App\Enums\ExpenseStatus');
             $table->unsignedBigInteger('created_by_admin_id')->nullable();
             $table->foreignId('journal_entry_id')->nullable()->constrained('journal_entries')->nullOnDelete()
                 ->comment('The entry accounting posted');
             $table->timestamps();
 
-            $table->index('status', 'idx_expenses_status');
             $table->index('expense_date', 'idx_expenses_date');
         });
 

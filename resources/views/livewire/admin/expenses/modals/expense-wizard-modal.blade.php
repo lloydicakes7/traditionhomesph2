@@ -57,18 +57,19 @@
                         </x-adminlte-input>
                     </div>
                     <div class="col-12 col-sm-6">
-                        <x-adminlte-select name="form.supplier_id" label="Supplier / Payee"
-                            wire:model.defer="form.supplier_id" igroup-size="sm">
+                        <x-adminlte-select2 id="expenseSupplier" name="form.supplier_id" label="Supplier / Payee"
+                            wire:model.defer="form.supplier_id" igroup-size="sm"
+                            :config="['placeholder' => 'Choose a supplier', 'allowClear' => true]">
                             <option value="">Not specified</option>
                             @foreach ($suppliers as $supplier)
                                 <option value="{{ $supplier->id }}">{{ $supplier->name }}</option>
                             @endforeach
-                        </x-adminlte-select>
+                        </x-adminlte-select2>
                     </div>
                 </div>
 
                 <x-adminlte-textarea name="form.description" label="General Description" rows="3"
-                    placeholder="What this expense is for — e.g. gate guard wages for June"
+                    placeholder="e.g. Gate guard wages for June"
                     wire:model.defer="form.description" igroup-size="sm" />
             @endif
 
@@ -88,10 +89,13 @@
                         </thead>
                         <tbody>
                             @forelse ($items as $index => $item)
-                                <tr>
+                                <tr wire:key="expense-line-{{ $index }}">
                                     <td>
-                                        <select class="form-control form-control @error('items.' . $index . '.expense_category_id') is-invalid @enderror"
-                                            wire:model="items.{{ $index }}.expense_category_id">
+                                        <select id="expenseLineCategory{{ $index }}"
+                                            class="form-control @error('items.' . $index . '.expense_category_id') is-invalid @enderror"
+                                            data-thha-select2 data-placeholder="Choose a category"
+                                            wire:model="items.{{ $index }}.expense_category_id"
+                                            aria-label="Category for line {{ $index + 1 }}">
                                             <option value="">Uncategorised</option>
                                             @foreach ($categories as $category)
                                                 <option value="{{ $category->id }}">{{ $category->name }}</option>
@@ -103,7 +107,6 @@
                                     </td>
                                     <td>
                                         <input type="text" class="form-control form-control"
-                                            placeholder="What was bought"
                                             wire:model.lazy="items.{{ $index }}.description">
                                         @error('items.' . $index . '.description')
                                             <span class="text-danger small">{{ $message }}</span>

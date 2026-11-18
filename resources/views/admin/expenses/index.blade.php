@@ -15,7 +15,10 @@
         @livewire('admin.expenses.modals.expense-wizard-modal')
         @livewire('admin.expenses.modals.expense-delete-modal')
         @livewire('admin.expenses.modals.expense-mass-delete-modal')
-        @livewire('admin.expenses.modals.expense-approve-modal')
         @livewire('admin.accounting.journal-entries.modals.post-to-journal-modal')
     </div>
 @endsection
+
+@push('js')
+    <script src="{{ asset('js/select2.js') }}"></script>
+@endpush

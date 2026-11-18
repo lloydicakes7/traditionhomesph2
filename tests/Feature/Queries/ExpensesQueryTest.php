@@ -25,37 +25,36 @@ class ExpensesQueryTest extends TestCase
         $security = $this->category('Security');
         $utilities = $this->category('Utilities');
 
-        $this->expense('EXP-2026-0001', $security, 500, 'draft', '2026-09-10', 'Gate guard');
-        $this->expense('EXP-2026-0002', $utilities, 900, 'approved', '2026-10-10', 'Meralco');
+        $this->expense('EXP-2026-0001', $security, 500, '2026-09-10', 'Gate guard');
+        $this->expense('EXP-2026-0002', $utilities, 900, '2026-10-10', 'Meralco');
 
         $query = app(ExpenseListQuery::class);
 
         $this->assertSame(2, $query->paginate()->total());
         $this->assertSame(1, $query->paginate(['search' => 'Meralco'])->total());
         $this->assertSame(1, $query->paginate(['search' => 'EXP-2026-0001'])->total());
-        $this->assertSame(1, $query->paginate(['filters' => ['status' => 'approved']])->total());
         $this->assertSame(1, $query->paginate(['filters' => ['category' => $utilities->id]])->total());
         $this->assertSame(1, $query->paginate(['filters' => ['month' => '2026-09']])->total());
 
         $ascending = $query->paginate(['sort' => 'subtotal', 'direction' => 'asc']);
 
         $this->assertSame(500.0, (float) $ascending->items()[0]->subtotal);
-        $this->assertCount(2, $query->ids(['filters' => ['status' => '']]));
+        $this->assertCount(2, $query->ids());
     }
 
-    public function test_the_expense_summary_reads_what_was_spent_this_month_and_what_is_open(): void
+    public function test_the_expense_summary_reads_what_was_spent_and_what_is_posted(): void
     {
         $category = $this->category('Security');
 
-        $this->expense('EXP-2026-0001', $category, 500, 'draft', now()->toDateString());
-        $this->expense('EXP-2026-0002', $category, 250, 'approved', now()->toDateString());
-        $this->expense('EXP-2026-0003', $category, 900, 'draft', '2025-01-10');
+        $this->expense('EXP-2026-0001', $category, 500, now()->toDateString());
+        $this->expense('EXP-2026-0002', $category, 250, now()->toDateString());
+        $this->expense('EXP-2026-0003', $category, 900, '2025-01-10');
 
         $totals = app(ExpenseListQuery::class)->summary();
 
-        $this->assertSame(250.0, $totals['month_total']);
-        $this->assertSame(1400.0, $totals['awaiting_total']);
-        $this->assertSame(250.0, $totals['approved_total']);
+        $this->assertSame(750.0, $totals['month_total']);
+        $this->assertSame(0.0, $totals['posted_total']);
+        $this->assertSame(1650.0, $totals['unposted_total']);
         $this->assertSame(3, $totals['total_count']);
     }
 
@@ -64,7 +63,7 @@ class ExpensesQueryTest extends TestCase
         $security = $this->category('Security');
         $utilities = $this->category('Utilities');
 
-        $expense = $this->expense('EXP-2026-0001', $security, 300, 'draft', '2026-09-10');
+        $expense = $this->expense('EXP-2026-0001', $security, 300, '2026-09-10');
         $expense->items()->create([
             'expense_category_id' => $utilities->id,
             'category_name'       => 'Utilities',
@@ -120,7 +119,6 @@ class ExpensesQueryTest extends TestCase
         string $reference,
         ExpenseCategory $category,
         float $amount,
-        string $status,
         string $date,
         string $description = 'Association spending'
     ): Expense {
@@ -129,7 +127,6 @@ class ExpensesQueryTest extends TestCase
             'expense_date' => $date,
             'description'  => $description,
             'subtotal'     => $amount,
-            'status'       => $status,
         ]);
 
         ExpenseItem::create([

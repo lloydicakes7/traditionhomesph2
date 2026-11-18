@@ -1,14 +1,23 @@
 (function () {
     'use strict';
 
-    var options = {
+    var defaults = {
         theme: 'bootstrap4',
         width: '100%',
-        placeholder: 'Choose an account…',
+        placeholder: 'Choose an option',
         allowClear: false
     };
 
-    function syncAccountSelect($select) {
+    function optionsFor($select) {
+        return {
+            theme: defaults.theme,
+            width: defaults.width,
+            placeholder: $select.attr('data-placeholder') || defaults.placeholder,
+            allowClear: $select.attr('data-allow-clear') === 'true'
+        };
+    }
+
+    function syncSelect($select) {
         var hasContainer = $select.next('.select2-container').length > 0;
         var hasInstance = !! $select.data('select2');
 
@@ -21,11 +30,11 @@
                 }
             }
 
-            $select.select2(options);
+            $select.select2(optionsFor($select));
             $select.attr('data-select2-value', $select.val() || '');
 
-            $select.off('.journalAccount').on(
-                'select2:select.journalAccount select2:unselect.journalAccount select2:clear.journalAccount',
+            $select.off('.thhaSelect2').on(
+                'select2:select.thhaSelect2 select2:unselect.thhaSelect2 select2:clear.thhaSelect2',
                 function (event) {
                     event.target.dispatchEvent(new Event('change', { bubbles: true }));
                 }
@@ -42,21 +51,21 @@
         }
     }
 
-    function initAccountSelects() {
+    function initSelects() {
         if (!window.jQuery || !window.jQuery.fn || !window.jQuery.fn.select2) {
             return;
         }
 
         window.jQuery('select[data-thha-select2]').each(function () {
-            syncAccountSelect(window.jQuery(this));
+            syncSelect(window.jQuery(this));
         });
     }
 
     function boot() {
-        initAccountSelects();
+        initSelects();
 
         if (window.Livewire && typeof window.Livewire.hook === 'function') {
-            window.Livewire.hook('message.processed', initAccountSelects);
+            window.Livewire.hook('message.processed', initSelects);
         }
     }
 

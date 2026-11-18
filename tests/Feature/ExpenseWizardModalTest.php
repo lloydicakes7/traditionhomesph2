@@ -45,7 +45,7 @@ class ExpenseWizardModalTest extends TestCase
     }
 
     /**
-     * A draft expense filed under the given supplier.
+     * An expense filed under the given supplier.
      */
     private function expenseFor(Supplier $supplier): Expense
     {
@@ -55,7 +55,6 @@ class ExpenseWizardModalTest extends TestCase
             'supplier_id'  => $supplier->id,
             'description'  => 'Gate guard wages',
             'subtotal'     => 350,
-            'status'       => 'draft',
         ]);
 
         ExpenseItem::create([

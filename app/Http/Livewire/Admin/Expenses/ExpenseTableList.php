@@ -2,7 +2,6 @@
 
 namespace App\Http\Livewire\Admin\Expenses;
 
-use App\Enums\ExpenseStatus;
 use App\Http\Livewire\Concerns\WithCsvExport;
 use App\Http\Livewire\Concerns\WithListCriteria;
 use App\Http\Livewire\Concerns\WithSorting;
@@ -20,7 +19,7 @@ use Livewire\WithPagination;
  * search, filters, sorting, pagination, selection, and the row actions.
  *
  * Every row action opens its own dialog: the tracking view, the wizard, and the
- * state changes worth confirming — approve and delete — are `data-toggle`
+ * state changes worth confirming — posting and delete — are `data-toggle`
  * triggers that load their record lazily, so the page holds only the list's own
  * state. Mass-delete is one of those triggers, carrying the selection as the
  * loader's `data-id`.
@@ -43,9 +42,6 @@ class ExpenseTableList extends AdminComponent
     /** @var string Search query */
     public $search = '';
 
-    /** @var string Status filter */
-    public $filterStatus = '';
-
     /** @var string Category filter */
     public $filterCategory = '';
 
@@ -65,7 +61,7 @@ class ExpenseTableList extends AdminComponent
     public $selectAll = false;
 
     /** @var array<string> Query-string persistent state */
-    protected $queryString = ['search', 'filterStatus', 'filterCategory', 'filterMonth', 'sortField', 'sortDirection'];
+    protected $queryString = ['search', 'filterCategory', 'filterMonth', 'sortField', 'sortDirection'];
 
     /** @var array<string, string> Cross-component listeners */
     protected $listeners = [
@@ -89,11 +85,6 @@ class ExpenseTableList extends AdminComponent
     // =====================================================================
     // Filters — every one of them returns the table to its first page
     // =====================================================================
-
-    public function updatingFilterStatus(): void
-    {
-        $this->resetPage();
-    }
 
     public function updatingFilterCategory(): void
     {
@@ -144,8 +135,8 @@ class ExpenseTableList extends AdminComponent
 
         $this->authorize('view', $expense);
 
-        if (! $expense->status_enum?->is(ExpenseStatus::APPROVED()) || $expense->journal_entry_id) {
-            $this->emit('notify', 'warning', 'That expense cannot be posted to the journal.');
+        if ($expense->journal_entry_id) {
+            $this->emit('notify', 'warning', 'That expense is already posted to the journal.');
 
             return;
         }
@@ -174,13 +165,11 @@ class ExpenseTableList extends AdminComponent
                 $expense->supplier_label,
                 $expense->items->pluck('category_name')->unique()->implode('; '),
                 $expense->subtotal_display,
-                $expense->status_label,
             ];
         }
 
         return CsvHelper::build([
-            'Date', 'Reference No.', 'Supplier', 'Categories',
-            'Total', 'Status',
+            'Date', 'Reference No.', 'Supplier', 'Categories', 'Total',
         ], $rows);
     }
 
@@ -199,7 +188,6 @@ class ExpenseTableList extends AdminComponent
 
         return view('livewire.admin.expenses.expense-table-list', [
             'expenses'   => $this->expenses->paginate($this->listCriteria()),
-            'statuses'   => ExpenseStatus::labels(),
             'categories' => $this->options->categories(),
             'months'     => $this->options->months(),
             'totals'     => $this->expenses->summary(),

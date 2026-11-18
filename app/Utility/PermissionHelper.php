@@ -57,7 +57,7 @@ class PermissionHelper
         ],
 
         'Expenses' => [
-            'Expenses'           => ['View', 'Create', 'Edit', 'Approve', 'Delete', 'Export'],
+            'Expenses'           => ['View', 'Create', 'Edit', 'Delete', 'Export'],
             'Expense Categories' => ['View', 'Create', 'Edit', 'Delete'],
             'Suppliers'          => ['View', 'Create', 'Edit', 'Delete'],
         ],

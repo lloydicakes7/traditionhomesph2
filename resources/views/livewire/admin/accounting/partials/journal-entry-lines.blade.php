@@ -18,7 +18,8 @@
                     <td>
                         <select id="journalLineAccount{{ $index }}"
                             class="form-control @error('lines.' . $index . '.account_id') is-invalid @enderror"
-                            data-thha-select2 wire:model="lines.{{ $index }}.account_id"
+                            data-thha-select2 data-placeholder="Choose an account…"
+                            wire:model="lines.{{ $index }}.account_id"
                             aria-label="Account for line {{ $index + 1 }}">
                             <option value="">Choose an account…</option>
                             @foreach ($manualAccountOptions as $id => $label)

@@ -143,7 +143,7 @@
     <script>
         var thhaTimers = {};
 
-        var thhaToastLifetime = 5000;
+        var thhaToastLifetime = 10000;
 
         function startToastTimer(id) {
             if (thhaTimers[id]) {

@@ -8,8 +8,7 @@ use App\Queries\Expenses\ExpenseDetailQuery;
 
 /**
  * View Expense — the full detail view, read-only: the financial summary,
- * the draft-to-approved progress, the category breakdown, and the journal
- * entry accounting posted.
+ * the category breakdown, and the journal entry accounting posted.
  *
  * Opened client-side by Bootstrap (`#expenseViewModal`) with the expense's id
  * on the trigger, and loaded lazily by public/js/modal-loader.js. The record is

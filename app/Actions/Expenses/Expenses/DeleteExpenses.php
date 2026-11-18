@@ -2,7 +2,6 @@
 
 namespace App\Actions\Expenses\Expenses;
 
-use App\Enums\ExpenseStatus;
 use App\Enums\JournalSource;
 use App\Models\Admin;
 use App\Models\Expense\Expense;
@@ -53,7 +52,7 @@ class DeleteExpenses
     {
         $entry = $expense->journalEntry;
 
-        if (! $entry || ! $expense->status_enum || ! $expense->status_enum->is(ExpenseStatus::APPROVED())) {
+        if (! $entry) {
             return;
         }
 

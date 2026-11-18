@@ -5,10 +5,6 @@
             <i class="fas fa-fw fa-bell mr-2"></i>Notifications
         </h3>
 
-        {{-- Pinned to the header's right corner with `ml-auto`, never
-             `justify-content-between`: an AdminLTE `.card-header` is a
-             clearfix, so its `::after` is a third flex item and spacing the
-             ends apart lands the button in the middle. --}}
         @if ($hasUnread)
             <button type="button" class="btn btn-sm btn-outline-secondary ml-auto"
                 wire:click="markAllAsRead" wire:loading.attr="disabled">

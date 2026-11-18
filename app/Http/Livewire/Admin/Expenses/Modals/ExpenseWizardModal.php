@@ -2,7 +2,6 @@
 
 namespace App\Http\Livewire\Admin\Expenses\Modals;
 
-use App\Enums\ExpenseStatus;
 use App\Actions\Expenses\Expenses\LogExpense;
 use App\Actions\Expenses\Expenses\UpdateExpense;
 use App\Http\Livewire\AdminModalComponent;
@@ -20,7 +19,7 @@ use Illuminate\Validation\Rule;
  * adds itself up as the rows change. Recording an expense does not touch the
  * books: accounting posts it separately from the expenses list.
  *
- * Editing a draft re-opens the same wizard pre-filled; an approved expense is
+ * Editing an expense re-opens the same wizard pre-filled; a posted expense is
  * locked by the Action.
  *
  * Opened client-side by Bootstrap (`#expenseWizardModal`): a blank dialog from
@@ -189,8 +188,8 @@ class ExpenseWizardModal extends AdminModalComponent
 
         $expense = $this->records->forEdit($id);
 
-        if (! $expense->status_enum || ! $expense->status_enum->is(ExpenseStatus::DRAFT())) {
-            $this->emit('notify', 'warning', 'Only a draft expense can be edited.');
+        if (! $expense->canBeEdited()) {
+            $this->emit('notify', 'warning', 'An expense already posted to the journal cannot be edited.');
 
             return;
         }

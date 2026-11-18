@@ -182,7 +182,6 @@ class FinanceListRowKeyTest extends TestCase
             'description'    => 'Gate guard wages',
             'subtotal'       => 350,
             'payment_method' => 'cash',
-            'status'         => 'draft',
         ]);
     }
 

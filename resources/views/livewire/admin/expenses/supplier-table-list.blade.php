@@ -129,7 +129,7 @@
                     </div>
                 </div>
                 <div class="card-body px-3 py-3">
-                    <div class="small text-muted">{{ $supplier->description ?: 'No description.' }}</div>
+                    <div class="small text-muted">{{ $supplier->description ?: 'None' }}</div>
                 </div>
                 <div class="card-footer bg-light py-2 text-right">
                     <div class="dropdown">

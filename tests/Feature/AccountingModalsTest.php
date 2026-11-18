@@ -561,7 +561,7 @@ class AccountingModalsTest extends TestCase
         $response = $this->get(route('accounting.journal-entries'));
 
         $response->assertOk();
-        $response->assertSee('journal-entry-lines.js', false);
+        $response->assertSee('js/select2.js', false);
 
         $this->assertSame(1, preg_match(
             '/<table class="table table-hover table-sm mb-0">(.*?)<\/table>/s',

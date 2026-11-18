@@ -2,15 +2,13 @@
 
 namespace App\Actions\Accounting\JournalEntries;
 
-use App\Enums\ExpenseStatus;
 use App\Models\Admin;
 use App\Models\Expense\Expense;
 use App\Services\Accounting\ExpensePostingService;
 use App\Services\ActivityLogService;
-use Illuminate\Validation\ValidationException;
 
 /**
- * Post an approved expense to the books.
+ * Post an expense to the books.
  *
  * The entry is the one accounting confirmed in the posting dialog, starting
  * from the draft the system wrote for the expense. The expense is the source:
@@ -33,12 +31,6 @@ class PostExpenseJournal
 
     public function handle(Expense $expense, array $entry, Admin $by): Expense
     {
-        if (! $expense->status_enum || ! $expense->status_enum->is(ExpenseStatus::APPROVED())) {
-            throw ValidationException::withMessages([
-                'expense' => 'Approve the expense before posting it to the journal.',
-            ]);
-        }
-
         if ($expense->journal_entry_id) {
             return $expense;
         }

@@ -9,11 +9,11 @@
 
         <div data-modal-content class="{{ ! $loaded ? 'd-none' : '' }}">
             <x-adminlte-input name="form.name" label="Category Name"
-                placeholder="e.g. Security, Utilities, Repairs"
+                placeholder="e.g. Security"
                 wire:model.defer="form.name" igroup-size="sm" />
 
             <x-adminlte-textarea name="form.description" label="Description" rows="2"
-                placeholder="What belongs under this category"
+                placeholder="What this category covers"
                 wire:model.defer="form.description" igroup-size="sm" />
         </div>
 

@@ -3,12 +3,10 @@
 namespace Tests\Feature\Actions\Expenses;
 
 use App\Actions\Accounting\JournalEntries\PostExpenseJournal;
-use App\Actions\Expenses\Expenses\ApproveExpense;
 use App\Actions\Expenses\Expenses\DeleteExpenses;
 use App\Actions\Expenses\Expenses\LogExpense;
 use App\Actions\Expenses\Expenses\UpdateExpense;
 use App\Enums\AccountType;
-use App\Enums\ExpenseStatus;
 use App\Enums\JournalSource;
 use App\Models\Account\AccountingPeriod;
 use App\Models\Account\Account;
@@ -30,7 +28,7 @@ class ExpenseActionsTest extends TestCase
 
     // ===== Logging =====
 
-    public function test_logging_an_expense_files_it_as_a_draft_and_snapshots_its_categories(): void
+    public function test_logging_an_expense_files_it_and_snapshots_its_categories(): void
     {
         $admin = $this->admin();
         $security = $this->category('Security');
@@ -41,7 +39,6 @@ class ExpenseActionsTest extends TestCase
             ['description' => 'Night roving', 'amount' => 250],
         ], $supplier->id), $admin);
 
-        $this->assertSame(ExpenseStatus::DRAFT, $expense->status);
         $this->assertSame('EXP-' . now()->year . '-0001', $expense->reference);
         $this->assertSame(750.0, (float) $expense->subtotal);
         $this->assertSame(['Security', 'Security'], $expense->items->pluck('category_name')->all());
@@ -89,12 +86,12 @@ class ExpenseActionsTest extends TestCase
         ]);
     }
 
-    public function test_an_approved_expense_cannot_be_edited(): void
+    public function test_a_posted_expense_cannot_be_edited(): void
     {
         $admin = $this->admin();
         $category = $this->category('Security');
         $expense = $this->logged($admin, $category, 'Gate guard', 350);
-        app(ApproveExpense::class)->handle($expense, $admin);
+        $this->postExpense($expense, $this->account(), $admin);
 
         $this->expectException(ValidationException::class);
 
@@ -103,48 +100,14 @@ class ExpenseActionsTest extends TestCase
         ]), $admin);
     }
 
-    // ===== Approval =====
-
-    public function test_approving_a_draft_locks_it_without_posting(): void
-    {
-        $admin = $this->admin();
-        $category = $this->category('Security');
-        $expense = $this->logged($admin, $category, 'Gate guard', 350);
-
-        $approved = app(ApproveExpense::class)->handle($expense, $admin);
-
-        $this->assertSame(ExpenseStatus::APPROVED, $approved->status);
-        $this->assertNull($approved->journal_entry_id);
-        $this->assertSame(0, JournalEntry::count());
-        $this->assertDatabaseHas('admin_activities', [
-            'admin_id' => $admin->id,
-            'action'   => 'approved',
-            'module'   => 'expense',
-        ]);
-    }
-
-    public function test_approving_twice_changes_nothing_more(): void
-    {
-        $admin = $this->admin();
-        $expense = $this->logged($admin, $this->category('Security'), 'Gate guard', 350);
-
-        app(ApproveExpense::class)->handle($expense, $admin);
-        app(ApproveExpense::class)->handle($expense->fresh(), $admin);
-
-        $this->assertSame(ExpenseStatus::APPROVED, $expense->fresh()->status);
-        $this->assertSame(0, JournalEntry::count());
-    }
-
     // ===== Posting =====
 
-    public function test_accounting_posts_an_approved_expense_to_the_journal(): void
+    public function test_accounting_posts_an_expense_to_the_journal(): void
     {
         $admin = $this->admin();
         $expenseAccount = $this->account('5100', 'Security Services', false, AccountType::EXPENSE);
         $category = $this->category('Security', $expenseAccount);
         $expense = $this->logged($admin, $category, 'Gate guard', 350);
-
-        app(ApproveExpense::class)->handle($expense, $admin);
 
         $posted = $this->postExpense($expense->fresh(), $this->account(), $admin);
 
@@ -166,27 +129,10 @@ class ExpenseActionsTest extends TestCase
         ]);
     }
 
-    public function test_a_draft_expense_cannot_be_posted(): void
-    {
-        $admin = $this->admin();
-        $expense = $this->logged($admin, $this->category('Security'), 'Gate guard', 350);
-
-        $this->expectException(ValidationException::class);
-
-        try {
-            $this->postExpense($expense, $this->account(), $admin);
-        } finally {
-            $this->assertSame(0, JournalEntry::count());
-            $this->assertNull($expense->fresh()->journal_entry_id);
-        }
-    }
-
     public function test_posting_an_expense_requires_a_cash_account(): void
     {
         $admin = $this->admin();
         $expense = $this->logged($admin, $this->category('Security'), 'Gate guard', 350);
-
-        app(ApproveExpense::class)->handle($expense, $admin);
 
         $income = $this->account('4000', 'Income', false, AccountType::INCOME);
 
@@ -205,8 +151,6 @@ class ExpenseActionsTest extends TestCase
         $admin = $this->admin();
         $expense = $this->logged($admin, $this->category('Security'), 'Gate guard', 350);
 
-        app(ApproveExpense::class)->handle($expense, $admin);
-
         $this->postExpense($expense->fresh(), $this->account(), $admin);
         $this->postExpense($expense->fresh(), $this->account(), $admin);
 
@@ -217,8 +161,6 @@ class ExpenseActionsTest extends TestCase
     {
         $admin = $this->admin();
         $expense = $this->logged($admin, $this->category('Security'), 'Gate guard', 350);
-
-        app(ApproveExpense::class)->handle($expense, $admin);
 
         AccountingPeriod::create([
             'period' => now()->format('Y-m'),
@@ -236,7 +178,7 @@ class ExpenseActionsTest extends TestCase
 
     // ===== Deleting =====
 
-    public function test_deleting_a_draft_posts_nothing(): void
+    public function test_deleting_an_unposted_expense_posts_nothing(): void
     {
         $admin = $this->admin();
         $expense = $this->logged($admin, $this->category('Security'), 'Gate guard', 350);
@@ -257,7 +199,6 @@ class ExpenseActionsTest extends TestCase
         $admin = $this->admin();
         $expense = $this->logged($admin, $this->category('Security'), 'Gate guard', 350);
 
-        app(ApproveExpense::class)->handle($expense, $admin);
         $this->postExpense($expense->fresh(), $this->account(), $admin);
 
         $this->assertSame(1, app(DeleteExpenses::class)->handle([$expense->id], $admin));
@@ -279,7 +220,6 @@ class ExpenseActionsTest extends TestCase
         $admin = $this->admin();
         $expense = $this->logged($admin, $this->category('Security'), 'Gate guard', 350);
 
-        app(ApproveExpense::class)->handle($expense, $admin);
         $this->postExpense($expense->fresh(), $this->account(), $admin);
 
         AccountingPeriod::create([

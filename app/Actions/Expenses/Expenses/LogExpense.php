@@ -2,7 +2,6 @@
 
 namespace App\Actions\Expenses\Expenses;
 
-use App\Enums\ExpenseStatus;
 use App\Models\Admin;
 use App\Models\Expense\Expense;
 use App\Models\Supplier;
@@ -33,7 +32,6 @@ class LogExpense
                 'expense_date'        => $data['expense_date'],
                 'supplier_id'         => $supplier ? $supplier->id : null,
                 'description'         => ($data['description'] ?? null) ?: null,
-                'status'              => ExpenseStatus::DRAFT,
                 'created_by_admin_id' => $by->id,
             ]);
 

@@ -4,7 +4,6 @@ namespace App\Http\Livewire\Admin\Accounting\JournalEntries\Modals;
 
 use App\Actions\Accounting\JournalEntries\PostExpenseJournal;
 use App\Actions\Accounting\JournalEntries\PostPaymentJournal;
-use App\Enums\ExpenseStatus;
 use App\Enums\JournalClassification;
 use App\Http\Livewire\AdminModalComponent;
 use App\Http\Livewire\Concerns\EditsJournalLines;
@@ -235,7 +234,7 @@ class PostToJournalModal extends AdminModalComponent
         $expense = $this->expenses->forPosting($id);
         $this->authorize('view', $expense);
 
-        if (! $expense->status_enum?->is(ExpenseStatus::APPROVED()) || $expense->journal_entry_id) {
+        if ($expense->journal_entry_id) {
             return null;
         }
 

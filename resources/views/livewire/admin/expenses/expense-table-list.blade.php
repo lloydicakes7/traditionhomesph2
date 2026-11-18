@@ -8,12 +8,12 @@
                 title="{{ \App\Utility\MoneyHelper::format($totals['month_total']) }}" />
         </div>
         <div class="col-6 col-lg-3">
-            <x-adminlte-small-box theme="success" icon="fas fa-check-circle" text="Approved To Date"
-                title="{{ \App\Utility\MoneyHelper::format($totals['approved_total']) }}" />
+            <x-adminlte-small-box theme="success" icon="fas fa-check-circle" text="Posted To Journal"
+                title="{{ \App\Utility\MoneyHelper::format($totals['posted_total']) }}" />
         </div>
         <div class="col-6 col-lg-3">
-            <x-adminlte-small-box theme="warning" icon="fas fa-hourglass-half" text="Awaiting Approval"
-                title="{{ \App\Utility\MoneyHelper::format($totals['awaiting_total']) }}" />
+            <x-adminlte-small-box theme="warning" icon="fas fa-hourglass-half" text="Not Yet Posted"
+                title="{{ \App\Utility\MoneyHelper::format($totals['unposted_total']) }}" />
         </div>
         <div class="col-6 col-lg-3">
             <x-adminlte-small-box theme="info" icon="fas fa-file-invoice-dollar" text="Total Expenses"
@@ -52,15 +52,6 @@
                 <x-adminlte-select name="filterMonth" wire:model="filterMonth" igroup-size="sm" fgroup-class="mb-0">
                     <option value="">All Months</option>
                     @foreach ($months as $value => $label)
-                        <option value="{{ $value }}">{{ $label }}</option>
-                    @endforeach
-                </x-adminlte-select>
-            </div>
-
-            <div class="col-12 col-sm-6 col-md-2 col-lg-2 mb-2 mb-lg-0">
-                <x-adminlte-select name="filterStatus" wire:model="filterStatus" igroup-size="sm" fgroup-class="mb-0">
-                    <option value="">All Status</option>
-                    @foreach ($statuses as $value => $label)
                         <option value="{{ $value }}">{{ $label }}</option>
                     @endforeach
                 </x-adminlte-select>
@@ -119,24 +110,19 @@
                             </th>
                         @endcan
                         <th class="cursor-pointer align-middle" wire:click="sortBy('reference')" style="width: 20%;">
-                            Reference / Supplier
+                            Reference
                             @if ($sortField === 'reference')
                                 <i class="fas fa-fw fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }}"></i>
                             @endif
                         </th>
-                        <th class="align-middle" style="width: 25%;">Items / Categories</th>
+                        <th class="align-middle" style="width: 25%;">Description</th>
                         <th class="cursor-pointer align-middle text-right" wire:click="sortBy('subtotal')" style="width: 14%;">
                             Amount
                             @if ($sortField === 'subtotal')
                                 <i class="fas fa-fw fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }}"></i>
                             @endif
                         </th>
-                        <th class="cursor-pointer align-middle text-center" wire:click="sortBy('status')" style="width: 12%;">
-                            Status
-                            @if ($sortField === 'status')
-                                <i class="fas fa-fw fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }}"></i>
-                            @endif
-                        </th>
+                        <th class="align-middle" style="width: 12%;">Supplier</th>
                         <th class="text-center align-middle" style="width: 12%;">Actions</th>
                     </tr>
                 </thead>
@@ -156,24 +142,20 @@
                             <td class="align-middle text-truncate" style="max-width: 0;">
                                 <div class="font-weight-medium text-truncate">{{ $expense->reference }}</div>
                                 <div class="small text-muted text-truncate">
-                                    {{ $expense->expense_date_display }} · {{ $expense->supplier_label }}
+                                    {{ $expense->expense_date_display }}
                                 </div>
                             </td>
                             <td class="align-middle text-truncate" style="max-width: 0;">
-                                <div class="small text-truncate">{{ $expense->description ?: $expense->items->first()?->description }}</div>
-                                <div class="text-muted small text-truncate">
-                                    {{ $expense->items->pluck('category_name')->unique()->implode(', ') }}
-                                </div>
+                                <div class="small text-truncate">{{ $expense->description_label }}</div>
+                                <div class="text-muted small text-truncate">{{ $expense->category_label }}</div>
                             </td>
                             <td class="align-middle text-right font-weight-medium">
                                 {{ $expense->subtotal_display }}
                             </td>
-                            <td class="align-middle text-center">
-                                <span class="badge badge-{{ $expense->status_badge }}">
-                                    {{ $expense->status_label }}
-                                </span>
+                            <td class="align-middle text-truncate" style="max-width: 0;">
+                                <div class="small text-truncate">{{ $expense->supplier_label }}</div>
                                 @if ($expense->journalEntry)
-                                    <div class="text-muted small mt-1">{{ $expense->journalEntry->entry_no }}</div>
+                                    <div class="text-muted small text-truncate">{{ $expense->journalEntry->entry_no }}</div>
                                 @endif
                             </td>
                             <td class="align-middle text-center">
@@ -189,15 +171,7 @@
                                             <i class="fas fa-fw fa-eye mr-1"></i> View Expense
                                         </a>
 
-                                        @can('approve', \App\Models\Expense\Expense::class)
-                                            @if ($expense->status_enum && $expense->status_enum->is(\App\Enums\ExpenseStatus::DRAFT()))
-                                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#expenseApproveModal" data-id="{{ $expense->id }}">
-                                                    <i class="fas fa-fw fa-clipboard-check mr-1"></i> Approve
-                                                </a>
-                                            @endif
-                                        @endcan
-
-                                        @if ($expense->status_enum && $expense->status_enum->is(\App\Enums\ExpenseStatus::APPROVED()) && ! $expense->journal_entry_id)
+                                        @if (! $expense->journal_entry_id)
                                             @can('create', \App\Models\JournalEntry\JournalEntry::class)
                                                 <a class="dropdown-item" href="#"
                                                     wire:click.prevent="postToJournal({{ $expense->id }})">
@@ -207,7 +181,7 @@
                                         @endif
 
                                         @can('update', \App\Models\Expense\Expense::class)
-                                            @if ($expense->status_enum && $expense->status_enum->isEditable())
+                                            @if ($expense->canBeEdited())
                                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#expenseWizardModal" data-id="{{ $expense->id }}">
                                                     <i class="fas fa-fw fa-edit mr-1"></i> Edit
                                                 </a>
@@ -230,7 +204,7 @@
                             <td colspan="7" class="text-center text-muted py-4">
                                 <i class="fas fa-fw fa-receipt fa-2x mb-2"></i>
                                 <p class="mb-0">
-                                    {{ $search || $filterStatus || $filterCategory || $filterMonth
+                                    {{ $search || $filterCategory || $filterMonth
                                         ? 'No expenses match your filters.'
                                         : 'No expenses recorded yet. Record one to log what the association spends.' }}
                                 </p>
@@ -268,16 +242,11 @@
                                 <div class="small text-muted">{{ $expense->expense_date_display }} · {{ $expense->supplier_label }}</div>
                             </div>
                         </div>
-                        <span class="badge badge-{{ $expense->status_badge }} flex-shrink-0">
-                            {{ $expense->status_label }}
-                        </span>
                     </div>
                 </div>
                 <div class="card-body px-3 py-3">
-                    <div class="small text-truncate">{{ $expense->description ?: $expense->items->first()?->description }}</div>
-                    <div class="text-muted small text-truncate mb-2">
-                        {{ $expense->items->pluck('category_name')->unique()->implode(', ') }}
-                    </div>
+                    <div class="small text-truncate">{{ $expense->description_label }}</div>
+                    <div class="text-muted small text-truncate mb-2">{{ $expense->category_label }}</div>
 
                     <div>
                         <div class="text-muted small" style="font-size:0.7rem;">AMOUNT</div>
@@ -297,15 +266,7 @@
                                 <i class="fas fa-fw fa-eye mr-1"></i> View Expense
                             </a>
 
-                            @can('approve', \App\Models\Expense\Expense::class)
-                                @if ($expense->status_enum && $expense->status_enum->is(\App\Enums\ExpenseStatus::DRAFT()))
-                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#expenseApproveModal" data-id="{{ $expense->id }}">
-                                        <i class="fas fa-fw fa-clipboard-check mr-1"></i> Approve
-                                    </a>
-                                @endif
-                            @endcan
-
-                            @if ($expense->status_enum && $expense->status_enum->is(\App\Enums\ExpenseStatus::APPROVED()) && ! $expense->journal_entry_id)
+                            @if (! $expense->journal_entry_id)
                                 @can('create', \App\Models\JournalEntry\JournalEntry::class)
                                     <a class="dropdown-item" href="#"
                                         wire:click.prevent="postToJournal({{ $expense->id }})">
@@ -315,7 +276,7 @@
                             @endif
 
                             @can('update', \App\Models\Expense\Expense::class)
-                                @if ($expense->status_enum && $expense->status_enum->isEditable())
+                                @if ($expense->canBeEdited())
                                     <a class="dropdown-item" href="#" data-toggle="modal" data-target="#expenseWizardModal" data-id="{{ $expense->id }}">
                                         <i class="fas fa-fw fa-edit mr-1"></i> Edit
                                     </a>
@@ -338,7 +299,7 @@
                 <div class="card-body text-center text-muted py-4">
                     <i class="fas fa-fw fa-receipt fa-2x mb-2"></i>
                     <p class="mb-0">
-                        {{ $search || $filterStatus || $filterCategory || $filterMonth
+                        {{ $search || $filterCategory || $filterMonth
                             ? 'No expenses match your filters.'
                             : 'No expenses recorded yet. Record one to log what the association spends.' }}
                     </p>

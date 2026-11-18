@@ -9,16 +9,13 @@
         <div data-modal-content class="{{ ! $loaded ? 'd-none' : '' }}">
             @if ($expense)
                 {{-- ========================================================= --}}
-                {{-- HEADER: reference, status, what it was for                  --}}
+                {{-- HEADER: reference, what it was for                         --}}
                 {{-- ========================================================= --}}
                 <div class="d-flex justify-content-between align-items-start mb-3">
                     <div>
                         <div class="h5 mb-0 font-weight-bold">{{ $expense->reference }}</div>
                         <div class="text-muted small">Recorded {{ $expense->expense_date_display }} · {{ $expense->supplier_label }}</div>
                     </div>
-                    <span class="badge badge-{{ $expense->status_badge }}">
-                        {{ $expense->status_label }}
-                    </span>
                 </div>
 
                 {{-- ========================================================= --}}
@@ -32,41 +29,8 @@
                         </div>
                         <div class="col-6 text-center">
                             <div class="text-muted small">Logged By</div>
-                            <div class="small font-weight-medium mt-1">{{ $expense->createdByAdmin?->name ?: '—' }}</div>
+                            <div class="small font-weight-medium mt-1">{{ $expense->createdByAdmin?->name ?: 'Not provided' }}</div>
                         </div>
-                    </div>
-                </div>
-
-                {{-- ========================================================= --}}
-                {{-- DRAFT-TO-APPROVED PROGRESS                                  --}}
-                {{-- The two states an expense moves through.                    --}}
-                {{-- ========================================================= --}}
-                <label class="mb-2">Progress</label>
-                <div class="mb-3 px-2">
-                    @php
-                        $steps = [
-                            ['key' => 'draft', 'label' => 'Draft', 'icon' => 'fas fa-file-alt'],
-                            ['key' => 'approved', 'label' => 'Approved', 'icon' => 'fas fa-check-circle'],
-                        ];
-                        $order = ['draft' => 1, 'approved' => 2];
-                        $current = $order[$expense->status] ?? 1;
-                    @endphp
-                    <div class="progress mb-2" style="height: 6px;">
-                        <div class="progress-bar bg-success"
-                            style="width: {{ $current / 2 * 100 }}%;"></div>
-                    </div>
-                    <div class="d-flex justify-content-between">
-                        @foreach ($steps as $index => $step)
-                            @php($stepNo = $index + 1)
-                            <div class="text-center" style="width: 50%;">
-                                <i class="{{ $step['icon'] }} {{ $current >= $stepNo ? 'text-success' : 'text-muted' }}"
-                                    title="{{ $step['label'] }}"></i>
-                                <div class="small {{ $current >= $stepNo ? 'font-weight-bold' : 'text-muted' }}"
-                                    style="font-size: 0.72rem;">
-                                    {{ $step['label'] }}
-                                </div>
-                            </div>
-                        @endforeach
                     </div>
                 </div>
 
@@ -89,7 +53,7 @@
                                     <td class="small">
                                         <span class="badge badge-light border">{{ $item->category_label }}</span>
                                     </td>
-                                    <td class="small">{{ $item->description }}</td>
+                                    <td class="small">{{ $item->description ?: 'None' }}</td>
                                     <td class="text-right">{{ $item->amount_display }}</td>
                                 </tr>
                             @empty
@@ -157,7 +121,7 @@
                 @else
                     <p class="text-muted small mb-3">
                         <i class="fas fa-fw fa-balance-scale"></i>
-                        No journal entry yet — accounting posts it from the expenses list.
+                        No journal entry has been posted for this expense yet.
                     </p>
                 @endif
             @endif

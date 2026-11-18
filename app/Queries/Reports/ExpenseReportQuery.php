@@ -13,7 +13,7 @@ use App\Utility\PeriodHelper;
  * association's expense accounts in the books, so the two reports are two sides
  * of one ledger and can be laid side by side without either needing an
  * adjustment. A month's spending is what was charged to expense in it; a day's
- * spending is what the expenses approved that day paid out.
+ * spending is what the expenses posted that day paid out.
  */
 class ExpenseReportQuery
 {

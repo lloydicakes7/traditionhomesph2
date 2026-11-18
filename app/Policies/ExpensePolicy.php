@@ -42,15 +42,6 @@ class ExpensePolicy
     }
 
     /**
-     * Determine whether the admin can move an expense through its approval
-     * gate (submit, sign off, return).
-     */
-    public function approve(Admin $admin): bool
-    {
-        return $admin->hasPermission(self::MODULE, 'Approve');
-    }
-
-    /**
      * Determine whether the admin can remove an expense.
      */
     public function delete(Admin $admin): bool

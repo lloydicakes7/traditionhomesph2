@@ -17,5 +17,5 @@
 @endsection
 
 @push('js')
-    <script src="{{ asset('js/journal-entry-lines.js') }}"></script>
+    <script src="{{ asset('js/select2.js') }}"></script>
 @endpush

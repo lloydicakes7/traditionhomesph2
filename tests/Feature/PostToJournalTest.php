@@ -3,7 +3,6 @@
 namespace Tests\Feature;
 
 use App\Actions\Collections\Payments\RecordPayment;
-use App\Actions\Expenses\Expenses\ApproveExpense;
 use App\Actions\Expenses\Expenses\LogExpense;
 use App\Enums\JournalSource;
 use App\Http\Livewire\Admin\Accounting\JournalEntries\Modals\PostToJournalModal;
@@ -93,7 +92,7 @@ class PostToJournalTest extends TestCase
     {
         $this->signIn();
 
-        $expense = $this->approvedExpense();
+        $expense = $this->loggedExpense();
 
         Livewire::test(ExpenseTableList::class)
             ->call('postToJournal', $expense->id)
@@ -101,12 +100,12 @@ class PostToJournalTest extends TestCase
             ->assertDispatchedBrowserEvent('modal-open');
     }
 
-    public function test_accounting_posts_an_approved_expense_from_the_modal(): void
+    public function test_accounting_posts_an_expense_from_the_modal(): void
     {
         $this->signIn();
 
         Account::cashOnHand();
-        $expense = $this->approvedExpense();
+        $expense = $this->loggedExpense();
 
         Livewire::test(PostToJournalModal::class)
             ->emit('openPostToJournal', ['source' => 'expense', 'id' => $expense->id])
@@ -201,11 +200,11 @@ class PostToJournalTest extends TestCase
         ], auth('web')->user());
     }
 
-    private function approvedExpense(): Expense
+    private function loggedExpense(): Expense
     {
         $category = ExpenseCategory::create(['name' => 'Security']);
 
-        $expense = app(LogExpense::class)->handle([
+        return app(LogExpense::class)->handle([
             'expense_date' => now()->toDateString(),
             'description'  => 'Gate guard wages',
             'items'        => [[
@@ -214,7 +213,5 @@ class PostToJournalTest extends TestCase
                 'amount'              => 350,
             ]],
         ], auth('web')->user());
-
-        return app(ApproveExpense::class)->handle($expense, auth('web')->user());
     }
 }

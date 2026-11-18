@@ -151,7 +151,7 @@
                 </div>
                 <div class="card-body px-3 py-3">
                     <div class="small text-muted">
-                        {{ $category->description ?: 'No description.' }}
+                        {{ $category->description ?: 'None' }}
                     </div>
                     <div class="bg-light py-2 text-right">
                         <div class="dropdown">
