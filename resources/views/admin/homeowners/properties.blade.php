@@ -3,7 +3,7 @@
 @section('title', 'Properties')
 
 @section('breadcrumb')
-    <li class="breadcrumb-item">Properties</li>
+    <li class="breadcrumb-item">Homeowners</li>
 @endsection
 
 @section('page-content')

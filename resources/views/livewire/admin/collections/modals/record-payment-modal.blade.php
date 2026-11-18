@@ -9,14 +9,14 @@
         <div data-modal-content class="{{ ! $loaded ? 'd-none' : '' }}">
             @if ($bill)
                 <div class="border rounded p-3 mb-3">
-                    <div class="font-weight-bold">{{ $selected->reference ?? '—' }}</div>
+                    <div class="font-weight-bold">{{ $selected->reference ?? 'No reference' }}</div>
                     <div class="text-muted small">
                         @if ($selected->billing_period)
                             · {{ $selected->billing_period_display }}
                         @endif
                     </div>
                     <div class="small mt-1">
-                        Balance <span class="font-weight-bold">{{ $selected->balance_display ?? '—' }}</span>
+                        Balance <span class="font-weight-bold">{{ $selected->balance_display ?? 'Not available' }}</span>
                     </div>
                 </div>
             @else
@@ -37,8 +37,8 @@
             @if ($pending)
                 <div class="alert alert-warning py-2 small mb-3">
                     <i class="fas fa-fw fa-hourglass-half mr-1"></i>
-                    {{ $pending->amount_display }} filed from the portal on this bill is waiting for approval — approve
-                    it on the Payments page instead of recording the same money again.
+                    {{ $pending->amount_display }} filed from the portal on this bill is waiting for approval.
+                    Approve it on the Payments page instead of recording the same money again.
                 </div>
             @endif
 
@@ -66,20 +66,38 @@
                             <option value="{{ $method->id }}">{{ $method->name }}</option>
                         @endforeach
                     </x-adminlte-select>
+
+                    <div class="mt-2">
+                        <x-adminlte-input name="reference_no" label="Reference No."
+                            placeholder="OR / transaction number"
+                            wire:model.defer="reference_no" igroup-size="sm" />
+                    </div>
                 </div>
                 <div class="col-12 col-sm-6">
-                    <x-adminlte-input name="reference_no" label="Reference No."
-                        placeholder="OR / transaction number"
-                        wire:model.defer="reference_no" igroup-size="sm" />
+                    <label class="mb-1">How to Pay</label>
+                    <div class="border rounded p-2 bg-light h-100">
+                        @if ($selectedMethod)
+                            <div class="small font-weight-bold text-break">{{ $selectedMethod->name }}</div>
+                            <div class="text-muted small text-break">
+                                {{ $selectedMethod->details ?: 'No instructions.' }}
+                            </div>
+                            @if ($selectedMethod->qr_url)
+                                <a href="{{ $selectedMethod->qr_url }}" target="_blank" rel="noopener"
+                                    title="Open the {{ $selectedMethod->name }} QR code">
+                                    <img src="{{ $selectedMethod->qr_url }}"
+                                        alt="QR code for {{ $selectedMethod->name }}"
+                                        class="rounded bg-white mt-2" style="max-height:110px;">
+                                </a>
+                            @else
+                                <div class="text-muted small mt-1">No QR code.</div>
+                            @endif
+                        @else
+                            <div class="small font-weight-bold">{{ \App\Models\PaymentMethod::IN_PERSON_LABEL }}</div>
+                            <div class="text-muted small">Face to face transaction.</div>
+                        @endif
+                    </div>
                 </div>
             </div>
-
-            @if ($selectedMethod && $selectedMethod->qr_url)
-                <div class="text-center mb-3">
-                    <img src="{{ $selectedMethod->qr_url }}" alt="{{ $selectedMethod->name }} QR code"
-                        class="rounded elevation-1" style="max-height:150px;">
-                </div>
-            @endif
 
             <label class="mb-1">Proof of Payment</label>
             <div class="d-flex align-items-start mb-3" style="gap:1rem;">

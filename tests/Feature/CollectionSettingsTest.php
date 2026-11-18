@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Actions\Collections\Settings\UpdateCollectionSettings;
 use App\Enums\BillingMethod;
+use App\Http\Livewire\Admin\Collections\Modals\RecordPaymentModal;
 use App\Http\Livewire\Admin\Settings\CollectionsSettings;
 use App\Http\Livewire\Admin\Settings\Modals\PaymentMethodFormModal;
 use App\Models\Admin;
@@ -120,6 +121,46 @@ class CollectionSettingsTest extends TestCase
         Livewire::test(PaymentMethodFormModal::class)
             ->call('openCreate')
             ->assertDontSee('Display Order');
+    }
+
+    public function test_a_payment_method_is_switched_off_and_back_on_from_the_list(): void
+    {
+        $this->signIn();
+
+        $cash = PaymentMethod::create(['name' => 'Cash', 'is_active' => true, 'sort_order' => 1]);
+
+        Livewire::test(CollectionsSettings::class)
+            ->set('activeTab', 'payments')
+            ->assertSee('Turn off')
+            ->call('toggleActive', $cash->id)
+            ->assertSee('Turn on');
+
+        $this->assertFalse($cash->refresh()->is_active);
+
+        Livewire::test(CollectionsSettings::class)
+            ->set('activeTab', 'payments')
+            ->call('toggleActive', $cash->id);
+
+        $this->assertTrue($cash->refresh()->is_active);
+    }
+
+    public function test_the_record_payment_dialog_shows_the_methods_instructions_and_qr(): void
+    {
+        $this->signIn();
+
+        $method = PaymentMethod::create([
+            'name'      => 'GCash',
+            'details'   => 'Scan the QR or send to 0945 351 3307',
+            'qr_path'   => 'photos/payment-methods/gcash.png',
+            'is_active' => true,
+        ]);
+
+        Livewire::test(RecordPaymentModal::class)
+            ->emit('openRecordPaymentModal')
+            ->set('payment_method_id', (string) $method->id)
+            ->assertSee('How to Pay')
+            ->assertSee('Scan the QR or send to 0945 351 3307')
+            ->assertSee('QR code for GCash');
     }
 
     // =====================================================================

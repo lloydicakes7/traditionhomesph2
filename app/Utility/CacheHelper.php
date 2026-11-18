@@ -12,11 +12,6 @@ class CacheHelper
         return Cache::remember(self::key($group, $key), $ttl, $callback);
     }
 
-    public static function flush(string $group): void
-    {
-        Cache::forever(self::versionKey($group), self::version($group) + 1);
-    }
-
     private static function key(string $group, $key): string
     {
         return 'thha.' . $group . '.v' . self::version($group) . '.' . md5((string) json_encode($key));

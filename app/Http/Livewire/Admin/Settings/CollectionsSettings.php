@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Admin\Settings;
 
+use App\Actions\Collections\PaymentMethods\TogglePaymentMethodActive;
 use App\Actions\Collections\Settings\UpdateCollectionSettings;
 use App\Enums\AdjustmentType;
 use App\Enums\BillingMethod;
@@ -62,14 +63,19 @@ class CollectionsSettings extends AdminComponent
     /** @var UpdateCollectionSettings */
     protected $updateSettings;
 
+    /** @var TogglePaymentMethodActive */
+    protected $togglePaymentMethod;
+
     public function boot(
         PaymentMethodQuery $paymentMethodQuery,
         CollectionSettingsQuery $settingsQuery,
-        UpdateCollectionSettings $updateSettings
+        UpdateCollectionSettings $updateSettings,
+        TogglePaymentMethodActive $togglePaymentMethod
     ) {
         $this->paymentMethodQuery = $paymentMethodQuery;
         $this->settingsQuery = $settingsQuery;
         $this->updateSettings = $updateSettings;
+        $this->togglePaymentMethod = $togglePaymentMethod;
     }
 
     public function mount(): void
@@ -170,6 +176,24 @@ class CollectionsSettings extends AdminComponent
         );
 
         $this->emit('notify', 'success', 'Invoice instructions saved.');
+    }
+
+    /**
+     * Switch a payment method on or off. Only a method that is on is
+     * offered when a payment is recorded.
+     */
+    public function toggleActive(int $id): void
+    {
+        $this->authorize('update', Setting::class);
+
+        $active = $this->togglePaymentMethod->handle(
+            $this->paymentMethodQuery->find($id),
+            auth('web')->user()
+        );
+
+        $this->emit('notify', 'success', $active
+            ? 'Payment method is now available when recording a payment.'
+            : 'Payment method is no longer offered. Payments already recorded keep it.');
     }
 
     // =====================================================================

@@ -3,7 +3,6 @@
 namespace App\Queries\Collections\PaymentMethods;
 
 use App\Models\PaymentMethod;
-use App\Utility\CacheHelper;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -28,16 +27,15 @@ class PaymentMethodQuery
 
     public function options(): array
     {
-        return CacheHelper::remember('collections.payment_method.options', ['options'], 3600, function () {
-            return PaymentMethod::query()->ordered()->pluck('name', 'id')->all();
-        });
+        return PaymentMethod::query()->ordered()->pluck('name', 'id')->all();
     }
 
+    /**
+     * The methods a payment can be recorded against. Only the on/off switch
+     * decides: a method without a QR code is still offered.
+     */
     public function active(): Collection
     {
-        return CacheHelper::remember('collections.payment_method.options', ['active'], 3600, function () {
-            return PaymentMethod::query()->active()->ordered()->get();
-        });
+        return PaymentMethod::query()->active()->ordered()->get();
     }
-
 }

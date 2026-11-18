@@ -177,7 +177,7 @@
                                 <th>Details / Instructions</th>
                                 <th style="width:9%;" class="text-center">QR</th>
                                 <th style="width:9%;" class="text-center">Active</th>
-                                <th style="width:130px;" class="text-right">Actions</th>
+                                <th style="width:160px;" class="text-right">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -185,7 +185,7 @@
                                 <tr>
                                     <td class="align-middle font-weight-medium">{{ $method->name }}</td>
                                     <td class="align-middle">
-                                        <span class="small">{{ $method->details ?: '—' }}</span>
+                                        <span class="small">{{ $method->details ?: 'No instructions added' }}</span>
                                     </td>
                                     <td class="align-middle text-center">
                                         @if ($method->qr_url)
@@ -193,7 +193,7 @@
                                                 <span class="badge badge-success">QR</span>
                                             </a>
                                         @else
-                                            <span class="text-muted">—</span>
+                                            <span class="text-muted small">none</span>
                                         @endif
                                     </td>
                                     <td class="align-middle text-center">
@@ -204,6 +204,12 @@
                                     <td class="align-middle text-right text-nowrap">
                                         @can('update', \App\Models\Setting::class)
                                             <div class="btn-group" role="group">
+                                                <x-adminlte-button label=""
+                                                    theme="{{ $method->is_active ? 'success' : 'secondary' }}"
+                                                    icon="fas fa-fw fa-toggle-{{ $method->is_active ? 'on' : 'off' }}"
+                                                    wire:click="toggleActive({{ $method->id }})"
+                                                    wire:loading.attr="disabled" class="btn-xs"
+                                                    title="{{ $method->is_active ? 'Turn off' : 'Turn on' }}" />
                                                 <x-adminlte-button label="" theme="primary" icon="fas fa-fw fa-edit"
                                                     data-toggle="modal" data-target="#paymentMethodFormModal"
                                                     data-id="{{ $method->id }}"
@@ -219,7 +225,7 @@
                             @empty
                                 <tr>
                                     <td colspan="5" class="text-center text-muted py-4">
-                                        No payment methods yet. Add how residents pay — Cash, GCash, bank transfer.
+                                        No payment methods yet. Add the ways residents pay, such as cash, GCash, or a bank transfer.
                                     </td>
                                 </tr>
                             @endforelse
@@ -260,7 +266,7 @@
                     </div>
 
                     <label class="mb-1">Preview</label>
-                    <div class="border rounded p-3 bg-light small">{!! $instructionsPreview ?: 'Nothing yet — the instructions are added per invoice as they are raised.' !!}</div>
+                    <div class="border rounded p-3 bg-light small">{!! $instructionsPreview ?: 'Nothing yet. Instructions are added to each invoice as it is raised.' !!}</div>
 
                     <div class="text-right mt-3 mb-4">
                         <x-adminlte-button label="Save Instructions" type="submit" theme="primary"

@@ -207,6 +207,18 @@ class CollectionsQueryTest extends TestCase
         $this->assertSame(2, $query->paginate()->total());
     }
 
+    public function test_a_method_added_after_the_first_read_is_offered_at_once(): void
+    {
+        $this->method('GCash');
+
+        $query = app(PaymentMethodQuery::class);
+        $this->assertCount(1, $query->active());
+
+        $cash = PaymentMethod::create(['name' => 'Cash', 'is_active' => true, 'sort_order' => 2]);
+
+        $this->assertTrue($query->active()->contains('id', $cash->id));
+    }
+
     // =====================================================================
     // Advance deposits
     // =====================================================================
