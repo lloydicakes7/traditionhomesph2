@@ -1,6 +1,7 @@
 @props([
     'profile' => null,
     'supply' => false,
+    'prefix' => 'requestType',
 ])
 
 {{--
@@ -8,9 +9,9 @@
 
     The form is never typed in by the homeowner: its personal details come from
     the resident profile, the requestee type and previous address from the
-    household, the block and lot from the unit, and the household table from the
-    household's own members. This fragment shows exactly what the printed sheet
-    will say, and names the blanks the office still has to complete on those
+    household, the block and lot from the unit, and the household members from
+    the household's own records. This fragment shows exactly what the printed
+    sheet will say, and names the blanks the office still has to complete on those
     records — nothing here is submitted, so nothing here can disagree with them.
 
     The office's own dialogs may also supply, for one form only, a detail the
@@ -58,14 +59,27 @@
     {{-- WHAT THE OFFICE STILL HAS TO COMPLETE --}}
     @if (! $profile['ready'])
         <div class="alert alert-warning border small">
-            <div class="font-weight-bold mb-1">
-                <i class="fas fa-fw fa-exclamation-triangle mr-1"></i>
-                The form is missing information on file
+            <div class="d-flex align-items-center justify-content-between" style="gap:0.75rem;">
+                <div>
+                    <div class="font-weight-bold mb-1">
+                        <i class="fas fa-fw fa-exclamation-triangle mr-1"></i>
+                        Personal information is incomplete
+                    </div>
+                    <p class="mb-0">
+                        @if ($supply)
+                            The record still needs: {{ implode(', ', $profile['missing']) }}.
+                        @else
+                            Complete the required details on your Personal Information page before filing this request.
+                        @endif
+                    </p>
+                </div>
+
+                @unless ($supply)
+                    <a href="{{ route('portal.personal-information') }}" class="btn btn-sm btn-primary flex-shrink-0">
+                        Add
+                    </a>
+                @endunless
             </div>
-            <p class="mb-0">
-                This form is filled in from your household's records, and the HOA office first has to
-                complete: {{ implode(', ', $profile['missing']) }}.
-            </p>
         </div>
     @endif
 
@@ -119,31 +133,52 @@
         </div>
 
         @if (count($members))
-            <div class="table-responsive">
-                <table class="table table-sm mb-0">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Age</th>
-                            <th>Birthdate</th>
-                            <th>Birthplace</th>
-                            <th>Relationship</th>
-                            <th>Occupation</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($members as $member)
-                            <tr>
-                                <td class="text-break">{{ $member['name'] }}</td>
-                                <td>{{ $member['age'] !== '' ? $member['age'] : '—' }}</td>
-                                <td>{{ $member['birth_date'] !== '' ? $member['birth_date'] : '—' }}</td>
-                                <td class="text-break">{{ $member['birth_place'] !== '' ? $member['birth_place'] : '—' }}</td>
-                                <td>{{ $member['relation'] !== '' ? $member['relation'] : '—' }}</td>
-                                <td class="text-break">{{ $member['occupation'] !== '' ? $member['occupation'] : '—' }}</td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+            <div class="thha-household-member-accordion">
+                @foreach ($members as $member)
+                    @php
+                        $memberId = $prefix . '_household_member_' . $loop->index;
+                    @endphp
+
+                    <div class="border rounded mb-2 thha-household-member">
+                        <button type="button"
+                            id="{{ $memberId }}_header"
+                            class="thha-household-member-toggle collapsed"
+                            data-toggle="collapse"
+                            data-target="#{{ $memberId }}"
+                            aria-expanded="false"
+                            aria-controls="{{ $memberId }}">
+                            <span class="flex-grow-1 mr-2" style="min-width:0;">
+                                <span class="font-weight-bold text-break d-block">
+                                    {{ $member['name'] !== '' ? $member['name'] : '—' }}
+                                </span>
+                                <span class="small text-muted text-break d-block">
+                                    {{ $member['relation'] !== '' ? $member['relation'] : '—' }}
+                                </span>
+                            </span>
+                            <i class="fas fa-fw fa-chevron-down thha-household-member-chevron text-muted flex-shrink-0"
+                                aria-hidden="true"></i>
+                        </button>
+
+                        <div id="{{ $memberId }}" class="collapse" aria-labelledby="{{ $memberId }}_header">
+                            <div class="border-top px-3 py-2">
+                                <div class="row">
+                                    @foreach ([
+                                        'Age'          => $member['age'],
+                                        'Birthdate'    => $member['birth_date'],
+                                        'Birthplace'   => $member['birth_place'],
+                                        'Relationship' => $member['relation'],
+                                        'Occupation'   => $member['occupation'],
+                                    ] as $label => $value)
+                                        <div class="col-12 col-sm-6 mb-2">
+                                            <div class="text-muted small">{{ $label }}</div>
+                                            <div class="font-weight-medium text-break">{{ $value !== '' ? $value : '—' }}</div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
             </div>
         @else
             <p class="mb-0 small text-muted">No other household members are on file.</p>

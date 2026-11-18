@@ -868,7 +868,6 @@ return [
                         'Authentication' => 'Whether the office and residents may register, and whether a new account is accepted at once.',
                         'Profile'     => 'Your own account: photo, email address and password.',
                         'Print'       => 'How every printed document is headed and signed.',
-                        'Backup'      => 'Take a database backup and download one already taken.',
                     ],
                 ],
                 [
@@ -895,20 +894,6 @@ return [
                         'Login attempts and lockout' => 'How many wrong attempts are tolerated and for how long the sign-in is held back.',
                         'Session timeout'        => 'How long an idle session lives, and whether closing the browser ends it.',
                         'Login enabled'          => 'Whether the sign-in is accepted at all — on the panel and on the portal.',
-                    ],
-                ],
-                [
-                    'title'  => 'Backups',
-                    'steps'  => [
-                        'Open Settings → Backup.',
-                        'Take a backup and wait for it to finish.',
-                        'Download the file when it is offered.',
-                    ],
-                    'result' => [
-                        'The backup appears in the list with its size and the time it was taken, and downloads as a file to keep off the server.',
-                    ],
-                    'notes'  => [
-                        'Take one before a change you are unsure about, and keep a copy off the server — a backup on the same disk is not a backup.',
                     ],
                 ],
             ],
@@ -1038,7 +1023,6 @@ return [
                     'body'   => 'Start with the office: the association\'s Administrator holds the account and role settings and can restore access, and the association\'s own contact details are published on the public site. If a record looks wrong rather than missing, the chapter for that module states the rule it follows, and the Glossary defines its terms.',
                     'notes'  => [
                         'Quote the record\'s reference — an invoice number, a booking, a request — when asking for help: it can be searched directly.',
-                        'Keep a backup before a large change you are unsure about.',
                     ],
                 ],
             ],

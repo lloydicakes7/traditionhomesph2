@@ -9,6 +9,7 @@ class HoaMember extends Model
 {
 
     protected $fillable = [
+        'hoa_member_group_id',
         'name',
         'position',
         'phone',
@@ -16,6 +17,15 @@ class HoaMember extends Model
         'note',
         'profile_photo_path',
     ];
+
+    // =====================================================================
+    // Relationships
+    // =====================================================================
+
+    public function group()
+    {
+        return $this->belongsTo(HoaMemberGroup::class, 'hoa_member_group_id');
+    }
 
     // =====================================================================
     // Display

@@ -72,6 +72,42 @@
                     </div>
                 </div>
 
+                @php($newGroupSelected = $form['hoa_member_group_id'] === \App\Http\Livewire\Admin\HoaCenter\Members\Modals\MemberFormModal::NEW_GROUP)
+                <div class="row">
+                    <div class="col-12 col-md-6">
+                        <x-adminlte-select2 id="memberGroupId" name="form.hoa_member_group_id" label="Group"
+                            wire:model="form.hoa_member_group_id" igroup-size="sm"
+                            :config="['placeholder' => '— Select Group —']">
+                            <option value="">— Select Group —</option>
+                            @foreach ($groups as $group)
+                                <option value="{{ $group->id }}">{{ $group->name }} ({{ $group->members_count }})</option>
+                            @endforeach
+                            <option value="{{ \App\Http\Livewire\Admin\HoaCenter\Members\Modals\MemberFormModal::NEW_GROUP }}">
+                                + Add new group…
+                            </option>
+                        </x-adminlte-select2>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <div class="form-group">
+                            <label for="form.new_group_name">New Group</label>
+                            <div class="input-group input-group-sm">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text"><i class="fas fa-fw fa-plus"></i></div>
+                                </div>
+                                <input id="form.new_group_name" name="form.new_group_name" type="text"
+                                    value="{{ $form['new_group_name'] }}"
+                                    class="form-control @error('form.new_group_name') is-invalid @enderror"
+                                    placeholder="e.g., Committee Heads"
+                                    wire:model.defer="form.new_group_name"
+                                    @if (! $newGroupSelected) disabled @endif>
+                            </div>
+                            @error('form.new_group_name')
+                                <span class="invalid-feedback d-block" role="alert"><strong>{{ $message }}</strong></span>
+                            @enderror
+                        </div>
+                    </div>
+                </div>
+
                 <div class="row">
                     <div class="col-12 col-md-6">
                         <x-adminlte-input name="form.phone" label="Phone Number" placeholder="e.g., 0917 123 4567 (optional)"

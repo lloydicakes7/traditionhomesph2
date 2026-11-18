@@ -44,6 +44,13 @@
 
                         <div class="small">{{ $complaint->description }}</div>
 
+                        @if ($complaint->other_description)
+                            <div class="small text-muted mt-2">
+                                <span class="font-weight-bold">Specified Complaint:</span>
+                                {{ $complaint->other_description }}
+                            </div>
+                        @endif
+
                         @if ($complaint->is_responded)
                             <div class="alert alert-light border mt-3 mb-0">
                                 <div class="font-weight-bold small mb-1">

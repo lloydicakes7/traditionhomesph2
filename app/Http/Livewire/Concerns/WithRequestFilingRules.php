@@ -31,7 +31,8 @@ trait WithRequestFilingRules
         $type = $form['type'] ?? null;
 
         $rules = [
-            'form.type' => ['required', Rule::in(RequestType::values())],
+            'form.type'   => ['required', Rule::in(RequestType::values())],
+            'form.reason' => ['nullable', 'string', 'max:2000'],
         ];
 
         if ($type === RequestType::MEMBERSHIP_FORM) {

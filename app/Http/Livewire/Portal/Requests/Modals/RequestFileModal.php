@@ -52,6 +52,7 @@ class RequestFileModal extends PortalModalComponent
         'permit_type'        => '',
         'location'           => '',
         'scope_of_work'      => '',
+        'reason'             => '',
         'addressee'          => '',
         'letter_date'        => '',
         'membership'         => [],
@@ -98,7 +99,10 @@ class RequestFileModal extends PortalModalComponent
     {
         $type = $this->form['type'] ?? '';
 
-        $this->form = array_merge($this->emptyForm(), ['type' => $type]);
+        $this->form = array_merge($this->emptyForm(), [
+            'type'   => $type,
+            'reason' => $this->form['reason'] ?? '',
+        ]);
 
         $this->resetValidation();
     }
@@ -189,6 +193,9 @@ class RequestFileModal extends PortalModalComponent
             'respondentUnit'    => $type && $type->hasAddressee()
                 ? $this->profiles->unit($residentId)
                 : null,
+            'detailsInformation' => $type
+                ? $this->profiles->details($residentId, $type, $this->form)
+                : [],
         ]);
     }
 
@@ -209,6 +216,7 @@ class RequestFileModal extends PortalModalComponent
             'permit_type'        => '',
             'location'           => '',
             'scope_of_work'      => '',
+            'reason'             => '',
             'addressee'          => '',
             'letter_date'        => now()->toDateString(),
             'membership'         => [],

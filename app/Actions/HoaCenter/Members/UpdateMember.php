@@ -27,7 +27,10 @@ class UpdateMember
         bool $removePhoto,
         Admin $by
     ): HoaMember {
-        $payload = $this->payload($data);
+        $payload = $this->payload($data, $this->requireGroup(
+            $data['hoa_member_group_id'] ?? null,
+            $data['new_group_name'] ?? null
+        ));
 
         if ($photo) {
             $payload['profile_photo_path'] = $this->replacePhoto($photo, $member->profile_photo_path);

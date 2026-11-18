@@ -10,7 +10,7 @@
     $aboutGroups = $contentMenu['groups'] ?? [];
 @endphp
 
-<nav class="main-header sticky-top navbar navbar-expand-xl navbar-light bg-white py-3">
+<nav class="main-header sticky-top navbar navbar-expand-xl navbar-light bg-white py-3 thha-public-navbar">
     <div class="container">
 
         <a href="{{ route('home') }}" class="navbar-brand d-flex align-items-center py-0">
@@ -39,8 +39,8 @@
                     </li>
                 @endforeach
 
-                {{-- Pages filed without a group stay under About Us. --}}
-                @if (! empty($aboutPages))
+                {{-- Published pages and their groups live under About Us. --}}
+                @if (! empty($aboutPages) || ! empty($aboutGroups))
                     <li class="nav-item dropdown">
                         <a href="#" class="nav-link font-weight-bold px-3 px-xl-2 text-secondary dropdown-toggle"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -51,25 +51,28 @@
                             @foreach ($aboutPages as $link)
                                 <a class="dropdown-item" href="{{ $link['href'] }}">{{ $link['label'] }}</a>
                             @endforeach
-                        </div>
-                    </li>
-                @endif
 
-                {{-- Every group the officer filed pages under is a menu of its own. --}}
-                @foreach ($aboutGroups as $group)
-                    <li class="nav-item dropdown">
-                        <a href="#" class="nav-link font-weight-bold px-3 px-xl-2 text-secondary dropdown-toggle"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            {{ $group['label'] }}
-                        </a>
+                            @if (! empty($aboutPages) && ! empty($aboutGroups))
+                                <div class="dropdown-divider"></div>
+                            @endif
 
-                        <div class="dropdown-menu border-0 shadow-sm">
-                            @foreach ($group['links'] as $link)
-                                <a class="dropdown-item" href="{{ $link['href'] }}">{{ $link['label'] }}</a>
+                            @foreach ($aboutGroups as $group)
+                                <div class="dropdown-submenu">
+                                    <a href="#" class="dropdown-item dropdown-toggle"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        {{ $group['label'] }}
+                                    </a>
+
+                                    <div class="dropdown-menu border-0 shadow-sm">
+                                        @foreach ($group['links'] as $link)
+                                            <a class="dropdown-item" href="{{ $link['href'] }}">{{ $link['label'] }}</a>
+                                        @endforeach
+                                    </div>
+                                </div>
                             @endforeach
                         </div>
                     </li>
-                @endforeach
+                @endif
             </ul>
 
             <div class="mt-2 mt-xl-0 ml-xl-4">

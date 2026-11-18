@@ -871,7 +871,6 @@ return [
                         'Authentication' => 'Kung maaaring magrehistro ang opisina at ang mga residente, at kung agad na tinatanggap ang bagong account.',
                         'Profile'     => 'Ang iyong sariling account: larawan, email address at password.',
                         'Print'       => 'Paano pinamumunuan at pinipirmahan ang bawat napi-print na dokumento.',
-                        'Backup'      => 'Kumuha ng database backup at i-download ang nakuha na.',
                     ],
                 ],
                 [
@@ -898,20 +897,6 @@ return [
                         'Mga pagtatangka sa login at lockout' => 'Ilan ang tinatanggap na maling pagtatangka at gaano katagal hinihinto ang sign-in.',
                         'Session timeout'    => 'Gaano katagal nabubuhay ang idle session, at kung ang pagsara ng browser ay nagtatapos nito.',
                         'Login enabled'      => 'Kung ang sign-in ay tinatanggap — sa panel at sa portal.',
-                    ],
-                ],
-                [
-                    'title'  => 'Mga backup',
-                    'steps'  => [
-                        'Buksan ang Mga Setting → Backup.',
-                        'Kumuha ng backup at hintayin itong matapos.',
-                        'I-download ang file kapag iniaalok na.',
-                    ],
-                    'result' => [
-                        'Lalabas ang backup sa listahan kasama ang laki nito at ang oras na kinuha, at nagda-download bilang file na itatago sa labas ng server.',
-                    ],
-                    'notes'  => [
-                        'Kumuha ng isa bago ang pagbabagong hindi ka sigurado, at panatilihin ang kopya sa labas ng server — ang backup sa parehong disk ay hindi backup.',
                     ],
                 ],
             ],
@@ -1041,7 +1026,6 @@ return [
                     'body'   => 'Magsimula sa opisina: ang Administrator ng asosasyon ang may hawak ng mga setting ng account at role at makakapagbalik ng access, at ang sariling detalye ng kontak ng asosasyon ay nakalathala sa pampublikong site. Kung ang isang rekord ay mukhang mali sa halip na nawawala, ang kabanata para sa module na iyon ay nagsasaad ng tuntuning sinusunod nito, at tinutukoy ng Talasalitaan ang mga termino nito.',
                     'notes'  => [
                         'Banggitin ang reference ng rekord — numero ng invoice, booking, request — kapag humihingi ng tulong: maaari itong direktang hanapin.',
-                        'Panatilihin ang backup bago ang malaking pagbabagong hindi ka sigurado.',
                     ],
                 ],
             ],

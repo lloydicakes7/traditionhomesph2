@@ -48,6 +48,13 @@
                     @endforeach
                 </div>
 
+                @if ($request->reason)
+                    <div class="mt-2 pt-2 border-top">
+                        <div class="text-muted small">Reason for Request</div>
+                        <p class="mb-0 text-break">{{ $request->reason }}</p>
+                    </div>
+                @endif
+
                 {{-- HOW IT WAS ANSWERED, ONCE IT HAS BEEN --}}
                 @if ($request->is_processed)
                     <div class="alert alert-light border mt-2 mb-0">

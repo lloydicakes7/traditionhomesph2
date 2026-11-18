@@ -29,6 +29,7 @@ class Complaint extends Model
         'filed_by_admin_id',
         'submitter_name',
         'category',
+        'other_description',
         'subject',
         'description',
         'status',
@@ -78,6 +79,14 @@ class Complaint extends Model
         return $this->belongsTo(Admin::class, 'responded_by_admin_id');
     }
 
+    /**
+     * The evidence files submitted with the complaint.
+     */
+    public function attachments()
+    {
+        return $this->hasMany(ComplaintAttachment::class)->orderBy('id');
+    }
+
     // =====================================================================
     // Scopes
     // =====================================================================
@@ -98,6 +107,7 @@ class Complaint extends Model
         return $query->where(function ($query) use ($like) {
             $query->where('subject', 'like', $like)
                 ->orWhere('description', 'like', $like)
+                ->orWhere('other_description', 'like', $like)
                 ->orWhere('submitter_name', 'like', $like)
                 ->orWhere('category', 'like', $like)
                 ->orWhereHas('resident', function ($query) use ($like) {
@@ -235,6 +245,23 @@ class Complaint extends Model
     public function getCanBeRespondedToAttribute(): bool
     {
         return $this->status ? $this->status->canBeRespondedTo() : false;
+    }
+
+    /**
+     * The custom category text, kept only when the complaint is Other.
+     */
+    public static function otherDescriptionFrom(array $data): ?string
+    {
+        $category = $data['category'] ?? null;
+        $category = $category instanceof ComplaintCategory ? $category->value : $category;
+
+        if ($category !== ComplaintCategory::OTHER) {
+            return null;
+        }
+
+        $description = trim((string) ($data['other_description'] ?? ''));
+
+        return $description !== '' ? $description : null;
     }
 
     /**

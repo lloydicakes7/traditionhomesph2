@@ -68,6 +68,62 @@ class HoaCenterContentTest extends TestCase
             ->assertSee('Our mission.');
     }
 
+    public function test_only_published_content_appears_under_about_us(): void
+    {
+        $this->signInAdministrator();
+
+        Livewire::test(ContentFormModal::class)
+            ->call('openCreate')
+            ->set('form.title', 'Environment')
+            ->set('form.group', 'Rules and Regulations')
+            ->set('form.details', '<p>Keep the subdivision clean.</p>')
+            ->call('save')
+            ->assertHasNoErrors();
+
+        Livewire::test(ContentFormModal::class)
+            ->call('openCreate')
+            ->set('form.title', 'Waste Segregation')
+            ->set('form.group', 'Environment')
+            ->set('form.details', '<p>Sort your waste.</p>')
+            ->call('save')
+            ->assertHasNoErrors();
+
+        Livewire::test(ContentFormModal::class)
+            ->call('openCreate')
+            ->set('form.title', 'Mission and Vision')
+            ->set('form.details', '<p>Our mission.</p>')
+            ->call('save')
+            ->assertHasNoErrors();
+
+        Livewire::test(ContentFormModal::class)
+            ->call('openCreate')
+            ->set('form.title', 'Draft Page')
+            ->set('form.details', '<p>Not ready yet.</p>')
+            ->set('form.is_published', false)
+            ->call('save')
+            ->assertHasNoErrors();
+
+        $this->get('/')
+            ->assertOk()
+            ->assertSee('About Us')
+            ->assertSee('Rules and Regulations')
+            ->assertSee('Environment')
+            ->assertSee('Waste Segregation')
+            ->assertSee('Mission and Vision')
+            ->assertSee('dropdown-submenu', false)
+            ->assertDontSee('Draft Page');
+
+        $this->get(route('content.show', 'environment'))
+            ->assertOk()
+            ->assertSee('Keep the subdivision clean.');
+
+        $this->get(route('content.show', 'draft-page'))->assertNotFound();
+
+        $this->get(route('hoa-center.contents'))
+            ->assertOk()
+            ->assertSee('Draft');
+    }
+
     // ===== Helpers =====
 
     private function signInAdministrator(): void

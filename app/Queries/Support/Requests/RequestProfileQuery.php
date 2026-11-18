@@ -2,6 +2,7 @@
 
 namespace App\Queries\Support\Requests;
 
+use App\Enums\RequestType;
 use App\Models\Resident;
 use App\Queries\Documents\MembershipFormDocumentQuery;
 use App\Utility\MembershipFormDetails;
@@ -97,7 +98,76 @@ class RequestProfileQuery
         ];
     }
 
+    /**
+     * The read-only details shown below a request form: who is asking and the
+     * record facts the selected type adds.
+     *
+     * @return array<string, string>
+     */
+    public function details(?int $residentId, ?RequestType $type, array $form = []): array
+    {
+        $resident = $this->resident($residentId);
+
+        if (! $resident || ! $type) {
+            return [];
+        }
+
+        $unit = $resident->unit();
+
+        $rows = [
+            'Document'            => $type->label(),
+            'Requested By'        => $resident->full_name,
+            'Block'               => $unit && $unit->block !== null ? (string) $unit->block : '',
+            'Lot'                 => $unit && $unit->lot !== null ? (string) $unit->lot : '',
+            'Mobile Phone Number' => (string) $resident->mobile_no,
+        ];
+
+        if ($resident->user && $resident->user->email) {
+            $rows['Email Address'] = $resident->user->email;
+        }
+
+        return array_merge($rows, $this->typeDetails($type, $form, $resident));
+    }
+
     // ===== Helpers =====
+
+    /**
+     * The record facts the selected request type adds to the details panel.
+     *
+     * @return array<string, string>
+     */
+    private function typeDetails(RequestType $type, array $form, Resident $resident): array
+    {
+        switch ($type->value) {
+            case RequestType::CERTIFICATION:
+            case RequestType::BUSINESS_PERMIT:
+                return [
+                    'Purpose' => $this->purposeLabel($type, $form['purpose'] ?? ''),
+                ];
+
+            case RequestType::ENDORSEMENT_LETTER:
+                $unit = $resident->unit();
+
+                return [
+                    'Respondent Block' => $unit && $unit->block !== null ? (string) $unit->block : '',
+                    'Respondent Lot'   => $unit && $unit->lot !== null ? (string) $unit->lot : '',
+                ];
+        }
+
+        return [];
+    }
+
+    /**
+     * The selected purpose's label, or its stored value when it is unknown.
+     *
+     * @param  mixed  $value
+     */
+    private function purposeLabel(RequestType $type, $value): string
+    {
+        $value = (string) $value;
+
+        return $type->purposeOptions()[$value] ?? $value;
+    }
 
     /**
      * The resident the form is about, with the household and unit loaded.

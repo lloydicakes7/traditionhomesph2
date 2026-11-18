@@ -40,10 +40,11 @@ class ComplaintFormModal extends AdminModalComponent
 
     /** @var array Form fields */
     public $form = [
-        'resident_id' => '',
-        'category'    => '',
-        'subject'     => '',
-        'description' => '',
+        'resident_id'       => '',
+        'category'          => '',
+        'other_description' => '',
+        'subject'           => '',
+        'description'       => '',
     ];
 
     /** @var array<string, string> Modal open / load / close events (see public/js/modal-loader.js) */
@@ -116,10 +117,11 @@ class ComplaintFormModal extends AdminModalComponent
         $this->isEditing = true;
         $this->editingComplaintId = $complaint->id;
         $this->form = [
-            'resident_id' => (string) $complaint->resident_id,
-            'category'    => $complaint->category ? $complaint->category->value : '',
-            'subject'     => $complaint->subject,
-            'description' => $complaint->description,
+            'resident_id'       => (string) $complaint->resident_id,
+            'category'          => $complaint->category ? $complaint->category->value : '',
+            'other_description' => (string) $complaint->other_description,
+            'subject'           => $complaint->subject,
+            'description'       => $complaint->description,
         ];
 
         $this->markLoaded();
@@ -176,10 +178,11 @@ class ComplaintFormModal extends AdminModalComponent
         $this->isEditing = false;
         $this->editingComplaintId = null;
         $this->form = [
-            'resident_id' => '',
-            'category'    => '',
-            'subject'     => '',
-            'description' => '',
+            'resident_id'       => '',
+            'category'          => '',
+            'other_description' => '',
+            'subject'           => '',
+            'description'       => '',
         ];
     }
 

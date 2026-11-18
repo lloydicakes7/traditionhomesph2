@@ -27,14 +27,13 @@ class UpdateComplaint
             ]);
         }
 
-        $resident = Resident::findOrFail((int) $data['resident_id']);
-
-        $complaint->update([
-            'resident_id'    => $resident->id,
-            'submitter_name' => $complaint->submitter_name ?: $resident->full_name,
-            'category'       => $data['category'],
-            'subject'        => $data['subject'],
-            'description'    => $data['description'],
+        $resident = Resident::findOrFail((int) $data['resident_id']);        $complaint->update([
+            'resident_id'       => $resident->id,
+            'submitter_name'    => $complaint->submitter_name ?: $resident->full_name,
+            'category'          => $data['category'],
+            'other_description' => Complaint::otherDescriptionFrom($data),
+            'subject'           => $data['subject'],
+            'description'       => $data['description'],
         ]);
 
         $this->activity->log(

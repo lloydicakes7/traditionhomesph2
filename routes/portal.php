@@ -78,6 +78,7 @@ Route::middleware([
     // ---------------------------------------------------------------
 
     Route::get('account-details', [ProfileController::class, 'index'])->name('portal.profile');
+    Route::get('personal-information', [PersonalInformationController::class, 'index'])->name('portal.personal-information');
 
     // ---------------------------------------------------------------
     // User Manual
@@ -131,7 +132,6 @@ Route::middleware([
     // My Records
     // ---------------------------------------------------------------
 
-    Route::get('personal-information', [PersonalInformationController::class, 'index'])->name('portal.personal-information');
     Route::get('household-property', [HouseholdPropertyController::class, 'index'])->name('portal.household-property');
 
 });

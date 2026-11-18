@@ -22,11 +22,12 @@ use Livewire\Livewire;
 use Tests\TestCase;
 
 /**
- * Filing a request: the five documents the portal offers, and the inputs each
+ * Filing a request: the seven documents the portal offers, and the inputs each
  * one asks for.
  *
- * The five are fixed (RequestType): Membership Form, Business Permit, HOA
- * Permit, Endorsement Letter and Certification. The type states its own shape,
+ * The seven are fixed (RequestType): Membership Form, Business Permit, HOA
+ * Permit, Endorsement Letter, Certification, Invitation Letter and Sinumpaang
+ * Salaysay. The type states its own shape,
  * so the form, the validation and the office's own filing all read one source —
  * this file pins down what each type actually requires of the homeowner, that
  * the RBI forms are not requests at all, and that a portal filing is written
@@ -40,7 +41,7 @@ class RequestFilingTest extends TestCase
     // What the portal offers
     // =====================================================================
 
-    public function test_the_portal_offers_exactly_the_five_documents(): void
+    public function test_the_portal_offers_exactly_the_seven_documents(): void
     {
         $this->signInHomeowner();
 
@@ -52,6 +53,8 @@ class RequestFilingTest extends TestCase
         $form->assertSee('HOA Permit');
         $form->assertSee('Endorsement Letter');
         $form->assertSee('Certification');
+        $form->assertSee('Invitation Letter');
+        $form->assertSee('Sinumpaang Salaysay');
         $form->assertDontSee('RBI Form');
 
         $this->assertSame([
@@ -60,6 +63,8 @@ class RequestFilingTest extends TestCase
             RequestType::HOA_PERMIT,
             RequestType::ENDORSEMENT_LETTER,
             RequestType::CERTIFICATION,
+            RequestType::INVITATION_LETTER,
+            RequestType::SINUMPAANG_SALAYSAY,
         ], array_keys(RequestType::labels()));
     }
 
@@ -113,10 +118,131 @@ class RequestFilingTest extends TestCase
         // the letter's date starts at today.
         $form(RequestType::ENDORSEMENT_LETTER)
             ->assertSee('Addressee')
-            ->assertSee('Respondent Block')
-            ->assertSee('Respondent Lot')
+            ->assertSee('requestFileType_respondent_block', false)
+            ->assertSee('requestFileType_respondent_lot', false)
             ->assertSee('Date')
             ->assertSet('form.letter_date', now()->toDateString());
+    }
+
+    public function test_every_request_form_shows_the_reason_and_its_details(): void
+    {
+        $this->signInHomeownerWithHousehold();
+
+        $form = function (string $type) {
+            return Livewire::test(RequestFileModal::class)
+                ->emit('openRequestFileModal')
+                ->set('form.type', $type);
+        };
+
+        $form(RequestType::MEMBERSHIP_FORM)
+            ->assertSee('Reason for Request')
+            ->assertSee('Membership Form details');
+
+        foreach ([
+            RequestType::BUSINESS_PERMIT,
+            RequestType::HOA_PERMIT,
+            RequestType::CERTIFICATION,
+            RequestType::ENDORSEMENT_LETTER,
+            RequestType::INVITATION_LETTER,
+            RequestType::SINUMPAANG_SALAYSAY,
+        ] as $type) {
+            $form($type)
+                ->assertSee('Reason for Request')
+                ->assertSee('Details Information')
+                ->assertSee(RequestType::labels()[$type]);
+        }
+    }
+
+    public function test_a_request_reason_is_optional_and_saved_with_the_request(): void
+    {
+        $this->signInHomeowner();
+
+        Livewire::test(RequestFileModal::class)
+            ->emit('openRequestFileModal')
+            ->set('form.type', RequestType::CERTIFICATION)
+            ->set('form.purpose', 'residency')
+            ->set('form.reason', 'Needed for a bank account application.')
+            ->call('save')
+            ->assertHasNoErrors()
+            ->assertEmitted('request-filed');
+
+        $this->assertDatabaseHas('requests', [
+            'type'   => RequestType::CERTIFICATION,
+            'reason' => 'Needed for a bank account application.',
+        ]);
+    }
+
+    public function test_the_new_request_types_can_be_filed_with_a_reason(): void
+    {
+        $this->signInHomeowner();
+
+        foreach ([RequestType::INVITATION_LETTER, RequestType::SINUMPAANG_SALAYSAY] as $type) {
+            Livewire::test(RequestFileModal::class)
+                ->emit('openRequestFileModal')
+                ->set('form.type', $type)
+                ->set('form.reason', 'Please issue this document.')
+                ->call('save')
+                ->assertHasNoErrors()
+                ->assertEmitted('request-filed');
+        }
+
+        $this->assertSame(2, RequestModel::whereIn('type', [
+            RequestType::INVITATION_LETTER,
+            RequestType::SINUMPAANG_SALAYSAY,
+        ])->count());
+
+        $this->assertSame(
+            PrintDocument::INVITATION_LETTER(),
+            RequestModel::where('type', RequestType::INVITATION_LETTER)->first()->printDocument()
+        );
+        $this->assertSame(
+            PrintDocument::SINUMPAANG_SALAYSAY(),
+            RequestModel::where('type', RequestType::SINUMPAANG_SALAYSAY)->first()->printDocument()
+        );
+    }
+
+    public function test_household_members_render_as_independent_accordion_blocks(): void
+    {
+        $account = $this->signInHomeownerWithHousehold();
+
+        $member = factory(Resident::class)->create([
+            'surname'     => 'Dela Cruz',
+            'first_name'  => 'Maria',
+            'middle_name' => 'Santos',
+            'suffix'      => null,
+        ]);
+
+        $account->resident->household->memberRecords()->create([
+            'resident_id'  => $member->id,
+            'relationship' => 'daughter',
+        ]);
+
+        Livewire::test(RequestFileModal::class)
+            ->emit('openRequestFileModal')
+            ->set('form.type', RequestType::MEMBERSHIP_FORM)
+            ->assertSeeHtml('thha-household-member-toggle')
+            ->assertSeeHtml('data-toggle="collapse"')
+            ->assertSeeHtml('aria-expanded="false"')
+            ->assertSee('Dela Cruz, Juan Santos')
+            ->assertSee('Dela Cruz, Maria Santos')
+            ->assertSee('Head')
+            ->assertSee('Daughter')
+            ->assertSee('Birthdate')
+            ->assertSee('Occupation')
+            ->assertSee('requestFileType_household_member_0', false)
+            ->assertSee('requestFileType_household_member_1', false)
+            ->assertDontSee('data-parent', false)
+            ->assertDontSeeHtml('thha-household-member-card');
+    }
+
+    public function test_the_portal_request_modal_uses_the_wide_layout(): void
+    {
+        $this->signInHomeowner();
+
+        Livewire::test(RequestFileModal::class)
+            ->emit('openRequestFileModal')
+            ->assertSeeHtml('thha-request-modal')
+            ->assertSeeHtml('modal-xl');
     }
 
     // =====================================================================
@@ -132,7 +258,9 @@ class RequestFilingTest extends TestCase
         Livewire::test(RequestFileModal::class)
             ->emit('openRequestFileModal')
             ->set('form.type', RequestType::MEMBERSHIP_FORM)
-            ->assertSee('missing information on file')
+            ->assertSee('Personal information is incomplete')
+            ->assertSee('Add')
+            ->assertSee(route('portal.personal-information'), false)
             ->call('save')
             ->assertHasErrors(['form.type']);
 
@@ -184,7 +312,7 @@ class RequestFilingTest extends TestCase
         Livewire::test(RequestFileModal::class)
             ->emit('openRequestFileModal')
             ->set('form.type', RequestType::MEMBERSHIP_FORM)
-            ->assertSee('missing information on file')
+            ->assertSee('Personal information is incomplete')
             ->assertDontSee('Missing on the record')
             ->assertDontSee('membership_birth_place')
             ->call('save')
@@ -222,6 +350,21 @@ class RequestFilingTest extends TestCase
 
         $this->assertSame('Imus, Cavite', $form['birth_place']);
         $this->assertSame('', $form['religion']);
+    }
+
+    public function test_the_office_membership_form_uses_the_same_household_accordion(): void
+    {
+        $account = $this->signInHomeownerWithHousehold();
+
+        $this->signInAdmin();
+
+        Livewire::test(RequestFormModal::class)
+            ->emit('openRequestFormModal')
+            ->set('form.resident_id', $account->resident_id)
+            ->set('form.type', RequestType::MEMBERSHIP_FORM)
+            ->assertSeeHtml('thha-household-member-toggle')
+            ->assertSee('Dela Cruz, Juan Santos')
+            ->assertSee('requestFormType_household_member_0', false);
     }
 
     public function test_a_membership_form_prints_no_attainment_the_record_does_not_have(): void
@@ -530,6 +673,7 @@ class RequestFilingTest extends TestCase
             'surname'     => 'Dela Cruz',
             'first_name'  => 'Juan',
             'middle_name' => 'Santos',
+            'suffix'      => null,
             'religion'    => 'Roman Catholic',
             'birth_place' => 'Trece Martires City',
             'mobile_no'   => '09171234567',

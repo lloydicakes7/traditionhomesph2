@@ -144,14 +144,17 @@ class RegistrationTest extends TestCase
             'hash' => sha1($user->getEmailForVerification()),
         ]);
 
-        $this->get($url)->assertRedirect(route('login'));
+        $this->get($url)
+            ->assertRedirect(route('login'))
+            ->assertSessionHas('status', __('auth.verified_sign_in'));
 
+        $this->assertGuest('homeowner');
         $this->assertTrue($user->fresh()->hasVerifiedEmail());
 
         $this->post('/login', [
             'email'    => 'applicant@example.com',
             'password' => 'ChosenPass1!',
-        ])->assertRedirect('/portal');
+        ])->assertRedirect(route('portal.personal-information'));
 
         $this->assertAuthenticated('homeowner');
     }

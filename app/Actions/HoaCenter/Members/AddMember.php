@@ -22,7 +22,10 @@ class AddMember
 
     public function handle(array $data, $photo, Admin $by): HoaMember
     {
-        $payload = $this->payload($data);
+        $payload = $this->payload($data, $this->requireGroup(
+            $data['hoa_member_group_id'] ?? null,
+            $data['new_group_name'] ?? null
+        ));
 
         if ($photo) {
             $payload['profile_photo_path'] = $this->storePhoto($photo);

@@ -44,9 +44,10 @@ class PrintSettingForm extends AdminComponent
      * @var array<string, array{upload: string, path: string}>
      */
     const IMAGE_SLOTS = [
-        'left'   => ['upload' => 'leftImage', 'path' => 'leftImagePath'],
-        'right'  => ['upload' => 'rightImage', 'path' => 'rightImagePath'],
-        'footer' => ['upload' => 'footerImage', 'path' => 'footerImagePath'],
+        'left'      => ['upload' => 'leftImage', 'path' => 'leftImagePath'],
+        'right'     => ['upload' => 'rightImage', 'path' => 'rightImagePath'],
+        'footer'    => ['upload' => 'footerImage', 'path' => 'footerImagePath'],
+        'president' => ['upload' => 'presidentImage', 'path' => 'presidentImagePath'],
     ];
 
     /** @var string The tab the page is showing: letterhead, footers or signatories */
@@ -81,6 +82,12 @@ class PrintSettingForm extends AdminComponent
 
     /** @var bool Whether the 2px rule under the header shows */
     public $divider = true;
+
+    /** @var mixed Uploaded presidential portrait */
+    public $presidentImage;
+
+    /** @var string The stored presidential portrait path */
+    public $presidentImagePath = '';
 
     /** @var string The line printed under every document (rich) */
     public $footerText = '';
@@ -154,6 +161,7 @@ class PrintSettingForm extends AdminComponent
         $this->leftShow = $settings['left_show'];
         $this->rightShow = $settings['right_show'];
         $this->divider = $settings['divider'];
+        $this->presidentImagePath = $settings['president_image_path'];
         $this->footerText = $settings['footer_text'];
         $this->footerImagePath = $settings['footer_image_path'];
         $this->footerWidth = $settings['footer_image_width'];
@@ -182,6 +190,7 @@ class PrintSettingForm extends AdminComponent
             'leftShow'      => ['boolean'],
             'rightShow'     => ['boolean'],
             'divider'       => ['boolean'],
+            'presidentImage' => ['nullable', 'image', 'mimes:' . PrintSettingsQuery::imageMimes(), 'max:1024'],
             'footerText'    => ['nullable', 'string', 'max:2000'],
             'footerImage'   => ['nullable', 'image', 'mimes:' . PrintSettingsQuery::imageMimes(), 'max:1024'],
             'footerWidth'   => ['required', 'numeric', 'between:' . PrintSettingsQuery::MIN_FOOTER_WIDTH . ',' . PrintSettingsQuery::MAX_FOOTER_WIDTH],
@@ -295,6 +304,15 @@ class PrintSettingForm extends AdminComponent
     {
         return $this->imagePreview($this->rightImage, $this->rightImagePath)
             ?? PrintSettingsQuery::seededImageUrl('right');
+    }
+
+    /**
+     * What the presidential portrait should show: the file just chosen, or the
+     * stored one.
+     */
+    public function presidentImagePreview(): ?string
+    {
+        return $this->imagePreview($this->presidentImage, $this->presidentImagePath);
     }
 
     /**

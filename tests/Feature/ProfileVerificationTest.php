@@ -93,6 +93,10 @@ class ProfileVerificationTest extends TestCase
             ->assertOk();
 
         $this->actingAs($user, 'homeowner')
+            ->get('/portal/personal-information')
+            ->assertOk();
+
+        $this->actingAs($user, 'homeowner')
             ->get('/portal/notifications')
             ->assertOk();
     }

@@ -50,6 +50,7 @@ class RequestFormModal extends AdminModalComponent
         'permit_type'        => '',
         'location'           => '',
         'scope_of_work'      => '',
+        'reason'             => '',
         'addressee'          => '',
         'letter_date'        => '',
         'membership'         => [],
@@ -141,6 +142,7 @@ class RequestFormModal extends AdminModalComponent
         $this->form = array_merge($this->emptyForm(), [
             'resident_id' => $this->form['resident_id'] ?? '',
             'type'        => $type,
+            'reason'      => $this->form['reason'] ?? '',
         ]);
 
         $this->resetValidation();
@@ -208,6 +210,9 @@ class RequestFormModal extends AdminModalComponent
             'respondentUnit'    => $type && $type->hasAddressee()
                 ? $this->profiles->unit($residentId)
                 : null,
+            'detailsInformation' => $type
+                ? $this->profiles->details($residentId, $type, $this->form)
+                : [],
         ]);
     }
 
@@ -229,6 +234,7 @@ class RequestFormModal extends AdminModalComponent
             'permit_type'        => '',
             'location'           => '',
             'scope_of_work'      => '',
+            'reason'             => '',
             'addressee'          => '',
             'letter_date'        => now()->toDateString(),
             'membership'         => [],

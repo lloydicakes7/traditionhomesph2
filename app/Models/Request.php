@@ -16,13 +16,13 @@ use Illuminate\Database\Eloquent\Model;
  * One service request a homeowner filed with the office.
  *
  * A request is one of the printable documents the association issues — a
- * Membership Form, a Business Permit, an HOA Permit, an Endorsement Letter or a
- * Certification — and the fields it carries depend on which: a certification
- * has a purpose, a business permit adds the business
- * details, an HOA permit carries its type and scope of work, an endorsement
- * letter carries its addressee, and the Membership Form carries nothing at all
- * (it is filled in from the resident's own profile). The type states that shape
- * (RequestType); the record only holds the values.
+ * Membership Form, a Business Permit, an HOA Permit, an Endorsement Letter, a
+ * Certification, an Invitation Letter or a Sinumpaang Salaysay — and the fields
+ * it carries depend on which: a certification has a purpose, a business permit
+ * adds the business details, an HOA permit carries its type and scope of work,
+ * an endorsement letter carries its addressee, and the Membership Form carries
+ * nothing at all (it is filled in from the resident's own profile). The type
+ * states that shape (RequestType); the record only holds the values.
  *
  * The record is filed under exactly one resident (`resident_id` — the account's
  * own, written by the service, never taken from the form). Where it stands is
@@ -58,6 +58,7 @@ class Request extends Model
         'permit_type',
         'location',
         'scope_of_work',
+        'reason',
         'addressee',
         'letter_date',
         'membership_data',
@@ -351,6 +352,12 @@ class Request extends Model
 
             case RequestType::ENDORSEMENT_LETTER:
                 return $this->addressee ?: '—';
+
+            case RequestType::INVITATION_LETTER:
+                return 'Meeting invitation';
+
+            case RequestType::SINUMPAANG_SALAYSAY:
+                return 'Sworn statement';
         }
 
         return '—';
@@ -398,6 +405,12 @@ class Request extends Model
                 return [
                     'Addressee' => $this->addressee ?: '—',
                     'Date'      => $this->letter_date ? $this->letter_date->format('M j, Y') : '—',
+                ];
+
+            case RequestType::INVITATION_LETTER:
+            case RequestType::SINUMPAANG_SALAYSAY:
+                return [
+                    'Document' => $this->type->label(),
                 ];
         }
 

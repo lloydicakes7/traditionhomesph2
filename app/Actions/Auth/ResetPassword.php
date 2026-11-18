@@ -4,16 +4,16 @@ namespace App\Actions\Auth;
 
 use App\Models\Admin;
 use Illuminate\Contracts\Auth\CanResetPassword;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 
 /**
  * Set a new password from an emailed reset link, for either account type.
  *
- * The address decides which broker verifies the token and which guard opens
- * the session afterwards. A link for an address with no account fails on the
- * same "invalid token" answer as a tampered one.
+ * The address decides which broker verifies the token. The account is never
+ * signed in here: it signs in again at `/login` with the new password. A link
+ * for an address with no account fails on the same "invalid token" answer as a
+ * tampered one.
  */
 class ResetPassword
 {
@@ -35,10 +35,8 @@ class ResetPassword
                 'password_confirmation' => $data['password_confirmation'],
                 'token'                 => $data['token'],
             ],
-            function (CanResetPassword $account, string $password) use ($isAdmin): void {
+            function (CanResetPassword $account, string $password): void {
                 $this->store($account, $password);
-
-                Auth::guard($isAdmin ? 'web' : 'homeowner')->login($account);
             }
         );
 

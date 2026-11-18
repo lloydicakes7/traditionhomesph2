@@ -10,12 +10,13 @@ class ContentQuery
 
     public function page(string $slug): ?Content
     {
-        return Content::query()->where('slug', $slug)->first();
+        return Content::query()->published()->where('slug', $slug)->first();
     }
 
     public function menu(): array
     {
         $contents = Content::query()
+            ->published()
             ->ordered()
             ->get(['id', 'title', 'slug', 'group']);
 

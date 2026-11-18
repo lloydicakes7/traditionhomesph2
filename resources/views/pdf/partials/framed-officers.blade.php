@@ -4,7 +4,7 @@
     numbers at the foot of that column. The Certification and the Invitation
     Letter are the same sheet at this level, so both read it from here.
 
-    @var array  $staff      officers, committees and the president's photo
+    @var array  $staff      officers, the board and the presidential portrait
     @var string $control_no the control number the office wrote on the paper
     @var string $or_no      the O.R. number the office wrote on the paper
 --}}
@@ -26,7 +26,7 @@
 
     <div class="thha-fl-board">{{ __('documents.sidebar.board') }}</div>
 
-    @foreach (($staff['committees'] ?? []) as $committee)
+    @foreach (($staff['board'] ?? []) as $committee)
         <div class="thha-fl-officer">
             <div class="thha-fl-name">{{ $committee['name'] }}</div>
             <div class="thha-fl-role">{{ $committee['role'] }}</div>

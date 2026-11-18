@@ -48,6 +48,7 @@ class RequestEditModal extends AdminModalComponent
         'permit_type'        => '',
         'location'           => '',
         'scope_of_work'      => '',
+        'reason'             => '',
         'addressee'          => '',
         'letter_date'        => '',
         'membership'         => [],
@@ -115,6 +116,7 @@ class RequestEditModal extends AdminModalComponent
             'permit_type'        => (string) $request->permit_type,
             'location'           => (string) $request->location,
             'scope_of_work'      => (string) $request->scope_of_work,
+            'reason'             => (string) $request->reason,
             'addressee'          => (string) $request->addressee,
             'letter_date'        => $request->letter_date ? $request->letter_date->toDateString() : '',
             'membership'         => (array) $request->membership_data,
@@ -151,7 +153,10 @@ class RequestEditModal extends AdminModalComponent
     {
         $type = $this->form['type'] ?? '';
 
-        $this->form = array_merge($this->emptyForm(), ['type' => $type]);
+        $this->form = array_merge($this->emptyForm(), [
+            'type'   => $type,
+            'reason' => $this->form['reason'] ?? '',
+        ]);
 
         $this->resetValidation();
     }
@@ -210,6 +215,9 @@ class RequestEditModal extends AdminModalComponent
             'respondentUnit'    => $type && $type->hasAddressee()
                 ? $this->profiles->unit($residentId)
                 : null,
+            'detailsInformation' => $type
+                ? $this->profiles->details($residentId, $type, $this->form)
+                : [],
         ]);
     }
 
@@ -230,6 +238,7 @@ class RequestEditModal extends AdminModalComponent
             'permit_type'        => '',
             'location'           => '',
             'scope_of_work'      => '',
+            'reason'             => '',
             'addressee'          => '',
             'letter_date'        => now()->toDateString(),
             'membership'         => [],

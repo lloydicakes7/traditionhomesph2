@@ -15,6 +15,11 @@ class Content extends Model
         'group',
         'image_path',
         'details',
+        'is_published',
+    ];
+
+    protected $casts = [
+        'is_published' => 'boolean',
     ];
 
     // ===== Scopes =====
@@ -34,6 +39,11 @@ class Content extends Model
                 ->orWhere('group', 'like', $like)
                 ->orWhere('details', 'like', $like);
         });
+    }
+
+    public function scopePublished($query)
+    {
+        return $query->where('is_published', true);
     }
 
     public function scopeOrdered($query)
@@ -67,9 +77,10 @@ class Content extends Model
     public static function payloadFrom(array $data): array
     {
         return [
-            'title'   => trim($data['title']),
-            'group'   => ($data['group'] ?? null) ?: null,
-            'details' => HtmlHelper::sanitize($data['details']),
+            'title'        => trim($data['title']),
+            'group'        => ($data['group'] ?? null) ?: null,
+            'details'      => HtmlHelper::sanitize($data['details']),
+            'is_published' => array_key_exists('is_published', $data) ? (bool) $data['is_published'] : true,
         ];
     }
 

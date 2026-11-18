@@ -5,10 +5,11 @@ namespace App\Enums;
 /**
  * What a homeowner asks the office to issue.
  *
- * The five documents the association issues on request: a Membership Form, a
- * Business Permit, an HOA Permit, an Endorsement Letter and a Certification. A
- * fixed set — the portal's form offers these and nothing else — which is why it
- * is an enum rather than an office-managed lookup table.
+ * The seven documents the association issues on request: a Membership Form, a
+ * Business Permit, an HOA Permit, an Endorsement Letter, a Certification, an
+ * Invitation Letter and a Sinumpaang Salaysay. A fixed set — the portal's form
+ * offers these and nothing else — which is why it is an enum rather than an
+ * office-managed lookup table.
  *
  * The RBI forms are deliberately not of them: they are the association's own
  * report to the barangay, printed by the office from the RBI Forms page, not a
@@ -29,14 +30,18 @@ namespace App\Enums;
  * @method static RequestType HOA_PERMIT()
  * @method static RequestType ENDORSEMENT_LETTER()
  * @method static RequestType CERTIFICATION()
+ * @method static RequestType INVITATION_LETTER()
+ * @method static RequestType SINUMPAANG_SALAYSAY()
  */
 class RequestType extends Enum
 {
-    const MEMBERSHIP_FORM    = 'membership_form';
-    const BUSINESS_PERMIT    = 'business_permit';
-    const HOA_PERMIT         = 'hoa_permit';
-    const ENDORSEMENT_LETTER = 'endorsement_letter';
-    const CERTIFICATION      = 'certification';
+    const MEMBERSHIP_FORM     = 'membership_form';
+    const BUSINESS_PERMIT     = 'business_permit';
+    const HOA_PERMIT          = 'hoa_permit';
+    const ENDORSEMENT_LETTER  = 'endorsement_letter';
+    const CERTIFICATION       = 'certification';
+    const INVITATION_LETTER   = 'invitation_letter';
+    const SINUMPAANG_SALAYSAY = 'sinumpaang_salaysay';
 
     /**
      * Map of value → human-readable label, in the order the form offers them.
@@ -46,11 +51,13 @@ class RequestType extends Enum
     public static function labels(): array
     {
         return [
-            self::MEMBERSHIP_FORM    => 'Membership Form',
-            self::BUSINESS_PERMIT    => 'Business Permit',
-            self::HOA_PERMIT         => 'HOA Permit',
-            self::ENDORSEMENT_LETTER => 'Endorsement Letter',
-            self::CERTIFICATION      => 'Certification',
+            self::MEMBERSHIP_FORM     => 'Membership Form',
+            self::BUSINESS_PERMIT     => 'Business Permit',
+            self::HOA_PERMIT          => 'HOA Permit',
+            self::ENDORSEMENT_LETTER  => 'Endorsement Letter',
+            self::CERTIFICATION       => 'Certification',
+            self::INVITATION_LETTER   => 'Invitation Letter',
+            self::SINUMPAANG_SALAYSAY => 'Sinumpaang Salaysay',
         ];
     }
 
@@ -68,11 +75,13 @@ class RequestType extends Enum
     public function icon(): string
     {
         return [
-            self::MEMBERSHIP_FORM    => 'fas fa-fw fa-users',
-            self::BUSINESS_PERMIT    => 'fas fa-fw fa-store',
-            self::HOA_PERMIT         => 'fas fa-fw fa-hard-hat',
-            self::ENDORSEMENT_LETTER => 'fas fa-fw fa-envelope-open-text',
-            self::CERTIFICATION      => 'fas fa-fw fa-certificate',
+            self::MEMBERSHIP_FORM     => 'fas fa-fw fa-users',
+            self::BUSINESS_PERMIT     => 'fas fa-fw fa-store',
+            self::HOA_PERMIT          => 'fas fa-fw fa-hard-hat',
+            self::ENDORSEMENT_LETTER  => 'fas fa-fw fa-envelope-open-text',
+            self::CERTIFICATION       => 'fas fa-fw fa-certificate',
+            self::INVITATION_LETTER   => 'fas fa-fw fa-envelope',
+            self::SINUMPAANG_SALAYSAY => 'fas fa-fw fa-file-signature',
         ][$this->value] ?? 'fas fa-fw fa-clipboard';
     }
 
@@ -159,11 +168,13 @@ class RequestType extends Enum
     public function printDocument(): ?PrintDocument
     {
         return [
-            self::MEMBERSHIP_FORM    => PrintDocument::MEMBERSHIP_FORM(),
-            self::BUSINESS_PERMIT    => PrintDocument::BUSINESS_PERMIT(),
-            self::HOA_PERMIT         => PrintDocument::HOA_PERMIT(),
-            self::ENDORSEMENT_LETTER => PrintDocument::ENDORSEMENT_LETTER(),
-            self::CERTIFICATION      => PrintDocument::CERTIFICATION(),
+            self::MEMBERSHIP_FORM     => PrintDocument::MEMBERSHIP_FORM(),
+            self::BUSINESS_PERMIT     => PrintDocument::BUSINESS_PERMIT(),
+            self::HOA_PERMIT          => PrintDocument::HOA_PERMIT(),
+            self::ENDORSEMENT_LETTER  => PrintDocument::ENDORSEMENT_LETTER(),
+            self::CERTIFICATION       => PrintDocument::CERTIFICATION(),
+            self::INVITATION_LETTER   => PrintDocument::INVITATION_LETTER(),
+            self::SINUMPAANG_SALAYSAY => PrintDocument::SINUMPAANG_SALAYSAY(),
         ][$this->value] ?? null;
     }
 }

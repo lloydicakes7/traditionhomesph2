@@ -1,6 +1,7 @@
 <div wire:ignore.self>
     <x-adminlte-modal id="requestFormModal" title="New Request"
-        icon="fas fa-fw fa-plus" theme="primary" size="md" scrollable v-centered wire:ignore.self>
+        icon="fas fa-fw fa-plus" theme="primary" size="xl" class="thha-request-modal"
+        scrollable v-centered wire:ignore.self>
 
         <div data-modal-skeleton class="{{ $loaded ? 'd-none' : '' }}">
             <x-ui.modals.modal-loading message="Preparing the request form…" />
@@ -25,7 +26,7 @@
                 <x-customs.request-type-fields :form="$form" :selected-type="$selectedType"
                     :purpose-options="$purposeOptions" prefix="requestFormType"
                     :membership-profile="$membershipProfile" :respondent-unit="$respondentUnit"
-                    :supply-missing="true" />
+                    :details-information="$detailsInformation" :supply-missing="true" />
             </form>
         </div>
 

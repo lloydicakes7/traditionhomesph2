@@ -5,6 +5,7 @@ namespace App\Actions\Support\Complaints;
 use App\Models\Admin;
 use App\Models\Complaint;
 use App\Services\ActivityLogService;
+use App\Utility\StorageHelper;
 
 class DeleteComplaints
 {
@@ -31,6 +32,14 @@ class DeleteComplaints
             'complaint',
             'Deleted ' . count($ids) . ' complaints'
         );
+
+        $complaints = Complaint::with('attachments')->whereIn('id', $ids)->get();
+
+        foreach ($complaints as $complaint) {
+            foreach ($complaint->attachments as $attachment) {
+                StorageHelper::deletePrivate($attachment->path);
+            }
+        }
 
         Complaint::whereIn('id', $ids)->delete();
 

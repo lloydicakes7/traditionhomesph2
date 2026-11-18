@@ -138,7 +138,7 @@
                 <td>
                     <div class="thha-ss-signatory">
                         <div class="thha-ss-sig-line"></div>
-                        <strong>{{ $staff['president']['name'] ?? '' }}</strong><br>
+                        <strong>{{ $staff['signatories']['president'] ?? '' }}</strong><br>
                         {{ __('documents.salaysay.president_role') }}
                     </div>
                 </td>

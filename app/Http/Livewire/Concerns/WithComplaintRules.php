@@ -18,9 +18,17 @@ trait WithComplaintRules
     protected function complaintRules(): array
     {
         return [
-            'form.category'    => ['required', Rule::in(ComplaintCategory::values())],
-            'form.subject'     => ['required', 'string', 'max:200'],
-            'form.description' => ['required', 'string', 'max:2000'],
+            'form.category'          => ['required', Rule::in(ComplaintCategory::values())],
+            'form.other_description' => [
+                'nullable',
+                'string',
+                'max:255',
+                Rule::requiredIf(function () {
+                    return ($this->form['category'] ?? null) === ComplaintCategory::OTHER;
+                }),
+            ],
+            'form.subject'           => ['required', 'string', 'max:200'],
+            'form.description'       => ['required', 'string', 'max:2000'],
         ];
     }
 

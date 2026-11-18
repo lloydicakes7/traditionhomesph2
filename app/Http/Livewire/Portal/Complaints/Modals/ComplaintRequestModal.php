@@ -9,6 +9,7 @@ use App\Models\Complaint;
 use App\Actions\Support\Complaints\FileComplaint;
 use App\Http\Livewire\Concerns\WithComplaintRules;
 use Illuminate\Support\Facades\Auth;
+use Livewire\WithFileUploads;
 
 /**
  * "File a Complaint" modal — the homeowner raising something with the office.
@@ -30,15 +31,23 @@ class ComplaintRequestModal extends PortalModalComponent
 {
     use ResolvesHomeownerAccount;
     use WithComplaintRules;
+    use WithFileUploads;
 
     const MODAL_ID = 'complaintRequestModal';
 
     /** @var array Form fields */
     public $form = [
-        'category'    => '',
-        'subject'     => '',
-        'description' => '',
+        'category'          => '',
+        'other_description' => '',
+        'subject'           => '',
+        'description'       => '',
     ];
+
+    /** @var array<int, \Livewire\TemporaryUploadedFile> */
+    public $images = [];
+
+    /** @var array<int, \Livewire\TemporaryUploadedFile> */
+    public $files = [];
 
     /** @var array<string, string> Modal load / close events (see public/js/modal-loader.js) */
     protected $listeners = [
@@ -60,7 +69,12 @@ class ComplaintRequestModal extends PortalModalComponent
 
     protected function rules(): array
     {
-        return $this->complaintRules();
+        return $this->complaintRules() + [
+            'images'   => ['array', 'max:5'],
+            'images.*' => ['image', 'mimes:jpg,jpeg,png,webp', 'max:5120'],
+            'files'    => ['array', 'max:5'],
+            'files.*'  => ['file', 'mimes:pdf,doc,docx,xls,xlsx,txt,csv,jpg,jpeg,png,webp', 'max:10240'],
+        ];
     }
 
     // =====================================================================
@@ -72,10 +86,13 @@ class ComplaintRequestModal extends PortalModalComponent
         $this->authorize('createOwn', Complaint::class);
 
         $this->form = [
-            'category'    => '',
-            'subject'     => '',
-            'description' => '',
+            'category'          => '',
+            'other_description' => '',
+            'subject'           => '',
+            'description'       => '',
         ];
+        $this->images = [];
+        $this->files = [];
 
         $this->resetValidation();
 
@@ -88,10 +105,13 @@ class ComplaintRequestModal extends PortalModalComponent
     protected function resetModal(): void
     {
         $this->form = [
-            'category'    => '',
-            'subject'     => '',
-            'description' => '',
+            'category'          => '',
+            'other_description' => '',
+            'subject'           => '',
+            'description'       => '',
         ];
+        $this->images = [];
+        $this->files = [];
 
         $this->resetValidation();
 
@@ -114,7 +134,15 @@ class ComplaintRequestModal extends PortalModalComponent
 
         $this->validate();
 
-        $this->fileComplaint->handle($this->form, Auth::guard('homeowner')->user());
+        $this->fileComplaint->handle(
+            $this->form,
+            Auth::guard('homeowner')->user(),
+            $this->images,
+            $this->files
+        );
+
+        $this->images = [];
+        $this->files = [];
 
         $this->emit('notify', 'success', 'Complaint submitted — the office will review it and post an update here.');
         $this->emit('complaint-filed');
@@ -122,6 +150,22 @@ class ComplaintRequestModal extends PortalModalComponent
         // Hide through Bootstrap first; the loader's hidden event then drops
         // the form (see public/js/modal-loader.js).
         $this->dispatchBrowserEvent('modal-close', ['id' => self::MODAL_ID]);
+    }
+
+    // =====================================================================
+    // Attachments
+    // =====================================================================
+
+    public function removeImage(int $index): void
+    {
+        unset($this->images[$index]);
+        $this->images = array_values($this->images);
+    }
+
+    public function removeFile(int $index): void
+    {
+        unset($this->files[$index]);
+        $this->files = array_values($this->files);
     }
 
     // =====================================================================

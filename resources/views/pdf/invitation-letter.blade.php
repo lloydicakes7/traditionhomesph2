@@ -58,7 +58,7 @@
 
                 <div class="thha-inv-board-heading">{{ __('documents.sidebar.board') }}</div>
 
-                @foreach (($staff['committees'] ?? []) as $committee)
+                @foreach (($staff['board'] ?? []) as $committee)
                     <div class="thha-inv-officer">
                         <span class="thha-inv-officer__name">{{ $committee['name'] }}</span>
                         <span class="thha-inv-officer__role">{{ $committee['role'] }}</span>

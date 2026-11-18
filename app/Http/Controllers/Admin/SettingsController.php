@@ -79,16 +79,4 @@ class SettingsController extends Controller
 
         return view('admin.settings.print');
     }
-
-    /**
-     * Show the database backup page.
-     *
-     * @return \Illuminate\View\View
-     */
-    public function backup()
-    {
-        $this->authorize('update', \App\Models\Setting::class);
-
-        return view('admin.settings.backup');
-    }
 }

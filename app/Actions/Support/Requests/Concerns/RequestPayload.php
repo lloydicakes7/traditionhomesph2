@@ -34,6 +34,7 @@ trait RequestPayload
             'scope_of_work'      => null,
             'addressee'          => null,
             'letter_date'        => null,
+            'reason'             => $this->nullIfBlank($data['reason'] ?? null),
             'membership_data'    => null,
         ];
 
