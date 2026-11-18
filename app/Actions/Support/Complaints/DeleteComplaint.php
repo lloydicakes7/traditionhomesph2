@@ -5,6 +5,7 @@ namespace App\Actions\Support\Complaints;
 use App\Models\Admin;
 use App\Models\Complaint;
 use App\Services\ActivityLogService;
+use App\Utility\StorageHelper;
 
 class DeleteComplaint
 {
@@ -26,6 +27,10 @@ class DeleteComplaint
             "Deleted complaint \"{$complaint->subject}\"",
             ['complaint_id' => $complaint->id]
         );
+
+        foreach ($complaint->attachments as $attachment) {
+            StorageHelper::deletePrivate($attachment->path);
+        }
 
         $complaint->delete();
     }

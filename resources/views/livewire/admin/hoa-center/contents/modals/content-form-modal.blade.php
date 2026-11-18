@@ -65,13 +65,23 @@
                     </div>
 
                     <div class="col-12 col-md-4">
-                        <x-adminlte-input name="form.group" label="Group (optional)" maxlength="100"
+                        <x-adminlte-input name="form.group" label="Group Name (optional)" maxlength="100"
                             placeholder="e.g., Environment" wire:model.defer="form.group" igroup-size="sm">
                             <x-slot name="prependSlot">
                                 <div class="input-group-text"><i class="fas fa-fw fa-layer-group"></i></div>
                             </x-slot>
                         </x-adminlte-input>
                     </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="contentPublished"
+                            wire:model.defer="form.is_published">
+                        <label class="custom-control-label" for="contentPublished">Published</label>
+                    </div>
+                    <small class="text-muted">Only published pages appear under About Us on the homepage.</small>
+                    @error('form.is_published') <span class="text-danger small d-block">{{ $message }}</span> @enderror
                 </div>
 
                 @if ($editingContentSlug)

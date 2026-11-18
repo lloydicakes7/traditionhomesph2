@@ -4,6 +4,7 @@ namespace Tests\Feature\Public;
 
 use App\Enums\DefaultRoleSlug;
 use App\Models\Admin;
+use App\Models\Resident;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -50,6 +51,20 @@ class UnifiedAuthTest extends TestCase
             'email'    => $user->email,
             'password' => 'password',
         ])->assertRedirect('/portal');
+
+        $this->assertAuthenticatedAs($user, 'homeowner');
+        $this->assertGuest('web');
+    }
+
+    public function test_a_homeowner_with_incomplete_personal_information_is_sent_to_the_profile_form(): void
+    {
+        $resident = factory(Resident::class)->create(['citizenship' => null]);
+        $user = factory(User::class)->create(['resident_id' => $resident->id]);
+
+        $this->post('/login', [
+            'email'    => $user->email,
+            'password' => 'password',
+        ])->assertRedirect(route('portal.personal-information'));
 
         $this->assertAuthenticatedAs($user, 'homeowner');
         $this->assertGuest('web');

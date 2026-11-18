@@ -1,6 +1,7 @@
 <div wire:ignore.self>
     <x-adminlte-modal id="requestEditModal" title="Edit Request"
-        icon="fas fa-fw fa-edit" theme="primary" size="md" scrollable v-centered wire:ignore.self>
+        icon="fas fa-fw fa-edit" theme="primary" size="xl" class="thha-request-modal"
+        scrollable v-centered wire:ignore.self>
 
         <div data-modal-skeleton class="{{ $loaded ? 'd-none' : '' }}">
             <x-ui.modals.modal-loading message="Loading the request…" />

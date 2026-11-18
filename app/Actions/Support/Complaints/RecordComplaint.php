@@ -33,6 +33,7 @@ class RecordComplaint
             'filed_by_admin_id' => $by->id,
             'submitter_name'    => $resident->full_name,
             'category'          => $data['category'],
+            'other_description' => Complaint::otherDescriptionFrom($data),
             'subject'           => $data['subject'],
             'description'       => $data['description'],
             'status'            => ComplaintStatus::PENDING,

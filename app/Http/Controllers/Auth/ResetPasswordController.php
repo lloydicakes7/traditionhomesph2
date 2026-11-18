@@ -5,9 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Actions\Auth\ResetPassword;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\ResetPasswordRequest;
-use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Password;
 
 /**
@@ -38,7 +36,7 @@ class ResetPasswordController extends Controller
     }
 
     /**
-     * Write the new password and open the account's session.
+     * Write the new password and return the account to sign-in.
      *
      * @return \Illuminate\Http\RedirectResponse
      */
@@ -50,9 +48,6 @@ class ResetPasswordController extends Controller
             return back()->withErrors(['email' => __($status)]);
         }
 
-        return redirect(Auth::guard('web')->check()
-            ? RouteServiceProvider::ADMIN_HOME
-            : RouteServiceProvider::HOMEOWNER_HOME
-        )->with('status', __('passwords.reset'));
+        return redirect()->route('login')->with('status', __('passwords.reset'));
     }
 }

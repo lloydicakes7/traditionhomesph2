@@ -1,6 +1,7 @@
 @props([
     'profile' => null,
     'supply' => false,
+    'prefix' => 'requestType',
 ])
 
 {{--
@@ -8,9 +9,9 @@
 
     The form is never typed in by the homeowner: its personal details come from
     the resident profile, the requestee type and previous address from the
-    household, the block and lot from the unit, and the household table from the
-    household's own members. This fragment shows exactly what the printed sheet
-    will say, and names the blanks the office still has to complete on those
+    household, the block and lot from the unit, and the household members from
+    the household's own records. This fragment shows exactly what the printed
+    sheet will say, and names the blanks the office still has to complete on those
     records — nothing here is submitted, so nothing here can disagree with them.
 
     The office's own dialogs may also supply, for one form only, a detail the
@@ -132,24 +133,49 @@
         </div>
 
         @if (count($members))
-            <div class="row">
+            <div class="thha-household-member-accordion">
                 @foreach ($members as $member)
-                    <div class="col-12 col-md-6 mb-2">
-                        <div class="border rounded p-2 h-100 thha-household-member-card">
-                            <div class="font-weight-bold text-break mb-1">{{ $member['name'] }}</div>
+                    @php
+                        $memberId = $prefix . '_household_member_' . $loop->index;
+                    @endphp
 
-                            @foreach ([
-                                'Age'          => $member['age'],
-                                'Birthdate'    => $member['birth_date'],
-                                'Birthplace'   => $member['birth_place'],
-                                'Relationship' => $member['relation'],
-                                'Occupation'   => $member['occupation'],
-                            ] as $label => $value)
-                                <div class="d-flex justify-content-between align-items-start mb-1" style="gap:0.5rem;">
-                                    <span class="text-muted small flex-shrink-0">{{ $label }}</span>
-                                    <span class="small text-right text-break">{{ $value !== '' ? $value : '—' }}</span>
+                    <div class="border rounded mb-2 thha-household-member">
+                        <button type="button"
+                            id="{{ $memberId }}_header"
+                            class="thha-household-member-toggle collapsed"
+                            data-toggle="collapse"
+                            data-target="#{{ $memberId }}"
+                            aria-expanded="false"
+                            aria-controls="{{ $memberId }}">
+                            <span class="flex-grow-1 mr-2" style="min-width:0;">
+                                <span class="font-weight-bold text-break d-block">
+                                    {{ $member['name'] !== '' ? $member['name'] : '—' }}
+                                </span>
+                                <span class="small text-muted text-break d-block">
+                                    {{ $member['relation'] !== '' ? $member['relation'] : '—' }}
+                                </span>
+                            </span>
+                            <i class="fas fa-fw fa-chevron-down thha-household-member-chevron text-muted flex-shrink-0"
+                                aria-hidden="true"></i>
+                        </button>
+
+                        <div id="{{ $memberId }}" class="collapse" aria-labelledby="{{ $memberId }}_header">
+                            <div class="border-top px-3 py-2">
+                                <div class="row">
+                                    @foreach ([
+                                        'Age'          => $member['age'],
+                                        'Birthdate'    => $member['birth_date'],
+                                        'Birthplace'   => $member['birth_place'],
+                                        'Relationship' => $member['relation'],
+                                        'Occupation'   => $member['occupation'],
+                                    ] as $label => $value)
+                                        <div class="col-12 col-sm-6 mb-2">
+                                            <div class="text-muted small">{{ $label }}</div>
+                                            <div class="font-weight-medium text-break">{{ $value !== '' ? $value : '—' }}</div>
+                                        </div>
+                                    @endforeach
                                 </div>
-                            @endforeach
+                            </div>
                         </div>
                     </div>
                 @endforeach

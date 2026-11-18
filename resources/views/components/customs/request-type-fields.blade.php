@@ -111,7 +111,7 @@
 
         {{-- HOA PERMIT --}}
         @if ($selectedType->hasPermitDetails())
-            <div class="col-12">
+            <div class="col-12 col-md-6">
                 <x-adminlte-input name="{{ $prefix }}_permit_type" label="Permit Type"
                     placeholder="e.g. Construction, Renovation"
                     wire:model.defer="form.permit_type" igroup-size="sm">
@@ -121,7 +121,7 @@
                 </x-adminlte-input>
             </div>
 
-            <div class="col-12">
+            <div class="col-12 col-md-6">
                 <x-adminlte-input name="{{ $prefix }}_location" label="Location"
                     placeholder="Where the work or activity will take place"
                     wire:model.defer="form.location" igroup-size="sm">
@@ -140,7 +140,7 @@
 
         {{-- ENDORSEMENT LETTER --}}
         @if ($selectedType->hasAddressee())
-            <div class="col-12">
+            <div class="col-12 col-md-6">
                 <x-adminlte-input name="{{ $prefix }}_addressee" label="Addressee"
                     placeholder="Who the letter is addressed to"
                     wire:model.defer="form.addressee" igroup-size="sm">
@@ -150,7 +150,7 @@
                 </x-adminlte-input>
             </div>
 
-            <div class="col-12">
+            <div class="col-12 col-md-6">
                 <x-adminlte-input name="{{ $prefix }}_letter_date" type="date" label="Date"
                     wire:model.defer="form.letter_date" igroup-size="sm">
                     <x-slot name="prependSlot">
@@ -192,7 +192,8 @@
         {{-- MEMBERSHIP FORM — nothing to type: the whole form is on file. --}}
         @if ($selectedType->usesProfileRecord())
             <div class="col-12">
-                <x-customs.membership-form-profile :profile="$membershipProfile" :supply="$supplyMissing" />
+                <x-customs.membership-form-profile :profile="$membershipProfile" :supply="$supplyMissing"
+                    :prefix="$prefix" />
             </div>
         @else
             <div class="col-12">

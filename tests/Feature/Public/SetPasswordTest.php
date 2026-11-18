@@ -12,6 +12,7 @@ use App\Notifications\SetPasswordNotification;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Password;
 use Tests\TestCase;
 
 /**
@@ -104,6 +105,32 @@ class SetPasswordTest extends TestCase
             'action'   => 'reset_password',
             'module'   => 'user',
         ]);
+    }
+
+    public function test_a_password_reset_returns_the_homeowner_to_login_without_signing_in(): void
+    {
+        $user = $this->account();
+
+        $token = Password::broker('users')->createToken($user);
+
+        $this->post('/password/reset', [
+            'token'                 => $token,
+            'email'                 => $user->email,
+            'password'              => 'ChosenPass1!',
+            'password_confirmation' => 'ChosenPass1!',
+        ])->assertRedirect(route('login'))
+            ->assertSessionHas('status', __('passwords.reset'));
+
+        $this->assertTrue(Hash::check('ChosenPass1!', $user->fresh()->password));
+        $this->assertGuest('homeowner');
+        $this->assertGuest('web');
+
+        $this->post('/login', [
+            'email'    => $user->email,
+            'password' => 'ChosenPass1!',
+        ])->assertRedirect('/portal');
+
+        $this->assertAuthenticatedAs($user->fresh(), 'homeowner');
     }
 
     // ===== Tools =====

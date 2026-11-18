@@ -20,9 +20,10 @@ class ContentFormModal extends AdminModalComponent
     public $editingContentSlug = null;
 
     public $form = [
-        'title'   => '',
-        'group'   => '',
-        'details' => '',
+        'title'        => '',
+        'group'        => '',
+        'details'      => '',
+        'is_published' => true,
     ];
 
     public $contentImage;
@@ -63,10 +64,11 @@ class ContentFormModal extends AdminModalComponent
     protected function rules(): array
     {
         return [
-            'form.title'   => ['required', 'string', 'max:150'],
-            'form.group'   => ['nullable', 'string', 'max:100'],
-            'form.details' => ['required', 'string', 'max:20000'],
-            'contentImage' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,webp', 'max:2048'],
+            'form.title'        => ['required', 'string', 'max:150'],
+            'form.group'        => ['nullable', 'string', 'max:100'],
+            'form.details'      => ['required', 'string', 'max:20000'],
+            'form.is_published' => ['boolean'],
+            'contentImage'      => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,webp', 'max:2048'],
         ];
     }
 
@@ -80,9 +82,10 @@ class ContentFormModal extends AdminModalComponent
         $this->editingContentId = null;
         $this->editingContentSlug = null;
         $this->form = [
-            'title'   => '',
-            'group'   => '',
-            'details' => '',
+            'title'        => '',
+            'group'        => '',
+            'details'      => '',
+            'is_published' => true,
         ];
         $this->resetImageState();
         $this->resetValidation();
@@ -105,9 +108,10 @@ class ContentFormModal extends AdminModalComponent
         $this->editingContentId = $content->id;
         $this->editingContentSlug = $content->slug;
         $this->form = [
-            'title'   => $content->title,
-            'group'   => (string) $content->group,
-            'details' => $content->details,
+            'title'        => $content->title,
+            'group'        => (string) $content->group,
+            'details'      => $content->details,
+            'is_published' => (bool) $content->is_published,
         ];
         $this->resetImageState();
         $this->existingContentImageUrl = $content->image_url;

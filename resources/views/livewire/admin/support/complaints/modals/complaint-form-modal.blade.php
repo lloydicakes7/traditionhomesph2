@@ -27,7 +27,7 @@
 
                     <div class="col-12 col-md-5">
                         <x-adminlte-select name="form.category" label="Category"
-                            wire:model.defer="form.category" igroup-size="sm">
+                            wire:model="form.category" igroup-size="sm">
                             <x-slot name="prependSlot">
                                 <div class="input-group-text"><i class="fas fa-fw fa-tag"></i></div>
                             </x-slot>
@@ -38,6 +38,20 @@
                         </x-adminlte-select>
                     </div>
                 </div>
+
+                @if (($form['category'] ?? '') === \App\Enums\ComplaintCategory::OTHER)
+                    <div class="row">
+                        <div class="col-12">
+                            <x-adminlte-input name="form.other_description" label="Specify Complaint"
+                                maxlength="255" placeholder="Describe the complaint type"
+                                wire:model.defer="form.other_description" igroup-size="sm">
+                                <x-slot name="prependSlot">
+                                    <div class="input-group-text"><i class="fas fa-fw fa-pen"></i></div>
+                                </x-slot>
+                            </x-adminlte-input>
+                        </div>
+                    </div>
+                @endif
 
                 {{-- =========================================================== --}}
                 {{-- WHAT IT IS ABOUT                                            --}}

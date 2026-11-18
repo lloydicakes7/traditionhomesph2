@@ -59,7 +59,7 @@ class AdminAccountsTest extends TestCase
         ]);
     }
 
-    public function test_the_welcome_link_lets_the_officer_choose_the_password_and_signs_them_in(): void
+    public function test_the_welcome_link_lets_the_officer_choose_the_password_then_returns_to_login(): void
     {
         Notification::fake();
 
@@ -82,9 +82,17 @@ class AdminAccountsTest extends TestCase
             'email'                 => $officer->email,
             'password'              => 'ChosenPass1!',
             'password_confirmation' => 'ChosenPass1!',
-        ]);
+        ])->assertRedirect(route('login'))
+            ->assertSessionHas('status', __('passwords.reset'));
 
         $this->assertTrue(Hash::check('ChosenPass1!', $officer->fresh()->password));
+        $this->assertGuest('web');
+
+        $this->post('/login', [
+            'email'    => $officer->email,
+            'password' => 'ChosenPass1!',
+        ])->assertRedirect('/admin');
+
         $this->assertAuthenticatedAs($officer->fresh(), 'web');
     }
 

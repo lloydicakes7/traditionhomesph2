@@ -10,6 +10,6 @@ class ComplaintDetailQuery
 
     public function find(int $id): Complaint
     {
-        return Complaint::with(['resident', 'filedByAdmin', 'respondedByAdmin'])->findOrFail($id);
+        return Complaint::with(['resident', 'filedByAdmin', 'respondedByAdmin', 'attachments'])->findOrFail($id);
     }
 }

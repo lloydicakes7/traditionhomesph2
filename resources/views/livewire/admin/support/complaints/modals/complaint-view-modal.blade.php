@@ -1,6 +1,6 @@
 <div wire:ignore.self>
     <x-adminlte-modal id="complaintViewModal" title="Complaint Details"
-        icon="fas fa-fw fa-question-circle" theme="primary" size="md" scrollable v-centered wire:ignore.self>
+        icon="fas fa-fw fa-question-circle" theme="primary" size="lg" scrollable v-centered wire:ignore.self>
 
         <div data-modal-skeleton class="{{ $loaded ? 'd-none' : '' }}">
             <x-ui.modals.modal-loading message="Loading the complaint…" />
@@ -52,7 +52,45 @@
                 <div class="mt-3">
                     <div class="text-muted small mb-1">Description</div>
                     <p class="mb-0">{{ $complaint->description }}</p>
+
+                    @if ($complaint->other_description)
+                        <div class="text-muted small mt-3 mb-1">Specified Complaint</div>
+                        <p class="mb-0">{{ $complaint->other_description }}</p>
+                    @endif
                 </div>
+
+                @if ($complaint->attachments->isNotEmpty())
+                    <div class="mt-3">
+                        <div class="text-muted small mb-2">Attachments</div>
+                        <div class="row">
+                            @foreach ($complaint->attachments as $attachment)
+                                <div class="col-12 col-sm-6 mb-2">
+                                    <div class="border rounded p-2 h-100">
+                                        @if ($attachment->is_image)
+                                            <a href="{{ route('support.complaints.attachments.show', [$complaint, $attachment]) }}?inline=1"
+                                                target="_blank" rel="noopener">
+                                                <img src="{{ route('support.complaints.attachments.show', [$complaint, $attachment]) }}?inline=1"
+                                                    alt="{{ $attachment->original_name }}"
+                                                    class="img-fluid rounded mb-2"
+                                                    style="width: 100%; max-height: 160px; object-fit: cover;">
+                                            </a>
+                                        @else
+                                            <div class="text-muted mb-2">
+                                                <i class="fas fa-fw fa-file-alt fa-2x"></i>
+                                            </div>
+                                        @endif
+
+                                        <div class="small text-break font-weight-medium">{{ $attachment->original_name }}</div>
+                                        <div class="text-muted small">{{ $attachment->size_label }}</div>
+                                        <a class="small" href="{{ route('support.complaints.attachments.show', [$complaint, $attachment]) }}">
+                                            Download
+                                        </a>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                @endif
 
                 {{-- =============================================================== --}}
                 {{-- THE OFFICE'S ANSWER, ONCE ONE HAS BEEN WRITTEN                    --}}
