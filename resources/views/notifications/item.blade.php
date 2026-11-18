@@ -18,5 +18,4 @@
     @unless ($notification->read_at)
         <span class="badge badge-danger ml-2 flex-shrink-0">New</span>
     @endunless
-
 </a>

@@ -7,6 +7,7 @@ use App\Models\Admin;
 use App\Models\Resident;
 use App\Models\Role;
 use App\Models\User;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -21,8 +22,9 @@ use Tests\TestCase;
  * so its paging and mark-all-as-read navigate the component rather than the
  * page; the bell's polling feed stays on the controller.
  *
- * The line is what the bell's dropdown and the page share
- * (resources/views/notifications/item), so a change to it is a change to both.
+ * The page draws its own table of Title, Description and Actions, which
+ * collapses into cards on a small screen; the bell keeps the smaller shared
+ * line (resources/views/notifications/item).
  * Every account is created with its welcome line already in the bell (see
  * App\Observers\AdminObserver and UserObserver), which is why a fresh officer
  * reads one line before a test adds any.
@@ -112,22 +114,22 @@ class NotificationsPageTest extends TestCase
     // The line's measure
     // =====================================================================
 
-    public function test_a_line_carries_the_measure_its_wrapping_needs(): void
+    public function test_the_page_lists_a_title_a_description_and_its_own_actions(): void
     {
         $this->signInAdmin();
 
         $response = $this->get(route('admin.notifications'));
 
-        // A Bootstrap `.dropdown-item` never wraps and a flex child refuses to
-        // shrink below its content, so the line states both: its words wrap
-        // (`text-wrap`) inside a column that may shrink (`notification-text`,
-        // the theme's own minimum) and neither badge is squeezed by them.
-        $response->assertSee('dropdown-item text-wrap d-flex', false);
-        $response->assertSee('notification-text', false);
-        $response->assertSee('badge badge-danger ml-2 flex-shrink-0', false);
+        $response->assertOk();
 
-        // The rule that never existed: Bootstrap 4 has no `min-width-0`.
-        $response->assertDontSee('min-width-0', false);
+        // The page has its own table: Title, Description and Actions, on a
+        // desktop, and the same three fields as cards on a small screen.
+        $response->assertSee('<th class="align-middle" style="width: 30%;">Title</th>', false);
+        $response->assertSee('<th class="align-middle">Description</th>', false);
+        $response->assertSee('>Actions</th>', false);
+        $response->assertSee('d-none d-lg-block', false);
+        $response->assertSee('d-block d-lg-none', false);
+        $response->assertSee('notification-row-', false);
     }
 
     // =====================================================================
@@ -174,9 +176,103 @@ class NotificationsPageTest extends TestCase
         // read and re-renders, which is what hides the button.
         Livewire::test(NotificationList::class)
             ->call('markAllAsRead')
+            ->assertEmitted('notify', 'success', 'All notifications marked as read.')
             ->assertDontSee('Mark all as read');
 
         $this->assertSame(0, $admin->fresh()->unreadNotifications()->count());
+    }
+
+    // =====================================================================
+    // The line's own actions and its deadline
+    // =====================================================================
+
+    public function test_a_read_line_says_the_moment_it_will_be_deleted(): void
+    {
+        $admin = $this->signInAdmin();
+
+        $admin->notifications()->update(['read_at' => now()]);
+
+        $readAt = $admin->notifications()->first()->read_at;
+        $deletesAt = $readAt->copy()->addDays(7);
+
+        $response = $this->get(route('admin.notifications'));
+
+        $response->assertOk();
+        $response->assertSee('Will be deleted on ' . $deletesAt->format('M j, Y')
+            . ' at ' . $deletesAt->format('g:i A'));
+
+        // The deadline is under the description, so the page does not repeat
+        // the week-long rule above the list.
+        $response->assertDontSee('Read notifications are deleted automatically');
+        $response->assertSee('dropdown-item disabled', false);
+    }
+
+    public function test_an_unread_line_offers_read_and_delete_and_no_deadline(): void
+    {
+        $this->signInAdmin();
+
+        $response = $this->get(route('admin.notifications'));
+
+        $response->assertOk();
+        $response->assertSee('markAsRead(', false);
+        $response->assertSee('fa-check mr-1"></i> Read', false);
+        $response->assertSee('fa-trash mr-1"></i> Delete', false);
+        $response->assertDontSee('Will be deleted on');
+    }
+
+    public function test_one_line_can_be_marked_read_from_its_own_button(): void
+    {
+        $admin = $this->signInAdmin();
+
+        $this->line(1);
+
+        $line = $admin->notifications()->latest('created_at')->first();
+
+        $expiresAt = now()->addDays(7);
+
+        Livewire::test(NotificationList::class)
+            ->call('markAsRead', $line->id)
+            ->assertEmitted('notify', 'success', 'Notification marked as read. It will be deleted on '
+                . $expiresAt->format('M j, Y') . ' at ' . $expiresAt->format('g:i A') . '.')
+            ->assertSee('Will be deleted on');
+
+        $this->assertNotNull($line->fresh()->read_at);
+    }
+
+    public function test_one_line_can_be_deleted_from_its_own_button(): void
+    {
+        $admin = $this->signInAdmin();
+
+        $this->line(1);
+
+        $line = $admin->notifications()->latest('created_at')->first();
+
+        Livewire::test(NotificationList::class)
+            ->call('delete', $line->id)
+            ->assertEmitted('notify', 'success', 'Notification deleted.')
+            ->assertDontSee($line->data['title']);
+
+        $this->assertNull($line->fresh());
+    }
+
+    public function test_another_accounts_line_can_be_neither_read_nor_deleted(): void
+    {
+        $this->signInAdmin();
+
+        $other = Admin::create([
+            'name'                => 'Other Officer',
+            'email'               => 'other-officer-' . uniqid() . '@example.test',
+            'password'            => Hash::make('Secret123!'),
+            'password_changed_at' => now(),
+            'role_id'             => Role::first()->id,
+            'is_active'           => true,
+        ]);
+
+        $line = $other->notifications()->first();
+
+        $this->expectException(ModelNotFoundException::class);
+
+        Livewire::test(NotificationList::class)->call('delete', $line->id);
     }
 
     // =====================================================================

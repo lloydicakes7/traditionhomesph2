@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Portal;
 
+use App\Actions\Notifications\MarkNotificationRead;
 use App\Http\Controllers\Controller;
 use App\Services\NotificationService;
 
@@ -62,11 +63,8 @@ class NotificationController extends Controller
      */
     public function read($id)
     {
-        $account = auth('homeowner')->user();
-
-        $notification = $account->notifications()->whereKey($id)->firstOrFail();
-
-        $notification->markAsRead();
+        $notification = app(MarkNotificationRead::class)
+            ->handle(auth('homeowner')->user(), $id);
 
         return redirect($notification->data['url'] ?: route('portal.dashboard'));
     }

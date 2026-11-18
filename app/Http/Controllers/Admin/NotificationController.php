@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Actions\Notifications\MarkNotificationRead;
 use App\Http\Controllers\Controller;
 use App\Services\NotificationService;
 
@@ -58,16 +59,15 @@ class NotificationController extends Controller
      * Open one notification: it is marked read, then its page is opened.
      *
      * The line has to be this officer's own — a notification whose id an officer
-     * guessed is a 404, not somebody else's news.
+     * guessed is a 404, not somebody else's news. Marking it read is the same
+     * Action the page's own button calls.
      *
      * @param  string  $id
      * @return \Illuminate\Http\RedirectResponse
      */
     public function read($id)
     {
-        $notification = auth()->user()->notifications()->whereKey($id)->firstOrFail();
-
-        $notification->markAsRead();
+        $notification = app(MarkNotificationRead::class)->handle(auth()->user(), $id);
 
         return redirect($notification->data['url'] ?: route('admin.home'));
     }

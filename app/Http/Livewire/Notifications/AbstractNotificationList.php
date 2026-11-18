@@ -2,7 +2,10 @@
 
 namespace App\Http\Livewire\Notifications;
 
+use App\Actions\Notifications\DeleteNotification;
+use App\Actions\Notifications\MarkNotificationRead;
 use App\Livewire\BaseComponent;
+use App\Utility\NotificationRetentionHelper;
 use Livewire\WithPagination;
 
 /**
@@ -15,8 +18,11 @@ use Livewire\WithPagination;
  * (`NotificationController::feed`), because the navbar polls a JSON endpoint
  * rather than rendering a component — this class answers the page only.
  *
- * The line itself is the shared one the bell's dropdown also renders
- * (resources/views/notifications/item), so the page and the bell never disagree.
+ * The page draws its own table of Title, Description and Actions, so it can
+ * collapse into cards on a small screen; the bell keeps the smaller shared
+ * line (resources/views/notifications/item). A notification is kept for one
+ * week after it is read (App\Utility\NotificationRetentionHelper), which is
+ * the deadline the page writes under its description.
  */
 abstract class AbstractNotificationList extends BaseComponent
 {
@@ -51,6 +57,39 @@ abstract class AbstractNotificationList extends BaseComponent
     public function markAllAsRead(): void
     {
         $this->account()->unreadNotifications->markAsRead();
+
+        $this->emit('notify', 'success', 'All notifications marked as read.');
+    }
+
+    /**
+     * Mark one notification read, without leaving the page, and say when it
+     * will be deleted.
+     *
+     * @param  string  $id
+     * @return void
+     */
+    public function markAsRead($id): void
+    {
+        $notification = app(MarkNotificationRead::class)->handle($this->account(), $id);
+        $expiresAt = NotificationRetentionHelper::expiresAt($notification->read_at);
+
+        $this->emit('notify', 'success', $expiresAt
+            ? 'Notification marked as read. It will be deleted on '
+                . $expiresAt->format('M j, Y') . ' at ' . $expiresAt->format('g:i A') . '.'
+            : 'Notification marked as read.');
+    }
+
+    /**
+     * Delete one notification.
+     *
+     * @param  string  $id
+     * @return void
+     */
+    public function delete($id): void
+    {
+        app(DeleteNotification::class)->handle($this->account(), $id);
+
+        $this->emit('notify', 'success', 'Notification deleted.');
     }
 
     /**
@@ -61,11 +100,19 @@ abstract class AbstractNotificationList extends BaseComponent
     public function render()
     {
         $account = $this->account();
+        $notifications = $account->notifications()->latest()->paginate(self::PER_PAGE);
 
         return view('livewire.notifications.notification-list', [
-            'notifications' => $account->notifications()->latest()->paginate(self::PER_PAGE),
+            'notifications' => $notifications,
             'readRoute'     => $this->readRoute(),
             'hasUnread'     => $account->unreadNotifications()->exists(),
+            'deletions'     => $notifications->getCollection()
+                ->filter(function ($notification) {
+                    return $notification->read_at !== null;
+                })
+                ->mapWithKeys(function ($notification) {
+                    return [$notification->id => NotificationRetentionHelper::expiresAt($notification->read_at)];
+                }),
         ]);
     }
 }

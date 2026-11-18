@@ -2,27 +2,23 @@
 
 namespace App\Console\Commands;
 
+use App\Actions\Notifications\PruneReadNotifications;
+use App\Utility\NotificationRetentionHelper;
 use Illuminate\Console\Command;
-use Illuminate\Notifications\DatabaseNotification;
 
 /**
  * The notifications table's retention window.
  *
- * A notification is a line that is worth reading while it is current and worth
- * nothing once it is not: the record it is about is still in the panel and can
- * be opened directly. Keeping the table bounded is therefore deliberate — a
- * month is longer than any answer a homeowner waits on and longer than a
- * billing cycle, and it is how far back the notifications page lets anyone
- * look.
+ * A notification is worth reading while it is current and worth nothing once
+ * it is not: the record it is about can be opened directly in the panel. A
+ * line is therefore kept for one week after it is read, and an unread line is
+ * kept until its reader has seen it.
  *
- * It runs daily (see App\Console\Kernel), so the table holds roughly the last
- * month of events and never grows for the life of the install.
+ * It runs nightly (see App\Console\Kernel), so the table holds one week of
+ * read history and never grows for the life of the install.
  */
 class PruneNotifications extends Command
 {
-    /** How long a notification is kept, in days. */
-    const KEEP_DAYS = 30;
-
     /**
      * The name and signature of the console command.
      *
@@ -35,7 +31,7 @@ class PruneNotifications extends Command
      *
      * @var string
      */
-    protected $description = 'Delete notifications older than their retention window (30 days)';
+    protected $description = 'Delete notifications kept one week after they were read';
 
     /**
      * Execute the console command.
@@ -44,11 +40,12 @@ class PruneNotifications extends Command
      */
     public function handle(): int
     {
-        $pruned = DatabaseNotification::query()
-            ->where('created_at', '<', now()->subDays(self::KEEP_DAYS))
-            ->delete();
+        $pruned = app(PruneReadNotifications::class)->handle();
 
-        $this->info('Pruned ' . $pruned . ' notification(s) older than ' . self::KEEP_DAYS . ' days.');
+        $this->info(
+            'Deleted ' . $pruned . ' notification(s) read more than '
+            . NotificationRetentionHelper::READ_DAYS . ' days ago.'
+        );
 
         return 0;
     }

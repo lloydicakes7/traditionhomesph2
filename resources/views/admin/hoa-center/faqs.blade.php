@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'FAQs')
+@section('title', 'Frequently Asked Questions')
 
 @section('breadcrumb')
     <li class="breadcrumb-item">HOA Center</li>

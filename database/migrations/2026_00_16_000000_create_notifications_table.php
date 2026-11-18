@@ -21,10 +21,10 @@ class CreateNotificationsTable extends Migration
      * (App\Enums\NotificationType), so nothing presentational is stored.
      *
      * `read_at` is the read/unread state and is the only column a reader
-     * writes. `created_at` is indexed because that is how the table is pruned:
-     * the office keeps a month of history, and a command deletes what is older
-     * (see App\Console\Commands\PruneNotifications) rather than letting the
-     * table grow for the life of the install.
+     * writes. It is also what the table is pruned on: a line is kept one week
+     * after it is read, and a nightly command deletes what is older (see
+     * App\Console\Commands\PruneNotifications) rather than letting the table
+     * grow for the life of the install.
      */
     public function up()
     {

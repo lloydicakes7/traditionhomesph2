@@ -29,8 +29,6 @@
 
             {{-- ============================================================= --}}
             {{-- STEP 1 — DETAILS                                               --}}
-            {{-- The reference number is the module's own sequence, assigned on --}}
-            {{-- save and shown here once the expense exists.                  --}}
             {{-- ============================================================= --}}
             @if ($step === 1)
                 @if ($editing)
@@ -49,15 +47,7 @@
 
                 <div class="row">
                     <div class="col-12 col-sm-6">
-                        <x-adminlte-input name="form.expense_date" label="Expense Date" type="date"
-                            wire:model.defer="form.expense_date" igroup-size="sm">
-                            <x-slot name="prependSlot">
-                                <div class="input-group-text"><i class="fas fa-fw fa-calendar"></i></div>
-                            </x-slot>
-                        </x-adminlte-input>
-                    </div>
-                    <div class="col-12 col-sm-6">
-                        <x-adminlte-select2 id="expenseSupplier" name="form.supplier_id" label="Supplier / Payee"
+                        <x-adminlte-select2 id="expenseSupplier" name="form.supplier_id" label="Supplier"
                             wire:model.defer="form.supplier_id" igroup-size="sm"
                             :config="['placeholder' => 'Choose a supplier', 'allowClear' => true]">
                             <option value="">Not specified</option>
@@ -65,6 +55,14 @@
                                 <option value="{{ $supplier->id }}">{{ $supplier->name }}</option>
                             @endforeach
                         </x-adminlte-select2>
+                    </div>
+                    <div class="col-12 col-sm-6">
+                        <x-adminlte-input name="form.expense_date" label="Expense Date" type="date"
+                            wire:model.defer="form.expense_date" igroup-size="sm">
+                            <x-slot name="prependSlot">
+                                <div class="input-group-text"><i class="fas fa-fw fa-calendar"></i></div>
+                            </x-slot>
+                        </x-adminlte-input>
                     </div>
                 </div>
 

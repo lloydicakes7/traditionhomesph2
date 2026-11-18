@@ -4,13 +4,6 @@
     {{-- =================================================================== --}}
     <x-adminlte-card>
         <div class="row align-items-center">
-            <div class="col-12 mb-3">
-                <h5 class="mb-0 font-weight-bold">Home Page Questions</h5>
-                <small class="text-muted">
-                    The questions the public home page answers, in the order they are asked.
-                </small>
-            </div>
-
             <div class="col-12 col-md-5 col-lg-4 mb-2 mb-md-0">
                 <x-adminlte-input name="search" placeholder="Search questions..." wire:model.debounce.500ms="search"
                     igroup-size="sm" fgroup-class="mb-0">
