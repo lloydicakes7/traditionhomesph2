@@ -32,6 +32,7 @@ trait PrintSettingInput
             'footer_image_path',
             'footer_image_width',
             'footer_show',
+            'president_image_path',
             'paper',
             'president_name',
             'secretary_name',
@@ -48,9 +49,10 @@ trait PrintSettingInput
     private function imageKey(string $side): string
     {
         $keys = [
-            'left'   => 'left_image_path',
-            'right'  => 'right_image_path',
-            'footer' => 'footer_image_path',
+            'left'      => 'left_image_path',
+            'right'     => 'right_image_path',
+            'footer'    => 'footer_image_path',
+            'president' => 'president_image_path',
         ];
 
         if (! array_key_exists($side, $keys)) {

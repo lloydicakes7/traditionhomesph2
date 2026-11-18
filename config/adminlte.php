@@ -810,12 +810,6 @@ return [
                     'route' => 'settings.print',
                     'can' => 'print.settings.view',
                 ],
-                [
-                    'text' => 'Backup',
-                    'route' => 'settings.backup',
-                    'can' => 'update',
-                    'model' => App\Models\Setting::class,
-                ],
             ],
         ],
     ],

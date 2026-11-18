@@ -125,6 +125,7 @@ class PrintSettingsQuery
             'footer_image_path'    => (string) ($settings['footer_image_path'] ?? ''),
             'footer_image_width'   => $this->footerWidth($settings['footer_image_width'] ?? null),
             'footer_show'          => $this->flag($settings['footer_show'] ?? null, true),
+            'president_image_path' => (string) ($settings['president_image_path'] ?? ''),
             'paper'                => $this->paper($settings['paper'] ?? null),
             'president_name'       => (string) ($settings['president_name'] ?? ''),
             'secretary_name'       => (string) ($settings['secretary_name'] ?? ''),

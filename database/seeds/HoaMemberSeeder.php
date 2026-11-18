@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\HoaMember;
+use App\Models\HoaMemberGroup;
 use Illuminate\Database\Seeder;
 
 class HoaMemberSeeder extends Seeder
@@ -67,7 +68,14 @@ class HoaMemberSeeder extends Seeder
             ],
         ];
 
+        $staff = HoaMemberGroup::firstOrCreate(['name' => HoaMemberGroup::STAFF]);
+        $board = HoaMemberGroup::firstOrCreate(['name' => HoaMemberGroup::BOARD]);
+
         foreach ($members as $member) {
+            $member['hoa_member_group_id'] = stripos($member['position'], 'committee') !== false
+                ? $board->id
+                : $staff->id;
+
             HoaMember::firstOrCreate(['name' => $member['name']], $member);
         }
 

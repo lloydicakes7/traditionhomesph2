@@ -202,35 +202,72 @@
         {{-- ============================================================= --}}
         @if ($activeTab === 'signatories')
             <div wire:key="tab-signatories">
-                <x-adminlte-card title="Signatories" icon="fas fa-fw fa-signature">
-                    <p class="text-muted small">
-                        The printed names under the signature lines every document ends with.
-                    </p>
+                <div class="row">
+                    <div class="col-12 col-md-4">
+                        <x-adminlte-card title="Presidential Image" icon="fas fa-fw fa-user-tie">
+                            <p class="text-muted small">
+                                The portrait printed above the officers on every request document.
+                            </p>
 
-                    <div class="row">
-                        <div class="col-12 col-md-3">
-                            <x-adminlte-input name="presidentName" label="HOA President" wire:model.defer="presidentName" igroup-size="sm" />
-                        </div>
-                        <div class="col-12 col-md-3">
-                            <x-adminlte-input name="secretaryName" label="HOA Secretary" wire:model.defer="secretaryName" igroup-size="sm" />
-                        </div>
-                        <div class="col-12 col-md-3">
-                            <x-adminlte-input name="treasurerName" label="HOA Treasurer" wire:model.defer="treasurerName" igroup-size="sm" />
-                        </div>
-                        <div class="col-12 col-md-3">
-                            <x-adminlte-input name="grievanceName" label="Grievance Committee" wire:model.defer="grievanceName" igroup-size="sm" />
-                        </div>
+                            <div class="text-center mb-2" style="min-height:90px;">
+                                @if ($this->presidentImagePreview())
+                                    <img src="{{ $this->presidentImagePreview() }}" class="img-thumbnail" style="max-height:84px;" alt="">
+                                @else
+                                    <span class="text-muted small d-inline-block pt-4">No image chosen</span>
+                                @endif
+                            </div>
+
+                            <x-adminlte-input-file name="presidentImage" label="Choose image"
+                                accept="{{ $imageAccept }}"
+                                placeholder="{{ $allowedImages }}, max 1 MB" wire:model="presidentImage"
+                                legend="Browse" igroupSize="sm">
+                                @if ($presidentImagePath !== '')
+                                    <x-slot name="prependSlot">
+                                        <x-adminlte-button type="button" theme="danger"
+                                            icon="fas fa-fw fa-trash-alt"
+                                            wire:click="removeImage('president')"
+                                            wire:loading.attr="disabled" />
+                                    </x-slot>
+                                @endif
+                            </x-adminlte-input-file>
+                            <div wire:loading wire:target="presidentImage" class="text-info small mt-1">
+                                <i class="fas fa-spinner fa-spin"></i> Uploading…
+                            </div>
+                        </x-adminlte-card>
                     </div>
 
-                    <div class="row mt-3">
-                        <div class="col-12 col-md-4">
-                            <x-adminlte-input name="membershipChecker1" label="Membership Checker 1" wire:model.defer="membershipChecker1" igroup-size="sm" />
-                        </div>
-                        <div class="col-12 col-md-4">
-                            <x-adminlte-input name="membershipChecker2" label="Membership Checker 2" wire:model.defer="membershipChecker2" igroup-size="sm" />
-                        </div>
+                    <div class="col-12 col-md-8">
+                        <x-adminlte-card title="Signatories" icon="fas fa-fw fa-signature">
+                            <p class="text-muted small">
+                                The printed names under the signature lines every document ends with.
+                            </p>
+
+                            <div class="row">
+                                <div class="col-12 col-md-3">
+                                    <x-adminlte-input name="presidentName" label="HOA President" wire:model.defer="presidentName" igroup-size="sm" />
+                                </div>
+                                <div class="col-12 col-md-3">
+                                    <x-adminlte-input name="secretaryName" label="HOA Secretary" wire:model.defer="secretaryName" igroup-size="sm" />
+                                </div>
+                                <div class="col-12 col-md-3">
+                                    <x-adminlte-input name="treasurerName" label="HOA Treasurer" wire:model.defer="treasurerName" igroup-size="sm" />
+                                </div>
+                                <div class="col-12 col-md-3">
+                                    <x-adminlte-input name="grievanceName" label="Grievance Committee" wire:model.defer="grievanceName" igroup-size="sm" />
+                                </div>
+                            </div>
+
+                            <div class="row mt-3">
+                                <div class="col-12 col-md-4">
+                                    <x-adminlte-input name="membershipChecker1" label="Membership Checker 1" wire:model.defer="membershipChecker1" igroup-size="sm" />
+                                </div>
+                                <div class="col-12 col-md-4">
+                                    <x-adminlte-input name="membershipChecker2" label="Membership Checker 2" wire:model.defer="membershipChecker2" igroup-size="sm" />
+                                </div>
+                            </div>
+                        </x-adminlte-card>
                     </div>
-                </x-adminlte-card>
+                </div>
             </div>
         @endif
 

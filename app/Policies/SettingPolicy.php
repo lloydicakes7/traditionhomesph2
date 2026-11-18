@@ -35,15 +35,4 @@ class SettingPolicy
     {
         return $admin->hasRole(DefaultRoleSlug::ADMINISTRATOR());
     }
-
-    /**
-     * Determine whether the admin can download backups.
-     *
-     * @param  \App\Models\Admin  $admin
-     * @return bool
-     */
-    public function download(Admin $admin)
-    {
-        return $admin->hasRole(DefaultRoleSlug::ADMINISTRATOR());
-    }
 }

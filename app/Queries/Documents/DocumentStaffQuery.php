@@ -5,22 +5,19 @@ declare(strict_types=1);
 namespace App\Queries\Documents;
 
 use App\Models\HoaMember;
+use App\Models\HoaMemberGroup;
 use App\Utility\DocumentText;
 use App\Utility\SettingsHelper;
-use Illuminate\Support\Facades\Storage;
+use App\Utility\StorageHelper;
 
 /**
- * The officers, committees and signatories every document prints.
+ * The officers, board and signatories every document prints.
  *
- * The single source is the `hoa_members` table, in the order the office keeps
- * it: the framed letters read the same sidebar and the same signer, so a change
- * of officer is made once and appears on every sheet. Configuration stands in
- * only while the table has not been filled in yet, so a fresh installation
- * still prints the association's officers rather than an empty sidebar.
- *
- * Nothing here is a view's concern: a document asks for the staff and prints
- * what it is given, and a missing entry prints its blank space rather than
- * disappearing.
+ * The staff sidebar is read from the `hoa_members` table, and the board from
+ * the members assigned to the Board of Directors group. The names under the
+ * signature lines, and the presidential portrait, are the print settings: the
+ * one place the office changes who signs, beside the letterhead those sheets
+ * are drawn on.
  */
 class DocumentStaffQuery
 {
@@ -42,11 +39,10 @@ class DocumentStaffQuery
      */
     public function build(): array
     {
-        $members = HoaMember::query()->orderBy('id')->get();
+        $members = HoaMember::query()->with('group')->orderBy('id')->get();
 
         $officers = [];
-        $committees = [];
-        $presidentPhoto = null;
+        $board = [];
 
         foreach ($members as $member) {
             $name = DocumentText::clean($member->name);
@@ -56,61 +52,42 @@ class DocumentStaffQuery
                 continue;
             }
 
-            $key = $this->officeKey($position);
-
-            if ($key !== null) {
-                $officers[$key] = ['name' => $name, 'role' => self::OFFICES[$key]];
-
-                if ($key === 'president' && $member->profile_photo_path) {
-                    $presidentPhoto = $this->photo($member->profile_photo_path);
-                }
+            if ($this->isBoardMember($member)) {
+                $board[] = ['name' => $name, 'role' => $position];
 
                 continue;
             }
 
-            if (stripos($position, 'committee') !== false) {
-                $committees[] = ['name' => $name, 'role' => $position];
+            $key = $this->officeKey($position);
+
+            if ($key !== null) {
+                $officers[$key] = ['name' => $name, 'role' => self::OFFICES[$key]];
             }
         }
 
-        if ($officers === [] && $committees === []) {
-            [$officers, $committees] = $this->fromConfiguration();
+        if ($officers === []) {
+            $officers = $this->fromConfiguration();
         }
+
+        $signatories = $this->signatories();
 
         return [
-            'president'  => $officers['president'] ?? $this->blankOfficer('President'),
-            'vice'       => $officers['vice-president'] ?? $this->blankOfficer('Vice-President'),
-            'secretary'  => $officers['secretary'] ?? $this->blankOfficer('Secretary'),
-            'treasurer'  => $officers['treasurer'] ?? $this->blankOfficer('Treasurer'),
-            'auditor'    => $officers['auditor'] ?? $this->blankOfficer('Auditor'),
-            'committees' => $committees,
-            'photo'      => $presidentPhoto,
-            'signer'     => $officers['president'] ?? ['name' => '', 'role' => 'THHA-President'],
-            'checkers'   => $this->checkers($committees),
-            'grievance'  => $this->committee($committees, 'grievance'),
-            'recipient'  => $this->recipient(),
+            'president'   => $officers['president'] ?? $this->blankOfficer('President'),
+            'vice'        => $officers['vice-president'] ?? $this->blankOfficer('Vice-President'),
+            'secretary'   => $officers['secretary'] ?? $this->blankOfficer('Secretary'),
+            'treasurer'   => $officers['treasurer'] ?? $this->blankOfficer('Treasurer'),
+            'auditor'     => $officers['auditor'] ?? $this->blankOfficer('Auditor'),
+            'board'       => $board,
+            'photo'       => $this->presidentImage(),
+            'signer'      => ['name' => $signatories['president'], 'role' => 'THHA-President'],
+            'checkers'    => [
+                ['name' => $signatories['membership_checker_1'], 'role' => 'Chairwoman'],
+                ['name' => $signatories['membership_checker_2'], 'role' => 'Education and Membership Committee'],
+            ],
+            'grievance'   => ['name' => $signatories['grievance'], 'role' => 'Grievance Committee'],
+            'signatories' => $signatories,
+            'recipient'   => $this->recipient(),
         ];
-    }
-
-    /**
-     * The chair of one committee, as the statements sign it.
-     *
-     * A statement is sworn before the committee that hears the complaint, so
-     * its chair signs beside the president. While the board has no such seat
-     * filled the name prints as a blank signature, never a guess.
-     *
-     * @param  array<int, array{name: string, role: string}>  $committees
-     * @return array{name: string, role: string}
-     */
-    private function committee(array $committees, string $needle): array
-    {
-        foreach ($committees as $committee) {
-            if (stripos($committee['role'], $needle) !== false) {
-                return $committee;
-            }
-        }
-
-        return ['name' => '', 'role' => ucfirst($needle)];
     }
 
     /**
@@ -132,40 +109,43 @@ class DocumentStaffQuery
     }
 
     /**
-     * The two members who check the membership form.
+     * The names the office set on the print settings, as every signature line
+     * reads them.
      *
-     * The office names them in the print settings; while it has not, the two
-     * chairs of the education and membership committee are read from the board,
-     * which is where the printed paper takes them from too.
-     *
-     * @param  array<int, array{name: string, role: string}>  $committees
-     * @return array<int, array{name: string, role: string}>
+     * @return array<string, string>
      */
-    private function checkers(array $committees): array
+    private function signatories(): array
     {
         $settings = SettingsHelper::getByGroup(self::GROUP);
 
-        $names = [
-            DocumentText::clean($settings['membership_checker_1'] ?? ''),
-            DocumentText::clean($settings['membership_checker_2'] ?? ''),
-        ];
-
-        if ($names[0] === '' && $names[1] === '') {
-            foreach ($committees as $committee) {
-                if (stripos($committee['role'], 'education and membership') === false) {
-                    continue;
-                }
-
-                $parts = preg_split('/\s*(?:&|and)\s*/i', $committee['name']) ?: [];
-                $names = array_slice(array_map([DocumentText::class, 'clean'], $parts), 0, 2);
-                break;
-            }
-        }
-
         return [
-            ['name' => $names[0] ?? '', 'role' => 'Chairwoman'],
-            ['name' => $names[1] ?? '', 'role' => 'Education and Membership Committee'],
+            'president'            => DocumentText::clean($settings['president_name'] ?? ''),
+            'secretary'            => DocumentText::clean($settings['secretary_name'] ?? ''),
+            'treasurer'            => DocumentText::clean($settings['treasurer_name'] ?? ''),
+            'grievance'            => DocumentText::clean($settings['grievance_name'] ?? ''),
+            'membership_checker_1' => DocumentText::clean($settings['membership_checker_1'] ?? ''),
+            'membership_checker_2' => DocumentText::clean($settings['membership_checker_2'] ?? ''),
         ];
+    }
+
+    /**
+     * The presidential portrait uploaded on the print settings, as DomPDF reads
+     * it, or null while the office has not uploaded one.
+     */
+    private function presidentImage(): ?string
+    {
+        return StorageHelper::privatePdfImage(
+            (string) SettingsHelper::get('president_image_path', self::GROUP, '')
+        );
+    }
+
+    /**
+     * Whether a member belongs to the Board of Directors group.
+     */
+    private function isBoardMember(HoaMember $member): bool
+    {
+        return $member->group !== null
+            && strcasecmp($member->group->name, HoaMemberGroup::BOARD) === 0;
     }
 
     /**
@@ -185,25 +165,14 @@ class DocumentStaffQuery
     }
 
     /**
-     * The president's photo on the public disk, as DomPDF reads it, or null.
-     */
-    private function photo(string $path): ?string
-    {
-        $disk = Storage::disk('public');
-
-        return $disk->exists($path) ? $disk->path($path) : null;
-    }
-
-    /**
-     * The officers and board kept in configuration, used only until the office
-     * has entered its members.
+     * The officers kept in configuration, used only until the office has
+     * entered its members.
      *
-     * @return array{0: array<string, array{name: string, role: string}>, 1: array<int, array{name: string, role: string}>}
+     * @return array<string, array{name: string, role: string}>
      */
     private function fromConfiguration(): array
     {
         $officers = [];
-        $committees = [];
 
         foreach ((array) config('thha.officers', []) as $officer) {
             $key = $this->officeKey(DocumentText::clean($officer['position'] ?? ''));
@@ -216,15 +185,7 @@ class DocumentStaffQuery
             }
         }
 
-        foreach ((array) config('thha.board', []) as $member) {
-            $role = DocumentText::clean($member['position'] ?? '');
-
-            if ($role !== '') {
-                $committees[] = ['name' => DocumentText::clean($member['name'] ?? ''), 'role' => $role];
-            }
-        }
-
-        return [$officers, $committees];
+        return $officers;
     }
 
     /**

@@ -6,7 +6,6 @@ use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Admin\Collections\ReceiptController;
 use App\Http\Controllers\Admin\AccountingController;
 use App\Http\Controllers\Admin\AmenityController;
-use App\Http\Controllers\Admin\BackupController;
 use App\Http\Controllers\Admin\CollectionController;
 use App\Http\Controllers\Admin\ExpenseController;
 use App\Http\Controllers\Admin\HOACenterController;
@@ -230,8 +229,6 @@ Route::middleware([
         Route::get('/security', [SettingsController::class, 'security'])->name('security');
         Route::get('/authentication', [SettingsController::class, 'authentication'])->name('authentication');
         Route::get('/profile', [SettingsController::class, 'profile'])->name('profile');
-        Route::get('/backup', [SettingsController::class, 'backup'])->name('backup');
-        Route::get('/backup/download/{filename}', [BackupController::class, 'download'])->name('backup.download');
     });
 
 

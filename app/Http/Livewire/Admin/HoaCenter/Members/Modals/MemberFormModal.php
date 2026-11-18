@@ -7,23 +7,26 @@ use App\Actions\HoaCenter\Members\UpdateMember;
 use App\Http\Livewire\AdminModalComponent;
 use App\Models\HoaMember;
 use App\Queries\HoaCenter\Members\MemberListQuery;
-use Illuminate\Validation\Rule;
 use Livewire\WithFileUploads;
 
 class MemberFormModal extends AdminModalComponent
 {
     use WithFileUploads;
 
+    const NEW_GROUP = 'new';
+
     public $isEditing = false;
 
     public $editingMemberId = null;
 
     public $form = [
-        'name'            => '',
-        'position'        => '',
-        'phone'           => '',
-        'email'           => '',
-        'note'            => '',
+        'name'                => '',
+        'position'            => '',
+        'phone'               => '',
+        'email'               => '',
+        'note'                => '',
+        'hoa_member_group_id' => '',
+        'new_group_name'      => '',
     ];
 
     public $memberPhoto;
@@ -60,14 +63,21 @@ class MemberFormModal extends AdminModalComponent
 
     protected function rules(): array
     {
-        return [
+        $rules = [
             'form.name'           => ['required', 'string', 'max:150'],
             'form.position'       => ['required', 'string', 'max:100'],
             'form.phone'          => ['nullable', 'string', 'max:50'],
             'form.email'          => ['nullable', 'email', 'max:150'],
             'form.note'           => ['nullable', 'string', 'max:1000'],
+            'form.new_group_name' => ['nullable', 'string', 'max:100', 'required_if:form.hoa_member_group_id,' . self::NEW_GROUP],
             'memberPhoto'         => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
         ];
+
+        $rules['form.hoa_member_group_id'] = $this->form['hoa_member_group_id'] === self::NEW_GROUP
+            ? ['required', 'string']
+            : ['required', 'integer', 'exists:hoa_member_groups,id'];
+
+        return $rules;
     }
 
     // =====================================================================
@@ -81,11 +91,13 @@ class MemberFormModal extends AdminModalComponent
         $this->isEditing = false;
         $this->editingMemberId = null;
         $this->form = [
-            'name'           => '',
-            'position'       => '',
-            'phone'          => '',
-            'email'          => '',
-            'note'           => '',
+            'name'                => '',
+            'position'            => '',
+            'phone'               => '',
+            'email'               => '',
+            'note'                => '',
+            'hoa_member_group_id' => '',
+            'new_group_name'      => '',
         ];
         $this->resetPhotoState();
         $this->resetValidation();
@@ -106,17 +118,26 @@ class MemberFormModal extends AdminModalComponent
         $this->isEditing = true;
         $this->editingMemberId = $member->id;
         $this->form = [
-            'name'           => $member->name,
-            'position'       => $member->position,
-            'phone'          => $member->phone ?? '',
-            'email'          => $member->email ?? '',
-            'note'           => $member->note ?? '',
+            'name'                => $member->name,
+            'position'            => $member->position,
+            'phone'               => $member->phone ?? '',
+            'email'               => $member->email ?? '',
+            'note'                => $member->note ?? '',
+            'hoa_member_group_id' => (string) $member->hoa_member_group_id,
+            'new_group_name'      => '',
         ];
         $this->resetPhotoState();
         $this->existingMemberPhotoUrl = $member->photo_url;
         $this->resetValidation();
 
         $this->markLoaded();
+    }
+
+    public function updatedFormHoaMemberGroupId($value): void
+    {
+        if ($value !== self::NEW_GROUP) {
+            $this->form['new_group_name'] = '';
+        }
     }
 
     protected function resetModal(): void
@@ -202,6 +223,8 @@ class MemberFormModal extends AdminModalComponent
     {
         $this->authorize('viewAny', HoaMember::class);
 
-        return view('livewire.admin.hoa-center.members.modals.member-form-modal');
+        return view('livewire.admin.hoa-center.members.modals.member-form-modal', [
+            'groups' => $this->query->groups(),
+        ]);
     }
 }

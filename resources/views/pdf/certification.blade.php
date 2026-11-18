@@ -69,7 +69,7 @@
 
                 <div class="thha-cert-board-heading">{{ __('documents.sidebar.board') }}</div>
 
-                @foreach (($staff['committees'] ?? []) as $committee)
+                @foreach (($staff['board'] ?? []) as $committee)
                     <div class="thha-cert-officer">
                         <span class="thha-cert-officer__name">{{ $committee['name'] }}</span>
                         <span class="thha-cert-officer__role">{{ $committee['role'] }}</span>
@@ -125,11 +125,11 @@
                 <table class="thha-cert-signatories">
                     <tr>
                         <td>
-                            <strong>{{ $staff['treasurer']['name'] ?? '' }}</strong><br>
+                            <strong>{{ $staff['signatories']['treasurer'] ?? '' }}</strong><br>
                             {{ __('documents.certification.treasurer_role') }}
                         </td>
                         <td>
-                            <strong>{{ $staff['president']['name'] ?? '' }}</strong><br>
+                            <strong>{{ $staff['signatories']['president'] ?? '' }}</strong><br>
                             {{ __('documents.certification.president_role') }}
                         </td>
                     </tr>

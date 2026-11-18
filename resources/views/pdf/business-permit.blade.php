@@ -75,7 +75,7 @@
 
                 <div class="thha-bp-board-heading">{{ __('documents.sidebar.board') }}</div>
 
-                @foreach (($staff['committees'] ?? []) as $committee)
+                @foreach (($staff['board'] ?? []) as $committee)
                     <div class="thha-bp-officer">
                         <span class="thha-bp-officer__name">{{ $committee['name'] }}</span>
                         <span class="thha-bp-officer__role">{{ $committee['role'] }}</span>
@@ -136,11 +136,11 @@
                 <table class="thha-bp-signatories">
                     <tr>
                         <td>
-                            <strong>{{ $staff['treasurer']['name'] ?? '' }}</strong><br>
+                            <strong>{{ $staff['signatories']['treasurer'] ?? '' }}</strong><br>
                             {{ __('documents.business_permit.treasurer_role') }}
                         </td>
                         <td>
-                            <strong>{{ $staff['president']['name'] ?? '' }}</strong><br>
+                            <strong>{{ $staff['signatories']['president'] ?? '' }}</strong><br>
                             {{ __('documents.business_permit.president_role') }}
                         </td>
                     </tr>
