@@ -13,6 +13,8 @@ class ContentFormModal extends AdminModalComponent
 {
     use WithFileUploads;
 
+    const NEW_GROUP = 'new';
+
     public $isEditing = false;
 
     public $editingContentId = null;
@@ -20,10 +22,10 @@ class ContentFormModal extends AdminModalComponent
     public $editingContentSlug = null;
 
     public $form = [
-        'title'        => '',
-        'group'        => '',
-        'details'      => '',
-        'is_published' => true,
+        'title'          => '',
+        'group'          => '',
+        'new_group_name' => '',
+        'details'        => '',
     ];
 
     public $contentImage;
@@ -64,11 +66,11 @@ class ContentFormModal extends AdminModalComponent
     protected function rules(): array
     {
         return [
-            'form.title'        => ['required', 'string', 'max:150'],
-            'form.group'        => ['nullable', 'string', 'max:100'],
-            'form.details'      => ['required', 'string', 'max:20000'],
-            'form.is_published' => ['boolean'],
-            'contentImage'      => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,webp', 'max:2048'],
+            'form.title'          => ['required', 'string', 'max:150'],
+            'form.group'          => ['nullable', 'string', 'max:100'],
+            'form.new_group_name' => ['nullable', 'string', 'max:100', 'required_if:form.group,' . self::NEW_GROUP],
+            'form.details'        => ['required', 'string', 'max:20000'],
+            'contentImage'        => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,webp', 'max:2048'],
         ];
     }
 
@@ -82,10 +84,10 @@ class ContentFormModal extends AdminModalComponent
         $this->editingContentId = null;
         $this->editingContentSlug = null;
         $this->form = [
-            'title'        => '',
-            'group'        => '',
-            'details'      => '',
-            'is_published' => true,
+            'title'          => '',
+            'group'          => '',
+            'new_group_name' => '',
+            'details'        => '',
         ];
         $this->resetImageState();
         $this->resetValidation();
@@ -108,10 +110,10 @@ class ContentFormModal extends AdminModalComponent
         $this->editingContentId = $content->id;
         $this->editingContentSlug = $content->slug;
         $this->form = [
-            'title'        => $content->title,
-            'group'        => (string) $content->group,
-            'details'      => $content->details,
-            'is_published' => (bool) $content->is_published,
+            'title'          => $content->title,
+            'group'          => (string) $content->group,
+            'new_group_name' => '',
+            'details'        => $content->details,
         ];
         $this->resetImageState();
         $this->existingContentImageUrl = $content->image_url;
@@ -119,6 +121,13 @@ class ContentFormModal extends AdminModalComponent
         $this->markLoaded();
 
         $this->refreshEditor($content->details);
+    }
+
+    public function updatedFormGroup($value): void
+    {
+        if ($value !== self::NEW_GROUP) {
+            $this->form['new_group_name'] = '';
+        }
     }
 
     protected function resetModal(): void
@@ -142,6 +151,12 @@ class ContentFormModal extends AdminModalComponent
 
         $this->authorize($this->isEditing ? 'update' : 'create', Content::class);
         $data = $this->validate()['form'];
+
+        if ($data['group'] === self::NEW_GROUP) {
+            $data['group'] = $data['new_group_name'];
+        }
+
+        unset($data['new_group_name']);
 
         if ($this->isEditing) {
             $this->updateContent->handle(
@@ -199,6 +214,8 @@ class ContentFormModal extends AdminModalComponent
 
     public function render()
     {
-        return view('livewire.admin.hoa-center.contents.modals.content-form-modal');
+        return view('livewire.admin.hoa-center.contents.modals.content-form-modal', [
+            'groups' => $this->query->groups(),
+        ]);
     }
 }

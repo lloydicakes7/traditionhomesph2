@@ -38,10 +38,10 @@
         {{-- Card Box --}}
         <div class="card {{ config('adminlte.classes_auth_card', '') }}">
 
-            {{-- Card Header — logo and page title, left aligned --}}
+            {{-- Card Header, logo and page title, left aligned --}}
             <div class="card-header d-flex justify-content-center align-items-center {{ config('adminlte.classes_auth_header', '') }}">
                 <a href="{{ $dashboard_url }}" class="mr-2">
-                    <img src="{{ asset($logo['path']) }}"
+                    <img src="{{ $logo_url ?? asset($logo['path']) }}"
                          alt="{{ $logo['alt'] }}"
                          class="{{ $logo['class'] }}"
                          width="{{ $logo['width'] }}"

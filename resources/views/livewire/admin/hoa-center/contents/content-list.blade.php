@@ -32,7 +32,6 @@
                     <tr>
                         <th style="width:36%;" class="align-middle">Page</th>
                         <th style="width:16%;" class="align-middle">Group</th>
-                        <th style="width:12%;" class="align-middle">Status</th>
                         <th class="align-middle">Page URL</th>
                         <th style="width:130px;" class="text-right align-middle">Actions</th>
                     </tr>
@@ -56,11 +55,6 @@
                                     N/A
                                 @endif
                             </td>
-                            <td class="align-middle">
-                                <span class="badge badge-{{ $content->is_published ? 'success' : 'secondary' }}">
-                                    {{ $content->is_published ? 'Published' : 'Draft' }}
-                                </span>
-                            </td>
                             <td class="align-middle text-truncate">
                                 <a href="{{ $content->url }}" target="_blank" rel="noopener"
                                     class="small text-primary">/content/{{ $content->slug }}</a>
@@ -73,7 +67,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" class="text-center text-muted py-4">
+                            <td colspan="4" class="text-center text-muted py-4">
                                 <i class="fas fa-fw fa-file-alt fa-2x mb-2"></i>
                                 <p class="mb-0">
                                     @if ($search !== '')
@@ -104,9 +98,6 @@
                             @if ($content->group)
                                 <span class="badge badge-light border text-nowrap">{{ $content->group }}</span>
                             @endif
-                            <span class="badge badge-{{ $content->is_published ? 'success' : 'secondary' }} ml-1">
-                                {{ $content->is_published ? 'Published' : 'Draft' }}
-                            </span>
                         </div>
                     </div>
 

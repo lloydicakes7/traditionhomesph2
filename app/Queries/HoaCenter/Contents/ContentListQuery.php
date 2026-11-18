@@ -23,4 +23,20 @@ class ContentListQuery
     {
         return Content::findOrFail($id);
     }
+
+    /**
+     * The group names already in use, for the page form's group picker.
+     *
+     * @return array<int, string>
+     */
+    public function groups(): array
+    {
+        return Content::query()
+            ->whereNotNull('group')
+            ->where('group', '!=', '')
+            ->distinct()
+            ->orderBy('group')
+            ->pluck('group')
+            ->all();
+    }
 }

@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\Admin;
 use App\Models\Role;
+use App\Utility\SettingsHelper;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
@@ -64,6 +65,28 @@ class AdminSidebarTest extends TestCase
         // OPERATIONS (via Homeowners) and ADMINISTRATION (its User Manual line
         // is granted to everyone).
         $this->assertSame(2, substr_count($response->getContent(), 'nav-header'));
+    }
+
+    public function test_the_panel_prints_the_logo_saved_in_general_settings(): void
+    {
+        SettingsHelper::set('logo_path', 'settings/logos/hoa.jpg', 'hoa_info');
+        SettingsHelper::flush('hoa_info');
+
+        $this->signIn('Administrator');
+
+        $this->get(route('admin.home'))
+            ->assertOk()
+            ->assertSee('src="' . route('branding.logo') . '"', false);
+    }
+
+    public function test_the_login_page_prints_the_logo_saved_in_general_settings(): void
+    {
+        SettingsHelper::set('logo_path', 'settings/logos/hoa.jpg', 'hoa_info');
+        SettingsHelper::flush('hoa_info');
+
+        $this->get(route('login'))
+            ->assertOk()
+            ->assertSee('src="' . route('branding.logo') . '"', false);
     }
 
     public function test_the_administrator_still_reads_every_title(): void

@@ -51,8 +51,19 @@
 
 /* ===== Public navbar ===== */
 
+.thha-public-navbar .dropdown-menu {
+    min-width: 15rem;
+}
+
 .thha-public-navbar .dropdown-submenu {
     position: relative;
+}
+
+.thha-public-navbar .dropdown-submenu > .dropdown-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    white-space: nowrap;
 }
 
 @media (min-width: 1200px) {
@@ -64,9 +75,9 @@
     }
 
     .thha-public-navbar .dropdown-submenu > .dropdown-toggle::after {
-        float: right;
-        margin-top: 0.35rem;
-        transform: rotate(-90deg);
+        float: none;
+        margin: 0 0 0 0.75rem;
+        transform: rotate(90deg);
     }
 }
 

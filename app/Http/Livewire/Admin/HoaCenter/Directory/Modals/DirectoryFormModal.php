@@ -173,6 +173,13 @@ class DirectoryFormModal extends AdminModalComponent
         $this->markLoaded();
     }
 
+    public function updatedFormDirectoryGroupId($value): void
+    {
+        if ($value !== self::NEW_GROUP) {
+            $this->form['new_group_name'] = '';
+        }
+    }
+
     protected function resetModal(): void
     {
         $this->isEditing = false;

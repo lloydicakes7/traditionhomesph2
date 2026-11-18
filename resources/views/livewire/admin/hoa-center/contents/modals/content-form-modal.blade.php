@@ -5,7 +5,7 @@
         theme="primary" size="lg" scrollable v-centered wire:ignore.self>
 
         <div data-modal-skeleton class="{{ $loaded ? 'd-none' : '' }}">
-            <x-ui.modals.modal-loading message="Loading page form…" />
+            <x-ui.modals.modal-loading message="Loading page form..." />
         </div>
 
         <div data-modal-content class="{{ ! $loaded ? 'd-none' : '' }}">
@@ -53,9 +53,9 @@
                     </div>
                 </div>
 
-                {{-- ===== Title and group ===== --}}
+                {{-- ===== Title ===== --}}
                 <div class="row">
-                    <div class="col-12 col-md-8">
+                    <div class="col-12">
                         <x-adminlte-input name="form.title" label="Title" maxlength="150"
                             placeholder="e.g., Mission & Vision" wire:model.defer="form.title" igroup-size="sm">
                             <x-slot name="prependSlot">
@@ -63,25 +63,44 @@
                             </x-slot>
                         </x-adminlte-input>
                     </div>
-
-                    <div class="col-12 col-md-4">
-                        <x-adminlte-input name="form.group" label="Group Name (optional)" maxlength="100"
-                            placeholder="e.g., Environment" wire:model.defer="form.group" igroup-size="sm">
-                            <x-slot name="prependSlot">
-                                <div class="input-group-text"><i class="fas fa-fw fa-layer-group"></i></div>
-                            </x-slot>
-                        </x-adminlte-input>
-                    </div>
                 </div>
 
-                <div class="form-group">
-                    <div class="custom-control custom-switch">
-                        <input type="checkbox" class="custom-control-input" id="contentPublished"
-                            wire:model.defer="form.is_published">
-                        <label class="custom-control-label" for="contentPublished">Published</label>
+                {{-- ===== Group ===== --}}
+                @php($newGroupSelected = $form['group'] === \App\Http\Livewire\Admin\HoaCenter\Contents\Modals\ContentFormModal::NEW_GROUP)
+                <div class="row">
+                    <div class="col-12 col-md-6">
+                        <x-adminlte-select2 id="contentGroup" name="form.group" label="Group"
+                            wire:model="form.group" igroup-size="sm"
+                            :config="['placeholder' => 'Select Group']">
+                            <option value="">No group</option>
+                            @foreach ($groups as $group)
+                                <option value="{{ $group }}">{{ $group }}</option>
+                            @endforeach
+                            <option value="{{ \App\Http\Livewire\Admin\HoaCenter\Contents\Modals\ContentFormModal::NEW_GROUP }}">
+                                + Add new group
+                            </option>
+                        </x-adminlte-select2>
                     </div>
-                    <small class="text-muted">Only published pages appear under About Us on the homepage.</small>
-                    @error('form.is_published') <span class="text-danger small d-block">{{ $message }}</span> @enderror
+
+                    <div class="col-12 col-md-6">
+                        <div class="form-group">
+                            <label for="form.new_group_name">New Group</label>
+                            <div class="input-group input-group-sm">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text"><i class="fas fa-fw fa-plus"></i></div>
+                                </div>
+                                <input id="form.new_group_name" name="form.new_group_name" type="text"
+                                    value="{{ $form['new_group_name'] }}"
+                                    class="form-control @error('form.new_group_name') is-invalid @enderror"
+                                    placeholder="e.g., Environment"
+                                    wire:model.defer="form.new_group_name"
+                                    @if (! $newGroupSelected) disabled @endif>
+                            </div>
+                            @error('form.new_group_name')
+                                <span class="invalid-feedback d-block" role="alert"><strong>{{ $message }}</strong></span>
+                            @enderror
+                        </div>
+                    </div>
                 </div>
 
                 @if ($editingContentSlug)

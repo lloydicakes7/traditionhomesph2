@@ -5,7 +5,7 @@
         theme="primary" size="lg" scrollable v-centered wire:ignore.self>
 
         <div data-modal-skeleton class="{{ $loaded ? 'd-none' : '' }}">
-            <x-ui.modals.modal-loading message="Loading directory entry…" />
+            <x-ui.modals.modal-loading message="Loading directory entry..." />
         </div>
 
         <div data-modal-content class="{{ ! $loaded ? 'd-none' : '' }}">
@@ -34,13 +34,13 @@
                     <div class="col-12 col-md-6">
                         <x-adminlte-select2 id="directoryGroupId" name="form.directory_group_id" label="Group"
                             wire:model="form.directory_group_id" igroup-size="sm"
-                            :config="['placeholder' => '— Select Group —']">
-                            <option value="">— Select Group —</option>
+                            :config="['placeholder' => 'Select Group']">
+                            <option value="">Select Group</option>
                             @foreach ($groups as $group)
                                 <option value="{{ $group->id }}">{{ $group->name }} ({{ $group->entries_count }})</option>
                             @endforeach
                             <option value="{{ \App\Http\Livewire\Admin\HoaCenter\Directory\Modals\DirectoryFormModal::NEW_GROUP }}">
-                                + Add new group…
+                                + Add new group
                             </option>
                         </x-adminlte-select2>
                     </div>
@@ -55,19 +55,28 @@
                     </div>
                 </div>
 
-                @if ($form['directory_group_id'] === \App\Http\Livewire\Admin\HoaCenter\Directory\Modals\DirectoryFormModal::NEW_GROUP)
-                    <div class="row">
-                        <div class="col-12 col-md-6">
-                            <x-adminlte-input name="form.new_group_name" label="New group name"
-                                placeholder="e.g., IT Support"
-                                wire:model.defer="form.new_group_name" igroup-size="sm">
-                                <x-slot name="prependSlot">
+                @php($newGroupSelected = $form['directory_group_id'] === \App\Http\Livewire\Admin\HoaCenter\Directory\Modals\DirectoryFormModal::NEW_GROUP)
+                <div class="row">
+                    <div class="col-12 col-md-6">
+                        <div class="form-group">
+                            <label for="form.new_group_name">New Group</label>
+                            <div class="input-group input-group-sm">
+                                <div class="input-group-prepend">
                                     <div class="input-group-text"><i class="fas fa-fw fa-plus"></i></div>
-                                </x-slot>
-                            </x-adminlte-input>
+                                </div>
+                                <input id="form.new_group_name" name="form.new_group_name" type="text"
+                                    value="{{ $form['new_group_name'] }}"
+                                    class="form-control @error('form.new_group_name') is-invalid @enderror"
+                                    placeholder="e.g., IT Support"
+                                    wire:model.defer="form.new_group_name"
+                                    @if (! $newGroupSelected) disabled @endif>
+                            </div>
+                            @error('form.new_group_name')
+                                <span class="invalid-feedback d-block" role="alert"><strong>{{ $message }}</strong></span>
+                            @enderror
                         </div>
                     </div>
-                @endif
+                </div>
 
                 {{-- ============================================================ --}}
                 {{-- PHONE NUMBERS                                                --}}

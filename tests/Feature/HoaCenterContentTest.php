@@ -24,7 +24,7 @@ class HoaCenterContentTest extends TestCase
 
         $this->get(route('hoa-center.faqs'))
             ->assertOk()
-            ->assertSee('Home Page Questions');
+            ->assertSee('Frequently Asked Questions');
 
         Livewire::test(FaqFormModal::class)
             ->call('openCreate')
@@ -42,13 +42,13 @@ class HoaCenterContentTest extends TestCase
 
     // ===== Content pages =====
 
-    public function test_an_officer_publishes_a_content_page_with_cleaned_details(): void
+    public function test_an_officer_adds_a_content_page_with_cleaned_details(): void
     {
         $this->signInAdministrator();
 
         $this->get(route('hoa-center.contents'))
             ->assertOk()
-            ->assertSee('Public Pages');
+            ->assertSee('Contents');
 
         Livewire::test(ContentFormModal::class)
             ->call('openCreate')
@@ -68,7 +68,7 @@ class HoaCenterContentTest extends TestCase
             ->assertSee('Our mission.');
     }
 
-    public function test_only_published_content_appears_under_about_us(): void
+    public function test_content_pages_appear_under_about_us_and_are_readable(): void
     {
         $this->signInAdministrator();
 
@@ -95,14 +95,6 @@ class HoaCenterContentTest extends TestCase
             ->call('save')
             ->assertHasNoErrors();
 
-        Livewire::test(ContentFormModal::class)
-            ->call('openCreate')
-            ->set('form.title', 'Draft Page')
-            ->set('form.details', '<p>Not ready yet.</p>')
-            ->set('form.is_published', false)
-            ->call('save')
-            ->assertHasNoErrors();
-
         $this->get('/')
             ->assertOk()
             ->assertSee('About Us')
@@ -110,18 +102,47 @@ class HoaCenterContentTest extends TestCase
             ->assertSee('Environment')
             ->assertSee('Waste Segregation')
             ->assertSee('Mission and Vision')
-            ->assertSee('dropdown-submenu', false)
-            ->assertDontSee('Draft Page');
+            ->assertSee('dropdown-submenu', false);
 
         $this->get(route('content.show', 'environment'))
             ->assertOk()
             ->assertSee('Keep the subdivision clean.');
 
-        $this->get(route('content.show', 'draft-page'))->assertNotFound();
-
         $this->get(route('hoa-center.contents'))
             ->assertOk()
-            ->assertSee('Draft');
+            ->assertDontSee('Draft');
+    }
+
+    public function test_a_page_can_be_created_with_a_new_group(): void
+    {
+        $this->signInAdministrator();
+
+        Livewire::test(ContentFormModal::class)
+            ->call('openCreate')
+            ->set('form.title', 'Rules and Regulations')
+            ->set('form.group', ContentFormModal::NEW_GROUP)
+            ->set('form.new_group_name', 'Policies')
+            ->set('form.details', '<p>Read the rules.</p>')
+            ->call('save')
+            ->assertHasNoErrors();
+
+        $this->assertDatabaseHas('contents', [
+            'title' => 'Rules and Regulations',
+            'group' => 'Policies',
+        ]);
+    }
+
+    public function test_the_new_group_input_is_disabled_unless_a_new_group_is_selected(): void
+    {
+        $this->signInAdministrator();
+
+        $component = Livewire::test(ContentFormModal::class)->call('openCreate');
+
+        $this->assertSame(1, preg_match('/name="form\.new_group_name"[^>]*disabled/', $component->lastRenderedDom));
+
+        $component->set('form.group', ContentFormModal::NEW_GROUP);
+
+        $this->assertSame(0, preg_match('/name="form\.new_group_name"[^>]*disabled/', $component->lastRenderedDom));
     }
 
     // ===== Helpers =====

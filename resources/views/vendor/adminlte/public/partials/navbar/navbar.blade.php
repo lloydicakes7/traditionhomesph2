@@ -42,19 +42,10 @@
                 {{-- Published pages and their groups live under About Us. --}}
                 @if (! empty($aboutPages) || ! empty($aboutGroups))
                     <li class="nav-item dropdown">
-                        <a href="#" class="nav-link font-weight-bold px-3 px-xl-2 text-secondary dropdown-toggle"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            About Us
-                        </a>
-
                         <div class="dropdown-menu border-0 shadow-sm">
                             @foreach ($aboutPages as $link)
                                 <a class="dropdown-item" href="{{ $link['href'] }}">{{ $link['label'] }}</a>
                             @endforeach
-
-                            @if (! empty($aboutPages) && ! empty($aboutGroups))
-                                <div class="dropdown-divider"></div>
-                            @endif
 
                             @foreach ($aboutGroups as $group)
                                 <div class="dropdown-submenu">
@@ -71,6 +62,11 @@
                                 </div>
                             @endforeach
                         </div>
+
+                        <a href="#" class="nav-link font-weight-bold px-3 px-xl-2 text-secondary dropdown-toggle"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            About Us
+                        </a>
                     </li>
                 @endif
             </ul>
