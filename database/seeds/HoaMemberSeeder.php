@@ -13,6 +13,12 @@ class HoaMemberSeeder extends Seeder
      */
     public function run()
     {
+        foreach ([HoaMemberGroup::STAFF, HoaMemberGroup::BOARD] as $name) {
+            HoaMemberGroup::firstOrCreate(['name' => $name]);
+        }
+
+        $this->command->info('HOA member groups seeded successfully.');
+
         $members = [
             [
                 'name'     => 'Ricardo Delos Santos',
@@ -68,8 +74,8 @@ class HoaMemberSeeder extends Seeder
             ],
         ];
 
-        $staff = HoaMemberGroup::firstOrCreate(['name' => HoaMemberGroup::STAFF]);
-        $board = HoaMemberGroup::firstOrCreate(['name' => HoaMemberGroup::BOARD]);
+        $staff = HoaMemberGroup::where('name', HoaMemberGroup::STAFF)->firstOrFail();
+        $board = HoaMemberGroup::where('name', HoaMemberGroup::BOARD)->firstOrFail();
 
         foreach ($members as $member) {
             $member['hoa_member_group_id'] = stripos($member['position'], 'committee') !== false

@@ -52,6 +52,7 @@ class CreateRequestsTable extends Migration
             $table->foreignId('resident_id')->constrained('residents')->cascadeOnDelete();
             $table->string('type', 50);
             $table->string('purpose', 50)->nullable();
+            $table->text('reason')->nullable();
 
             $table->string('resident_since', 100)->nullable();
             $table->string('business_name', 255)->nullable();

@@ -15,6 +15,7 @@ class CreateContentsTable extends Migration
             $table->string('group', 100)->nullable();
             $table->string('image_path')->nullable();
             $table->longText('details');
+            $table->boolean('is_published')->default(true)->index();
             $table->timestamps();
 
             $table->index('group');

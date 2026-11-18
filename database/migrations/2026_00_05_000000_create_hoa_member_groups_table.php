@@ -10,6 +10,11 @@ class CreateHoaMemberGroupsTable extends Migration
     /**
      * Run the migrations.
      *
+     * Groups file HOA members under Staff, the Board of Directors or any
+     * group the office adds. This table is created before `hoa_members`,
+     * which references it. Clearing a group keeps its members and leaves
+     * them ungrouped.
+     *
      * @return void
      */
     public function up()
@@ -19,18 +24,6 @@ class CreateHoaMemberGroupsTable extends Migration
             $table->string('name', 100)->unique();
             $table->timestamps();
         });
-
-        $now = date('Y-m-d H:i:s');
-
-        foreach (['Staff', 'Board of Directors'] as $name) {
-            if (DB::table('hoa_member_groups')->where('name', $name)->doesntExist()) {
-                DB::table('hoa_member_groups')->insert([
-                    'name'       => $name,
-                    'created_at' => $now,
-                    'updated_at' => $now,
-                ]);
-            }
-        }
     }
 
     /**

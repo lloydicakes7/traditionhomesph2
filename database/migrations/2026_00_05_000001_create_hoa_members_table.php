@@ -11,9 +11,9 @@ class CreateHoaMembersTable extends Migration
      *
      * HOA members are display data, not accounts: `name`, `position` and the
      * optional phone/email/note are what the admin cards and the public HOA
-     * information section show. `admin_id` / `resident_id` optionally point at
-     * the account a member belongs to — a member can be listed long before
-     * (or without ever) having an account, and an account need not be listed.
+     * information section show. `hoa_member_group_id` files the member under
+     * Staff, the Board of Directors or any group the office adds. The groups
+     * table is created first, so the foreign key is defined here directly.
      *
      * @return void
      */
@@ -23,6 +23,10 @@ class CreateHoaMembersTable extends Migration
             $table->id();
             $table->string('name', 150);
             $table->string('position', 100);
+            $table->foreignId('hoa_member_group_id')
+                ->nullable()
+                ->constrained('hoa_member_groups')
+                ->nullOnDelete();
             $table->string('phone', 50)->nullable();
             $table->string('email', 150)->nullable();
             $table->text('note')->nullable();

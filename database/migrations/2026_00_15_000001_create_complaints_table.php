@@ -33,6 +33,7 @@ class CreateComplaintsTable extends Migration
             $table->string('submitter_name', 150)->nullable();
 
             $table->string('category', 50);
+            $table->string('other_description', 255)->nullable();
             $table->string('subject', 200);
             $table->text('description');
             $table->string('status', 20)->default(ComplaintStatus::PENDING);
