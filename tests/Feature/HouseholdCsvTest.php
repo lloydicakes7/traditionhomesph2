@@ -45,12 +45,14 @@ class HouseholdCsvTest extends TestCase
 
     public function test_an_import_reads_a_listed_relationship_and_the_members_own_words(): void
     {
-        $this->actingAs($this->officer(), 'web');
+        $officer = $this->officer();
+
+        $this->actingAs($officer, 'web');
 
         $property = $this->property();
         $sheet = $this->sheet($property->id);
 
-        $result = $this->service()->import($sheet);
+        $result = $this->service()->import($sheet, $officer);
 
         $this->assertSame(2, $result['imported']);
 

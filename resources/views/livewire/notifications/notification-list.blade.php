@@ -20,7 +20,7 @@
                     <tr>
                         <th class="align-middle" style="width: 30%;">Title</th>
                         <th class="align-middle">Description</th>
-                        <th class="align-middle" style="width; 40px;"></th>
+                        <th class="align-middle" style="width: 40px;"></th>
                         <th class="align-middle text-right" style="width: 130px;">Actions</th>
                     </tr>
                 </thead>

@@ -49,7 +49,7 @@ class HouseholdCsv extends AdminComponent
 
     protected function importFile(string $path): array
     {
-        return $this->householdCsvService->import($path);
+        return $this->householdCsvService->import($path, auth('web')->user());
     }
 
     protected function exportCsv(): string

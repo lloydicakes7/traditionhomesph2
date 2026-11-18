@@ -2,7 +2,9 @@
 
 namespace App\Services\Csv;
 
+use App\Enums\PropertyType;
 use App\Models\Address;
+use App\Models\Admin;
 use App\Models\Property;
 use App\Services\ActivityLogService;
 use App\Utility\CsvHelper;
@@ -10,25 +12,26 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 /**
- * CSV import/export operations for Properties.
+ * Properties CSV import, export and template.
  *
- * Import, export and template rows for the module, kept beside the
- * Actions and Queries that own the same records.
+ * A row is skipped, with the reason and its line number, when block or lot is
+ * not a positive number, the address does not match a saved address, the type
+ * is not one the Properties page offers, or the unit is already saved.
  */
 class PropertyCsvService
 {
-    /** @var ActivityLogService */
-    private $activityService;
+    private ActivityLogService $activity;
 
-    public function __construct(ActivityLogService $activityService)
+    public function __construct(ActivityLogService $activity)
     {
-        $this->activityService = $activityService;
+        $this->activity = $activity;
     }
 
-    // =====================================================================
-    // Column Definitions
-    // =====================================================================
+    // ===== Columns =====
 
+    /**
+     * @return array<int, string>
+     */
     public function getColumnMap(): array
     {
         return [
@@ -37,99 +40,154 @@ class PropertyCsvService
         ];
     }
 
-    // =====================================================================
-    // Import
-    // =====================================================================
+    // ===== Import =====
 
     /**
-     * Import properties from a CSV file.
+     * Import a properties sheet.
      *
-     * @param  string  $filePath  Real path to the CSV file
-     * @return array{imported: int, skipped: array}
+     * @return array{imported: int, skipped: array<int, string>}
+     *
+     * @throws \InvalidArgumentException When the file is not the template
      */
-    public function import(string $filePath): array
+    public function import(string $filePath, Admin $by): array
     {
         $handle = CsvHelper::openRead($filePath);
-        $columnMap = $this->getColumnMap();
-        $headerMap = CsvHelper::parseHeader($handle, $columnMap);
+        $columns = $this->getColumnMap();
 
-        $imported = 0;
-        $skipped = [];
-        $rowNum = 1;
-
-        DB::beginTransaction();
         try {
-            while (($row = fgetcsv($handle)) !== false) {
-                $rowNum++;
-                $data = CsvHelper::mapRow($row, $headerMap, $columnMap);
-
-                if ($data['block'] === '' || $data['lot'] === '') {
-                    $skipped[] = "Row {$rowNum}: block and lot are required.";
-                    continue;
-                }
-
-                if (! is_numeric($data['block']) || ! is_numeric($data['lot'])) {
-                    $skipped[] = "Row {$rowNum}: block and lot must be numbers.";
-                    continue;
-                }
-
-                $addressId = $this->resolveAddressId($data['address']);
-
-                if (! $addressId) {
-                    $skipped[] = "Row {$rowNum}: could not match address \"{$data['address']}\"";
-                    continue;
-                }
-
-                // Handle picture: if file doesn't exist in storage, set to null
-                $picture = $data['picture'] ?? '';
-                if ($picture !== '' && ! Storage::disk('public')->exists($picture)) {
-                    $picture = null;
-                }
-
-                Property::create([
-                    'block'      => (int) $data['block'],
-                    'lot'        => (int) $data['lot'],
-                    'address_id' => $addressId,
-                    'sqm'        => $data['sqm'] !== '' ? floatval($data['sqm']) : null,
-                    'type'       => $data['type'] ?: null,
-                    'picture'    => $picture ?: null,
-                ]);
-                $imported++;
-            }
-            DB::commit();
-        } catch (\Exception $e) {
-            DB::rollBack();
-            throw $e;
+            $headerMap = CsvHelper::headerMap($handle, $columns);
+            $result = $this->importRows($handle, $headerMap, $columns);
         } finally {
             fclose($handle);
         }
 
-        $this->activityService->log(
-            auth()->user(),
+        $this->activity->log(
+            $by,
             'imported',
             'property',
-            "Imported {$imported} properties from CSV" . (! empty($skipped) ? " ({$skipped} skipped)" : '')
+            "Imported {$result['imported']} properties from CSV"
+            . ($result['skipped'] === [] ? '' : ' (' . count($result['skipped']) . ' skipped)')
         );
+
+        return $result;
+    }
+
+    /**
+     * @param  resource  $handle
+     * @param  array<int, string>  $headerMap
+     * @param  array<int, string>  $columns
+     * @return array{imported: int, skipped: array<int, string>}
+     */
+    private function importRows($handle, array $headerMap, array $columns): array
+    {
+        $imported = 0;
+        $skipped = [];
+        $seen = [];
+        $rowNum = 1;
+
+        DB::beginTransaction();
+
+        try {
+            while (($row = fgetcsv($handle)) !== false) {
+                $rowNum++;
+                $data = CsvHelper::mapRow($row, $headerMap, $columns);
+
+                if ($data['block'] === '' && $data['lot'] === '') {
+                    continue;
+                }
+
+                $values = $this->rowValues($data);
+
+                if (is_string($values)) {
+                    $skipped[] = "Row {$rowNum}: {$values}";
+                    continue;
+                }
+
+                $key = $values['block'] . '|' . $values['lot'];
+
+                if (isset($seen[$key])) {
+                    $skipped[] = "Row {$rowNum}: block {$values['block']} lot {$values['lot']} is listed earlier in the same file.";
+                    continue;
+                }
+
+                if (Property::where('block', $values['block'])->where('lot', $values['lot'])->exists()) {
+                    $skipped[] = "Row {$rowNum}: block {$values['block']} lot {$values['lot']} is already saved.";
+                    continue;
+                }
+
+                Property::create($values);
+
+                $seen[$key] = true;
+                $imported++;
+            }
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            throw $e;
+        }
+
+        if ($imported === 0 && $skipped === []) {
+            throw new \InvalidArgumentException(
+                'The sheet has no property rows. Fill in the rows below the header and import it again.'
+            );
+        }
 
         return compact('imported', 'skipped');
     }
 
-    // =====================================================================
-    // Export
-    // =====================================================================
+    /**
+     * The property columns a sheet row writes, or the reason it cannot be read.
+     *
+     * @return array<string, mixed>|string
+     */
+    private function rowValues(array $data)
+    {
+        if ($data['block'] === '' || $data['lot'] === '') {
+            return 'block and lot are both required.';
+        }
+
+        if (! ctype_digit($data['block']) || (int) $data['block'] < 1) {
+            return 'block must be a whole number greater than zero.';
+        }
+
+        if (! ctype_digit($data['lot']) || (int) $data['lot'] < 1) {
+            return 'lot must be a whole number greater than zero.';
+        }
+
+        if ($data['sqm'] !== '' && (! is_numeric($data['sqm']) || (float) $data['sqm'] < 0)) {
+            return 'sqm must be a number and cannot be negative.';
+        }
+
+        $type = $this->typeValue($data['type']);
+
+        if ($type === false) {
+            return 'type must be one of ' . implode(', ', array_keys(PropertyType::labels())) . ', or blank.';
+        }
+
+        $addressId = $this->resolveAddressId($data['address']);
+
+        if ($addressId === null) {
+            return $data['address'] === ''
+                ? 'address is required.'
+                : 'address "' . $data['address'] . '" does not match a saved address.';
+        }
+
+        return [
+            'block'      => (int) $data['block'],
+            'lot'        => (int) $data['lot'],
+            'address_id' => $addressId,
+            'sqm'        => $data['sqm'] !== '' ? (float) $data['sqm'] : null,
+            'type'       => $type,
+            'picture'    => $this->picturePath($data['picture']),
+        ];
+    }
+
+    // ===== Export =====
 
     /**
-     * Export all properties to a CSV string.
-     *
-     * A download is not an activity the office records: the audit trail holds
-     * what was changed, and a copy of a record changes nothing.
-     *
-     * The only record a row reads is the unit's address — a property holds no
-     * `households` relation (a unit's household is `currentHousehold`), and
-     * eager loading one that does not exist took the whole export down before it
-     * wrote a row.
-     *
-     * @return string  CSV content
+     * Export every property, one row per unit.
      */
     public function export(string $sortField = 'created_at', string $sortDirection = 'desc'): string
     {
@@ -140,51 +198,73 @@ class PropertyCsvService
         $columns = $this->getColumnMap();
 
         $rows = [];
-        foreach ($properties as $p) {
+
+        foreach ($properties as $property) {
             $rows[] = [
-                $p->block ?? '',
-                $p->lot ?? '',
-                $p->address?->label ?? '',
-                $p->sqm ?? '',
-                $p->type ?? '',
-                $p->picture ?? '',
+                $property->block ?? '',
+                $property->lot ?? '',
+                $property->address?->label ?? '',
+                $property->sqm ?? '',
+                $property->type ?? '',
+                $property->picture ?? '',
             ];
         }
 
         return CsvHelper::build($columns, $rows);
     }
 
-    // =====================================================================
-    // Template
-    // =====================================================================
+    // ===== Template =====
 
-    /**
-     * Generate the CSV import template header row.
-     *
-     * @return string  CSV header row
-     */
     public function getImportTemplate(): string
     {
         return CsvHelper::buildHeader($this->getColumnMap());
     }
 
-    // =====================================================================
-    // Tools
-    // =====================================================================
+    // ===== Helpers =====
 
     /**
-     * Resolve an address ID from a label string.
+     * The stored type for a cell, null for a blank cell, or false when the cell
+     * names a type the enum does not have.
      *
-     * @param  string  $addressStr  Address label to match
-     * @return int|null
+     * @return string|null|false
      */
-    private function resolveAddressId(string $addressStr): ?int
+    private function typeValue(string $input)
     {
-        $addressStr = trim($addressStr);
-        if ($addressStr === '') return null;
+        $input = trim($input);
 
-        $address = Address::whereRaw('LOWER(label) = ?', [strtolower($addressStr)])->first();
+        if ($input === '') {
+            return null;
+        }
 
-        return $address->id ?? null;
+        foreach (PropertyType::labels() as $value => $label) {
+            if (strcasecmp($input, $value) === 0 || strcasecmp($input, $label) === 0) {
+                return $value;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Match an address by its label, ignoring case.
+     */
+    private function resolveAddressId(string $label): ?int
+    {
+        $label = trim($label);
+
+        if ($label === '') {
+            return null;
+        }
+
+        $address = Address::whereRaw('LOWER(label) = ?', [strtolower($label)])->first();
+
+        return $address ? $address->id : null;
+    }
+
+    private function picturePath(string $input): ?string
+    {
+        $path = trim($input);
+
+        return $path !== '' && Storage::disk('public')->exists($path) ? $path : null;
     }
 }

@@ -17,6 +17,13 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
+/**
+ * Residents CSV import, export and template.
+ *
+ * A sheet is the template's columns. A row is skipped, with the reason and its
+ * line number, when a required value is missing, a value is not the type the
+ * column holds, or the record is already saved.
+ */
 class ResidentCsvService
 {
     private const SECTOR_SEPARATOR = ';';
@@ -47,47 +54,21 @@ class ResidentCsvService
         ];
     }
 
+    /**
+     * Import a residents sheet.
+     *
+     * @return array{imported: int, skipped: array<int, string>}
+     *
+     * @throws \InvalidArgumentException When the file is not the template
+     */
     public function import(string $filePath, Admin $by): array
     {
         $handle = CsvHelper::openRead($filePath);
-        $columnMap = $this->getColumnMap();
-        $headerMap = CsvHelper::parseHeader($handle, $columnMap);
-
-        $imported = 0;
-        $skipped = [];
-        $rowNum = 1;
-
-        DB::beginTransaction();
+        $columns = $this->getColumnMap();
 
         try {
-            while (($row = fgetcsv($handle)) !== false) {
-                $rowNum++;
-
-                $data = CsvHelper::mapRow($row, $headerMap, $columnMap);
-
-                if ($data['surname'] === '' && $data['first_name'] === '') {
-                    continue;
-                }
-
-                $values = $this->rowValues($data);
-
-                if (is_string($values)) {
-                    $skipped[] = "Row {$rowNum}: {$values}";
-                    continue;
-                }
-
-                $resident = Resident::create($values);
-
-                $this->linkAccount($resident, $data['email']);
-
-                $imported++;
-            }
-
-            DB::commit();
-        } catch (\Exception $e) {
-            DB::rollBack();
-
-            throw $e;
+            $headerMap = CsvHelper::headerMap($handle, $columns);
+            $result = $this->importRows($handle, $headerMap, $columns);
         } finally {
             fclose($handle);
         }
@@ -96,10 +77,11 @@ class ResidentCsvService
             $by,
             'imported',
             'homeowner',
-            "Imported {$imported} residents from CSV" . ($skipped === [] ? '' : ' (' . count($skipped) . ' skipped)')
+            "Imported {$result['imported']} residents from CSV"
+            . ($result['skipped'] === [] ? '' : ' (' . count($result['skipped']) . ' skipped)')
         );
 
-        return compact('imported', 'skipped');
+        return $result;
     }
 
     public function export(string $sortField = 'surname', string $sortDirection = 'asc'): string
@@ -120,7 +102,74 @@ class ResidentCsvService
         return CsvHelper::buildHeader($this->getColumnMap());
     }
 
-    // ===== Helpers =====
+    // ===== Import =====
+
+    /**
+     * @param  resource  $handle
+     * @param  array<int, string>  $headerMap
+     * @param  array<int, string>  $columns
+     * @return array{imported: int, skipped: array<int, string>}
+     */
+    private function importRows($handle, array $headerMap, array $columns): array
+    {
+        $imported = 0;
+        $skipped = [];
+        $seen = [];
+        $rowNum = 1;
+
+        DB::beginTransaction();
+
+        try {
+            while (($row = fgetcsv($handle)) !== false) {
+                $rowNum++;
+                $data = CsvHelper::mapRow($row, $headerMap, $columns);
+
+                if ($data['surname'] === '' && $data['first_name'] === '') {
+                    continue;
+                }
+
+                $values = $this->rowValues($data);
+
+                if (is_string($values)) {
+                    $skipped[] = "Row {$rowNum}: {$values}";
+                    continue;
+                }
+
+                $problem = $this->duplicate($values, $data['email'], $seen);
+
+                if ($problem !== null) {
+                    $skipped[] = "Row {$rowNum}: {$problem}";
+                    continue;
+                }
+
+                $resident = Resident::create($values);
+
+                $this->linkAccount($resident, $data['email']);
+
+                $seen[$this->residentKey($values)] = true;
+
+                if ($values['philsys_card_no'] !== null) {
+                    $seen['philsys:' . $values['philsys_card_no']] = true;
+                }
+
+                $imported++;
+            }
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            throw $e;
+        }
+
+        if ($imported === 0 && $skipped === []) {
+            throw new \InvalidArgumentException(
+                'The sheet has no resident rows. Fill in the rows below the header and import it again.'
+            );
+        }
+
+        return compact('imported', 'skipped');
+    }
 
     /**
      * The resident columns a sheet row writes, or the reason it cannot be read.
@@ -173,7 +222,7 @@ class ResidentCsvService
             return null;
         }
 
-        return 'missing surname or first name.';
+        return 'surname and first name are both required.';
     }
 
     private function enumError(array $data): ?string
@@ -186,7 +235,7 @@ class ResidentCsvService
 
         foreach ($columns as $column => $labels) {
             if ($this->enumValue($labels, $data[$column]) === null) {
-                return "invalid or missing {$column} (use " . implode(' / ', array_keys($labels)) . ').';
+                return "{$column} is required and must be one of " . implode(', ', array_keys($labels)) . '.';
             }
         }
 
@@ -196,19 +245,93 @@ class ResidentCsvService
     private function detailError(array $data): ?string
     {
         if ($this->dateValue($data['birth_date']) === null) {
-            return 'missing or unreadable birth date (use YYYY-MM-DD or DD/MM/YYYY).';
+            return 'birth_date is required and must be a real date written as YYYY-MM-DD or DD/MM/YYYY.';
         }
 
         if ($data['citizenship'] === '') {
-            return 'missing citizenship.';
+            return 'citizenship is required.';
         }
 
         if ($data['philsys_card_no'] !== '' && $this->philsysValue($data['philsys_card_no']) === null) {
-            return 'invalid PhilSys card number (16 digits).';
+            return 'philsys_card_no must hold 16 digits.';
+        }
+
+        if ($data['mobile_no'] !== '' && preg_match('/^[0-9+()\s-]{7,20}$/', $data['mobile_no']) !== 1) {
+            return 'mobile_no must be a number of 7 to 20 digits, spaces and the characters + ( ) - only.';
+        }
+
+        if ($data['email'] !== '' && ! filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
+            return 'email "' . $data['email'] . '" is not a valid email address.';
         }
 
         return null;
     }
+
+    /**
+     * Why a row repeats a record, or null when it is new.
+     *
+     * @param  array<string, mixed>  $values
+     * @param  array<string, bool>  $seen
+     */
+    private function duplicate(array $values, string $email, array $seen): ?string
+    {
+        if (isset($seen[$this->residentKey($values)])) {
+            return 'this resident is listed earlier in the same file.';
+        }
+
+        if ($values['philsys_card_no'] !== null && isset($seen['philsys:' . $values['philsys_card_no']])) {
+            return 'this PhilSys card number is listed earlier in the same file.';
+        }
+
+        $saved = Resident::whereRaw('LOWER(TRIM(surname)) = ?', [strtolower($values['surname'])])
+            ->whereRaw('LOWER(TRIM(first_name)) = ?', [strtolower($values['first_name'])])
+            ->whereDate('birth_date', $values['birth_date']);
+
+        if ($saved->exists()) {
+            return 'a resident with this name and birth date is already saved.';
+        }
+
+        if (
+            $values['philsys_card_no'] !== null
+            && Resident::where('philsys_card_no', $values['philsys_card_no'])->exists()
+        ) {
+            return 'a resident with this PhilSys card number is already saved.';
+        }
+
+        if ($email !== '' && User::where('email', $email)->exists()) {
+            return 'the email ' . $email . ' already belongs to another account.';
+        }
+
+        return null;
+    }
+
+    /**
+     * @param  array<string, mixed>  $values
+     */
+    private function residentKey(array $values): string
+    {
+        return strtolower($values['surname'] . '|' . $values['first_name'] . '|' . $values['birth_date']);
+    }
+
+    /**
+     * Give a row with an email a portal account, the way a profile added by
+     * hand gets one.
+     */
+    private function linkAccount(Resident $resident, string $email): void
+    {
+        if ($email === '') {
+            return;
+        }
+
+        User::create([
+            'resident_id' => $resident->id,
+            'email'       => $email,
+            'password'    => Hash::make(Str::random(40)),
+            'is_active'   => true,
+        ]);
+    }
+
+    // ===== Export =====
 
     private function exportRow(Resident $resident): array
     {
@@ -253,11 +376,10 @@ class ResidentCsvService
         }, $resident->sectorValues()));
     }
 
+    // ===== Helpers =====
+
     /**
      * The stored value behind a sheet cell, accepting the value or its label.
-     *
-     * The office types "College Graduate" where the column stores
-     * `college_graduate`; both read as the same value here.
      */
     private function enumValue(array $labels, string $input): ?string
     {
@@ -323,29 +445,5 @@ class ResidentCsvService
         $path = trim($input);
 
         return $path !== '' && Storage::disk('public')->exists($path) ? $path : null;
-    }
-
-    /**
-     * Give a row with an address a portal account, the way a profile added by
-     * hand gets one. A blank or already-taken address creates no account.
-     */
-    private function linkAccount(Resident $resident, string $email): void
-    {
-        $email = trim($email);
-
-        if ($email === '' || ! filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            return;
-        }
-
-        if (User::where('email', $email)->exists()) {
-            return;
-        }
-
-        User::create([
-            'resident_id' => $resident->id,
-            'email'       => $email,
-            'password'    => Hash::make(Str::random(40)),
-            'is_active'   => true,
-        ]);
     }
 }

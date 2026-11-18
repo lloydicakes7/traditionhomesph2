@@ -57,7 +57,7 @@ class PropertyCsv extends AdminComponent
 
     protected function importFile(string $path): array
     {
-        return $this->propertyCsvService->import($path);
+        return $this->propertyCsvService->import($path, auth('web')->user());
     }
 
     protected function exportCsv(): string

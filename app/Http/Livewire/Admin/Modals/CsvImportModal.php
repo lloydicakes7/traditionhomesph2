@@ -8,13 +8,10 @@ use Livewire\WithFileUploads;
 /**
  * The shared "Import from CSV" dialog.
  *
- * Its opener configures it — the title and the columns the page expects — so it
- * is one of the dialogs the server opens rather than one `data-toggle` opens:
- * the page emits `loadCsvImportModal` with the configuration, and `load()` asks
- * Bootstrap for the shell (`modal-open`, handled by public/js/modal-loader.js)
- * once the dialog is ready. Confirming hands the validated upload's temp path
- * back to the page as `csv-import-confirmed`, then closes itself with
- * `modal-close`; `closeCsvImportModal` (fired on `hidden.bs.modal`) resets it.
+ * The opening page configures it with `loadCsvImportModal` (title and the
+ * columns it expects) and gets the uploaded file's path back as
+ * `csv-import-confirmed`. The dialog checks the upload before handing it over
+ * and closes itself afterwards.
  */
 class CsvImportModal extends AdminModalComponent
 {
@@ -23,43 +20,47 @@ class CsvImportModal extends AdminModalComponent
     /** @var string Dialog title, set by the opener */
     public $title = 'Import from CSV';
 
-    /** @var string Comma-separated columns the page's importer expects */
-    public $columns = '';
+    /** @var array<int, string> Columns the opening page's sheet must have */
+    public $columns = [];
 
     /** @var mixed Uploaded CSV file */
     public $importFile;
 
-    /** @var array<string, string> Modal load / close events (see public/js/modal-loader.js) */
+    /** @var array<string, string> */
     protected $listeners = [
         'loadCsvImportModal'  => 'load',
-        'openCsvImportModal'  => 'refreshModal',
         'closeCsvImportModal' => 'closeModal',
     ];
 
-    // =====================================================================
-    // Validation
-    // =====================================================================
+    // ===== Rules =====
 
     protected function rules(): array
     {
         return [
-            'importFile' => ['required', 'file', 'mimes:csv,txt', 'max:2048'],
+            'importFile' => ['required', 'file', 'max:2048'],
         ];
     }
 
-    // =====================================================================
-    // Lazy load
-    // =====================================================================
+    protected function messages(): array
+    {
+        return [
+            'importFile.required' => 'Choose the CSV file you want to import.',
+            'importFile.file'     => 'The import must be an uploaded file.',
+            'importFile.max'      => 'The file is larger than 2 MB. Split the sheet into smaller files.',
+        ];
+    }
+
+    // ===== Lifecycle =====
 
     /**
-     * Show the dialog configured by the opener.
+     * Show the dialog configured by the opening page.
      *
-     * @param  array  $config  {title?, columns?}
+     * @param  array{title?: string, columns?: array<int, string>}  $config
      */
     public function load(array $config = []): void
     {
         $this->title      = $config['title'] ?? $this->title;
-        $this->columns    = $config['columns'] ?? '';
+        $this->columns    = $config['columns'] ?? [];
         $this->importFile = null;
 
         $this->resetValidation();
@@ -69,9 +70,6 @@ class CsvImportModal extends AdminModalComponent
         $this->dispatchBrowserEvent('modal-open', ['id' => 'csvImportModal']);
     }
 
-    /**
-     * Drop the upload when the shell closes, so the next open never inherits it.
-     */
     protected function resetModal(): void
     {
         $this->importFile = null;
@@ -81,9 +79,7 @@ class CsvImportModal extends AdminModalComponent
         parent::resetModal();
     }
 
-    // =====================================================================
-    // Confirm
-    // =====================================================================
+    // ===== Actions =====
 
     public function confirm(): void
     {
@@ -91,21 +87,48 @@ class CsvImportModal extends AdminModalComponent
             return;
         }
 
-        $this->validate();
+        $validator = validator(
+            ['importFile' => $this->importFile],
+            $this->rules(),
+            $this->messages()
+        );
+
+        if ($validator->fails()) {
+            $this->failUpload($validator->errors()->first('importFile'));
+
+            return;
+        }
+
+        if (! in_array(strtolower($this->importFile->getClientOriginalExtension()), ['csv', 'txt'], true)) {
+            $this->failUpload('Choose a comma-separated file saved as .csv or .txt.');
+
+            return;
+        }
 
         $path = $this->importFile->getRealPath();
+
+        $this->importFile = null;
 
         $this->emit('csv-import-confirmed', $path);
 
         $this->dispatchBrowserEvent('modal-close', ['id' => 'csvImportModal']);
     }
 
-    // =====================================================================
-    // Render
-    // =====================================================================
-
     public function render()
     {
         return view('livewire.admin.modals.csv-import-modal');
+    }
+
+    // ===== Helpers =====
+
+    /**
+     * Show the reason under the upload and settle the progress notice the
+     * Import button opened.
+     */
+    private function failUpload(string $message): void
+    {
+        $this->addError('importFile', $message);
+
+        $this->emit('notify', 'error', $message);
     }
 }

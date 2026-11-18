@@ -3,113 +3,16 @@
 namespace App\Utility;
 
 /**
- * Generic, domain-agnostic helper for reading from and exporting to CSV files.
+ * Generic CSV reading and writing.
  *
- * Wraps low-level CSV parsing/writing operations (fgetcsv, fputcsv, header
- * mapping, field escaping) so that Services never repeat the same fopen/fgetcsv/
- * fclose pattern or manual CSV-escaping logic.
- *
- * Has no knowledge of Eloquent models, business rules, or column semantics —
- * it works entirely with arrays of strings.
+ * It knows nothing about models or business rules: it opens a file, reads a
+ * header, checks that header against the columns a sheet must have, maps a row
+ * onto those columns, and writes a CSV string back.
  */
 class CsvHelper
 {
     /**
-     * Open a CSV file and read the header row, returning a map of column
-     * index → normalized column name for the given column map.
-     *
-     * @param  resource  $handle     An already-opened file handle.
-     * @param  string[]  $columnMap  Allowed column names.
-     * @return array<int, string>    Index → column name.
-     */
-    public static function parseHeader($handle, array $columnMap): array
-    {
-        $header = fgetcsv($handle);
-        $headerMap = [];
-
-        if ($header === false) {
-            return [];
-        }
-
-        foreach ($header as $i => $col) {
-            $normalized = strtolower(str_replace([' ', '/', '.'], '_', trim($col)));
-            if (in_array($normalized, $columnMap, true)) {
-                $headerMap[$i] = $normalized;
-            }
-        }
-
-        return $headerMap;
-    }
-
-    /**
-     * Read a single CSV data row and map it to the column map using the
-     * header map. Returns an associative array keyed by column name.
-     *
-     * @param  array          $row        Raw CSV row from fgetcsv.
-     * @param  array<int, string> $headerMap  Index → column name map.
-     * @param  string[]       $columnMap  All column names to populate.
-     * @return array<string, string>      Column name → trimmed value.
-     */
-    public static function mapRow(array $row, array $headerMap, array $columnMap): array
-    {
-        $data = array_fill_keys($columnMap, '');
-        foreach ($headerMap as $i => $field) {
-            $data[$field] = trim($row[$i] ?? '');
-        }
-
-        return $data;
-    }
-
-    /**
-     * Match a file's header row against the names a column may be called.
-     *
-     * A statement's own headings are the bank's, not ours — one bank writes
-     * "Transaction Date" where another writes "Date", one writes "Withdrawal"
-     * where another writes "Debit" — so the caller says which names each
-     * column may go by and this returns which file column is which, without
-     * any knowledge of what the columns mean.
-     *
-     * @param  string[]                        $header    The file's header cells
-     * @param  array<string, array<int,string>> $synonyms  Canonical name → the names it may go by
-     * @return array<string, int>              Canonical name → file column index (only the ones found)
-     */
-    public static function detectColumns(array $header, array $synonyms): array
-    {
-        $normalized = [];
-
-        foreach ($header as $index => $cell) {
-            $normalized[self::normalize($cell)] = $index;
-        }
-
-        $detected = [];
-
-        foreach ($synonyms as $name => $candidates) {
-            foreach ($candidates as $candidate) {
-                $key = self::normalize($candidate);
-
-                if (array_key_exists($key, $normalized)) {
-                    $detected[$name] = $normalized[$key];
-                    break;
-                }
-            }
-        }
-
-        return $detected;
-    }
-
-    /**
-     * Normalize a heading so that "Transaction Date", "transaction_date" and
-     * "TRANSACTION-DATE" all read the same.
-     */
-    public static function normalize(?string $heading): string
-    {
-        $heading = strtolower(trim((string) $heading));
-
-        return preg_replace('/[^a-z0-9]+/', '_', $heading);
-    }
-
-    /**
-     * Open a CSV file for reading and return the handle.
+     * Open a CSV file for reading.
      *
      * @param  string  $filePath  Real path to the CSV file.
      * @return resource
@@ -117,36 +20,156 @@ class CsvHelper
     public static function openRead(string $filePath)
     {
         $handle = fopen($filePath, 'r');
+
         if ($handle === false) {
-            throw new \RuntimeException("Cannot open file for reading: {$filePath}");
+            throw new \RuntimeException('The file could not be opened for reading.');
         }
 
         return $handle;
     }
 
     /**
-     * Build a single CSV row with proper quoting and escaping.
+     * Read the header row, skipping a leading Excel `sep=` line, a blank line
+     * and the byte order mark Excel writes in front of the first cell.
      *
-     * Each field is wrapped in double-quotes and any embedded double-quotes
-     * are escaped (""). Fields are separated by commas.
+     * @return array<int, string>
+     */
+    public static function readHeader($handle): array
+    {
+        while (($row = fgetcsv($handle)) !== false) {
+            if ($row === [null]) {
+                continue;
+            }
+
+            if (count($row) === 1 && preg_match('/^sep=/i', trim((string) $row[0]))) {
+                continue;
+            }
+
+            $row[0] = preg_replace('/^\xEF\xBB\xBF/', '', (string) $row[0]);
+
+            return $row;
+        }
+
+        return [];
+    }
+
+    /**
+     * Read the header row and map it, refusing a file that is not the template.
      *
-     * @param  array  $fields  Raw field values.
-     * @return string          Escaped CSV row ending with newline.
+     * @param  resource  $handle
+     * @param  array<int, string>  $columns
+     * @return array<int, string>
+     *
+     * @throws \InvalidArgumentException
+     */
+    public static function headerMap($handle, array $columns): array
+    {
+        $header = self::readHeader($handle);
+        $problem = self::headerProblem($header, $columns);
+
+        if ($problem !== null) {
+            throw new \InvalidArgumentException($problem);
+        }
+
+        return self::mapHeader($header, $columns);
+    }
+
+    /**
+     * Say what is wrong with the header row, or null when it matches the
+     * template: the same columns, once each, in any order.
+     *
+     * @param  array<int, string>  $header
+     * @param  array<int, string>  $columns
+     */
+    public static function headerProblem(array $header, array $columns): ?string
+    {
+        if ($header === []) {
+            return 'The file has no header row.';
+        }
+
+        $names = array_values(array_filter(array_map([self::class, 'normalizeCell'], $header)));
+
+        $repeated = array_values(array_unique(array_diff_assoc($names, array_unique($names))));
+
+        if ($repeated !== []) {
+            return 'The header row repeats ' . self::listed($repeated, 'column') . '.';
+        }
+
+        $missing = array_values(array_diff($columns, $names));
+
+        if ($missing !== []) {
+            return 'The header row is missing ' . self::listed($missing, 'column') . '.';
+        }
+
+        $unexpected = array_values(array_diff($names, $columns));
+
+        if ($unexpected !== []) {
+            return 'The template does not have ' . self::listed($unexpected, 'column') . '.';
+        }
+
+        return null;
+    }
+
+    /**
+     * Map each file column index to the template column it carries.
+     *
+     * @param  array<int, string>  $header
+     * @param  array<int, string>  $columns
+     * @return array<int, string>
+     */
+    public static function mapHeader(array $header, array $columns): array
+    {
+        $map = [];
+
+        foreach ($header as $index => $cell) {
+            $name = self::normalizeCell($cell);
+
+            if (in_array($name, $columns, true)) {
+                $map[$index] = $name;
+            }
+        }
+
+        return $map;
+    }
+
+    /**
+     * Map one file row onto every template column, using an empty string for a
+     * column the row does not reach.
+     *
+     * @param  array<int, string|null>  $row
+     * @param  array<int, string>  $headerMap
+     * @param  array<int, string>  $columns
+     * @return array<string, string>
+     */
+    public static function mapRow(array $row, array $headerMap, array $columns): array
+    {
+        $data = array_fill_keys($columns, '');
+
+        foreach ($headerMap as $index => $column) {
+            $data[$column] = trim((string) ($row[$index] ?? ''));
+        }
+
+        return $data;
+    }
+
+    /**
+     * Build a single quoted CSV row.
+     *
+     * @param  array<int, mixed>  $fields
      */
     public static function buildRow(array $fields): string
     {
         $escaped = array_map(function ($value) {
-            return '"' . str_replace('"', '""', $value) . '"';
+            return '"' . str_replace('"', '""', (string) $value) . '"';
         }, $fields);
 
         return implode(',', $escaped) . "\n";
     }
 
     /**
-     * Build a CSV header row from column names.
+     * Build a header row from column names.
      *
-     * @param  string[]  $columns  Column names.
-     * @return string              CSV header row ending with newline.
+     * @param  array<int, string>  $columns
      */
     public static function buildHeader(array $columns): string
     {
@@ -154,16 +177,14 @@ class CsvHelper
     }
 
     /**
-     * Build a complete CSV body from an array of row data arrays.
+     * Build a body from rows of raw field values.
      *
-     * Each row is an array of raw (unescaped) field values.
-     *
-     * @param  array[]  $rows  Array of field-value arrays.
-     * @return string          Complete CSV body (no header).
+     * @param  array<int, array<int, mixed>>  $rows
      */
     public static function buildBody(array $rows): string
     {
         $csv = '';
+
         foreach ($rows as $row) {
             $csv .= static::buildRow($row);
         }
@@ -172,14 +193,43 @@ class CsvHelper
     }
 
     /**
-     * Build a complete CSV string with header and body.
+     * Build a complete CSV string with its header.
      *
-     * @param  string[]  $columns  Column names for the header row.
-     * @param  array[]   $rows     Array of field-value arrays for the body.
-     * @return string              Complete CSV string.
+     * @param  array<int, string>  $columns
+     * @param  array<int, array<int, mixed>>  $rows
      */
     public static function build(array $columns, array $rows): string
     {
         return static::buildHeader($columns) . static::buildBody($rows);
+    }
+
+    /**
+     * Read a heading the way the template spells it: "First Name",
+     * "first_name" and "FIRST-NAME" all become `first_name`.
+     */
+    private static function normalizeCell($cell): string
+    {
+        $cell = strtolower(trim((string) $cell));
+
+        return trim(preg_replace('/[^a-z0-9]+/', '_', $cell), '_');
+    }
+
+    /**
+     * Name the given columns in a sentence: `the column "a"`, or
+     * `the columns "a" and "b"`.
+     *
+     * @param  array<int, string>  $names
+     */
+    private static function listed(array $names, string $noun): string
+    {
+        $quoted = array_map(function (string $name): string {
+            return '"' . $name . '"';
+        }, $names);
+
+        $last = array_pop($quoted);
+
+        $text = $quoted === [] ? $last : implode(', ', $quoted) . ' and ' . $last;
+
+        return (count($names) === 1 ? $noun : $noun . 's') . ' ' . $text;
     }
 }
