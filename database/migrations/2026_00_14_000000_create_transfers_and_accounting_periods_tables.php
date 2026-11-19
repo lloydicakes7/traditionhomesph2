@@ -43,7 +43,7 @@ class CreateTransfersAndAccountingPeriodsTables extends Migration
             $table->foreignId('to_account_id')->constrained('accounts')->restrictOnDelete()
                 ->comment('The account the money arrived in');
             $table->decimal('amount', 14, 2)->default(0);
-            $table->string('memo')->comment('What the movement was for');
+            $table->text('memo')->comment('What the movement was for');
             $table->string('reference_no', 100)->nullable()->comment('Bank confirmation or document number');
             $table->foreignId('journal_entry_id')->nullable()->constrained('journal_entries')->nullOnDelete()
                 ->comment('The entry that moved the money');

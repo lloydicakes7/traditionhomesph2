@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Actions\Accounting\Periods\ClosePeriod;
 use App\Actions\Collections\Payments\RecordPayment;
 use App\Actions\Expenses\Expenses\LogExpense;
 use App\Enums\JournalSource;
@@ -84,6 +85,28 @@ class PostToJournalTest extends TestCase
         $this->assertSame(JournalSource::PAYMENT, $payment->journalEntry->source_type);
         $this->assertSame($payment->id, (int) $payment->journalEntry->source_id);
         $this->assertSame($bank->id, (int) $payment->journalEntry->lines()->where('side', 'debit')->value('account_id'));
+    }
+
+    public function test_a_closed_month_refuses_posting_a_payment(): void
+    {
+        $admin = $this->signIn();
+
+        Account::cashOnHand();
+        $payment = $this->recordedPayment();
+
+        $date = now()->startOfMonth()->subMonth()->addDays(2);
+
+        $payment->update(['paid_at' => $date]);
+
+        app(ClosePeriod::class)->handle($date->format('Y-m'), $admin);
+
+        Livewire::test(PostToJournalModal::class)
+            ->emit('openPostToJournal', ['source' => 'payment', 'id' => $payment->id])
+            ->assertSet('loaded', true)
+            ->call('confirm')
+            ->assertHasErrors('posting');
+
+        $this->assertNull($payment->fresh()->journal_entry_id);
     }
 
     // ===== Expenses =====

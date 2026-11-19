@@ -240,60 +240,34 @@ class AccountingModalsTest extends TestCase
         ]);
     }
 
-    public function test_the_suggested_code_follows_the_kind_until_the_officer_types_their_own()
+    public function test_the_code_follows_the_kind_and_cannot_be_typed()
     {
         $this->signIn();
 
         Livewire::test(AccountFormModal::class)
             ->call('openCreate')
+            ->assertSeeHtml('readonly')
             ->assertSet('form.code', '4010')
             ->set('form.kind', AccountKind::EXPENSE)
             ->assertSet('form.code', '5010')
             ->set('form.code', '5555')
             ->set('form.kind', AccountKind::INCOME)
-            ->assertSet('form.code', '5555');
+            ->assertSet('form.code', '4010');
     }
 
-    public function test_an_officer_can_use_their_own_unused_code()
+    public function test_a_tampered_code_is_ignored_and_the_generated_code_is_saved()
     {
         $this->signIn();
 
         Livewire::test(AccountFormModal::class)
             ->call('openCreate')
-            ->set('form.code', '4321')
+            ->set('form.code', '5555')
             ->set('form.name', 'Rental Income')
             ->call('save')
             ->assertHasNoErrors();
 
-        $this->assertDatabaseHas('accounts', ['code' => '4321', 'name' => 'Rental Income']);
-    }
-
-    public function test_a_duplicate_or_malformed_code_is_rejected()
-    {
-        $this->signIn();
-
-        $this->account('4321', 'Existing Account');
-
-        Livewire::test(AccountFormModal::class)
-            ->call('openCreate')
-            ->set('form.code', '4321')
-            ->set('form.name', 'Another Account')
-            ->call('save')
-            ->assertHasErrors('form.code');
-
-        Livewire::test(AccountFormModal::class)
-            ->call('openCreate')
-            ->set('form.code', '12')
-            ->set('form.name', 'Short Code')
-            ->call('save')
-            ->assertHasErrors('form.code');
-
-        Livewire::test(AccountFormModal::class)
-            ->call('openCreate')
-            ->set('form.code', '12AB')
-            ->set('form.name', 'Letters')
-            ->call('save')
-            ->assertHasErrors('form.code');
+        $this->assertDatabaseHas('accounts', ['code' => '4010', 'name' => 'Rental Income']);
+        $this->assertDatabaseMissing('accounts', ['code' => '5555']);
     }
 
     public function test_adding_a_money_account_posts_its_starting_balance()
@@ -349,7 +323,7 @@ class AccountingModalsTest extends TestCase
 
         $this->assertDatabaseHas('accounts', [
             'id'   => $account->id,
-            'code' => '1110',
+            'code' => '1100',
             'name' => 'Operating Checking',
         ]);
     }
@@ -804,6 +778,31 @@ class AccountingModalsTest extends TestCase
         $this->assertDatabaseHas('journal_entries', ['id' => $entry->id]);
     }
 
+    public function test_a_closed_month_refuses_a_new_manual_entry()
+    {
+        $admin = $this->signIn();
+
+        $cash = $this->account('1000', 'Cash on Hand');
+        $income = $this->account('4000', 'Monthly Dues', false, AccountType::INCOME);
+
+        $date = now()->startOfMonth()->subMonth()->addDays(2);
+
+        app(ClosePeriod::class)->handle($date->format('Y-m'), $admin);
+
+        Livewire::test(JournalEntryFormModal::class)
+            ->call('openCreate')
+            ->set('entry_date', $date->toDateString())
+            ->set('memo', 'Posted into a closed month')
+            ->set('lines', [
+                ['account_id' => (string) $cash->id, 'side' => 'debit', 'amount' => '500.00'],
+                ['account_id' => (string) $income->id, 'side' => 'credit', 'amount' => '500.00'],
+            ])
+            ->call('save')
+            ->assertHasErrors('entry_date');
+
+        $this->assertDatabaseMissing('journal_entries', ['memo' => 'Posted into a closed month']);
+    }
+
     public function test_a_module_entry_cannot_be_removed_from_the_journal()
     {
         $this->signIn();
@@ -918,6 +917,27 @@ class AccountingModalsTest extends TestCase
     // Cash funding
     // =====================================================================
 
+    public function test_a_closed_month_refuses_cash_funding()
+    {
+        $admin = $this->signIn();
+
+        $cash = $this->account('1000', 'Cash on Hand');
+        $date = now()->startOfMonth()->subMonth()->addDays(2);
+
+        app(ClosePeriod::class)->handle($date->format('Y-m'), $admin);
+
+        Livewire::test(CashFundingFormModal::class)
+            ->call('openCreate')
+            ->set('entry_date', $date->toDateString())
+            ->set('to_account_id', (string) $cash->id)
+            ->set('amount', '2500.00')
+            ->set('memo', 'Funding a closed month')
+            ->call('save')
+            ->assertHasErrors('entry_date');
+
+        $this->assertSame(0, JournalEntry::where('memo', 'Funding a closed month')->count());
+    }
+
     public function test_the_cash_funding_modal_records_money_against_an_external_counterparty()
     {
         $this->signIn();
@@ -952,6 +972,47 @@ class AccountingModalsTest extends TestCase
     // =====================================================================
     // Transfers
     // =====================================================================
+
+    public function test_a_closed_month_refuses_a_transfer_and_its_removal()
+    {
+        $admin = $this->signIn();
+
+        $from = $this->account('1010', 'Cash on Hand');
+        $to = $this->account('1020', 'BPI Checking');
+
+        $date = now()->startOfMonth()->subMonth()->addDays(2);
+
+        app(ClosePeriod::class)->handle($date->format('Y-m'), $admin);
+
+        Livewire::test(TransferFormModal::class)
+            ->call('openCreate')
+            ->set('transfer_date', $date->toDateString())
+            ->set('from_account_id', (string) $from->id)
+            ->set('to_account_id', (string) $to->id)
+            ->set('amount', '1000')
+            ->set('memo', 'Moving money in a closed month')
+            ->call('save')
+            ->assertHasErrors('transfer_date');
+
+        $this->assertDatabaseMissing('account_transfers', ['memo' => 'Moving money in a closed month']);
+
+        $transfer = AccountTransfer::create([
+            'reference'           => 'TRF-2026-0002',
+            'transfer_date'       => $date->toDateString(),
+            'from_account_id'     => $from->id,
+            'to_account_id'       => $to->id,
+            'amount'              => 1000,
+            'memo'                => 'Transfer already in the closed month',
+            'created_by_admin_id' => $admin->id,
+        ]);
+
+        Livewire::test(TransferDeleteModal::class)
+            ->call('load', $transfer->id)
+            ->call('delete')
+            ->assertHasErrors('transfer');
+
+        $this->assertDatabaseHas('account_transfers', ['id' => $transfer->id]);
+    }
 
     public function test_the_transfer_delete_modal_removes_the_transfer()
     {

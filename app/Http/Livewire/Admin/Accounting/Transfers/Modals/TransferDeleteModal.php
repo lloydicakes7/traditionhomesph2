@@ -6,6 +6,7 @@ use App\Actions\Accounting\Transfers\DeleteTransfer;
 use App\Http\Livewire\AdminModalComponent;
 use App\Models\Account\AccountTransfer;
 use App\Queries\Accounting\TransferListQuery;
+use Illuminate\Validation\ValidationException;
 
 /**
  * Remove Transfer — the confirmation a row's Remove action opens.
@@ -80,12 +81,18 @@ class TransferDeleteModal extends AdminModalComponent
 
         $this->authorize('delete', AccountTransfer::class);
 
-        app(DeleteTransfer::class)->handle(
-            $this->transfers->find($this->deletingTransferId),
-            auth('web')->user()
-        );
+        try {
+            app(DeleteTransfer::class)->handle(
+                $this->transfers->find($this->deletingTransferId),
+                auth('web')->user()
+            );
+        } catch (ValidationException $e) {
+            $this->addError('transfer', $e->errors()['transfer'][0] ?? 'The transfer could not be removed.');
 
-        $this->emit('notify', 'success', 'Transfer removed — the posting behind it is voided, not dropped.');
+            return;
+        }
+
+        $this->emit('notify', 'success', 'Transfer removed. The posting behind it is voided, not dropped.');
         $this->emit('transfer-saved');
 
         $this->resetModal();

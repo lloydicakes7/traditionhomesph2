@@ -47,8 +47,8 @@ class RegisterWizard extends PublicComponent
     /** @var array<string, mixed> The applicant's personal information */
     public $form = [];
 
-    /** @var array<string, bool> The two consents: the terms and the privacy notice */
-    public $consent = ['terms' => false, 'privacy' => false];
+    /** @var bool The applicant accepts the terms and the data privacy consent */
+    public $consent = false;
 
     /** @var bool The submission is being written */
     public $processing = false;
@@ -97,7 +97,7 @@ class RegisterWizard extends PublicComponent
         $prefixes = [
             1 => ['form.'],
             2 => ['email', 'password'],
-            3 => ['consent.'],
+            3 => ['consent'],
         ][$step] ?? [];
 
         return array_filter($this->rules(), function ($key) use ($prefixes) {
@@ -216,7 +216,7 @@ class RegisterWizard extends PublicComponent
             return 1;
         }
 
-        if (Str::startsWith($field, 'consent.')) {
+        if (Str::startsWith($field, 'consent')) {
             return 3;
         }
 

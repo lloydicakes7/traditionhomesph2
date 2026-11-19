@@ -239,8 +239,8 @@
                                                 {{ $form['suffix'] ? ', ' . $form['suffix'] : '' }}<br>
                                                 <span class="text-muted small">
                                                     Born in {{ $form['birth_date'] }} ·
-                                                    {{ $sexOptions[$form['sex']] ?? '—' }} ·
-                                                    {{ $civilStatusOptions[$form['civil_status']] ?? '—' }} ·
+                                                    {{ $sexOptions[$form['sex']] ?? 'Not provided' }} ·
+                                                    {{ $civilStatusOptions[$form['civil_status']] ?? 'Not provided' }} ·
                                                     {{ $form['mobile_no'] }}
                                                 </span>
                                             </td>
@@ -257,30 +257,16 @@
                             </div>
 
                             <div class="custom-control custom-checkbox mt-4 mb-2">
-                                <input type="checkbox" class="custom-control-input" id="consentTerms"
-                                    wire:model.defer="consent.terms">
-                                <label class="custom-control-label" for="consentTerms">
-                                    {{ __('auth.terms.accept_prefix') }}
-                                    <a href="#" data-toggle="modal" data-target="#registrationTermsModal">
-                                        {{ __('auth.terms.accept_link') }}
+                                <input type="checkbox" class="custom-control-input" id="consent"
+                                    wire:model.defer="consent">
+                                <label class="custom-control-label" for="consent">
+                                    {{ __('auth.consent.accept_prefix') }}
+                                    <a href="#" data-toggle="modal" data-target="#registrationConsentModal">
+                                        {{ __('auth.consent.accept_link') }}
                                     </a>.
                                 </label>
                             </div>
-                            @error('consent.terms')
-                                <span class="d-block text-danger small mb-2">{{ $message }}</span>
-                            @enderror
-
-                            <div class="custom-control custom-checkbox mb-2">
-                                <input type="checkbox" class="custom-control-input" id="consentPrivacy"
-                                    wire:model.defer="consent.privacy">
-                                <label class="custom-control-label" for="consentPrivacy">
-                                    {{ __('auth.privacy.accept_prefix') }}
-                                    <a href="#" data-toggle="modal" data-target="#registrationPrivacyModal">
-                                        {{ __('auth.privacy.accept_link') }}
-                                    </a>.
-                                </label>
-                            </div>
-                            @error('consent.privacy')
+                            @error('consent')
                                 <span class="d-block text-danger small mb-2">{{ $message }}</span>
                             @enderror
                         @endif
@@ -326,50 +312,25 @@
         </div>
     @endif
 
-    {{-- ===== Terms modal ===== --}}
-    <div class="modal fade" id="registrationTermsModal" tabindex="-1" role="dialog"
-        aria-labelledby="registrationTermsModalLabel" aria-hidden="true">
+    {{-- ===== Consent modal ===== --}}
+    <div class="modal fade" id="registrationConsentModal" tabindex="-1" role="dialog"
+        aria-labelledby="registrationConsentModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="registrationTermsModalLabel">{{ __('auth.terms.title') }}</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="{{ __('auth.terms.close') }}">
+                    <h5 class="modal-title" id="registrationConsentModalLabel">{{ __('auth.consent.title') }}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="{{ __('auth.consent.close') }}">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    @foreach (__('auth.terms.sections') as $section)
-                        <p><strong>{{ $section['heading'] }}.</strong> {{ $section['body'] }}</p>
+                    @foreach (__('auth.consent.paragraphs') as $paragraph)
+                        <p>{{ $paragraph }}</p>
                     @endforeach
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal">
-                        {{ __('auth.terms.close') }}
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    {{-- ===== Data privacy modal ===== --}}
-    <div class="modal fade" id="registrationPrivacyModal" tabindex="-1" role="dialog"
-        aria-labelledby="registrationPrivacyModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="registrationPrivacyModalLabel">{{ __('auth.privacy.title') }}</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="{{ __('auth.privacy.close') }}">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    @foreach (__('auth.privacy.sections') as $section)
-                        <p><strong>{{ $section['heading'] }}.</strong> {{ $section['body'] }}</p>
-                    @endforeach
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal">
-                        {{ __('auth.privacy.close') }}
+                        {{ __('auth.consent.close') }}
                     </button>
                 </div>
             </div>

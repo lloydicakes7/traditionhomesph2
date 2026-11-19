@@ -15,7 +15,11 @@
                 </div>
                 <div class="col-12 col-sm-6">
                     <x-adminlte-input name="amount" label="Amount" type="number" step="0.01" min="0"
-                        placeholder="0.00" wire:model.defer="amount" igroup-size="sm" />
+                        placeholder="0.00" wire:model.defer="amount" igroup-size="sm">
+                        <x-slot name="prependSlot">
+                            <div class="input-group-text">{{ \App\Utility\MoneyHelper::symbol() }}</div>
+                        </x-slot>
+                    </x-adminlte-input>
                 </div>
             </div>
 
@@ -24,7 +28,7 @@
                 :config="['placeholder' => 'Choose the account the money left', 'width' => '100%']">
                 <option value="">Choose the account the money left</option>
                 @foreach ($accounts as $id => $label)
-                    <option value="{{ $id }}">{{ $label }}@isset($balances[$id]) — {{ $balances[$id] }}@endisset</option>
+                    <option value="{{ $id }}">{{ $label }}@isset($balances[$id]) · {{ $balances[$id] }}@endisset</option>
                 @endforeach
             </x-adminlte-select2>
 
@@ -33,17 +37,17 @@
                 :config="['placeholder' => 'Choose the account the money arrived in', 'width' => '100%']">
                 <option value="">Choose the account the money arrived in</option>
                 @foreach ($accounts as $id => $label)
-                    <option value="{{ $id }}">{{ $label }}@isset($balances[$id]) — {{ $balances[$id] }}@endisset</option>
+                    <option value="{{ $id }}">{{ $label }}@isset($balances[$id]) · {{ $balances[$id] }}@endisset</option>
                 @endforeach
             </x-adminlte-select2>
 
-            <x-adminlte-input name="memo" label="Memo"
-                placeholder="e.g., Fund the operating account"
-                wire:model.defer="memo" igroup-size="sm" />
-
-            <x-adminlte-input name="reference_no" label="Reference No."
+            <x-adminlte-input name="reference_no" label="OR / Reference #"
                 placeholder="Bank confirmation or document number (optional)"
                 wire:model.defer="reference_no" igroup-size="sm" />
+
+            <x-adminlte-textarea name="memo" label="Memo" rows="3"
+                placeholder="e.g., Fund the operating account"
+                wire:model.defer="memo" igroup-size="sm" />
         </div>
 
         <x-slot name="footerSlot">

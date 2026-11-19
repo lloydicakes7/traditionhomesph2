@@ -37,7 +37,6 @@ class UpdateAccount
         $currentKind = $account->kind();
 
         $payload = [
-            'code'        => trim((string) $data['code']),
             'name'        => trim((string) $data['name']),
             'description' => filled($data['description'] ?? null) ? $data['description'] : null,
         ];
@@ -65,7 +64,7 @@ class UpdateAccount
             $by,
             'updated',
             'Chart of Accounts',
-            "Updated account {$account->code} — {$account->name}",
+            "Updated account {$account->code}: {$account->name}",
             ['account_id' => $account->id]
         );
 

@@ -37,7 +37,7 @@ class CreateAccount
 
         $account = DB::transaction(function () use ($kind, $starting, $data, $by) {
             $account = Account::create([
-                'code'        => trim((string) $data['code']),
+                'code'        => Account::nextCode($kind),
                 'name'        => trim((string) $data['name']),
                 'type'        => $kind->type(),
                 'description' => filled($data['description'] ?? null) ? $data['description'] : null,
@@ -75,7 +75,7 @@ class CreateAccount
             $by,
             'created',
             'Chart of Accounts',
-            "Added account {$account->code} — {$account->name}",
+            "Added account {$account->code}: {$account->name}",
             ['account_id' => $account->id]
         );
 

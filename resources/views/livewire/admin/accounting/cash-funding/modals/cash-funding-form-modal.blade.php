@@ -1,7 +1,7 @@
 <div wire:ignore.self>
     <x-adminlte-modal id="cashFundingFormModal"
         title="Add Cash to Account" icon="fas fa-fw fa-plus-circle" theme="primary"
-        scrollable v-centered wire:ignore.self>
+        size="md" scrollable v-centered wire:ignore.self>
 
         <div data-modal-skeleton class="{{ $loaded ? 'd-none' : '' }}">
             <x-ui.modals.modal-loading message="Loading cash funding form…" />
@@ -36,7 +36,7 @@
                 placeholder="Bank confirmation or document number (optional)"
                 wire:model.defer="reference_no" igroup-size="sm" />
 
-            <x-adminlte-input name="memo" label="Memo"
+            <x-adminlte-textarea name="memo" label="Memo" rows="3"
                 placeholder="e.g., Cash the association already held outside the books"
                 wire:model.defer="memo" igroup-size="sm" />
         </div>

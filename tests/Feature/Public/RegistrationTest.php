@@ -75,7 +75,11 @@ class RegistrationTest extends TestCase
             ->call('next')
             ->assertSet('step', 3)
             ->assertSee('applicant@example.com')
-            ->assertSeeHtml('id="registrationTermsModal"')
+            ->assertSeeHtml('id="registrationConsentModal"')
+            ->assertSee('HLURB Reg. No. 02104')
+            ->assertSee('Republic Act No. 10173')
+            ->assertDontSeeHtml('id="registrationTermsModal"')
+            ->assertDontSeeHtml('id="registrationPrivacyModal"')
             ->assertDontSee('ChosenPass1!');
     }
 
@@ -291,19 +295,21 @@ class RegistrationTest extends TestCase
 
     // ===== Consent =====
 
-    public function test_the_terms_and_the_privacy_consent_are_separate_boxes(): void
+    public function test_the_terms_and_the_privacy_consent_share_one_box(): void
     {
         Notification::fake();
 
-        $this->wizard([], [], ['terms' => true, 'privacy' => false])
+        $this->wizard([], [], false)
             ->call('submit')
-            ->assertHasErrors(['consent.privacy']);
+            ->assertHasErrors(['consent']);
 
         $this->assertDatabaseMissing('users', ['email' => 'applicant@example.com']);
 
-        $this->wizard([], ['email' => 'applicant2@example.com'], ['terms' => false, 'privacy' => true])
+        $this->wizard([], ['email' => 'applicant2@example.com'])
             ->call('submit')
-            ->assertHasErrors(['consent.terms']);
+            ->assertHasNoErrors();
+
+        $this->assertDatabaseHas('users', ['email' => 'applicant2@example.com']);
     }
 
     // ===== Abuse =====
@@ -367,9 +373,9 @@ class RegistrationTest extends TestCase
     /**
      * @param  array<string, mixed>  $formOverrides
      * @param  array<string, mixed>  $accountOverrides
-     * @param  array<string, bool>  $consent
+     * @param  bool  $consent
      */
-    private function wizard(array $formOverrides = [], array $accountOverrides = [], array $consent = ['terms' => true, 'privacy' => true]): \Livewire\Testing\TestableLivewire
+    private function wizard(array $formOverrides = [], array $accountOverrides = [], bool $consent = true): \Livewire\Testing\TestableLivewire
     {
         return Livewire::test(RegisterWizard::class)
             ->set('email', $accountOverrides['email'] ?? 'applicant@example.com')

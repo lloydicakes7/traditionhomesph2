@@ -39,7 +39,7 @@ class CreateJournalTables extends Migration
             $table->id();
             $table->string('entry_no', 50)->unique()->comment('JE-2026-0001');
             $table->date('entry_date');
-            $table->string('memo')->nullable();
+            $table->text('memo')->nullable();
             $table->string('status', 20)->default('posted')->comment('App\Enums\JournalEntryStatus');
             $table->string('reference_no', 100)->nullable()->comment('OR / voucher / document number');
 

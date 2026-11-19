@@ -187,7 +187,7 @@ class TransferFormModal extends AdminModalComponent
             'from_account_id' => ['required', Rule::exists('accounts', 'id')],
             'to_account_id'   => ['required', Rule::exists('accounts', 'id'), 'different:from_account_id'],
             'amount'          => 'required|numeric|min:0.01',
-            'memo'            => 'required|string|max:255',
+            'memo'            => 'required|string|max:2000',
             'reference_no'    => 'nullable|string|max:100',
         ];
     }

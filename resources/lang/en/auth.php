@@ -131,89 +131,16 @@ return [
     'office_register_title' => 'Office Registration',
     'office_register_intro' => 'Create an officer account. An Administrator reviews every registration before the account is opened.',
 
-    // ===== Terms and conditions =====
+    // ===== Consent =====
 
-    'terms' => [
-        'title' => 'Terms and Conditions',
+    'consent' => [
+        'title' => 'Terms, Certification and Data Privacy Consent',
         'accept_prefix' => 'I accept the',
-        'accept_link' => 'Terms and Conditions',
+        'accept_link' => 'Terms, Certification and Data Privacy Consent',
         'close' => 'Close',
-        'sections' => [
-            [
-                'heading' => 'Acceptance',
-                'body' => 'By registering, you agree to these Terms and to the By-Laws and rules of Tradition Homes Phase 2 Homeowners Association, Inc. If you do not agree, do not submit a registration.',
-            ],
-            [
-                'heading' => 'Your account',
-                'body' => 'One account belongs to one household head. Keep your password secret, do not let anyone else use it, and tell the office at once if you believe someone else has access.',
-            ],
-            [
-                'heading' => 'Accurate information',
-                'body' => 'You confirm that the information and the identification document you submit are true and correct, and you agree to keep them current. Tell the office promptly when your contact details, household members or unit change.',
-            ],
-            [
-                'heading' => 'Association rules and dues',
-                'body' => 'Homeowners and household members are bound by the association\'s By-Laws and duly approved rules, including dues, fees and charges and the rules on amenities, violations and requests. Any penalty or sanction follows the By-Laws and Republic Act No. 9904, with prior notice and an opportunity to be heard. Nothing in these Terms limits any right the law or the By-Laws give you.',
-            ],
-            [
-                'heading' => 'Review of registrations',
-                'body' => 'The office reviews every registration and may ask for further proof of identity, ownership or residency. A registration that is false, duplicate or made for another person without authority is refused, and an account obtained that way may be suspended or closed after notice to you.',
-            ],
-            [
-                'heading' => 'Changes to these terms',
-                'body' => 'The association may update these terms. The version in force when you register is the one you accepted. Material changes will be announced on this website or sent to your contact details, and they never reduce your rights under the law or the By-Laws.',
-            ],
-        ],
-    ],
-
-    // ===== Data privacy consent =====
-
-    'privacy' => [
-        'title' => 'Data Privacy Consent',
-        'accept_prefix' => 'I consent to the',
-        'accept_link' => 'Data Privacy Consent',
-        'close' => 'Close',
-        'sections' => [
-            [
-                'heading' => 'Legal basis',
-                'body' => 'Tradition Homes Phase 2 Homeowners Association, Inc. processes your personal information under the Data Privacy Act of 2012 (Republic Act No. 10173) and its Implementing Rules and Regulations. Our lawful bases are your consent, your membership and residency relationship with the association under its By-Laws and Republic Act No. 9904 (Magna Carta for Homeowners and Homeowners\' Associations), and the association\'s legitimate interest in keeping accurate and secure records of its residents and households.',
-            ],
-            [
-                'heading' => 'Purpose of collection',
-                'body' => 'The association collects your information to register your household, confirm that you live in the unit you claim, open and maintain the unit your household occupies, issue your portal account, keep the association\'s records of residents and households, assess and collect dues, and contact you about association business.',
-            ],
-            [
-                'heading' => 'Data collected',
-                'body' => 'We collect your name, birth date and place, sex, civil status, spouse\'s name, contact number, email address, citizenship, religion, occupation, educational attainment, the unit and household you belong to, and one valid identification document. Some of these fields are optional and are marked as such on the form.',
-            ],
-            [
-                'heading' => 'Sensitive personal information',
-                'body' => 'Your birth date, civil status, religion (if you give it) and the details of your identification document are sensitive personal information under the Data Privacy Act. By ticking the box you give your explicit consent to the association processing them for the purposes above, and only for those purposes.',
-            ],
-            [
-                'heading' => 'Use and sharing',
-                'body' => 'Your information is used only for the purposes above. It is shared with the association\'s officers and staff who need it to do their work, with service providers that support this system under agreements to protect your data, and with government agencies or courts only when the law requires it. It is never sold, and it is not shared with other homeowners except where the law or the By-Laws require.',
-            ],
-            [
-                'heading' => 'Storage, security and retention',
-                'body' => 'Your records are stored on the association\'s system with access limited to authorized officers and staff. They are kept for as long as you are a resident or household member, and afterward for the period the association needs to meet its legal, accounting and records-keeping duties. Records no longer needed are securely disposed of. If a data breach affects you, the association will notify you and the National Privacy Commission as the law requires.',
-            ],
-            [
-                'heading' => 'ID handling',
-                'body' => 'The identification document you submit is stored privately. Only officers authorized to review registrations can open it, and it is used only to confirm your identity. Only the 16-digit PhilSys Card Number is recorded where a PhilSys number is required; the Serial Number is never recorded.',
-            ],
-            [
-                'heading' => 'Your rights',
-                'body' => 'You have the right to be informed, to object, to access, to correct, to erasure or blocking, to damages, to file a complaint, and to data portability, as provided by the Data Privacy Act. You may ask the office to see the information it holds about you and to correct anything that is wrong. If you believe your rights were violated, you may file a complaint with the National Privacy Commission (privacy.gov.ph).',
-            ],
-            [
-                'heading' => 'Withdrawing consent',
-                'body' => 'You may withdraw your consent at any time by writing to the Data Protection Officer. Withdrawal does not affect processing already done, and the association may still keep information the law or the By-Laws require it to keep. If you withdraw consent to information needed to maintain your registration, your portal account may no longer be kept active.',
-            ],
-            [
-                'heading' => 'Data protection officer',
-                'body' => 'For questions about your information, or to exercise any of your rights, contact the association\'s Data Protection Officer through the office contact details published on this website.',
-            ],
+        'paragraphs' => [
+            'I hereby certify that all information and proof of residency provided in this registration form are true, accurate, and complete to the best of my knowledge. I agree to abide by the Terms and Conditions of the Tradition Homes Phase 2 Homeowners Association, Inc. (HLURB Reg. No. 02104) Management Information System, including maintaining the confidentiality of my account credentials and recognizing that official Association physical receipts and ledgers shall prevail in case of any billing discrepancy.',
+            'Furthermore, I understand that for Tradition Homes Phase 2 Homeowners Association, Inc. to fulfill its administrative functions pursuant to Republic Act No. 9904 (Magna Carta for Homeowners and Homeowners\' Associations) and its Bylaws, the Association must collect and process my personal and household information for resident verification, HOA dues billing and payment tracking, official announcements, and resolution of community requests and concerns. Therefore, I freely give my consent and authorize the Association to collect, store, and process my personal data strictly for these purposes, in accordance with Republic Act No. 10173 (Data Privacy Act of 2012).',
         ],
     ],
 

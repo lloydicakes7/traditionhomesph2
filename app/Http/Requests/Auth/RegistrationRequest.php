@@ -46,8 +46,7 @@ class RegistrationRequest extends FormRequest
             'email'    => ['required', 'string', 'email', 'max:255', new EmailAvailable],
             'password' => ['required', 'string', 'confirmed', new PasswordPolicy],
 
-            'consent.terms'   => ['accepted'],
-            'consent.privacy' => ['accepted'],
+            'consent' => ['accepted'],
         ];
     }
 }

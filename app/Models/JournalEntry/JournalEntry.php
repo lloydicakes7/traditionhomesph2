@@ -575,7 +575,7 @@ class JournalEntry extends Model
     {
         if (AccountingPeriod::locksDate($date)) {
             throw ValidationException::withMessages([
-                'entry_date' => 'That month is closed — reopen the period before changing the books there.',
+                'entry_date' => 'That month is closed. Reopen the period before changing the books there.',
             ]);
         }
     }

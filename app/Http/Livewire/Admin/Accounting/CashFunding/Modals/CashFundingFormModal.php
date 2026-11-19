@@ -111,7 +111,7 @@ class CashFundingFormModal extends AdminModalComponent
                 Rule::exists('accounts', 'id')->where('is_cash', true),
             ],
             'amount'        => 'required|numeric|min:0.01|max:9999999999.99',
-            'memo'          => 'required|string|max:255',
+            'memo'          => 'required|string|max:2000',
             'reference_no'  => 'nullable|string|max:100',
         ];
     }

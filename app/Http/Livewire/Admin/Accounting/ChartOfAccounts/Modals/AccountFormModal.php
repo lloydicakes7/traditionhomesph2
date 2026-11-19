@@ -13,9 +13,9 @@ use Illuminate\Validation\ValidationException;
 /**
  * Add / Edit an account on the chart.
  *
- * The office chooses one of three kinds — income, expense, or cash — and the
- * books derive the accounting type and whether it holds money. The code is
- * suggested in the kind's block but stays editable. A cash account may carry a
+ * The office chooses one of three kinds: income, expense, or cash. The books
+ * derive the accounting type, whether it holds money, and the code in the
+ * kind's block, so the code cannot be edited. A cash account may carry a
  * starting balance on the day it is added; the entry behind it is posted by
  * the Action, never written here.
  *
@@ -33,9 +33,6 @@ class AccountFormModal extends AdminModalComponent
 
     /** @var int|null Account being edited; null when adding */
     public $editingAccountId = null;
-
-    /** @var string The code last suggested by the form */
-    public $suggestedCode = '';
 
     /** @var bool Whether the kind can no longer change */
     public $kindLocked = false;
@@ -73,12 +70,11 @@ class AccountFormModal extends AdminModalComponent
 
         $this->isEditing = false;
         $this->editingAccountId = null;
-        $this->suggestedCode = Account::nextCode(AccountKind::INCOME());
         $this->kindLocked = false;
         $this->managedBy = '';
         $this->systemAccount = false;
         $this->form = [
-            'code'             => $this->suggestedCode,
+            'code'             => Account::nextCode(AccountKind::INCOME()),
             'name'             => '',
             'kind'             => AccountKind::INCOME,
             'description'      => '',
@@ -103,7 +99,6 @@ class AccountFormModal extends AdminModalComponent
 
         $this->isEditing = true;
         $this->editingAccountId = $account->id;
-        $this->suggestedCode = (string) $account->code;
         $this->managedBy = (string) $account->managedByLabel();
         $this->systemAccount = $account->isSystem();
         $this->kindLocked = $account->isSystem()
@@ -127,7 +122,6 @@ class AccountFormModal extends AdminModalComponent
     {
         $this->isEditing = false;
         $this->editingAccountId = null;
-        $this->suggestedCode = '';
         $this->kindLocked = false;
         $this->managedBy = '';
         $this->systemAccount = false;
@@ -151,13 +145,7 @@ class AccountFormModal extends AdminModalComponent
     public function updatedFormKind($value): void
     {
         if (! $this->isEditing) {
-            $suggested = Account::nextCode(AccountKind::from($value));
-
-            if ($this->form['code'] === $this->suggestedCode || $this->form['code'] === '') {
-                $this->form['code'] = $suggested;
-            }
-
-            $this->suggestedCode = $suggested;
+            $this->form['code'] = Account::nextCode(AccountKind::from($value));
         }
 
         if ($value !== AccountKind::MONEY) {
@@ -182,11 +170,8 @@ class AccountFormModal extends AdminModalComponent
         $account = $this->editingAccountId ? Account::findOrFail($this->editingAccountId) : null;
 
         $this->validate(
-            $this->prefixedRules($this->rules($account)),
+            $this->prefixedRules($this->rules()),
             [
-                'form.code.required' => 'Give the account a code.',
-                'form.code.digits_between' => 'The code must be 3 to 6 digits.',
-                'form.code.unique' => 'That code is already used by another account.',
                 'form.name.required' => 'Give the account a name.',
                 'form.kind.required' => 'Choose what kind of account this is.',
                 'form.balance_as_of.required_if' => 'The starting balance needs the date it applies to.',
@@ -194,7 +179,6 @@ class AccountFormModal extends AdminModalComponent
         );
 
         $payload = [
-            'code'             => trim((string) $this->form['code']),
             'name'             => $this->form['name'],
             'kind'             => $this->form['kind'],
             'description'      => $this->form['description'],
@@ -233,16 +217,11 @@ class AccountFormModal extends AdminModalComponent
      *
      * @return array<string, mixed>
      */
-    private function rules(?Account $account = null): array
+    private function rules(): array
     {
-        $isNewMoney = ! $account && $this->form['kind'] === AccountKind::MONEY;
+        $isNewMoney = ! $this->isEditing && $this->form['kind'] === AccountKind::MONEY;
 
         return [
-            'code'             => [
-                'required',
-                'digits_between:3,6',
-                Rule::unique('accounts', 'code')->ignore($account ? $account->id : null),
-            ],
             'name'             => ['required', 'string', 'max:255'],
             'kind'             => ['required', Rule::in(array_column(AccountKind::cases(), 'value'))],
             'description'      => ['nullable', 'string', 'max:255'],

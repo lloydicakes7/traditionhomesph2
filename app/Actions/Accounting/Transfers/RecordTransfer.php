@@ -4,12 +4,14 @@ namespace App\Actions\Accounting\Transfers;
 
 use App\Enums\JournalClassification;
 use App\Enums\JournalSource;
+use App\Models\Account\AccountingPeriod;
 use App\Models\Account\AccountTransfer;
 use App\Models\Admin;
 use App\Models\JournalEntry\JournalEntry;
 use App\Models\JournalEntry\JournalLine;
 use App\Services\ActivityLogService;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 
 class RecordTransfer
 {
@@ -24,6 +26,12 @@ class RecordTransfer
 
     public function handle(array $data, Admin $by): AccountTransfer
     {
+        if (AccountingPeriod::locksDate($data['transfer_date'])) {
+            throw ValidationException::withMessages([
+                'transfer_date' => 'That month is closed. Reopen the period before recording a transfer there.',
+            ]);
+        }
+
         $transfer = DB::transaction(function () use ($data, $by) {
             $amount = bcadd((string) $data['amount'], '0', 2);
 
@@ -71,7 +79,7 @@ class RecordTransfer
             $by,
             'created',
             'Transfers',
-            'Recorded transfer ' . $transfer->reference . ' — ' . $transfer->from_label . ' to ' . $transfer->to_label,
+            'Recorded transfer ' . $transfer->reference . ' from ' . $transfer->from_label . ' to ' . $transfer->to_label,
             ['account_transfer_id' => $transfer->id]
         );
 

@@ -12,8 +12,12 @@
 
             <p class="text-danger small mb-0">
                 <i class="fas fa-fw fa-info-circle"></i>
-                The posting behind it is voided, not dropped — the ledger still says what was moved.
+                The posting behind it is voided, not dropped. The ledger still says what was moved.
             </p>
+
+            @error('transfer')
+                <div class="alert alert-danger py-2 px-3 small mt-3 mb-0">{{ $message }}</div>
+            @enderror
         </div>
 
         <x-slot name="footerSlot">

@@ -45,8 +45,7 @@
                 <div class="col-12 col-sm-6">
                     <x-adminlte-input name="form.code" label="Code"
                         wire:model.defer="form.code" igroup-size="sm"
-                        maxlength="6" inputmode="numeric"
-                        :disabled="$readOnly" />
+                        maxlength="6" inputmode="numeric" readonly />
                 </div>
             </div>
 
