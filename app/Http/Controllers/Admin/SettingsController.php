@@ -56,18 +56,6 @@ class SettingsController extends Controller
     }
 
     /**
-     * Show the security settings page.
-     *
-     * @return \Illuminate\View\View
-     */
-    public function security()
-    {
-        $this->authorize('update', \App\Models\Setting::class);
-
-        return view('admin.settings.security');
-    }
-
-    /**
      * Show the print settings page — the shared letterhead, footer, paper and
      * signatories every printable document draws.
      *

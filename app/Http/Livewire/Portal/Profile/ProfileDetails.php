@@ -179,7 +179,6 @@ class ProfileDetails extends PortalComponent
 
         $account->update([
             'password'            => Hash::make($this->new_password),
-            'password_changed_at' => now(),
         ]);
 
         $this->reset(['current_password', 'new_password', 'new_password_confirmation']);

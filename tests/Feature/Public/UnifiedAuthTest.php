@@ -144,9 +144,9 @@ class UnifiedAuthTest extends TestCase
         $this->assertSame(1, substr_count($response->getContent(), trans('auth.failed')));
     }
 
-    public function test_a_locked_out_visitor_is_told_how_long_to_wait(): void
+    public function test_a_device_is_blocked_after_ten_failed_attempts(): void
     {
-        for ($attempt = 1; $attempt <= 5; $attempt++) {
+        for ($attempt = 1; $attempt <= 10; $attempt++) {
             $this->from('/login')->post('/login', [
                 'email'    => 'nobody@example.com',
                 'password' => 'wrong-password',
@@ -156,7 +156,7 @@ class UnifiedAuthTest extends TestCase
         $this->from('/login')->followingRedirects()->post('/login', [
             'email'    => 'nobody@example.com',
             'password' => 'wrong-password',
-        ])->assertSee(explode(':seconds', trans('auth.throttle'))[0]);
+        ])->assertSee('Too many failed login attempts. Please try again later.');
     }
 
     public function test_a_deactivated_homeowner_cannot_sign_in(): void

@@ -80,7 +80,6 @@ class DirectoryFormTest extends TestCase
             'name'                => 'Officer',
             'email'               => 'directory-form-' . uniqid() . '@example.test',
             'password'            => Hash::make('Secret123!'),
-            'password_changed_at' => now(),
             'is_active'           => true,
             'role_id'             => $role->id,
         ]);

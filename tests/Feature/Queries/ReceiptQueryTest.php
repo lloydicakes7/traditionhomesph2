@@ -137,7 +137,6 @@ class ReceiptQueryTest extends TestCase
             'name'                => 'Maria Santos',
             'email'               => 'receipt-query-' . uniqid() . '@example.test',
             'password'            => Hash::make('Secret123!'),
-            'password_changed_at' => now(),
             'is_active'           => true,
             'role_id'             => $role->id,
         ]);

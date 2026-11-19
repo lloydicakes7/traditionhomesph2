@@ -39,7 +39,6 @@ class PrintSettingsTest extends TestCase
             'name'                => 'Officer',
             'email'               => 'print-settings-' . uniqid() . '@example.test',
             'password'            => Hash::make('Secret123!'),
-            'password_changed_at' => now(),
             'is_active'           => true,
             'role_id'             => $role->id,
         ]);

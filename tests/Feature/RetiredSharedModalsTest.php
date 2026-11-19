@@ -73,7 +73,6 @@ class RetiredSharedModalsTest extends TestCase
             'name'                => 'Officer',
             'email'               => 'modals-' . uniqid() . '@example.test',
             'password'            => Hash::make('Secret123!'),
-            'password_changed_at' => now(),
             // The panel turns a deactivated account away, and a freshly-created
             // model carries no column the database filled in for it.
             'is_active'           => true,

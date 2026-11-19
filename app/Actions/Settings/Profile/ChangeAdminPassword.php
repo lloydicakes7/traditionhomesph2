@@ -24,7 +24,6 @@ class ChangeAdminPassword
         }
 
         $admin->password = Hash::make($newPassword);
-        $admin->password_changed_at = now();
         $admin->save();
 
         $this->activity->log($admin, 'updated', 'profile', 'Changed password', ['user_id' => $admin->id]);

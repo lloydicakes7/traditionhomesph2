@@ -50,7 +50,6 @@ class PaymentJournalTest extends TestCase
             'name'                => 'Officer',
             'email'               => 'officer-' . uniqid() . '@example.test',
             'password'            => bcrypt('Secret123!'),
-            'password_changed_at' => now(),
         ]);
     }
 

@@ -50,7 +50,6 @@ Route::middleware('guest')->group(function () {
 Route::middleware([
     'auth',
     'account.active:web',
-    'password.expiry:web,settings.profile'
 ])->group(function () {
 
     // ---------------------------------------------------------------
@@ -230,7 +229,6 @@ Route::middleware([
         Route::get('/', [SettingsController::class, 'general'])->name('general');
         Route::get('/print', [SettingsController::class, 'print'])->name('print');
         Route::get('/collections', [SettingsController::class, 'collections'])->name('collections');
-        Route::get('/security', [SettingsController::class, 'security'])->name('security');
         Route::get('/authentication', [SettingsController::class, 'authentication'])->name('authentication');
         Route::get('/profile', [SettingsController::class, 'profile'])->name('profile');
     });

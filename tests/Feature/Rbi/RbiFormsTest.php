@@ -105,7 +105,6 @@ class RbiFormsTest extends TestCase
             'resident_id' => $this->head->id,
             'email' => 'juan.delacruz@example.test',
             'password' => Hash::make('Secret123!'),
-            'password_changed_at' => now(),
             'is_active' => true,
         ]);
 
@@ -137,7 +136,6 @@ class RbiFormsTest extends TestCase
             'resident_id' => $this->stranger->id,
             'email' => 'anna.lim@example.test',
             'password' => Hash::make('Secret123!'),
-            'password_changed_at' => now(),
             'is_active' => true,
         ]);
 
@@ -195,7 +193,6 @@ class RbiFormsTest extends TestCase
             'name' => 'Visitor Officer',
             'email' => 'rbi-visitor-' . uniqid() . '@example.test',
             'password' => Hash::make('Secret123!'),
-            'password_changed_at' => now(),
             'is_active' => true,
             'role_id' => $role->id,
         ]);
@@ -448,7 +445,6 @@ class RbiFormsTest extends TestCase
             'name' => 'Maria Clara Villanueva',
             'email' => 'rbi-' . uniqid() . '@example.test',
             'password' => Hash::make('Secret123!'),
-            'password_changed_at' => now(),
             'is_active' => true,
             'role_id' => $role->id,
         ]);

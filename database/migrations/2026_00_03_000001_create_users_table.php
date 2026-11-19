@@ -26,7 +26,6 @@
                 $table->foreignId('profile_verified_by_admin_id')->nullable()->constrained('admins')->nullOnDelete();
                 $table->string('profile_rejection_note')->nullable();
                 $table->string('password');
-                $table->timestamp('password_changed_at')->nullable();
                 $table->boolean('must_change_password')->default(false);
                 $table->timestamp('terms_accepted_at')->nullable();
                 $table->timestamp('privacy_accepted_at')->nullable();

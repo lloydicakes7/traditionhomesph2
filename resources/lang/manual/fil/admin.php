@@ -105,7 +105,7 @@ return [
                         'Lalabas ang iyong pangalan sa kanan ng navbar, at ililista ng sidebar ang mga tool na maaaring buksan ng iyong role.',
                     ],
                     'notes'  => [
-                        'Binibilang ang maling pagtatangka: pagkatapos ng masyadong marami nang sunod-sunod, hihinto sandali ang sign-in. Ang bilang at ang tagal ay itinatakda sa Pangangasiwa → Mga Setting → Security.',
+                        'Binibilang ang maling pagtatangka: pagkatapos ng sampung pagkabigo, hihinto ang device nang tatlong minuto bago ito makasubok muli.',
                         'Ang deactivated na account ay tinatanggihan kahit tama ang password. Hilingin sa Administrator na i-reactivate ito.',
                     ],
                 ],
@@ -125,8 +125,7 @@ return [
                     ],
                     'notes'  => [
                         'Nag-e-expire ang reset link; humiling ng bago kung nag-expire na.',
-                        'Ang mga tuntunin ng password ay mula sa Mga Setting → Security at kapareho ng ipinapatupad ng form ng account.',
-                        'Ang account na ang password ay lumampas na sa expiry window ay itinatabi sa pahina ng profile nito hanggang sa mabago ang password.',
+                        'Ang password ay dapat may hindi bababa sa 8 na karakter at may isang malaking titik, isang maliit na titik, isang numero at isang espesyal na karakter.',
                     ],
                 ],
                 [
@@ -867,7 +866,6 @@ return [
                     'fields' => [
                         'General'     => 'Ang pangalan, logo, detalye ng kontak at iba pang impormasyong pangpubliko ng asosasyon.',
                         'Collections' => 'Ang mga default ng pagsingil: mga rate ng dues, araw ng pagbabayad, grace, paalala at multa.',
-                        'Security'    => 'Lockout sa login, patakaran ng password at expiry.',
                         'Authentication' => 'Kung maaaring magrehistro ang opisina at ang mga residente, at kung agad na tinatanggap ang bagong account.',
                         'Profile'     => 'Ang iyong sariling account: larawan, email address at password.',
                         'Print'       => 'Paano pinamumunuan at pinipirmahan ang bawat napi-print na dokumento.',
@@ -884,19 +882,7 @@ return [
                         'Lalabas ang kumpirmasyon, at nakapasok na ang pagbabago sa susunod na pahinang i-load mo — ang bagong letterhead ay umaabot sa pinakasusunod na dokumento, ang bagong pangalan sa susunod na pag-render ng pahina.',
                     ],
                     'notes'  => [
-                        'Ang mga halagang nagpapatakbo sa framework — haba ng session, lockout, tuntunin ng password — ay sinusuri kung saan isinulat ang mga ito, kaya ang hindi magagamit na halaga ay tinatanggihan sa halip na i-save.',
                         'Ang letterhead ay rich text, pinapalinis sa pagpasok: nananatili ang pinapayagang formatting, hindi ang mga script.',
-                    ],
-                ],
-                [
-                    'title'  => 'Mga setting ng seguridad at ang pinapatakbo nila',
-                    'body'   => 'Ang pangkat ng seguridad ay hindi imbakan: ang bawat halaga ay ginagamit ng isang pinangalanang bahagi ng sign-in flow.',
-                    'fields' => [
-                        'Minimum na haba ng password at mga tuntunin ng karakter' => 'Ipinapatupad saanman tumatanggap ng bagong password: form ng account ng opisyal, parehong reset flow, self-registration at parehong change-password form.',
-                        'Expiry ng password' => 'Gaano katagal magagamit ang password bago itabi ang account sa pahina ng profile nito hanggang mabago ito.',
-                        'Mga pagtatangka sa login at lockout' => 'Ilan ang tinatanggap na maling pagtatangka at gaano katagal hinihinto ang sign-in.',
-                        'Session timeout'    => 'Gaano katagal nabubuhay ang idle session, at kung ang pagsara ng browser ay nagtatapos nito.',
-                        'Login enabled'      => 'Kung ang sign-in ay tinatanggap — sa panel at sa portal.',
                     ],
                 ],
             ],
@@ -959,9 +945,8 @@ return [
                     'title'  => 'Mga problema sa sign-in',
                     'fields' => [
                         '"Hindi tugma sa aming mga rekord ang mga kredensyal na ito."' => 'Tingnan muna ang email address — ito ang nasa account, hindi laging ang gusto ng opisyal. Kung nawala ang password, gamitin ang Nakalimutan ang password sa halip na maghula.',
-                        'Tinatanggihan ang sign-in pagkatapos ng ilang pagtatangka' => 'Pansamantalang hinihigpitan ang account. Hintayin ang window, o hilingin sa Administrator na itaas ang pinapayagang pagtatangka sa Mga Setting → Security.',
+                        'Tinatanggihan ang sign-in pagkatapos ng ilang pagtatangka' => 'Naka-block ang device nang tatlong minuto pagkatapos ng sampung pagkabigo. Hintayin na matapos ang block.',
                         'Hindi dumarating ang code sa email' => 'Humiling ng bagong code, pagkatapos ay tingnan ang email address sa account. Nadedelay rin ang mga code ng cooldown pagkatapos ng paulit-ulit na hiling.',
-                        'Paulit-ulit kang ipinapadala ng panel sa iyong profile' => 'Lumampas na ang password sa expiry window. Baguhin ito sa pahina ng profile at bubukas nang normal ang panel.',
                         '"Na-deactivate ang iyong account"' => 'Ang naka-off na account ay hindi makakapag-sign in kahit tama ang password. Hilingin sa Administrator na i-reactivate ito.',
                     ],
                 ],
@@ -1043,7 +1028,7 @@ return [
                         'Bakit kailangan kong aprubahan ang bayad na inihain ng homeowner?' => 'Ang portal ay salita ng sambahayan; ang mga libro ay sa opisina. Ang pag-apruba ang lugar kung saan inaako ng opisina ang responsibilidad sa pera.',
                         'Bakit hindi available sa kanila ang dokumento ng homeowner?' => 'Dapat aprubahan ang request at bayaran ang invoice na itinaas para dito, sa loob ng window at badyet ng download na itinakda ng apruba.',
                         'Ano ang pagkakaiba ng bill at invoice?' => 'Ang invoice ay isang uri ng bill. Ang buwanang dues at bayad na booking ay mga bill ng ibang uri, at lahat ng ito ay nasa isang ledger.',
-                        'Bakit hindi ako na-sign out kapag isinara ang browser?' => 'Ang session ay humihigit sa tab hanggang mag-time out. Mag-sign out nang maayos sa shared computer; ang timeout mismo ay itinakda sa Mga Setting → Security.',
+                        'Bakit hindi ako na-sign out kapag isinara ang browser?' => 'Ang session ay humihigit sa tab hanggang matapos ang itinakdang lifetime. Mag-sign out nang maayos sa shared computer.',
                         'Maaari bang magkaroon ng dalawang sambahayan ang isang property?' => 'Hindi. Isang sambahayan kada unit, at isang unit kada sambahayan.',
                         'Bakit walang laman ang menu na nakikita ko?' => 'Ang listahan ay na-filter, o na-clear ang mga rekord — tingnan ang toolbar bago magpasya na may nawawala.',
                         'Paano ko malalaman ang ginawa ng isang opisyal?' => 'Itinatala ng activity log ang mga aksyong ginawa sa system, at itinatala ng mga libro ang mismong mga paggalaw ng pera.',

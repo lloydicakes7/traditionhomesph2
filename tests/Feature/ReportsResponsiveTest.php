@@ -71,7 +71,6 @@ class ReportsResponsiveTest extends TestCase
             'name'                => 'Officer',
             'email'               => 'responsive-' . uniqid() . '@example.test',
             'password'            => Hash::make('Secret123!'),
-            'password_changed_at' => now(),
             'role_id'             => $role->id,
             'is_active'           => true,
         ]);

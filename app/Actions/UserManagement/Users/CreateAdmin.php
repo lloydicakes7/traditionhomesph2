@@ -34,7 +34,6 @@ class CreateAdmin
     {
         $admin = Admin::create($this->payload($data) + [
             'password'            => Hash::make(Str::random(60)),
-            'password_changed_at' => now(),
         ]);
 
         $this->passwords->sendWelcome($admin);

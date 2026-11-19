@@ -49,7 +49,6 @@ Route::middleware(['guest:web', 'guest:homeowner'])->group(function () {
 Route::middleware([
     'auth:homeowner',
     'account.active:homeowner',
-    'password.expiry:homeowner,portal.profile',
 ])->group(function () {
 
     // ---------------------------------------------------------------
@@ -99,7 +98,6 @@ Route::middleware([
 Route::middleware([
     'auth:homeowner',
     'account.active:homeowner',
-    'password.expiry:homeowner,portal.profile',
     'profile.verified',
 ])->group(function () {
 

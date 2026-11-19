@@ -33,7 +33,6 @@ class ResetAdminPassword
 
         $admin->forceFill([
             'password'            => Hash::make(Str::random(60)),
-            'password_changed_at' => now(),
         ])->save();
 
         $this->passwords->send($admin);

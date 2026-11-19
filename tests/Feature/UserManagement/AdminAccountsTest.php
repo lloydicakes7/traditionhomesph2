@@ -44,7 +44,6 @@ class AdminAccountsTest extends TestCase
         $this->assertSame('new.officer@example.test', $admin->email);
         $this->assertFalse(Hash::check('', $admin->password));
         $this->assertGreaterThan(20, strlen($admin->password));
-        $this->assertNotNull($admin->password_changed_at);
 
         Notification::assertSentTo($admin, OfficerAccountOpened::class, function (OfficerAccountOpened $notification) use ($admin) {
             return $notification->toMail($admin)->subject === __('auth.officer_welcome_subject');
@@ -236,7 +235,6 @@ class AdminAccountsTest extends TestCase
             'name'                => 'Officer',
             'email'               => $email,
             'password'            => Hash::make('Secret123!'),
-            'password_changed_at' => now(),
             'role_id'             => $role->id,
             'is_active'           => true,
         ]);

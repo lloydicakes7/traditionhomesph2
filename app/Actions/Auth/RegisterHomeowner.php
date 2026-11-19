@@ -56,7 +56,6 @@ class RegisterHomeowner
                 'resident_id'         => $resident->id,
                 'email'               => $data['email'],
                 'password'            => Hash::make($data['password']),
-                'password_changed_at' => now(),
                 'terms_accepted_at'   => now(),
                 'privacy_accepted_at' => now(),
                 'registration_status' => RegistrationStatus::APPROVED,

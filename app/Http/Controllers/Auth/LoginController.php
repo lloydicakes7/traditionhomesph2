@@ -6,7 +6,6 @@ use App\Actions\Auth\SignInAccount;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Providers\RouteServiceProvider;
-use App\Queries\Settings\SecuritySettingsQuery;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,13 +14,9 @@ class LoginController extends Controller
 {
     use ThrottlesLogins;
 
-    /** @var SecuritySettingsQuery */
-    protected $securitySettings;
+    const MAX_ATTEMPTS = 10;
 
-    public function __construct(SecuritySettingsQuery $securitySettings)
-    {
-        $this->securitySettings = $securitySettings;
-    }
+    const DECAY_MINUTES = 3;
 
     // ===== Screen =====
 
@@ -107,19 +102,29 @@ class LoginController extends Controller
     }
 
     /**
-     * The number of failed attempts before the lockout window opens.
+     * The number of failed attempts a device may make in one window.
      */
     public function maxAttempts()
     {
-        return (int) $this->securitySettings->get('login_max_attempts', 5);
+        return self::MAX_ATTEMPTS;
     }
 
     /**
-     * How long, in minutes, a locked-out visitor waits.
+     * How long, in minutes, a blocked device waits.
      */
     public function decayMinutes()
     {
-        return (int) $this->securitySettings->get('login_lockout_minutes', 15);
+        return self::DECAY_MINUTES;
+    }
+
+    /**
+     * The key the throttle counts attempts by, one key per device.
+     *
+     * @return string
+     */
+    protected function throttleKey(Request $request)
+    {
+        return (string) $request->ip();
     }
 
     // ===== Tools =====

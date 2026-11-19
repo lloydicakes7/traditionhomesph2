@@ -37,7 +37,6 @@ class CollectionSettingsTest extends TestCase
             'name'                => 'Officer',
             'email'               => 'settings-fixture-' . uniqid() . '@example.test',
             'password'            => Hash::make('Secret123!'),
-            'password_changed_at' => now(),
             'is_active'           => true,
         ]);
     }
@@ -57,7 +56,6 @@ class CollectionSettingsTest extends TestCase
             'name'                => 'Officer',
             'email'               => 'collections-settings-' . uniqid() . '@example.test',
             'password'            => Hash::make('Secret123!'),
-            'password_changed_at' => now(),
             'is_active'           => true,
             'role_id'             => $role->id,
         ]);

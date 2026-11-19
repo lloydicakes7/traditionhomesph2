@@ -518,7 +518,6 @@ class RbiProfileFieldsTest extends TestCase
             'resident_id' => $resident->id,
             'email' => strtolower($resident->first_name) . '.' . strtolower($resident->surname) . '@example.test',
             'password' => Hash::make('Secret123!'),
-            'password_changed_at' => now(),
             'is_active' => true,
         ]);
     }
@@ -539,7 +538,6 @@ class RbiProfileFieldsTest extends TestCase
             'resident_id' => $resident->id,
             'email' => 'ana.cruz@example.test',
             'password' => Hash::make('Secret123!'),
-            'password_changed_at' => now(),
             'is_active' => true,
         ]);
     }
@@ -555,7 +553,6 @@ class RbiProfileFieldsTest extends TestCase
             'name' => 'Maria Clara Villanueva',
             'email' => 'rbi-profile-' . uniqid() . '@example.test',
             'password' => Hash::make('Secret123!'),
-            'password_changed_at' => now(),
             'is_active' => true,
             'role_id' => $role->id,
         ]);

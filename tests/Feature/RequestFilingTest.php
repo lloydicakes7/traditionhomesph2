@@ -705,7 +705,6 @@ class RequestFilingTest extends TestCase
             'name'                => 'Officer',
             'email'               => 'request-filing-' . uniqid() . '@example.test',
             'password'            => \Illuminate\Support\Facades\Hash::make('Secret123!'),
-            'password_changed_at' => now(),
             'role_id'             => $role->id,
             'is_active'           => true,
         ]);

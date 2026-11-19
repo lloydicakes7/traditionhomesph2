@@ -98,7 +98,6 @@ class SupportActionsDropdownTest extends TestCase
             'name'                => 'Officer',
             'email'               => 'support-actions-' . uniqid() . '@example.test',
             'password'            => Hash::make('Secret123!'),
-            'password_changed_at' => now(),
             'role_id'             => $role->id,
             'is_active'           => true,
         ]);

@@ -37,7 +37,6 @@ class RegisterAdmin
             'email'               => $data['email'],
             'password'            => Hash::make($data['password']),
             'role_id'             => $roleId,
-            'password_changed_at' => now(),
             'is_active'           => false,
         ]);
     }

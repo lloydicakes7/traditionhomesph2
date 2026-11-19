@@ -800,12 +800,6 @@ return [
                     'model' => App\Models\Admin::class
                 ],
                 [
-                    'text' => 'Security',
-                    'route' => 'settings.security',
-                    'can' => 'viewAny',
-                    'model' => App\Models\Setting::class,
-                ],
-                [
                     'text' => 'Authentication',
                     'route' => 'settings.authentication',
                     'can' => 'viewAny',

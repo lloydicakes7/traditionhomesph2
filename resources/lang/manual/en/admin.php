@@ -104,7 +104,7 @@ return [
                         'Your name appears at the right of the navbar, and the sidebar lists the tools your role may open.',
                     ],
                     'notes'  => [
-                        'Wrong attempts are counted: after too many in a row the sign-in is held back for a short while. The number and the window are set in Administration → Settings → Security.',
+                        'Wrong attempts are counted: after ten failed attempts the device is blocked for three minutes before it can try again.',
                         'A deactivated account is refused however correct the password is. Ask the Administrator to reactivate it.',
                     ],
                 ],
@@ -124,8 +124,7 @@ return [
                     ],
                     'notes'  => [
                         'The reset link expires; ask for a fresh one if it has.',
-                        'The password rules come from Settings → Security and are the same ones an account form enforces.',
-                        'An account whose password has passed the expiry window is parked on its profile page until the password is changed.',
+                        'Passwords must be at least 8 characters and include an uppercase letter, a lowercase letter, a number and a special character.',
                     ],
                 ],
                 [
@@ -864,7 +863,6 @@ return [
                     'fields' => [
                         'General'     => 'The association\'s name, logo, contact details and other public-facing information.',
                         'Collections' => 'The billing defaults: dues rates, the day dues fall due, grace, reminders and penalties.',
-                        'Security'    => 'Login lockout, password policy and expiry.',
                         'Authentication' => 'Whether the office and residents may register, and whether a new account is accepted at once.',
                         'Profile'     => 'Your own account: photo, email address and password.',
                         'Print'       => 'How every printed document is headed and signed.',
@@ -881,19 +879,7 @@ return [
                         'A confirmation appears, and the change is already in force on the next page you load — a new letterhead reaches the very next document, a new name the next page render.',
                     ],
                     'notes'  => [
-                        'Values that drive the framework — session lifetime, lockout, password rules — are checked where they are written, so an unusable value is refused rather than saved.',
                         'The letterhead is rich text, sanitized on the way in: allowed formatting survives, scripts do not.',
-                    ],
-                ],
-                [
-                    'title'  => 'Security settings and what they drive',
-                    'body'   => 'The security group is not storage: each value is consumed by a named part of the sign-in flow.',
-                    'fields' => [
-                        'Password minimum length and character rules' => 'Enforced wherever a new password is accepted: an officer account form, both reset flows, a self-registration and both change-password forms.',
-                        'Password expiry'        => 'How long a password may be used before the account is parked on its profile page until it is changed.',
-                        'Login attempts and lockout' => 'How many wrong attempts are tolerated and for how long the sign-in is held back.',
-                        'Session timeout'        => 'How long an idle session lives, and whether closing the browser ends it.',
-                        'Login enabled'          => 'Whether the sign-in is accepted at all — on the panel and on the portal.',
                     ],
                 ],
             ],
@@ -956,9 +942,8 @@ return [
                     'title'  => 'Sign-in problems',
                     'fields' => [
                         '"These credentials do not match our records."' => 'Check the email address first — it is the one on the account, not necessarily the one the officer prefers. If the password is lost, use Forgot your password rather than trying another guess.',
-                        'The sign-in is refused after several attempts' => 'The account is temporarily throttled. Wait for the window to pass, or ask the Administrator to raise the allowed attempts in Settings → Security.',
+                        'The sign-in is refused after several attempts' => 'The device is blocked for three minutes after ten failed attempts. Wait for the block to pass.',
                         'The emailed code never arrives' => 'Ask for a new code, then check the email address on the account. Codes are also delayed by the cooldown after repeated asks.',
-                        'The panel sends you to your profile again and again' => 'The password has passed the expiry window. Change it on the profile page and the panel opens normally.',
                         '"Your account has been deactivated"' => 'An account switched off cannot sign in however correct the password is. Ask the Administrator to reactivate it.',
                     ],
                 ],
@@ -1040,7 +1025,7 @@ return [
                         'Why do I have to approve a payment that a homeowner filed?' => 'The portal is the household\'s own word; the books are the office\'s. Approval is where the office takes responsibility for the money.',
                         'Why is a homeowner\'s document not available to them?' => 'The request must be approved and the invoice raised for it paid, within the window and the download budget the approval set.',
                         'What is the difference between a bill and an invoice?' => 'An invoice is one kind of bill. Monthly dues and paid bookings are bills of other kinds, and all of them live in one ledger.',
-                        'Why does closing the browser not sign me out?' => 'The session outlives the tab until it times out. Sign out properly on a shared computer; the timeout itself is set in Settings → Security.',
+                        'Why does closing the browser not sign me out?' => 'The session outlives the tab until the configured lifetime ends. Sign out properly on a shared computer.',
                         'Can the same property have two households?' => 'No. One household per unit, and one unit per household.',
                         'Why is a menu I can see empty?' => 'The list is filtered, or the records have been cleared — check the toolbar before concluding something is missing.',
                         'How do I know what an officer did?' => 'The activity log records the actions taken on the system, and the books record the money movements themselves.',

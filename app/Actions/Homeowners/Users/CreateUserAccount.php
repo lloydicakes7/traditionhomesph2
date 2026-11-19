@@ -31,7 +31,6 @@ class CreateUserAccount
             'resident_id'         => $data['resident_id'] ?? null,
             'email'               => $data['email'],
             'password'            => Hash::make(Str::random(60)),
-            'password_changed_at' => now(),
             'registration_status'       => RegistrationStatus::APPROVED,
             'is_active'                 => $data['is_active'] ?? true,
             'email_verified_at'         => now(),

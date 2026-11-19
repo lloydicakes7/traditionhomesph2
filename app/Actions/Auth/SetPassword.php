@@ -29,7 +29,6 @@ class SetPassword
             function (User $user, string $password): void {
                 $user->forceFill([
                     'password'            => Hash::make($password),
-                    'password_changed_at' => now(),
                 ])->save();
             }
         );

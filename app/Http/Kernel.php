@@ -70,7 +70,6 @@ class Kernel extends HttpKernel
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'manual.locale' => \App\Http\Middleware\SetManualLocale::class,
-        'password.expiry' => \App\Http\Middleware\EnforcePasswordExpiry::class,
         'registration.open' => \App\Http\Middleware\EnsureRegistrationIsOpen::class,
         'password.confirm' => \Illuminate\Auth\Middleware\RequirePassword::class,
         'account.active' => \App\Http\Middleware\EnsureAccountIsActive::class,

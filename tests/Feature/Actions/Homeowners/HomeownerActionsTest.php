@@ -260,7 +260,6 @@ class HomeownerActionsTest extends TestCase
             'name'                => 'Officer',
             'email'               => 'homeowners-' . uniqid() . '@example.test',
             'password'            => Hash::make('Secret123!'),
-            'password_changed_at' => now(),
             'is_active'           => true,
         ]);
     }

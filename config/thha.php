@@ -83,35 +83,4 @@ return [
         ['name' => 'Paulino P. Coronel', 'position' => 'Kasambahay Committee'],
     ],
 
-    // -----------------------------------------------------------------------
-    // Security Settings
-    // -----------------------------------------------------------------------
-
-    'security' => [
-
-        // -------------------------------------------------------------------
-        // Password Policy
-        // -------------------------------------------------------------------
-
-        'password_min_length' => 6,
-        'password_require_upper' => true,
-        'password_require_lower' => true,
-        'password_require_number' => true,
-        'password_require_symbol' => true,
-        'password_expiry_days' => 0,
-
-        // -------------------------------------------------------------------
-        // Login Attempts
-        // -------------------------------------------------------------------
-
-        'login_max_attempts' => 5,
-        'login_lockout_minutes' => 5,
-
-        // -------------------------------------------------------------------
-        // Session Timeout
-        // -------------------------------------------------------------------
-
-        'session_timeout' => 120,
-        'session_expire_on_close' => false,
-    ],
 ];

@@ -10,14 +10,6 @@
         <div data-modal-content class="{{ ! $loaded ? 'd-none' : '' }}">
             <p class="mb-1">Are you sure you want to delete this activity log?</p>
 
-            @if ($deletingActivityId)
-                <p class="text-muted small mb-1">
-                    <span class="badge badge-{{ $deletingActivityTheme }}">{{ $deletingActivityLabel }}</span>
-                    &middot; {{ $deletingActivityDate }}
-                </p>
-                <p class="mb-0">{{ $deletingActivityDescription }}</p>
-            @endif
-
             <p class="text-danger small mt-2 mb-0">
                 <i class="fas fa-fw fa-info-circle"></i> This action cannot be undone.
             </p>

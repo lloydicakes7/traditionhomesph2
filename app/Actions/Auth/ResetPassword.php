@@ -52,7 +52,6 @@ class ResetPassword
     {
         $account->forceFill([
             'password'            => Hash::make($password),
-            'password_changed_at' => now(),
         ])->save();
     }
 }

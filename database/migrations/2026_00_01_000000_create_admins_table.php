@@ -22,7 +22,6 @@ class CreateAdminsTable extends Migration
             $table->foreignId('role_id')->nullable()->constrained('roles')->nullOnDelete();
             $table->boolean('is_active')->default(true);
             $table->string('password');
-            $table->timestamp('password_changed_at')->nullable();
             $table->rememberToken();
             $table->timestamps();
 

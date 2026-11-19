@@ -78,7 +78,6 @@ class AccountingModalsTest extends TestCase
             'name'                => 'Officer',
             'email'               => 'accounting-' . uniqid() . '@example.test',
             'password'            => Hash::make('Secret123!'),
-            'password_changed_at' => now(),
             'role_id'             => $role->id,
             'is_active'           => true,
         ]);

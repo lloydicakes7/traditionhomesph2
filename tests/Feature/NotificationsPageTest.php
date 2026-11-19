@@ -263,7 +263,6 @@ class NotificationsPageTest extends TestCase
             'name'                => 'Other Officer',
             'email'               => 'other-officer-' . uniqid() . '@example.test',
             'password'            => Hash::make('Secret123!'),
-            'password_changed_at' => now(),
             'role_id'             => Role::first()->id,
             'is_active'           => true,
         ]);
@@ -313,7 +312,6 @@ class NotificationsPageTest extends TestCase
             'name'                => 'Officer',
             'email'               => 'notifications-page-' . uniqid() . '@example.test',
             'password'            => Hash::make('Secret123!'),
-            'password_changed_at' => now(),
             'role_id'             => $role->id,
             'is_active'           => true,
         ]);

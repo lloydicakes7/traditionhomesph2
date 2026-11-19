@@ -37,7 +37,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $fillable = [
-        'resident_id', 'email', 'email_verified_at', 'password', 'password_changed_at',
+        'resident_id', 'email', 'email_verified_at', 'password',
         'terms_accepted_at', 'privacy_accepted_at', 'is_active', 'registration_status',
         'profile_status', 'profile_submitted_at', 'profile_verified_at',
         'profile_verified_by_admin_id', 'profile_rejection_note',
@@ -59,7 +59,6 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     protected $casts = [
         'email_verified_at'   => 'datetime',
-        'password_changed_at' => 'datetime',
         'terms_accepted_at'   => 'datetime',
         'privacy_accepted_at' => 'datetime',
         'last_login_at'       => 'datetime',

@@ -132,7 +132,6 @@ class MassDeleteModalTest extends TestCase
             'name'                => 'Officer',
             'email'               => 'mass-delete-' . uniqid() . '@example.test',
             'password'            => Hash::make('Secret123!'),
-            'password_changed_at' => now(),
             'role_id'             => $role->id,
         ]);
 

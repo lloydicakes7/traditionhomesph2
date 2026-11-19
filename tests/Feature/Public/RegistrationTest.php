@@ -8,7 +8,6 @@ use App\Models\Household\Household;
 use App\Models\Property;
 use App\Models\Resident;
 use App\Models\Role;
-use App\Models\Setting;
 use App\Models\User;
 use App\Notifications\HomeownerRegisteredNotification;
 use Illuminate\Auth\Notifications\VerifyEmail;
@@ -290,17 +289,6 @@ class RegistrationTest extends TestCase
         $this->assertDatabaseMissing('users', ['email' => 'applicant@example.com']);
     }
 
-    public function test_the_password_must_follow_the_office_policy(): void
-    {
-        $this->setSecurity(['password_min_length' => '12']);
-
-        $this->wizard([], ['password' => 'short1!A', 'password_confirmation' => 'short1!A'])
-            ->call('submit')
-            ->assertHasErrors(['password']);
-
-        $this->assertDatabaseMissing('users', ['email' => 'applicant@example.com']);
-    }
-
     // ===== Consent =====
 
     public function test_the_terms_and_the_privacy_consent_are_separate_boxes(): void
@@ -355,15 +343,6 @@ class RegistrationTest extends TestCase
     }
 
     // ===== Tools =====
-
-    private function setSecurity(array $values): void
-    {
-        foreach ($values as $key => $value) {
-            Setting::create(['key' => $key, 'value' => $value, 'group' => 'security']);
-        }
-
-        \App\Utility\SettingsHelper::flush('security');
-    }
 
     private function officer(array $permissions): Admin
     {

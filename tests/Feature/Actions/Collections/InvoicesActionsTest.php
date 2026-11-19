@@ -152,7 +152,6 @@ class InvoicesActionsTest extends TestCase
             'name'                => 'Officer',
             'email'               => 'invoice-action-' . uniqid() . '@example.test',
             'password'            => Hash::make('Secret123!'),
-            'password_changed_at' => now(),
             'is_active'           => true,
         ]);
     }

@@ -9,7 +9,7 @@ return [
     */
 
     'failed' => 'These credentials do not match our records.',
-    'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
+    'throttle' => 'Too many failed login attempts. Please try again later.',
     'inactive' => 'These credentials do not match our records.',
     'confirm_failed' => 'The password you entered is not correct.',
 

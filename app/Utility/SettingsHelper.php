@@ -21,12 +21,11 @@ use Illuminate\Support\Facades\Schema;
  * group ("settings.{group}"), so every service that owns a group shares the
  * one entry with the writes that flush it.
  *
- * It has no knowledge of business rules, default values, or type coercion —
- * those belong in the Service layer (e.g. GeneralSettingsQuery, SecuritySettingsQuery)
- * or in the Livewire component itself.
+ * It has no knowledge of business rules, default values, or type coercion.
+ * Those belong in a Query (for example GeneralSettingsQuery) or in the
+ * Livewire component itself.
  *
  * @see \App\Queries\Settings\GeneralSettingsQuery
- * @see \App\Queries\Settings\SecuritySettingsQuery
  */
 class SettingsHelper
 {

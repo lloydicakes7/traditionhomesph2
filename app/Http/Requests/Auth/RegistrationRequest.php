@@ -7,7 +7,6 @@ use App\Enums\Sex;
 use App\Rules\EmailAvailable;
 use App\Rules\PasswordPolicy;
 use App\Rules\PhilippineMobileNumber;
-use App\Rules\RegistrationPassword;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -45,7 +44,7 @@ class RegistrationRequest extends FormRequest
             'form.civil_status' => ['required', Rule::in(CivilStatus::values())],
 
             'email'    => ['required', 'string', 'email', 'max:255', new EmailAvailable],
-            'password' => ['required', 'string', 'confirmed', new RegistrationPassword, new PasswordPolicy],
+            'password' => ['required', 'string', 'confirmed', new PasswordPolicy],
 
             'consent.terms'   => ['accepted'],
             'consent.privacy' => ['accepted'],
