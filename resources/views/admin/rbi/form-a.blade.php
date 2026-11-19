@@ -1,10 +1,9 @@
 @extends('layouts.admin')
 
-@section('title', $title)
+@section('title', 'RBI Form A')
 
 @section('breadcrumb')
     <li class="breadcrumb-item">{{ __('rbi.hub.title') }}</li>
-    <li class="breadcrumb-item active">{{ __('rbi.hub.form_a') }}</li>
 @endsection
 
 @section('page-content')

@@ -5,6 +5,7 @@ namespace App\Http\Livewire\Portal\Statements;
 use App\Http\Livewire\Concerns\ResolvesHomeownerAccount;
 use App\Http\Livewire\PortalComponent;
 use App\Queries\Collections\Payments\PortalPaymentQuery;
+use App\Queries\Collections\Soa\StatementDataQuery;
 
 /**
  * Statement of Account — what this homeowner still has to pay.
@@ -45,7 +46,7 @@ class StatementList extends PortalComponent
         $bills = $this->query->openBills($account->id);
 
         return view('livewire.portal.statements.statement-list', [
-            'bills'        => $bills,
+            'groups'       => StatementDataQuery::groupBills($bills),
             'totalBalance' => (float) $bills->sum('balance'),
         ]);
     }

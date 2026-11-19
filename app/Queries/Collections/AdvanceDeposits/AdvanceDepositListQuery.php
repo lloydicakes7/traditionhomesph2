@@ -37,6 +37,24 @@ class AdvanceDepositListQuery
 
     // ===== Options =====
 
+    /**
+     * The credit a homeowner can still draw, oldest first.
+     *
+     * @return array<int, string>
+     */
+    public function openOptions(int $userId): array
+    {
+        return AdvanceDeposit::query()
+            ->oldestOpenFor($userId)
+            ->get()
+            ->mapWithKeys(function (AdvanceDeposit $deposit) {
+                return [
+                    $deposit->id => $deposit->balance_display . ' available · deposited ' . $deposit->deposited_at_display,
+                ];
+            })
+            ->all();
+    }
+
     public function holderOptions(): array
     {
         return User::query()

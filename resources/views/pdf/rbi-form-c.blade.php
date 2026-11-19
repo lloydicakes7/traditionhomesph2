@@ -109,7 +109,7 @@
                     <td>{{ __('rbi.form_c.submitted_by') }}</td>
                 </tr>
                 <tr>
-                    <td class="line"></td>
+                    <td class="line">Mobarahk Camar</td>
                     <td class="line"></td>
                 </tr>
                 <tr>

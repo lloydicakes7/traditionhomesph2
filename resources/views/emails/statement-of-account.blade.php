@@ -6,8 +6,12 @@ Below is your account with the association for **{{ $summary['period'] }}**.
 {{ $summary['property'] }}<br>
 {{ $summary['address'] }}
 
+@foreach ($summary['groups'] as $group)
+@if ($group['bills']->isNotEmpty())
+### {{ $group['label'] }}
+
 @php
-    $rows = collect($summary['bills'])->map(function ($bill) {
+    $rows = collect($group['bills'])->map(function ($bill) {
         $period = $bill->billing_period ? $bill->billing_period_display : $bill->bill_date_display;
 
         return '| ' . $bill->reference . ' | ' . $bill->type_label . ' | ' . $period . ' | ' . $bill->total_display . ' | ' . $bill->balance_display . ' |';
@@ -18,8 +22,12 @@ Below is your account with the association for **{{ $summary['period'] }}**.
 | Reference | Type | Period or date | Amount | Balance |
 | :-------- | :--- | :------------- | -----: | ------: |
 {!! $rows !!}
-| **Total outstanding** | | | | **{{ $summary['balance_display'] }}** |
+| **{{ $group['label'] }} total** | | | | **{{ $group['total_display'] }}** |
 @endcomponent
+@endif
+@endforeach
+
+**Total outstanding: {{ $summary['balance_display'] }}**
 
 @if ($summary['instructions'])
 {!! $summary['instructions'] !!}

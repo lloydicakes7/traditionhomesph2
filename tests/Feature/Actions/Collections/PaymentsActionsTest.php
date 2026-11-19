@@ -6,7 +6,9 @@ use App\Actions\Collections\Payments\ApprovePayment;
 use App\Actions\Collections\Payments\DeletePayments;
 use App\Actions\Collections\Payments\RecordPayment;
 use App\Enums\PaymentStatus;
+use App\Enums\AdvanceDepositStatus;
 use App\Models\Admin;
+use App\Models\AdvanceDeposit;
 use App\Models\Bill\Bill;
 use App\Models\Payment;
 use App\Models\Role;
@@ -42,6 +44,32 @@ class PaymentsActionsTest extends TestCase
             'action'   => 'received',
             'module'   => 'payment',
         ]);
+    }
+
+    public function test_a_payment_can_be_settled_from_the_homeowners_advance_deposit(): void
+    {
+        $admin = $this->admin();
+        $user = factory(User::class)->create();
+        $bill = $this->openBill($user, 1500);
+
+        $deposit = AdvanceDeposit::create([
+            'user_id'      => $user->id,
+            'amount'       => 2000,
+            'balance'      => 2000,
+            'status'       => AdvanceDepositStatus::AVAILABLE,
+            'deposited_at' => now()->subWeek(),
+        ]);
+
+        $payment = app(RecordPayment::class)->handle($bill, [
+            'amount'             => 1000,
+            'advance_deposit_id' => $deposit->id,
+        ], $admin);
+
+        $this->assertSame($deposit->id, (int) $payment->advance_deposit_id);
+        $this->assertSame('AD-' . $deposit->id, $payment->reference_no);
+        $this->assertNull($payment->payment_method_id);
+        $this->assertSame(1000.0, (float) $deposit->fresh()->balance);
+        $this->assertSame(500.0, (float) $bill->fresh()->balance);
     }
 
     public function test_two_receipts_are_numbered_one_after_the_other(): void

@@ -503,13 +503,14 @@ body {
 
 .rbi-c-sign td {
     width: 50%;
-    padding: 0 12pt;
+    padding: 3pt 12pt;
     font-size: 8pt;
     vertical-align: bottom;
 }
 
 .rbi-c-sign .line {
-    height: 14pt;
+    height: 20pt;
+    text-align: center;
     border-bottom: 1px solid #000000;
 }
 

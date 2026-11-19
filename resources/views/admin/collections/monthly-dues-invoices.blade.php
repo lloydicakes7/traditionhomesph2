@@ -12,6 +12,7 @@
 
         {{-- Per-page modals (event-driven siblings) --}}
         @livewire('admin.collections.monthly-dues.modals.past-monthly-due-modal')
+        @livewire('admin.collections.monthly-dues.modals.advance-payment-modal')
         @livewire('admin.collections.monthly-dues.modals.monthly-due-view-modal')
         @livewire('admin.collections.monthly-dues.modals.monthly-due-delete-modal')
         @livewire('admin.collections.monthly-dues.modals.monthly-due-cancel-modal')

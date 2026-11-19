@@ -2,6 +2,7 @@
 
 namespace App\Queries\Collections\Soa;
 
+use App\Enums\BillType;
 use App\Models\Bill\Bill;
 use App\Models\Property;
 use App\Models\SoaEmail;
@@ -78,6 +79,35 @@ class StatementDataQuery
 
     // ===== Helpers =====
 
+    public static function groupBills($bills): array
+    {
+        $groups = [
+            [
+                'key'   => 'dues',
+                'label' => 'Monthly Dues',
+                'bills' => $bills->filter(function (Bill $bill) {
+                    return $bill->type === BillType::MONTHLY_DUE;
+                })->values(),
+            ],
+            [
+                'key'   => 'invoices',
+                'label' => 'Invoices',
+                'bills' => $bills->filter(function (Bill $bill) {
+                    return $bill->type !== BillType::MONTHLY_DUE;
+                })->values(),
+            ],
+        ];
+
+        foreach ($groups as $index => $group) {
+            $total = (float) $group['bills']->sum('balance');
+
+            $groups[$index]['total'] = $total;
+            $groups[$index]['total_display'] = MoneyHelper::format($total);
+        }
+
+        return $groups;
+    }
+
     private function build(
         ?Property $property,
         ?int $userId,
@@ -104,7 +134,7 @@ class StatementDataQuery
             'property'        => $propertyLabel,
             'address'         => $property && $property->address ? $property->address->short_address : 'No address on record',
             'period'          => $periodLabel,
-            'bills'           => $bills,
+            'groups'          => self::groupBills($bills),
             'balance'         => $balance,
             'balance_display' => MoneyHelper::format($balance),
             'instructions'    => $this->settingsQuery->renderInstructions([

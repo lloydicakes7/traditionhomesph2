@@ -9,30 +9,6 @@
     'supplyMissing' => false,
 ])
 
-{{--
-    The Request Type control and the fields that type asks for — the one place
-    that markup lives, so the portal's filing form, the office's own filing form
-    and the office's edit form cannot drift apart.
-
-    Every type's shape comes from RequestType itself (`hasPurpose()`,
-    `hasBusinessDetails()`, …), so the form asks for exactly what the selected
-    type carries and nothing else.
-
-    Three things the hosting components own and this fragment does not:
-      • the wire:model bindings are always `form.*` — that is the contract all
-        three forms share;
-      • `$prefix` namespaces the HTML ids, because more than one of those forms
-        can sit on the same page (the office's own form and its edit dialog);
-      • the submit button, which lives in each dialog's own footer.
-
-    A Membership Form asks for nothing typed: its details, household members and
-    owner are shown back from the records on file (`membershipProfile`), and the
-    Endorsement Letter's respondent unit is read from the same household rather
-    than entered (`respondentUnit`). Only the office's dialogs set `supplyMissing`,
-    which lets them fill a detail the record leaves blank without changing the
-    homeowner's form.
---}}
-
 {{-- WHAT IS BEING ASKED FOR — decides which fields follow --}}
 <div class="row">
     <div class="col-12">
@@ -157,20 +133,6 @@
                         <div class="input-group-text"><i class="fas fa-fw fa-calendar-alt"></i></div>
                     </x-slot>
                 </x-adminlte-input>
-            </div>
-
-            <div class="col-12 col-md-6">
-                <label class="small mb-1" for="{{ $prefix }}_respondent_block">Block</label>
-                <input type="text" id="{{ $prefix }}_respondent_block"
-                    class="form-control form-control-sm bg-light"
-                    value="{{ $respondentUnit['block'] ?? '' }}" readonly>
-            </div>
-
-            <div class="col-12 col-md-6">
-                <label class="small mb-1" for="{{ $prefix }}_respondent_lot">Lot</label>
-                <input type="text" id="{{ $prefix }}_respondent_lot"
-                    class="form-control form-control-sm bg-light"
-                    value="{{ $respondentUnit['lot'] ?? '' }}" readonly>
             </div>
 
             <div class="col-12">

@@ -23,6 +23,7 @@ use App\Models\User;
 use App\Queries\Collections\AdvanceDeposits\AdvanceDepositListQuery;
 use App\Queries\Collections\Invoices\InvoiceDetailQuery;
 use App\Queries\Collections\Invoices\InvoiceListQuery;
+use App\Queries\Collections\MonthlyDues\AdvancePaymentQuery;
 use App\Queries\Collections\MonthlyDues\MonthlyDueGenerationQuery;
 use App\Queries\Collections\MonthlyDues\MonthlyDueListQuery;
 use App\Queries\Collections\MonthlyDues\MonthlyDueMatrixQuery;
@@ -295,6 +296,30 @@ class CollectionsQueryTest extends TestCase
     // Statements
     // =====================================================================
 
+    public function test_the_advance_payment_preview_prices_the_months_to_bill(): void
+    {
+        $homeowner = $this->occupiedUnit();
+
+        SettingsHelper::bulkSet([
+            'billing_method' => 'fixed_rate',
+            'monthly_rate'   => 1200,
+        ], CollectionSettingsQuery::GROUP);
+        SettingsHelper::forgetCache(CollectionSettingsQuery::CACHE_KEY);
+
+        $this->due($homeowner, 'DUE-2026-06', '2026-06');
+        $this->deposit($homeowner, 5000, AdvanceDepositStatus::AVAILABLE(), '2026-07-01');
+
+        $query = app(AdvancePaymentQuery::class);
+        $preview = $query->preview($homeowner->id, '2026-06', '2026-08');
+
+        $this->assertSame(2, $preview['created']);
+        $this->assertSame(1, $preview['settled']);
+        $this->assertSame(0, $preview['skipped']);
+        $this->assertSame(3600.0, (float) $preview['total']);
+        $this->assertArrayNotHasKey('rows', $preview);
+        $this->assertStringContainsString('available', $query->depositOptions($homeowner->id)[AdvanceDeposit::first()->id]);
+    }
+
     public function test_the_statement_list_filters_status_and_finds_one(): void
     {
         $homeowner = factory(User::class)->create();
@@ -322,17 +347,24 @@ class CollectionsQueryTest extends TestCase
         $this->assertNotEmpty($query->periods());
     }
 
-    public function test_the_statement_data_merges_the_accounts_open_bills(): void
+    public function test_the_statement_data_groups_the_accounts_open_bills_by_kind(): void
     {
         $homeowner = factory(User::class)->create();
         $this->bill($homeowner, 'INV-2026-0001', 500);
+        $this->due($homeowner, 'DUE-2026-09', '2026-09');
 
         $data = app(StatementDataQuery::class)->forUser($homeowner->id, null);
+        $groups = collect($data['groups'])->keyBy('key');
 
-        $this->assertArrayHasKey('bills', $data);
+        $this->assertArrayHasKey('groups', $data);
         $this->assertArrayHasKey('balance_display', $data);
-        $this->assertSame(500.0, (float) $data['balance']);
-        $this->assertCount(1, $data['bills']);
+        $this->assertSame(1700.0, (float) $data['balance']);
+        $this->assertSame('Monthly Dues', $groups['dues']['label']);
+        $this->assertCount(1, $groups['dues']['bills']);
+        $this->assertSame(1200.0, $groups['dues']['total']);
+        $this->assertSame('Invoices', $groups['invoices']['label']);
+        $this->assertCount(1, $groups['invoices']['bills']);
+        $this->assertSame(500.0, $groups['invoices']['total']);
         $this->assertArrayHasKey($homeowner->id, app(StatementDataQuery::class)->accounts());
     }
 

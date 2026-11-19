@@ -16,7 +16,7 @@
                     </div>
                 </div>
                 <span class="badge badge-{{ $statement->status_enum?->badgeTheme() ?? 'secondary' }}">
-                    {{ $statement->status_enum?->label() ?? '—' }}
+                    {{ $statement->status_enum?->label() ?? 'Status not recorded' }}
                 </span>
             </div>
 
@@ -25,44 +25,55 @@
                 <strong>{{ $statement->email }}</strong>.
             </p>
 
-            <label class="mb-1">Outstanding Bills</label>
-            <div class="table-responsive border rounded mb-3">
-                <table class="table table-sm mb-0">
-                    <thead class="bg-light">
-                        <tr>
-                            <th>Reference</th>
-                            <th>Type</th>
-                            <th>Period / Date</th>
-                            <th class="text-right" style="width:110px;">Amount</th>
-                            <th class="text-right" style="width:110px;">Balance</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse ($summary['bills'] as $bill)
-                            <tr>
-                                <td class="small">{{ $bill->reference }}</td>
-                                <td class="small">{{ $bill->type_label }}</td>
-                                <td class="small">
-                                    {{ $bill->billing_period_display !== '—' ? $bill->billing_period_display : $bill->bill_date_display }}
-                                </td>
-                                <td class="text-right">{{ $bill->total_display }}</td>
-                                <td class="text-right">{{ $bill->balance_display }}</td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="5" class="text-center text-muted py-3">
-                                    Nothing is outstanding for this period.
-                                </td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <td colspan="4" class="text-right font-weight-bold">Total outstanding</td>
-                            <td class="text-right font-weight-bold">{{ $summary['balance_display'] }}</td>
-                        </tr>
-                    </tfoot>
-                </table>
+            @php $hasBills = collect($summary['groups'])->sum(fn ($group) => $group['bills']->count()); @endphp
+
+            @foreach ($summary['groups'] as $group)
+                @if ($group['bills']->isNotEmpty())
+                    <label class="mb-1">{{ $group['label'] }}</label>
+                    <div class="table-responsive border rounded mb-3">
+                        <table class="table table-sm mb-0">
+                            <thead class="bg-light">
+                                <tr>
+                                    <th>Reference</th>
+                                    <th>Type</th>
+                                    <th>Period / Date</th>
+                                    <th class="text-right" style="width:110px;">Amount</th>
+                                    <th class="text-right" style="width:110px;">Balance</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($group['bills'] as $bill)
+                                    <tr>
+                                        <td class="small">{{ $bill->reference }}</td>
+                                        <td class="small">{{ $bill->type_label }}</td>
+                                        <td class="small">
+                                            {{ $bill->billing_period ? $bill->billing_period_display : $bill->bill_date_display }}
+                                        </td>
+                                        <td class="text-right">{{ $bill->total_display }}</td>
+                                        <td class="text-right">{{ $bill->balance_display }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="4" class="text-right font-weight-bold">{{ $group['label'] }} total</td>
+                                    <td class="text-right font-weight-bold">{{ $group['total_display'] }}</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                @endif
+            @endforeach
+
+            @if (! $hasBills)
+                <div class="border rounded p-3 mb-3 text-center text-muted small">
+                    Nothing is outstanding for this period.
+                </div>
+            @endif
+
+            <div class="d-flex justify-content-between align-items-center border-top pt-2 mb-3">
+                <span class="font-weight-bold">Total outstanding</span>
+                <span class="font-weight-bold">{{ $summary['balance_display'] }}</span>
             </div>
 
             @if ($summary['instructions'])

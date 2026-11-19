@@ -4,7 +4,9 @@ namespace App\Http\Livewire\Admin\Collections\Modals;
 
 use App\Actions\Collections\Payments\RecordPayment;
 use App\Http\Livewire\AdminModalComponent;
+use App\Models\AdvanceDeposit;
 use App\Models\Payment;
+use App\Queries\Collections\AdvanceDeposits\AdvanceDepositListQuery;
 use App\Queries\Collections\Payments\BillOptionQuery;
 use App\Queries\Collections\PaymentMethods\PaymentMethodQuery;
 use Illuminate\Support\Carbon;
@@ -54,6 +56,9 @@ class RecordPaymentModal extends AdminModalComponent
     /** @var string */
     public $amount = 0;
 
+    /** @var string The advance deposit the bill is settled from, when one is used */
+    public $advance_deposit_id = '';
+
     /** @var string */
     public $payment_method_id = '';
 
@@ -79,6 +84,9 @@ class RecordPaymentModal extends AdminModalComponent
     /** @var BillOptionQuery */
     protected $query;
 
+    /** @var AdvanceDepositListQuery */
+    protected $depositQuery;
+
     /** @var PaymentMethodQuery */
     protected $paymentMethodQuery;
 
@@ -87,10 +95,12 @@ class RecordPaymentModal extends AdminModalComponent
 
     public function boot(
         BillOptionQuery $query,
+        AdvanceDepositListQuery $depositQuery,
         PaymentMethodQuery $paymentMethodQuery,
         RecordPayment $recordPayment
     ) {
         $this->query = $query;
+        $this->depositQuery = $depositQuery;
         $this->paymentMethodQuery = $paymentMethodQuery;
         $this->recordPayment = $recordPayment;
     }
@@ -148,6 +158,7 @@ class RecordPaymentModal extends AdminModalComponent
     {
         $this->bill = '';
         $this->amount = 0;
+        $this->advance_deposit_id = '';
         $this->payment_method_id = '';
         $this->reference_no = '';
         $this->proof = null;
@@ -161,9 +172,36 @@ class RecordPaymentModal extends AdminModalComponent
      */
     public function updatedBill($value): void
     {
+        $this->advance_deposit_id = '';
         $this->amount = $value
             ? (float) $this->query->find($value)->balance
             : 0;
+    }
+
+    /**
+     * Settle as much of the bill as the chosen credit holds, and stop asking
+     * how the money arrived. It arrived when the deposit was recorded.
+     */
+    public function updatedAdvanceDepositId($value): void
+    {
+        if (! $this->bill) {
+            return;
+        }
+
+        $bill = $this->query->find($this->bill);
+
+        if (! $value) {
+            $this->amount = (float) $bill->balance;
+
+            return;
+        }
+
+        $deposit = $this->depositQuery->find((int) $value);
+
+        $this->amount = (float) min((float) $bill->balance, (float) $deposit->balance);
+        $this->payment_method_id = '';
+        $this->reference_no = '';
+        $this->proof = null;
     }
 
     // =====================================================================
@@ -178,6 +216,10 @@ class RecordPaymentModal extends AdminModalComponent
 
         $this->authorize('create', Payment::class);
 
+        if ($this->advance_deposit_id) {
+            $this->authorize('apply', AdvanceDeposit::class);
+        }
+
         $this->validate($this->rules(), $this->messages());
 
         // A bill the portal has already been paid against is refused by the
@@ -187,12 +229,13 @@ class RecordPaymentModal extends AdminModalComponent
             $payment = $this->recordPayment->handle(
                 $this->query->find($this->bill),
                 [
-                    'amount'            => $this->amount,
-                    'payment_method_id' => $this->payment_method_id ?: null,
-                    'reference_no'      => $this->reference_no ?: null,
-                    'proof'             => $this->proof,
-                    'paid_at'           => $this->paid_at ?: now(),
-                    'notes'             => $this->notes ?: null,
+                    'amount'             => $this->amount,
+                    'advance_deposit_id' => $this->advance_deposit_id ?: null,
+                    'payment_method_id'  => $this->payment_method_id ?: null,
+                    'reference_no'       => $this->reference_no ?: null,
+                    'proof'              => $this->proof,
+                    'paid_at'            => $this->paid_at ?: now(),
+                    'notes'              => $this->notes ?: null,
                 ],
                 auth('web')->user()
             );
@@ -202,7 +245,7 @@ class RecordPaymentModal extends AdminModalComponent
             $field = $field === 'entry_date' ? 'paid_at' : $field;
 
             $this->addError(
-                in_array($field, ['bill', 'paid_at'], true) ? $field : 'bill',
+                in_array($field, ['bill', 'amount', 'advance_deposit_id', 'paid_at'], true) ? $field : 'bill',
                 $errors[$field][0] ?? 'That bill cannot be collected again.'
             );
 
@@ -211,6 +254,10 @@ class RecordPaymentModal extends AdminModalComponent
 
         $this->emit('notify', 'success', 'Payment recorded.');
         $this->emit('payment-recorded', $payment->id);
+
+        if ($payment->advance_deposit_id) {
+            $this->emit('advance-deposit-saved');
+        }
 
         $this->resetModal();
         $this->dispatchBrowserEvent('modal-close', ['id' => self::MODAL_ID]);
@@ -226,13 +273,14 @@ class RecordPaymentModal extends AdminModalComponent
     private function rules(): array
     {
         return [
-            'bill'              => ['required', 'string'],
-            'amount'            => ['required', 'numeric', 'min:0.01'],
-            'payment_method_id' => ['nullable', 'exists:payment_methods,id'],
-            'reference_no'      => ['nullable', 'string', 'max:100'],
-            'proof'             => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp,gif', 'max:2048'],
-            'paid_at'           => ['required', 'date'],
-            'notes'             => ['nullable', 'string', 'max:1000'],
+            'bill'               => ['required', 'string'],
+            'amount'             => ['required', 'numeric', 'min:0.01'],
+            'advance_deposit_id' => ['nullable', 'exists:advance_deposits,id'],
+            'payment_method_id'  => ['nullable', 'exists:payment_methods,id'],
+            'reference_no'       => ['nullable', 'string', 'max:100'],
+            'proof'              => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp,gif', 'max:2048'],
+            'paid_at'            => ['required', 'date'],
+            'notes'              => ['nullable', 'string', 'max:1000'],
         ];
     }
 
@@ -259,8 +307,9 @@ class RecordPaymentModal extends AdminModalComponent
     protected function validationAttributes(): array
     {
         return [
-            'bill'              => 'bill',
-            'amount'            => 'amount',
+            'bill'               => 'bill',
+            'amount'             => 'amount',
+            'advance_deposit_id' => 'advance deposit',
             'payment_method_id' => 'payment method',
             'reference_no'      => 'reference number',
             'proof'             => 'proof of payment',
@@ -278,6 +327,7 @@ class RecordPaymentModal extends AdminModalComponent
         if (! $this->loaded) {
             return view('livewire.admin.collections.modals.record-payment-modal', [
                 'bills'          => [],
+                'deposits'       => [],
                 'methods'        => [],
                 'selected'       => null,
                 'pending'        => null,
@@ -291,6 +341,9 @@ class RecordPaymentModal extends AdminModalComponent
 
         return view('livewire.admin.collections.modals.record-payment-modal', [
             'bills'          => $this->query->options(),
+            'deposits'       => $selected && $selected->user_id
+                ? $this->depositQuery->openOptions((int) $selected->user_id)
+                : [],
             'methods'        => $methods,
             'selected'       => $selected,
             'pending'        => $selected ? $this->query->pending($selected) : null,

@@ -8,6 +8,7 @@ use App\Actions\Collections\MonthlyDues\CancelMonthlyDue;
 use App\Actions\Collections\MonthlyDues\CreatePastMonthlyDues;
 use App\Actions\Collections\MonthlyDues\DeleteMonthlyDues;
 use App\Actions\Collections\MonthlyDues\GenerateMonthlyDues;
+use App\Actions\Collections\MonthlyDues\RecordAdvanceMonthlyDues;
 use App\Actions\Collections\Settings\UpdateCollectionSettings;
 use App\Enums\AccountingPeriodStatus;
 use App\Enums\AdvanceDepositStatus;
@@ -239,6 +240,101 @@ class MonthlyDuesActionsTest extends TestCase
             $this->fail('A closed month should refuse the batch.');
         } catch (ValidationException $e) {
             $this->assertStringContainsString('February 2026', $e->errors()['from'][0]);
+        }
+
+        $this->assertSame(0, Bill::query()->monthlyDues()->count());
+    }
+
+    // ===== Advance payment =====
+
+    public function test_an_advance_payment_bills_every_month_and_settles_it(): void
+    {
+        $admin = $this->admin();
+        $this->settings([
+            'billing_method' => BillingMethod::FIXED_RATE,
+            'monthly_rate'   => 1200,
+        ]);
+
+        $user = $this->occupiedUnit();
+
+        $result = app(RecordAdvanceMonthlyDues::class)->handle([
+            'user_id'           => $user->id,
+            'from'              => '2026-07',
+            'to'                => '2026-09',
+            'reference_no'      => 'OR-100',
+            'paid_at'           => '2026-06-10 09:00:00',
+        ], $admin);
+
+        $this->assertSame(3, $result['created']);
+        $this->assertSame(3, $result['settled']);
+        $this->assertSame(0, $result['skipped']);
+        $this->assertSame(3600.0, (float) $result['total']);
+        $this->assertSame(3, Bill::query()->monthlyDues()->where('user_id', $user->id)->where('status', BillStatus::PAID)->count());
+        $this->assertSame(3, Payment::query()->where('user_id', $user->id)->where('reference_no', 'OR-100')->count());
+        $this->assertDatabaseHas('admin_activities', [
+            'admin_id' => $admin->id,
+            'action'   => 'received',
+            'module'   => 'monthly_due',
+        ]);
+    }
+
+    public function test_an_advance_payment_can_be_drawn_from_an_advance_deposit(): void
+    {
+        $admin = $this->admin();
+        $this->settings([
+            'billing_method' => BillingMethod::FIXED_RATE,
+            'monthly_rate'   => 1200,
+        ]);
+
+        $user = $this->occupiedUnit();
+
+        $deposit = AdvanceDeposit::create([
+            'user_id'      => $user->id,
+            'amount'       => 5000,
+            'balance'      => 5000,
+            'status'       => AdvanceDepositStatus::AVAILABLE,
+            'deposited_at' => now()->subWeek(),
+        ]);
+
+        $result = app(RecordAdvanceMonthlyDues::class)->handle([
+            'user_id'            => $user->id,
+            'from'               => '2026-07',
+            'to'                 => '2026-08',
+            'advance_deposit_id' => $deposit->id,
+            'paid_at'            => '2026-06-10 09:00:00',
+        ], $admin);
+
+        $this->assertSame(2, $result['settled']);
+        $this->assertSame(2600.0, (float) $deposit->fresh()->balance);
+        $this->assertSame(2, Payment::query()->where('advance_deposit_id', $deposit->id)->count());
+    }
+
+    public function test_a_closed_month_rolls_the_whole_advance_payment_back(): void
+    {
+        $admin = $this->admin();
+        $this->settings([
+            'billing_method' => BillingMethod::FIXED_RATE,
+            'monthly_rate'   => 1200,
+        ]);
+
+        $user = $this->occupiedUnit();
+
+        AccountingPeriod::create([
+            'period' => '2026-08',
+            'status' => AccountingPeriodStatus::CLOSED,
+        ]);
+
+        try {
+            app(RecordAdvanceMonthlyDues::class)->handle([
+                'user_id' => $user->id,
+                'from'    => '2026-07',
+                'to'      => '2026-09',
+                'paid_at' => '2026-06-10 09:00:00',
+            ], $admin);
+
+            $this->fail('A closed month should refuse the batch.');
+        } catch (ValidationException $exception) {
+            $this->assertStringContainsString('August 2026', $exception->errors()['from'][0]);
         }
 
         $this->assertSame(0, Bill::query()->monthlyDues()->count());

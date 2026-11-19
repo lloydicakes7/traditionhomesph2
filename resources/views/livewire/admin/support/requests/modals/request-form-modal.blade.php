@@ -1,6 +1,6 @@
 <div wire:ignore.self>
     <x-adminlte-modal id="requestFormModal" title="New Request"
-        icon="fas fa-fw fa-plus" theme="primary" size="xl" class="thha-request-modal"
+        icon="fas fa-fw fa-plus" theme="primary" size="lg" class="thha-request-modal"
         scrollable v-centered wire:ignore.self>
 
         <div data-modal-skeleton class="{{ $loaded ? 'd-none' : '' }}">

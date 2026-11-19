@@ -12,6 +12,14 @@
                     </a>
                 @endcan
             </div>
+            <div class="col-12 col-sm-auto mb-1 mb-sm-0">
+                @can('applyAdvancePayment', \App\Models\Bill\Bill::class)
+                    @can('create', \App\Models\Payment::class)
+                        <x-adminlte-button label="Advance Payment" theme="success" icon="fas fa-fw fa-money-check-alt"
+                            data-toggle="modal" data-target="#advancePaymentModal" class="btn-sm btn-block" />
+                    @endcan
+                @endcan
+            </div>
             <div class="col-12 col-sm-auto">
                 @can('exportMonthlyDues', \App\Models\Bill\Bill::class)
                     <x-adminlte-button label="Export CSV" theme="info" icon="fas fa-fw fa-file-export"
@@ -54,10 +62,10 @@
                 </x-adminlte-select>
             </div>
 
-            <div class="col-12 col-sm-4 col-lg-auto ml-auto">
+            <div class="col-12 col-lg-auto ml-auto">
                 @can('generateMonthlyDues', \App\Models\Bill\Bill::class)
                     <x-adminlte-button label="Add Monthly Dues" theme="primary" icon="fas fa-fw fa-calendar-plus"
-                        data-toggle="modal" data-target="#pastMonthlyDueModal" class="btn-sm btn-block" />
+                        data-toggle="modal" data-target="#pastMonthlyDueModal" class="btn-sm" />
                 @endcan
             </div>
         </div>
@@ -147,7 +155,7 @@
                                 </div>
                             </td>
                             <td class="align-middle text-truncate" style="max-width: 0;">
-                                <div class="small text-truncate">{{ $due->property?->block_lot_label ?: '—' }}</div>
+                                <div class="small text-truncate">{{ $due->property?->block_lot_label ?: 'Unit not recorded' }}</div>
                                 <div class="text-muted small text-truncate">{{ $due->issued_to_name }}</div>
                             </td>
                             <td class="align-middle text-right">
@@ -258,7 +266,7 @@
                     </div>
                 </div>
                 <div class="card-body px-3 py-3">
-                    <div class="small text-truncate">{{ $due->property?->block_lot_label ?: '—' }}</div>
+                    <div class="small text-truncate">{{ $due->property?->block_lot_label ?: 'Unit not recorded' }}</div>
                     <div class="text-muted small text-truncate mb-2">{{ $due->issued_to_name }}</div>
 
                     <div class="d-flex justify-content-between align-items-start flex-wrap" style="gap:0.5rem;">

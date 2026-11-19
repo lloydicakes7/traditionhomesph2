@@ -34,6 +34,19 @@
                 </x-adminlte-select2>
             @endif
 
+            @if ($selected && ! empty($deposits))
+                @can('apply', \App\Models\AdvanceDeposit::class)
+                    <x-adminlte-select2 id="recordPaymentDeposit" name="advance_deposit_id" label="Advance Deposit"
+                        wire:model="advance_deposit_id" igroup-size="sm"
+                        :config="['placeholder' => 'No advance deposit', 'width' => '100%']">
+                        <option value="">No advance deposit</option>
+                        @foreach ($deposits as $id => $label)
+                            <option value="{{ $id }}">{{ $label }}</option>
+                        @endforeach
+                    </x-adminlte-select2>
+                @endcan
+            @endif
+
             @if ($pending)
                 <div class="alert alert-warning py-2 small mb-3">
                     <i class="fas fa-fw fa-hourglass-half mr-1"></i>
@@ -44,86 +57,95 @@
 
             <div class="row">
                 <div class="col-12 col-sm-6">
-                    <x-adminlte-input name="amount" label="Amount Received" type="number" step="0.01" min="0.01"
-                        wire:model.lazy="amount" igroup-size="sm">
+                    <x-adminlte-input name="amount" label="{{ $advance_deposit_id ? 'Amount to Apply' : 'Amount Received' }}"
+                        type="number" step="0.01" min="0.01" wire:model.lazy="amount" igroup-size="sm">
                         <x-slot name="prependSlot">
                             <div class="input-group-text"><i class="fas fa-fw fa-money-bill-wave"></i></div>
                         </x-slot>
                     </x-adminlte-input>
                 </div>
-                <div class="col-12 col-sm-6">
-                    <x-adminlte-input name="paid_at" label="Date Received" type="datetime-local"
-                        wire:model.defer="paid_at" igroup-size="sm" />
-                </div>
+                @if (! $advance_deposit_id)
+                    <div class="col-12 col-sm-6">
+                        <x-adminlte-input name="paid_at" label="Date Received" type="datetime-local"
+                            wire:model.defer="paid_at" igroup-size="sm" />
+                    </div>
+                @endif
             </div>
 
-            <div class="row">
-                <div class="col-12 col-sm-6">
-                    <x-adminlte-select name="payment_method_id" label="Payment Method"
-                        wire:model="payment_method_id" igroup-size="sm">
-                        <option value="">{{ \App\Models\PaymentMethod::IN_PERSON_LABEL }}</option>
-                        @foreach ($methods as $method)
-                            <option value="{{ $method->id }}">{{ $method->name }}</option>
-                        @endforeach
-                    </x-adminlte-select>
+            @if ($advance_deposit_id)
+                <div class="alert alert-info py-2 small mb-3">
+                    <i class="fas fa-fw fa-info-circle mr-1"></i>
+                    This bill is settled from the selected advance deposit. The money was received when the deposit was recorded.
+                </div>
+            @else
+                <div class="row">
+                    <div class="col-12 col-sm-6">
+                        <x-adminlte-select name="payment_method_id" label="Payment Method"
+                            wire:model="payment_method_id" igroup-size="sm">
+                            <option value="">{{ \App\Models\PaymentMethod::IN_PERSON_LABEL }}</option>
+                            @foreach ($methods as $method)
+                                <option value="{{ $method->id }}">{{ $method->name }}</option>
+                            @endforeach
+                        </x-adminlte-select>
 
-                    <div class="mt-2">
-                        <x-adminlte-input name="reference_no" label="Reference No."
-                            placeholder="OR / transaction number"
-                            wire:model.defer="reference_no" igroup-size="sm" />
+                        <div class="mt-2">
+                            <x-adminlte-input name="reference_no" label="Reference No."
+                                placeholder="OR / transaction number"
+                                wire:model.defer="reference_no" igroup-size="sm" />
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6">
+                        <label class="mb-1">How to Pay</label>
+                        <div class="border rounded p-2 bg-light h-100">
+                            @if ($selectedMethod)
+                                <div class="small font-weight-bold text-break">{{ $selectedMethod->name }}</div>
+                                <div class="text-muted small text-break">
+                                    {{ $selectedMethod->details ?: 'No instructions.' }}
+                                </div>
+                                @if ($selectedMethod->qr_url)
+                                    <a href="{{ $selectedMethod->qr_url }}" target="_blank" rel="noopener"
+                                        title="Open the {{ $selectedMethod->name }} QR code">
+                                        <img src="{{ $selectedMethod->qr_url }}"
+                                            alt="QR code for {{ $selectedMethod->name }}"
+                                            class="rounded bg-white mt-2" style="max-height:110px;">
+                                    </a>
+                                @else
+                                    <div class="text-muted small mt-1">No QR code.</div>
+                                @endif
+                            @else
+                                <div class="small font-weight-bold">{{ \App\Models\PaymentMethod::IN_PERSON_LABEL }}</div>
+                                <div class="text-muted small">Face to face transaction.</div>
+                            @endif
+                        </div>
                     </div>
                 </div>
-                <div class="col-12 col-sm-6">
-                    <label class="mb-1">How to Pay</label>
-                    <div class="border rounded p-2 bg-light h-100">
-                        @if ($selectedMethod)
-                            <div class="small font-weight-bold text-break">{{ $selectedMethod->name }}</div>
-                            <div class="text-muted small text-break">
-                                {{ $selectedMethod->details ?: 'No instructions.' }}
-                            </div>
-                            @if ($selectedMethod->qr_url)
-                                <a href="{{ $selectedMethod->qr_url }}" target="_blank" rel="noopener"
-                                    title="Open the {{ $selectedMethod->name }} QR code">
-                                    <img src="{{ $selectedMethod->qr_url }}"
-                                        alt="QR code for {{ $selectedMethod->name }}"
-                                        class="rounded bg-white mt-2" style="max-height:110px;">
-                                </a>
-                            @else
-                                <div class="text-muted small mt-1">No QR code.</div>
-                            @endif
+
+                <label class="mb-1">Proof of Payment</label>
+                <div class="d-flex align-items-start mb-3" style="gap:1rem;">
+                    <div class="border rounded p-2 text-center" style="min-width:110px;">
+                        @if ($proof)
+                            <img src="{{ $proof->temporaryUrl() }}" alt="Proof of payment preview"
+                                style="max-height:90px;max-width:90px;">
                         @else
-                            <div class="small font-weight-bold">{{ \App\Models\PaymentMethod::IN_PERSON_LABEL }}</div>
-                            <div class="text-muted small">Face to face transaction.</div>
+                            <span class="text-muted small d-inline-block py-4">No image</span>
                         @endif
                     </div>
-                </div>
-            </div>
 
-            <label class="mb-1">Proof of Payment</label>
-            <div class="d-flex align-items-start mb-3" style="gap:1rem;">
-                <div class="border rounded p-2 text-center" style="min-width:110px;">
-                    @if ($proof)
-                        <img src="{{ $proof->temporaryUrl() }}" alt="Proof of payment preview"
-                            style="max-height:90px;max-width:90px;">
-                    @else
-                        <span class="text-muted small d-inline-block py-4">No image</span>
-                    @endif
-                </div>
+                    <div class="flex-grow-1">
+                        <x-adminlte-input-file name="proof" label="Attach proof"
+                            placeholder="PNG or JPG, up to 2MB" accept="image/*"
+                            wire:model="proof" igroup-size="sm" legend="Browse">
+                            <x-slot name="prependSlot">
+                                <div class="input-group-text"><i class="fas fa-fw fa-file-invoice-dollar"></i></div>
+                            </x-slot>
+                        </x-adminlte-input-file>
 
-                <div class="flex-grow-1">
-                    <x-adminlte-input-file name="proof" label="Attach proof"
-                        placeholder="PNG or JPG, up to 2MB" accept="image/*"
-                        wire:model="proof" igroup-size="sm" legend="Browse">
-                        <x-slot name="prependSlot">
-                            <div class="input-group-text"><i class="fas fa-fw fa-file-invoice-dollar"></i></div>
-                        </x-slot>
-                    </x-adminlte-input-file>
-
-                    <div wire:loading wire:target="proof" class="mt-1">
-                        <small class="text-info"><i class="fas fa-spinner fa-spin"></i> Uploading...</small>
+                        <div wire:loading wire:target="proof" class="mt-1">
+                            <small class="text-info"><i class="fas fa-spinner fa-spin"></i> Uploading...</small>
+                        </div>
                     </div>
                 </div>
-            </div>
+            @endif
 
             <x-adminlte-textarea name="notes" label="Notes" rows="2"
                 wire:model.defer="notes" igroup-size="sm" />

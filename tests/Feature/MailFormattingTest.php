@@ -78,14 +78,29 @@ class MailFormattingTest extends TestCase
             'property'        => 'Block 4 Lot 12',
             'address'         => 'Unit 12, Tradition Homes',
             'period'          => 'January 2026',
-            'bills'           => collect([(object) [
-                'reference'           => 'BILL-2026-0001',
-                'type_label'          => 'Monthly Dues',
-                'billing_period'      => null,
-                'bill_date_display'   => 'January 5, 2026',
-                'total_display'       => 'PHP 500.00',
-                'balance_display'     => 'PHP 500.00',
-            ]]),
+            'groups'          => [
+                [
+                    'key'           => 'dues',
+                    'label'         => 'Monthly Dues',
+                    'bills'         => collect([(object) [
+                        'reference'           => 'BILL-2026-0001',
+                        'type_label'          => 'Monthly Dues',
+                        'billing_period'      => null,
+                        'bill_date_display'   => 'January 5, 2026',
+                        'total_display'       => 'PHP 500.00',
+                        'balance_display'     => 'PHP 500.00',
+                    ]]),
+                    'total'         => 500.0,
+                    'total_display' => 'PHP 500.00',
+                ],
+                [
+                    'key'           => 'invoices',
+                    'label'         => 'Invoices',
+                    'bills'         => collect(),
+                    'total'         => 0.0,
+                    'total_display' => 'PHP 0.00',
+                ],
+            ],
             'balance_display' => 'PHP 500.00',
             'instructions'    => '<p>Kindly settle the amount at the association office.</p>',
         ];

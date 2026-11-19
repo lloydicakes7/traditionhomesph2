@@ -45,10 +45,6 @@
     transform: rotate(180deg);
 }
 
-.thha-request-modal .modal-dialog {
-    max-width: 1140px;
-}
-
 /* ===== Public navbar ===== */
 
 .thha-public-navbar .dropdown-menu {

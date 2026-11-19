@@ -7,8 +7,8 @@
             <div class="report-filter-field">
                 <x-adminlte-select2 id="statementUserId" name="userId" wire:model="userId"
                     igroup-size="sm" fgroup-class="mb-0"
-                    :config="['placeholder' => empty($homeowners) ? '— No balance due —' : '— Select a homeowner —']">
-                    <option value="">{{ empty($homeowners) ? '— No balance due —' : '— Select a homeowner —' }}</option>
+                    :config="['placeholder' => empty($homeowners) ? 'No balance due' : 'Select a homeowner']">
+                    <option value="">{{ empty($homeowners) ? 'No balance due' : 'Select a homeowner' }}</option>
                     @foreach ($homeowners as $value => $label)
                         <option value="{{ $value }}">{{ $label }}</option>
                     @endforeach
@@ -63,67 +63,81 @@
                     </div>
                 </div>
 
-                {{-- What the period billed: dues and other charges, one running
-                     account — a table on a wide screen, a card per charge on a
-                     small one --}}
                 @php
-                    $cards = collect($statement['bills'])->map(function ($bill) {
-                        return [
-                            'title'    => $bill->reference,
-                            'subtitle' => $bill->type_label,
-                            'facts'    => [
-                                ['label' => 'Particulars', 'value' => $bill->items->pluck('name')->implode(', ') ?: 'Charge'],
-                                ['label' => 'Period / Date', 'value' => $bill->billing_period_display !== '—' ? $bill->billing_period_display : $bill->bill_date_display],
-                                ['label' => 'Amount', 'value' => \App\Utility\MoneyHelper::format($bill->total)],
-                            ],
-                            'total' => ['label' => 'Balance', 'value' => \App\Utility\MoneyHelper::format($bill->balance)],
-                        ];
-                    })->values()->all();
+                    $cards = [];
+
+                    foreach ($statement['groups'] as $group) {
+                        foreach ($group['bills'] as $bill) {
+                            $cards[] = [
+                                'title'    => $bill->reference,
+                                'subtitle' => $group['label'] . ' · ' . $bill->type_label,
+                                'facts'    => [
+                                    ['label' => 'Particulars', 'value' => $bill->items->pluck('name')->implode(', ') ?: 'Charge'],
+                                    ['label' => 'Period / Date', 'value' => $bill->billing_period ? $bill->billing_period_display : $bill->bill_date_display],
+                                    ['label' => 'Amount', 'value' => \App\Utility\MoneyHelper::format($bill->total)],
+                                ],
+                                'total' => ['label' => 'Balance', 'value' => \App\Utility\MoneyHelper::format($bill->balance)],
+                            ];
+                        }
+                    }
 
                     $cards[] = [
                         'title' => 'Total Balance Due',
                         'total' => ['label' => 'Balance due', 'value' => $statement['balance_display']],
                     ];
+
+                    $hasBills = collect($statement['groups'])->sum(function ($group) {
+                        return $group['bills']->count();
+                    });
                 @endphp
 
-                <h6 class="text-uppercase text-muted">Charges</h6>
-                <div class="report-table-view">
-                    <table class="table table-report mb-0" style="table-layout: fixed; width: 100%;">
-                        <thead>
-                            <tr>
-                                <th style="width: 16%;">Reference</th>
-                                <th>Type</th>
-                                <th>Particulars</th>
-                                <th style="width: 14%;">Period / Date</th>
-                                <th class="text-right" style="width: 14%;">Amount</th>
-                                <th class="text-right" style="width: 14%;">Balance</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @forelse ($statement['bills'] as $bill)
-                                <tr>
-                                    <td class="align-middle">{{ $bill->reference }}</td>
-                                    <td class="align-middle">{{ $bill->type_label }}</td>
-                                    <td class="align-middle text-break">{{ $bill->items->pluck('name')->implode(', ') ?: 'Charge' }}</td>
-                                    <td class="align-middle">{{ $bill->billing_period_display !== '—' ? $bill->billing_period_display : $bill->bill_date_display }}</td>
-                                    <td class="text-right amount-mono align-middle">{{ \App\Utility\MoneyHelper::format($bill->total) }}</td>
-                                    <td class="text-right amount-mono align-middle">{{ \App\Utility\MoneyHelper::format($bill->balance) }}</td>
-                                </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="6" class="text-center text-muted py-3">
-                                        Nothing is outstanding for this period.
-                                    </td>
-                                </tr>
-                            @endforelse
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <td colspan="5" class="text-right">TOTAL BALANCE DUE</td>
-                                <td class="text-right amount-mono">{{ $statement['balance_display'] }}</td>
-                            </tr>
-                        </tfoot>
-                    </table>
+                @foreach ($statement['groups'] as $group)
+                    @if ($group['bills']->isNotEmpty())
+                        <h6 class="text-uppercase text-muted">{{ $group['label'] }}</h6>
+                        <div class="report-table-view mb-3">
+                            <table class="table table-report mb-0" style="table-layout: fixed; width: 100%;">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 16%;">Reference</th>
+                                        <th>Type</th>
+                                        <th>Particulars</th>
+                                        <th style="width: 14%;">Period / Date</th>
+                                        <th class="text-right" style="width: 14%;">Amount</th>
+                                        <th class="text-right" style="width: 14%;">Balance</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($group['bills'] as $bill)
+                                        <tr>
+                                            <td class="align-middle">{{ $bill->reference }}</td>
+                                            <td class="align-middle">{{ $bill->type_label }}</td>
+                                            <td class="align-middle text-break">{{ $bill->items->pluck('name')->implode(', ') ?: 'Charge' }}</td>
+                                            <td class="align-middle">{{ $bill->billing_period ? $bill->billing_period_display : $bill->bill_date_display }}</td>
+                                            <td class="text-right amount-mono align-middle">{{ \App\Utility\MoneyHelper::format($bill->total) }}</td>
+                                            <td class="text-right amount-mono align-middle">{{ \App\Utility\MoneyHelper::format($bill->balance) }}</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="5" class="text-right">{{ $group['label'] }} total</td>
+                                        <td class="text-right amount-mono">{{ $group['total_display'] }}</td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    @endif
+                @endforeach
+
+                @if (! $hasBills)
+                    <div class="border rounded p-3 mb-3 text-center text-muted">
+                        Nothing is outstanding for this period.
+                    </div>
+                @endif
+
+                <div class="d-flex justify-content-between align-items-center border-top pt-2 mb-2">
+                    <span class="text-uppercase text-muted small font-weight-bold">Total Balance Due</span>
+                    <span class="font-weight-bold">{{ $statement['balance_display'] }}</span>
                 </div>
 
                 <x-reports.cards class="mt-2" :rows="$cards"

@@ -102,17 +102,20 @@ class StatementOfAccount extends AdminComponent
 
         $rows = [];
 
-        foreach ($statement['bills'] as $bill) {
-            $particulars = $bill->items->pluck('name')->implode(', ');
+        foreach ($statement['groups'] as $group) {
+            foreach ($group['bills'] as $bill) {
+                $particulars = $bill->items->pluck('name')->implode(', ');
 
-            $rows[] = [
-                $statement['property'],
-                $statement['owner'],
-                $bill->billing_period_display !== '—' ? $bill->billing_period_display : $statement['period'],
-                ($particulars !== '' ? $particulars : $bill->type_label) . ' (' . $bill->reference . ')',
-                number_format((float) $bill->total, 2, '.', ''),
-                number_format((float) $bill->balance, 2, '.', ''),
-            ];
+                $rows[] = [
+                    $statement['property'],
+                    $statement['owner'],
+                    $bill->billing_period ? $bill->billing_period_display : $statement['period'],
+                    $group['label'] . ': ' . ($particulars !== '' ? $particulars : $bill->type_label)
+                        . ' (' . $bill->reference . ')',
+                    number_format((float) $bill->total, 2, '.', ''),
+                    number_format((float) $bill->balance, 2, '.', ''),
+                ];
+            }
         }
 
         $rows[] = [$statement['property'], $statement['owner'], $statement['period'], 'TOTAL BALANCE DUE', '', number_format($statement['balance'], 2, '.', '')];

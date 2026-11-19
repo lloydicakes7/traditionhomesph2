@@ -75,11 +75,6 @@ class CollectionSettingsQuery
         return round($rate, 2);
     }
 
-    public function penaltyFor(float $amount): float
-    {
-        return $this->penaltyType()->compute($amount, (float) $this->get('penalty_value'));
-    }
-
     public function dueDateFor(string $month): Carbon
     {
         $start = Carbon::createFromFormat('Y-m', $month)->startOfMonth();
