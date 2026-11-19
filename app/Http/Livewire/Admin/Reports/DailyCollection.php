@@ -45,7 +45,7 @@ class DailyCollection extends AdminComponent
         $rows = array_map(function (array $row) {
             return [
                 $row['reference'],
-                $row['property'] ? $row['property']->block_lot_label : '—',
+                $row['property'] ? $row['property']->block_lot_label : 'Not recorded',
                 $row['homeowner'],
                 $row['particulars'],
                 $row['method'],

@@ -44,10 +44,15 @@
                         @enderror
                     </td>
                     <td>
-                        <input type="number" step="0.01" min="0.01" placeholder="0.00"
-                            class="form-control @error('lines.' . $index . '.amount') is-invalid @enderror"
-                            wire:model.lazy="lines.{{ $index }}.amount"
-                            aria-label="Amount for line {{ $index + 1 }}">
+                        <div class="input-group input-group-sm">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">{{ \App\Utility\MoneyHelper::symbol() }}</span>
+                            </div>
+                            <input type="text" inputmode="decimal" data-thha-money placeholder="0.00"
+                                class="form-control @error('lines.' . $index . '.amount') is-invalid @enderror"
+                                wire:model.lazy="lines.{{ $index }}.amount"
+                                aria-label="Amount for line {{ $index + 1 }}">
+                        </div>
                         @error("lines.{$index}.amount")
                             <span class="text-danger small">{{ $message }}</span>
                         @enderror

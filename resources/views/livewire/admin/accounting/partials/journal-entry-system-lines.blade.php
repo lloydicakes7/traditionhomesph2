@@ -12,10 +12,10 @@
                 <tr>
                     <td><x-ui.value :value="$line['account_name'] ?? null" /></td>
                     <td class="text-right">
-                        {{ $line['side'] === 'debit' ? \App\Utility\MoneyHelper::format($line['amount']) : '—' }}
+                        {{ $line['side'] === 'debit' ? \App\Utility\MoneyHelper::format($line['amount'])  : 'Not applicable' }}
                     </td>
                     <td class="text-right">
-                        {{ $line['side'] === 'credit' ? \App\Utility\MoneyHelper::format($line['amount']) : '—' }}
+                        {{ $line['side'] === 'credit' ? \App\Utility\MoneyHelper::format($line['amount'])  : 'Not applicable' }}
                     </td>
                 </tr>
             @endforeach

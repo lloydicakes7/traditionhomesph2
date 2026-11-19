@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Public\Contact;
 
 use App\Actions\Support\SendContactMessage;
 use App\Http\Livewire\PublicComponent;
+use App\Rules\PhilippineMobileNumber;
 
 class ContactForm extends PublicComponent
 {
@@ -26,7 +27,7 @@ class ContactForm extends PublicComponent
         return [
             'form.name'           => ['required', 'string', 'max:120'],
             'form.email'          => ['required', 'email', 'max:150'],
-            'form.contact_number' => ['nullable', 'string', 'max:30'],
+            'form.contact_number' => ['nullable', 'string', 'max:11', new PhilippineMobileNumber],
             'form.subject'        => ['required', 'string', 'max:150'],
             'form.message'        => ['required', 'string', 'max:3000'],
         ];

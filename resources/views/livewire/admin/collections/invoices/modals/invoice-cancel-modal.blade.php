@@ -11,7 +11,7 @@
             <p>Cancel invoice <strong>{{ $cancellingInvoiceLabel }}</strong>?</p>
 
             <p class="text-muted small mb-0">
-                The invoice is withdrawn — nothing more is collectible on it. Its payments stay on the ledger.
+                The invoice is withdrawn. Nothing more is collectible on it. Its payments stay on the ledger.
             </p>
         </div>
 

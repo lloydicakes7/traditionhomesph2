@@ -296,7 +296,7 @@ class JournalEntry extends Model
      */
     public function getEntryDateDisplayAttribute(): string
     {
-        return $this->entry_date ? $this->entry_date->format('M j, Y') : '—';
+        return $this->entry_date ? $this->entry_date->format('M j, Y') : 'Not recorded';
     }
 
     /**
@@ -363,7 +363,7 @@ class JournalEntry extends Model
             $description = $transfer ? $transfer->memo : null;
         }
 
-        return filled($description) ? (string) $description : ($this->memo ?: '—');
+        return filled($description) ? (string) $description : ($this->memo ?: 'Not recorded');
     }
 
     /**
@@ -371,7 +371,7 @@ class JournalEntry extends Model
      */
     public function getStatusLabelAttribute(): string
     {
-        return $this->status ? $this->status->label() : '—';
+        return $this->status ? $this->status->label() : 'Not recorded';
     }
 
     /**
@@ -387,7 +387,7 @@ class JournalEntry extends Model
      */
     public function getClassificationLabelAttribute(): string
     {
-        return $this->classification ? $this->classification->label() : '—';
+        return $this->classification ? $this->classification->label() : 'Not recorded';
     }
 
     /**
@@ -458,7 +458,7 @@ class JournalEntry extends Model
             ->values();
 
         if ($names->isEmpty()) {
-            return '—';
+            return 'Not recorded';
         }
 
         return $names->count() === 1 ? (string) $names->first() : 'Several';

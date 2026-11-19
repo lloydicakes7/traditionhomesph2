@@ -35,7 +35,7 @@
                     </div>
                     <div class="col-6 col-md-4 mb-2">
                         <div class="text-muted small">Issued By</div>
-                        <div class="font-weight-medium">{{ $violation->issuedByAdmin->name ?? '—' }}</div>
+                        <div class="font-weight-medium">{{ $violation->issuedByAdmin->name ?? 'Not recorded' }}</div>
                     </div>
                     <div class="col-6 col-md-4 mb-2">
                         <div class="text-muted small">Issued On</div>

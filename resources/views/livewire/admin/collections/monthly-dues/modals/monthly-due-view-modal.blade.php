@@ -28,7 +28,7 @@
                         <dd class="col-7 font-weight-medium">{{ $due->property->block_lot_label }}</dd>
 
                         <dt class="col-5 text-muted font-weight-normal">Address</dt>
-                        <dd class="col-7">{{ $due->property?->address?->short_address ?: '—' }}</dd>
+                        <dd class="col-7">{{ $due->property?->address?->short_address ?: 'Not recorded' }}</dd>
                     </dl>
                 </div>
                 <div class="col-12 col-sm-6">
@@ -37,7 +37,7 @@
                         <dd class="col-7">{{ $due->bill_date_display }}</dd>
 
                         <dt class="col-5 text-muted font-weight-normal">Due Date</dt>
-                        <dd class="col-7">{{ $due->due_date ? $due->due_date->format('M j, Y') : '—' }}</dd>
+                        <dd class="col-7">{{ $due->due_date ? $due->due_date->format('M j, Y')  : 'Not recorded' }}</dd>
                     </dl>
                 </div>
             </div>
@@ -117,7 +117,7 @@
                         @forelse ($due->payments as $payment)
                             <tr>
                                 <td class="small">{{ $payment->paid_at_display }}</td>
-                                <td class="small">{{ $payment->reference_no ?: '—' }}</td>
+                                <td class="small">{{ $payment->reference_no ?: 'Not recorded' }}</td>
                                 <td class="small">{{ $payment->method_label }}</td>
                                 <td class="text-right">{{ $payment->amount_display }}</td>
                                 <td class="text-center">

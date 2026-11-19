@@ -506,12 +506,12 @@ class InvoiceFormModal extends AdminModalComponent
                 : ['nullable', 'string', 'max:150'],
             'form.bill_date'     => ['required', 'date'],
             'form.due_date'      => ['nullable', 'date', 'after_or_equal:form.bill_date'],
-            'form.discount'      => ['nullable', 'numeric', 'min:0'],
+            'form.discount'      => ['nullable', 'numeric', 'min:0', 'max:9999999999999'],
             'form.notes'         => ['nullable', 'string', 'max:1000'],
             'items'              => $booking ? ['nullable', 'array'] : ['required', 'array', 'min:1'],
             'items.*.product_id' => $booking ? ['nullable'] : ['required', 'exists:products,id'],
             'items.*.quantity'   => ['nullable', 'numeric', 'min:0.01'],
-            'items.*.unit_price' => ['nullable', 'numeric', 'min:0'],
+            'items.*.unit_price' => ['nullable', 'numeric', 'min:0', 'max:9999999999999'],
         ];
     }
 

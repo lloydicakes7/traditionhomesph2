@@ -168,7 +168,7 @@
                                     @endcan
                                     <div class="min-width-0">
                                         <div class="small">{{ $payment->paid_at_display }}</div>
-                                        <div class="text-muted small text-truncate">{{ $payment->reference_no ?: '—' }}</div>
+                                        <div class="text-muted small text-truncate">{{ $payment->reference_no ?: 'Not recorded' }}</div>
                                         <span class="badge badge-{{ $payment->status_badge }} mt-1"
                                             title="{{ $payment->status_enum?->description() }}">
                                             {{ $payment->status_label }}
@@ -266,7 +266,7 @@
                             @endcan
                             <div class="min-width-0">
                                 <div class="font-weight-bold text-truncate" style="font-size:0.95rem;">
-                                    {{ $payment->reference_no ?: '—' }}
+                                    {{ $payment->reference_no ?: 'Not recorded' }}
                                 </div>
                                 <div class="small text-muted">{{ $payment->paid_at_display }}</div>
                             </div>

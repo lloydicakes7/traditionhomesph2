@@ -64,7 +64,7 @@ class TransactionSlipQuery
         }
 
         return [
-            'reference'    => $request->reference ?: '—',
+            'reference'    => $request->reference ?: 'Not recorded',
             'kind'         => $request->type_label,
             'homeowner'    => $request->resident_label,
             'unit'         => $this->unit($request->resident ? $request->resident->user : null),
@@ -86,7 +86,7 @@ class TransactionSlipQuery
         $booking->loadMissing(['amenity', 'user.household.property', 'bill']);
 
         $rows = [
-            ['label' => __('slips.booking.amenity'), 'value' => $booking->amenity->name ?? '—'],
+            ['label' => __('slips.booking.amenity'), 'value' => $booking->amenity->name ?? 'Not recorded'],
             ['label' => __('slips.booking.schedule'), 'value' => $booking->date_time_display],
         ];
 
@@ -102,8 +102,8 @@ class TransactionSlipQuery
         }
 
         return [
-            'reference'    => $booking->reference ?: '—',
-            'kind'         => $booking->amenity->name ?? '—',
+            'reference'    => $booking->reference ?: 'Not recorded',
+            'kind'         => $booking->amenity->name ?? 'Not recorded',
             'homeowner'    => $booking->user?->resident?->full_name ?? (string) $booking->guest_name,
             'unit'         => $this->unit($booking->user),
             'filed_at'     => $this->stamp($booking->created_at),
@@ -122,7 +122,7 @@ class TransactionSlipQuery
      */
     private function unit(?object $user): string
     {
-        return $user?->household?->property?->block_lot_label ?? '—';
+        return $user?->household?->property?->block_lot_label ?? 'Not recorded';
     }
 
     /**

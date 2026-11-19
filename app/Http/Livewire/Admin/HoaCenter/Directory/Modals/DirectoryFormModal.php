@@ -7,6 +7,7 @@ use App\Actions\HoaCenter\Directory\UpdateDirectoryEntry;
 use App\Http\Livewire\AdminModalComponent;
 use App\Models\Directory\DirectoryEntry;
 use App\Queries\HoaCenter\Directory\DirectoryListQuery;
+use App\Rules\DirectoryPhoneNumber;
 
 class DirectoryFormModal extends AdminModalComponent
 {
@@ -74,7 +75,7 @@ class DirectoryFormModal extends AdminModalComponent
             'form.new_group_name' => ['nullable', 'string', 'max:100', 'required_if:form.directory_group_id,' . self::NEW_GROUP],
             'phones'              => ['required', 'array', 'min:1'],
             'phones.*.label'      => ['nullable', 'string', 'max:100'],
-            'phones.*.number'     => ['required', 'string', 'max:50'],
+            'phones.*.number'     => ['required', 'string', new DirectoryPhoneNumber],
         ];
 
         $rules['form.directory_group_id'] = $this->form['directory_group_id'] === self::NEW_GROUP

@@ -253,7 +253,7 @@ class Request extends Model
      */
     public function getSlipLabelAttribute(): string
     {
-        return ($this->reference ?: '—') . ' — ' . $this->type_label;
+        return ($this->reference ?: 'Not recorded') . ' — ' . $this->type_label;
     }
 
     /**
@@ -261,7 +261,7 @@ class Request extends Model
      */
     public function getTypeLabelAttribute(): string
     {
-        return $this->type ? $this->type->label() : '—';
+        return $this->type ? $this->type->label() : 'Not recorded';
     }
 
     /**
@@ -274,13 +274,13 @@ class Request extends Model
     public function getPurposeLabelAttribute(): string
     {
         if (! $this->purpose || ! $this->type) {
-            return '—';
+            return 'Not recorded';
         }
 
         $enum = $this->type->purposeEnum();
 
         if (! $enum) {
-            return '—';
+            return 'Not recorded';
         }
 
         $case = $enum::tryFrom($this->purpose);
@@ -307,7 +307,7 @@ class Request extends Model
      */
     public function getStatusLabelAttribute(): string
     {
-        return $this->status ? $this->status->label() : '—';
+        return $this->status ? $this->status->label() : 'Not recorded';
     }
 
     /**
@@ -334,7 +334,7 @@ class Request extends Model
     public function getSummaryAttribute(): string
     {
         if (! $this->type) {
-            return '—';
+            return 'Not recorded';
         }
 
         switch ($this->type->value) {
@@ -348,10 +348,10 @@ class Request extends Model
                 return $this->business_name ?: $this->purpose_display;
 
             case RequestType::HOA_PERMIT:
-                return $this->permit_type ?: '—';
+                return $this->permit_type ?: 'Not recorded';
 
             case RequestType::ENDORSEMENT_LETTER:
-                return $this->addressee ?: '—';
+                return $this->addressee ?: 'Not recorded';
 
             case RequestType::INVITATION_LETTER:
                 return 'Meeting invitation';
@@ -360,7 +360,7 @@ class Request extends Model
                 return 'Sworn statement';
         }
 
-        return '—';
+        return 'Not recorded';
     }
 
     /**
@@ -388,23 +388,23 @@ class Request extends Model
 
             case RequestType::BUSINESS_PERMIT:
                 return [
-                    'Business Name'      => $this->business_name ?: '—',
-                    'Nature of Business' => $this->nature_of_business ?: '—',
-                    'Hours of Operation' => $this->hours_of_operation ?: '—',
+                    'Business Name'      => $this->business_name ?: 'Not recorded',
+                    'Nature of Business' => $this->nature_of_business ?: 'Not recorded',
+                    'Hours of Operation' => $this->hours_of_operation ?: 'Not recorded',
                     'Purpose'            => $this->purpose_display,
                 ];
 
             case RequestType::HOA_PERMIT:
                 return [
-                    'Permit Type'           => $this->permit_type ?: '—',
-                    'Location'              => $this->location ?: '—',
-                    'Purpose / Scope of Work' => $this->scope_of_work ?: '—',
+                    'Permit Type'           => $this->permit_type ?: 'Not recorded',
+                    'Location'              => $this->location ?: 'Not recorded',
+                    'Purpose / Scope of Work' => $this->scope_of_work ?: 'Not recorded',
                 ];
 
             case RequestType::ENDORSEMENT_LETTER:
                 return [
-                    'Addressee' => $this->addressee ?: '—',
-                    'Date'      => $this->letter_date ? $this->letter_date->format('M j, Y') : '—',
+                    'Addressee' => $this->addressee ?: 'Not recorded',
+                    'Date'      => $this->letter_date ? $this->letter_date->format('M j, Y') : 'Not recorded',
                 ];
 
             case RequestType::INVITATION_LETTER:

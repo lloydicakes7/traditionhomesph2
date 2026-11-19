@@ -37,8 +37,8 @@
             <label class="small font-weight-bold mb-1">Resident</label>
             <x-adminlte-select2 id="editMembersResidentId" name="memberForm.resident_id"
                 wire:model.defer="memberForm.resident_id" igroup-size="sm"
-                :config="['placeholder' => '— Select Resident —']">
-                <option value="">— Select Resident —</option>
+                :config="['placeholder' => 'Select Resident']">
+                <option value="">Select Resident</option>
                 @foreach ($selectableResidents as $res)
                     <option value="{{ $res->id }}">{{ $res->full_name }}</option>
                 @endforeach

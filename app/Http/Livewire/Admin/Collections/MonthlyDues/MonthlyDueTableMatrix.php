@@ -75,7 +75,7 @@ class MonthlyDueTableMatrix extends AdminComponent
         foreach ($matrix['rows'] as $row) {
             $values = [
                 $row['property']->block_lot_label,
-                $row['property']->owner?->name ?: '—',
+                $row['property']->owner?->name ?: 'Not recorded',
             ];
 
             foreach ($matrix['months'] as $month) {

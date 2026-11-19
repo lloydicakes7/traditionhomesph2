@@ -6,7 +6,7 @@
 {{-- @param  \App\Models\Amenity\AmenityBooking  $booking --}}
 {{-- =================================================================== --}}
 <div class="border rounded p-3 mb-3">
-    <div class="font-weight-bold">{{ $booking->amenity->name ?? '—' }}</div>
+    <div class="font-weight-bold">{{ $booking->amenity->name ?? 'Not recorded' }}</div>
     <div class="text-muted small">{{ $booking->date_time_display }}</div>
     <div class="small mt-1">{{ $booking->property_display }} · {{ $booking->booker_name }}</div>
     <div class="small text-muted">

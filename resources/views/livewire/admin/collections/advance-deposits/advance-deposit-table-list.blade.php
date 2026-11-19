@@ -112,7 +112,7 @@
                             </td>
                             <td class="align-middle text-center">
                                 <span class="badge badge-{{ $deposit->status_enum?->badgeTheme() ?? 'secondary' }}">
-                                    {{ $deposit->status_enum?->label() ?? '—' }}
+                                    {{ $deposit->status_enum?->label() ?? 'Not recorded' }}
                                 </span>
                             </td>
                             <td class="align-middle text-center">
@@ -198,7 +198,7 @@
                             </div>
                         </div>
                         <span class="badge badge-{{ $deposit->status_enum?->badgeTheme() ?? 'secondary' }}">
-                            {{ $deposit->status_enum?->label() ?? '—' }}
+                            {{ $deposit->status_enum?->label() ?? 'Not recorded' }}
                         </span>
                     </div>
                 </div>

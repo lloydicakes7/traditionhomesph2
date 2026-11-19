@@ -106,7 +106,7 @@
             }
 
             return [
-                'title'    => $row['property'] ? $row['property']->block_lot_label : '—',
+                'title'    => $row['property'] ? $row['property']->block_lot_label : 'Not recorded',
                 'subtitle' => $row['homeowner'],
                 'facts'    => $facts,
                 'total'    => ['label' => 'Total', 'value' => \App\Utility\MoneyHelper::format($row['total'])],
@@ -156,7 +156,7 @@
                         <tr>
                             <td class="align-middle">
                                 <div class="font-weight-bold">
-                                    {{ $row['property'] ? $row['property']->block_lot_label : '—' }}
+                                    {{ $row['property'] ? $row['property']->block_lot_label : 'Not recorded' }}
                                 </div>
                                 <div class="text-muted text-break">
                                     {{ $row['homeowner'] }} ·
@@ -176,7 +176,7 @@
                                 <td class="text-right amount-mono align-middle">
                                     {{ $row['buckets'][$bucket->value] > 0
                                         ? \App\Utility\MoneyHelper::format($row['buckets'][$bucket->value])
-                                        : '—' }}
+                                        : 'Not recorded' }}
                                 </td>
                             @endforeach
                             <td class="text-right amount-mono font-weight-bold align-middle">

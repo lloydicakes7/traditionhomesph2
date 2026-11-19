@@ -33,7 +33,7 @@ class CancelMonthlyDue
             $by,
             'cancelled',
             'monthly_due',
-            'Cancelled monthly due ' . $due->reference . ' for ' . ($due->property?->block_lot_label ?? '—'),
+            'Cancelled monthly due ' . $due->reference . ' for ' . ($due->property?->block_lot_label ?? 'Not recorded'),
             ['bill_id' => $due->id]
         );
 

@@ -82,7 +82,7 @@ class AmenityFormModal extends AdminModalComponent
         $rules = [
             'form.name'        => ['required', 'string', 'max:150'],
             'form.rate_type'   => ['required', Rule::in(AmenityRateType::values())],
-            'form.rate'        => ['nullable', 'numeric', 'min:0', 'max:9999999'],
+            'form.rate'        => ['nullable', 'numeric', 'min:0', 'max:9999999999999'],
             'form.is_bookable' => ['boolean'],
             'form.description' => ['nullable', 'string', 'max:2000'],
             'amenityImage'     => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
@@ -278,7 +278,6 @@ class AmenityFormModal extends AdminModalComponent
             'ratePreview'     => $rate > 0
                 ? MoneyHelper::formatShort($rate) . ($rateType ? $rateType->unitSuffix() : '')
                 : 'Free',
-            'currencySymbol'  => MoneyHelper::symbol(),
         ]);
     }
 }

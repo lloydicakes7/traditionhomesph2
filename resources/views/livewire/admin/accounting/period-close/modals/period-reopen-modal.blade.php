@@ -12,7 +12,7 @@
 
             <p class="text-warning small mb-0">
                 <i class="fas fa-fw fa-info-circle"></i>
-                Reopening puts a locked month back in play — postings may be made into it again, and the statements
+                Reopening puts a locked month back in play. Postings may be made into it again, and the statements
                 for it will move.
             </p>
         </div>

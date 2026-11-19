@@ -208,7 +208,7 @@ class Amenity extends Model
         $type = $this->rate_type_enum;
 
         if (! $type) {
-            return '—';
+            return 'Not recorded';
         }
 
         return $type->label();

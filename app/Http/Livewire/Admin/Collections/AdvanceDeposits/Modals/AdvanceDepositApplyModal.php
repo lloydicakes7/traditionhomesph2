@@ -109,11 +109,11 @@ class AdvanceDepositApplyModal extends AdminModalComponent
 
         $this->validate([
             'bill'   => ['required', 'string'],
-            'amount' => ['required', 'numeric', 'min:0.01'],
+            'amount' => ['required', 'numeric', 'min:0', 'max:9999999999999'],
         ], [
             'bill.required'   => 'Choose the bill this credit settles.',
             'amount.required' => 'Enter how much of the credit to apply.',
-            'amount.min'      => 'The amount must be at least 0.01.',
+            'amount.min'      => 'The amount cannot be negative.',
         ], [
             'bill'   => 'bill',
             'amount' => 'amount',

@@ -67,7 +67,7 @@
                 @can('viewAny', \App\Models\Violation::class)
                     <a href="{{ route('support.violations', ['filterStatus' => \App\Enums\ViolationStatus::ACTIVE]) }}"
                         class="small-box-footer">
-                        {{ $summary['active_violations'] > 0 ? __('Unresolved — more info') : __('More info') }}
+                        {{ $summary['active_violations'] > 0 ? __('Unresolved, view details') : __('More info') }}
                         <i class="fas fa-arrow-circle-right"></i>
                     </a>
                 @endcan
@@ -218,7 +218,7 @@
                                                 {{ $request->type_label }}
                                                 <div class="text-muted small dash-truncate">
                                                     {{ $request->resident_label }}
-                                                    · {{ $request->created_at ? $request->created_at->format('M j, Y') : '—' }}
+                                                    · {{ $request->created_at ? $request->created_at->format('M j, Y') : 'Not recorded' }}
                                                 </div>
                                             </td>
                                             <td class="text-center align-middle text-nowrap dash-cell-fixed">

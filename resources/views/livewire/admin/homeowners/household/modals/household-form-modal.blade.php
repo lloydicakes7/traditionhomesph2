@@ -14,8 +14,8 @@
                 <div>
                     <x-adminlte-select2 id="householdFormHead" name="form.head_resident_id" label="Resident"
                         wire:model.defer="form.head_resident_id" igroup-size="sm"
-                        :config="['placeholder' => '— Select Resident —']">
-                        <option value="">— Select Resident —</option>
+                        :config="['placeholder' => 'Select Resident']">
+                        <option value="">Select Resident</option>
                         @foreach ($residents as $resident)
                             <option value="{{ $resident->id }}">{{ $resident->full_name }}</option>
                         @endforeach
@@ -36,8 +36,8 @@
                     {{-- ===== Household ===== --}}
                     <x-adminlte-select2 id="householdFormPropertyId" name="form.property_id" label="Property"
                         wire:model.defer="form.property_id" igroup-size="sm"
-                        :config="['placeholder' => '— Select Property —']">
-                        <option value="">— Select Property —</option>
+                        :config="['placeholder' => 'Select Property']">
+                        <option value="">Select Property</option>
                         @foreach ($properties as $property)
                             <option value="{{ $property->id }}">
                                 {{ $property->block_lot_label }}@if ($property->address) — {{ $property->address->subdivision }}@endif

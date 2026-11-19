@@ -77,7 +77,7 @@ class PublicPagesTest extends TestCase
         Livewire::test(ContactForm::class)
             ->set('form.name', 'Juan dela Cruz')
             ->set('form.email', 'juan@example.com')
-            ->set('form.contact_number', '0917 123 4567')
+            ->set('form.contact_number', '09171234567')
             ->set('form.subject', 'Dues inquiry')
             ->set('form.message', 'How much are my monthly dues?')
             ->call('send')
@@ -85,7 +85,7 @@ class PublicPagesTest extends TestCase
 
         Mail::assertSent(ContactMessage::class, function (ContactMessage $mail) {
             return $mail->hasTo('office@thha.test')
-                && $mail->senderContact === '0917 123 4567';
+                && $mail->senderContact === '09171234567';
         });
     }
 

@@ -10,9 +10,9 @@
         <div data-modal-content class="{{ ! $loaded ? 'd-none' : '' }}">
             @if ($booking)
                 <div class="border rounded p-3 mb-3">
-                    <div class="font-weight-bold">{{ $booking->amenity->name ?? '—' }}</div>
+                    <div class="font-weight-bold">{{ $booking->amenity->name ?? 'Not recorded' }}</div>
                     <div class="text-muted small">{{ $booking->date_time_display }}</div>
-                    <div class="text-muted small">{{ $booking->reference ?: '—' }}</div>
+                    <div class="text-muted small">{{ $booking->reference ?: 'Not recorded' }}</div>
                 </div>
 
                 <p class="mb-0">

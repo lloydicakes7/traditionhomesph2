@@ -138,7 +138,7 @@ class BillExportsTest extends TestCase
         Livewire::test(InvoiceTableList::class)->assertSee('Blk 4 Lot 2');
     }
 
-    public function test_the_unit_column_reads_dash_when_the_account_holds_no_household()
+    public function test_the_unit_column_says_not_recorded_when_the_account_holds_no_household()
     {
         $this->signIn();
 
@@ -148,12 +148,12 @@ class BillExportsTest extends TestCase
         $invoice = $this->billFor($user, 'invoice', 'INV-' . now()->year . '-0002');
 
         $this->assertStringContainsString(
-            '"' . $due->reference . '","—"',
+            '"' . $due->reference . '","Not recorded"',
             $this->exportCsv(MonthlyDueTableList::class)
         );
 
         $this->assertStringContainsString(
-            '"' . $invoice->reference . '","—"',
+            '"' . $invoice->reference . '","Not recorded"',
             $this->exportCsv(InvoiceTableList::class)
         );
     }

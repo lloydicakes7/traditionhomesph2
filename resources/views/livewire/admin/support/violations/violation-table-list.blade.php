@@ -217,7 +217,7 @@
                         </div>
                         <div class="text-right">
                             <div class="text-muted small" style="font-size:0.7rem;">ISSUED BY</div>
-                            <div class="small font-weight-medium">{{ $violation->issuedByAdmin->name ?? '—' }}</div>
+                            <div class="small font-weight-medium">{{ $violation->issuedByAdmin->name ?? 'Not recorded' }}</div>
                             <div class="text-muted small">
                                 {{ $violation->issued_at ? $violation->issued_at->format('M j, Y') : 'Not issued' }}
                             </div>

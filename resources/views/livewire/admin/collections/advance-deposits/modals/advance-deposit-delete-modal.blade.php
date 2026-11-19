@@ -9,7 +9,7 @@
         <div data-modal-content class="{{ ! $loaded ? 'd-none' : '' }}">
             <p>Delete the advance deposit of <strong>{{ $deletingDepositLabel }}</strong>?</p>
             <p class="text-danger small mt-2 mb-0">
-                <i class="fas fa-fw fa-info-circle"></i> A deposit that has settled a bill is kept — refund it instead.
+                <i class="fas fa-fw fa-info-circle"></i> A deposit that has settled a bill is kept. Refund it instead.
             </p>
         </div>
 

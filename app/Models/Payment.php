@@ -278,7 +278,7 @@ class Payment extends Model
      */
     public function getBillReferenceAttribute(): string
     {
-        return $this->bill->reference ?? '—';
+        return $this->bill->reference ?? 'Not recorded';
     }
 
     /**
@@ -286,7 +286,7 @@ class Payment extends Model
      */
     public function getBillTypeLabelAttribute(): string
     {
-        return $this->bill ? $this->bill->type_label : '—';
+        return $this->bill ? $this->bill->type_label : 'Not recorded';
     }
 
     /**
@@ -299,7 +299,7 @@ class Payment extends Model
      */
     public function getPropertyLabelAttribute(): string
     {
-        return $this->bill?->property?->block_lot_label ?? '—';
+        return $this->bill?->property?->block_lot_label ?? 'Not recorded';
     }
 
     /**
@@ -310,7 +310,7 @@ class Payment extends Model
     public function getMethodLabelAttribute(): string
     {
         if ($this->payment_method_id) {
-            return $this->paymentMethod?->name ?? '—';
+            return $this->paymentMethod?->name ?? 'Not recorded';
         }
 
         if ($this->advance_deposit_id) {
@@ -341,6 +341,6 @@ class Payment extends Model
      */
     public function getPaidAtDisplayAttribute(): string
     {
-        return $this->paid_at ? $this->paid_at->format('M j, Y g:i A') : '—';
+        return $this->paid_at ? $this->paid_at->format('M j, Y g:i A') : 'Not recorded';
     }
 }

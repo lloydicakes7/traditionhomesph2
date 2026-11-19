@@ -121,7 +121,7 @@ trait ManagesHouseholdMembers
 
         $resident = Resident::find($residentId);
 
-        $this->members[$index]['resident_name'] = $resident?->full_name ?? '—';
+        $this->members[$index]['resident_name'] = $resident?->full_name ?? 'Not recorded';
         $this->members[$index]['relationship'] = $this->memberForm['relationship'];
         $this->members[$index]['relationship_label'] = HouseholdMember::labelFor($this->memberForm['relationship']);
         $this->members[$index]['is_head'] = (bool) ($this->memberForm['is_head'] ?? false);
@@ -179,7 +179,7 @@ trait ManagesHouseholdMembers
 
         $this->members[] = $this->memberRow(
             (string) $this->memberForm['resident_id'],
-            $resident?->full_name ?? '—'
+            $resident?->full_name ?? 'Not recorded'
         );
 
         return true;

@@ -21,8 +21,8 @@
                     <x-adminlte-select2 id="linkResidentUserId" name="selectedId"
                         :label="$mode === 'to-user' ? 'Resident' : 'User Account'"
                         wire:model.defer="selectedId" igroup-size="sm"
-                        :config="['placeholder' => $mode === 'to-user' ? '— Select Resident —' : '— Select User —', 'width' => '100%']">
-                        <option value="">— Select {{ $mode === 'to-user' ? 'Resident' : 'User' }} —</option>
+                        :config="['placeholder' => $mode === 'to-user' ? 'Select Resident' : 'Select User', 'width' => '100%']">
+                        <option value="">Select {{ $mode === 'to-user' ? 'a resident' : 'a user' }}</option>
                         @foreach ($candidates as $candidate)
                             <option value="{{ $candidate->id }}">
                                 {{ $mode === 'to-user' ? $candidate->full_name : $candidate->email }}

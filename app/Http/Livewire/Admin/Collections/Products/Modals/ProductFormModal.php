@@ -190,7 +190,7 @@ class ProductFormModal extends AdminModalComponent
             'form.name'                => ['required', 'string', 'max:255'],
             'form.type'                => ['required', Rule::in(ProductType::values())],
             'form.product_category_id' => ['nullable', 'exists:product_categories,id'],
-            'form.price'               => ['required', 'numeric', 'min:0'],
+            'form.price'               => ['required', 'numeric', 'min:0', 'max:9999999999999'],
             'form.unit'                => ['nullable', 'string', 'max:50'],
             'form.description'         => ['nullable', 'string', 'max:1000'],
             'form.is_active'           => ['boolean'],

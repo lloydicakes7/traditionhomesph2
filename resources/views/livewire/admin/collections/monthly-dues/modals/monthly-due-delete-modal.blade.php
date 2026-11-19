@@ -9,7 +9,7 @@
         <div data-modal-content class="{{ ! $loaded ? 'd-none' : '' }}">
             <p>Delete <strong>{{ $deletingDueLabel }}</strong>?</p>
             <p class="text-danger small mt-2 mb-0">
-                <i class="fas fa-fw fa-info-circle"></i> Months with payments recorded against them are kept — cancel those instead.
+                <i class="fas fa-fw fa-info-circle"></i> Months with payments recorded against them are kept. Cancel those instead.
             </p>
         </div>
 

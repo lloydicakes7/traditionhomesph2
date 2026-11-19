@@ -9,6 +9,8 @@
 
     const LENGTH = 11;
 
+    const DIRECTORY_LENGTH = 11;
+
     // ===== Handlers =====
 
     function digitsOf(value) {
@@ -35,6 +37,14 @@
 
     $(document).on('input', '[data-thha-contact]', function () {
         const cleaned = normalise(this.value);
+
+        if (this.value !== cleaned) {
+            this.value = cleaned;
+        }
+    });
+
+    $(document).on('input', '[data-thha-directory-phone]', function () {
+        const cleaned = digitsOf(this.value).slice(0, DIRECTORY_LENGTH);
 
         if (this.value !== cleaned) {
             this.value = cleaned;

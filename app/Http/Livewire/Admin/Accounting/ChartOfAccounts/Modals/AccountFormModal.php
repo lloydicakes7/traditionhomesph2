@@ -225,7 +225,9 @@ class AccountFormModal extends AdminModalComponent
             'name'             => ['required', 'string', 'max:255'],
             'kind'             => ['required', Rule::in(array_column(AccountKind::cases(), 'value'))],
             'description'      => ['nullable', 'string', 'max:255'],
-            'starting_balance' => $isNewMoney ? ['required', 'numeric', 'min:0'] : ['nullable', 'numeric', 'min:0'],
+            'starting_balance' => $isNewMoney
+                ? ['required', 'numeric', 'min:0', 'max:9999999999999']
+                : ['nullable', 'numeric', 'min:0', 'max:9999999999999'],
             'balance_as_of'    => $isNewMoney ? ['required', 'date'] : ['nullable', 'date'],
         ];
     }

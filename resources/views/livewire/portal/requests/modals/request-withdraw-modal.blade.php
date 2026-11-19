@@ -11,7 +11,7 @@
             @if ($request)
                 <div class="border rounded p-3 mb-3">
                     <div class="font-weight-bold text-break">{{ $request->type_label }}</div>
-                    <div class="text-muted small">{{ $request->reference ?: '—' }}</div>
+                    <div class="text-muted small">{{ $request->reference ?: 'Not recorded' }}</div>
                 </div>
 
                 <p class="mb-0">

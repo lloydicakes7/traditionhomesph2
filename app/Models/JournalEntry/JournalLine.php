@@ -92,7 +92,7 @@ class JournalLine extends Model
      */
     public function getDebitDisplayAttribute(): string
     {
-        return $this->side === self::SIDE_DEBIT ? MoneyHelper::format($this->amount) : '—';
+        return $this->side === self::SIDE_DEBIT ? MoneyHelper::format($this->amount) : 'Not applicable';
     }
 
     /**
@@ -100,7 +100,7 @@ class JournalLine extends Model
      */
     public function getCreditDisplayAttribute(): string
     {
-        return $this->side === self::SIDE_CREDIT ? MoneyHelper::format($this->amount) : '—';
+        return $this->side === self::SIDE_CREDIT ? MoneyHelper::format($this->amount) : 'Not applicable';
     }
 
     /**

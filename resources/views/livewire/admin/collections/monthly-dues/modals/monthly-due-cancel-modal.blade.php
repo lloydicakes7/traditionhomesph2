@@ -9,7 +9,7 @@
         <div data-modal-content class="{{ ! $loaded ? 'd-none' : '' }}">
             <p>Cancel <strong>{{ $cancellingDueLabel }}</strong>?</p>
             <p class="text-muted small mb-0">
-                This property's dues for the month are withdrawn — nothing more is collectible on them.
+                This property's dues for the month are withdrawn. Nothing more is collectible on them.
                 Payments already recorded stay on the ledger.
             </p>
         </div>

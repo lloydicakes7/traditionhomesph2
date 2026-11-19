@@ -44,7 +44,7 @@
                                 <td class="align-middle text-right font-weight-medium">{{ $payment->amount_display }}</td>
                                 <td class="align-middle">{{ $payment->method_label }}</td>
                                 <td class="align-middle text-truncate" style="max-width:0;">
-                                    {{ $payment->reference_no ?: '—' }}
+                                    {{ $payment->reference_no ?: 'Not recorded' }}
                                 </td>
                                 <td class="align-middle text-center">
                                     <span class="badge badge-{{ $payment->status_badge }}"
@@ -96,7 +96,7 @@
                     </div>
                     <div class="d-flex justify-content-between align-items-start mb-1" style="gap:0.75rem;">
                         <div class="text-muted small">Reference</div>
-                        <div class="small text-right text-break">{{ $payment->reference_no ?: '—' }}</div>
+                        <div class="small text-right text-break">{{ $payment->reference_no ?: 'Not recorded' }}</div>
                     </div>
                     <div class="d-flex justify-content-between align-items-start" style="gap:0.75rem;">
                         <div class="text-muted small">Date</div>

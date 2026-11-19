@@ -133,7 +133,7 @@ class SoaEmail extends Model
      */
     public function getPropertyLabelAttribute(): string
     {
-        return $this->user?->household?->property?->block_lot_label ?? '—';
+        return $this->user?->household?->property?->block_lot_label ?? 'Not recorded';
     }
 
     /**
@@ -149,7 +149,7 @@ class SoaEmail extends Model
      */
     public function getIssuedToNameAttribute(): string
     {
-        return $this->user?->name ?: '—';
+        return $this->user?->name ?: 'Not recorded';
     }
 
     /**

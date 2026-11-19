@@ -33,10 +33,10 @@
                         <dd class="col-7 font-weight-medium">{{ $invoice->issued_to_name }}</dd>
 
                         <dt class="col-5 text-muted font-weight-normal">Property</dt>
-                        <dd class="col-7 font-weight-medium">{{ $invoice->property?->block_lot_label ?: '—' }}</dd>
+                        <dd class="col-7 font-weight-medium">{{ $invoice->property?->block_lot_label ?: 'Not recorded' }}</dd>
 
                         <dt class="col-5 text-muted font-weight-normal">Address</dt>
-                        <dd class="col-7">{{ $invoice->property?->address?->short_address ?: '—' }}</dd>
+                        <dd class="col-7">{{ $invoice->property?->address?->short_address ?: 'Not recorded' }}</dd>
                     </dl>
                 </div>
                 <div class="col-12 col-sm-6">
@@ -142,7 +142,7 @@
                         @forelse ($invoice->payments as $payment)
                             <tr>
                                 <td class="small">{{ $payment->paid_at_display }}</td>
-                                <td class="small">{{ $payment->reference_no ?: '—' }}</td>
+                                <td class="small">{{ $payment->reference_no ?: 'Not recorded' }}</td>
                                 <td class="small">{{ $payment->method_label }}</td>
                                 <td class="text-right">{{ $payment->amount_display }}</td>
                                 <td class="text-center">

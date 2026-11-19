@@ -323,7 +323,7 @@ class Bill extends Model
      */
     public function getTypeLabelAttribute(): string
     {
-        return $this->type_enum ? $this->type_enum->label() : '—';
+        return $this->type_enum ? $this->type_enum->label() : 'Not recorded';
     }
 
     /**
@@ -332,7 +332,7 @@ class Bill extends Model
      */
     public function getIssuedToNameAttribute(): string
     {
-        return $this->billed_to_name ?: ($this->user?->name ?: '—');
+        return $this->billed_to_name ?: ($this->user?->name ?: 'Not recorded');
     }
 
     /**
@@ -340,7 +340,7 @@ class Bill extends Model
      */
     public function getBillDateDisplayAttribute(): string
     {
-        return $this->bill_date ? $this->bill_date->format('M j, Y') : '—';
+        return $this->bill_date ? $this->bill_date->format('M j, Y') : 'Not recorded';
     }
 
     /**
@@ -349,7 +349,7 @@ class Bill extends Model
     public function getBillingPeriodDisplayAttribute(): string
     {
         if (! $this->billing_period) {
-            return '—';
+            return 'Not recorded';
         }
 
         return Carbon::createFromFormat('Y-m', $this->billing_period)->format('F Y');

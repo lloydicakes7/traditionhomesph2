@@ -10,7 +10,7 @@
         <div data-modal-content class="{{ ! $loaded ? 'd-none' : '' }}">
             <p>Close the books for <strong>{{ $closingPeriodLabel }}</strong>?</p>
             <p class="text-muted small">
-                Once closed, nothing dated inside the month can be posted — balances, receipts, payouts, transfers and
+                Once closed, nothing dated inside the month can be posted. Balances, receipts, payouts, transfers and
                 transfers all stop moving for it.
             </p>
 

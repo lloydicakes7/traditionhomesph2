@@ -14,12 +14,8 @@
                         wire:model.defer="transfer_date" igroup-size="sm" />
                 </div>
                 <div class="col-12 col-sm-6">
-                    <x-adminlte-input name="amount" label="Amount" type="number" step="0.01" min="0"
-                        placeholder="0.00" wire:model.defer="amount" igroup-size="sm">
-                        <x-slot name="prependSlot">
-                            <div class="input-group-text">{{ \App\Utility\MoneyHelper::symbol() }}</div>
-                        </x-slot>
-                    </x-adminlte-input>
+                    <x-form.money-input name="amount" label="Amount" placeholder="0.00"
+                        wire:model.defer="amount" igroup-size="sm" />
                 </div>
             </div>
 

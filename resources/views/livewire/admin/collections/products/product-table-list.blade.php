@@ -122,7 +122,7 @@
                             </td>
                             <td class="align-middle">
                                 <span class="badge badge-{{ $product->type_enum?->badgeTheme() ?? 'secondary' }}">
-                                    {{ $product->type_enum?->label() ?? '—' }}
+                                    {{ $product->type_enum?->label() ?? 'Not recorded' }}
                                 </span>
                             </td>
                             <td class="align-middle text-right">
@@ -170,7 +170,7 @@
                                 <p class="mb-0">
                                     {{ $search || $filterType || $filterCategory
                                         ? 'No products or services match your filters.'
-                                        : 'Nothing billable yet. Add the things the association charges for — stickers, IDs, clearances, fees.' }}
+                                        : 'Nothing billable yet. Add the things the association charges for: stickers, IDs, clearances, fees.' }}
                                 </p>
                             </td>
                         </tr>
@@ -222,7 +222,7 @@
                         <div>
                             <div class="text-muted small" style="font-size:0.7rem;">TYPE</div>
                             <span class="badge badge-{{ $product->type_enum?->badgeTheme() ?? 'secondary' }}">
-                                {{ $product->type_enum?->label() ?? '—' }}
+                                {{ $product->type_enum?->label() ?? 'Not recorded' }}
                             </span>
                         </div>
                         <div class="text-right">
@@ -268,7 +268,7 @@
                     <p class="mb-0">
                         {{ $search || $filterType || $filterCategory
                             ? 'No products or services match your filters.'
-                            : 'Nothing billable yet. Add the things the association charges for — stickers, IDs, clearances, fees.' }}
+                            : 'Nothing billable yet. Add the things the association charges for: stickers, IDs, clearances, fees.' }}
                     </p>
                 </div>
             </div>

@@ -45,7 +45,7 @@ class CollectionReportQuery
                 'reference'   => $payment->reference_no ?: ('#' . $payment->id),
                 'property'    => $payment->user?->household?->property,
                 'homeowner'   => $payment->bill?->issued_to_name
-                    ?: ($payment->user?->name ?: '—'),
+                    ?: ($payment->user?->name ?: 'Not recorded'),
                 'particulars' => $payment->bill_reference . ' · ' . $payment->bill_type_label,
                 'method'      => $method,
                 'amount'      => $amount,

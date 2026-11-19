@@ -14,7 +14,7 @@
                     {{ $complaint->category_label }} · {{ $complaint->submitter_label }}
                 </div>
                 <div class="text-muted small mb-2">
-                    Submitted {{ $complaint->created_at ? $complaint->created_at->format('M j, Y g:i A') : '—' }}
+                    Submitted {{ $complaint->created_at ? $complaint->created_at->format('M j, Y g:i A') : 'Not recorded' }}
                 </div>
 
                 <div class="alert alert-light border small mb-3">

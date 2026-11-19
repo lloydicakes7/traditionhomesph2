@@ -4,8 +4,8 @@
     {{-- =================================================================== --}}
     <div class="alert alert-info py-2 px-3 small">
         <i class="fas fa-fw fa-lock text-dark mr-1"></i>
-        Closing a month stops every module from posting into it — no charge, receipt, payout or transfer
-        dated inside it — so the figures a report reads for that month stay still. Reopen it to correct something.
+        Closing a month stops every module from posting into it. No charge, receipt, payout or transfer
+        dated inside it, so the figures a report reads for that month stay still. Reopen it to correct something.
     </div>
 
     {{-- =================================================================== --}}

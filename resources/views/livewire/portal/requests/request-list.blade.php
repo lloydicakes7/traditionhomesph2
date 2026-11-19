@@ -34,7 +34,7 @@
                                 <div class="font-weight-bold text-break">{{ $request->type_label }}</div>
                                 <small class="text-muted">
                                     <i class="far fa-fw fa-calendar-alt mr-1"></i>
-                                    Filed {{ $request->created_at ? $request->created_at->format('M j, Y g:i A') : '—' }}
+                                    Filed {{ $request->created_at ? $request->created_at->format('M j, Y g:i A') : 'Not recorded' }}
                                 </small>
                             </div>
                             <div class="text-right flex-shrink-0">

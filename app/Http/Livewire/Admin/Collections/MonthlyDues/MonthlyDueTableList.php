@@ -162,7 +162,7 @@ class MonthlyDueTableList extends AdminComponent
             ->map(function (Bill $due) {
                 return [
                     $due->reference,
-                    $due->property?->block_lot_label ?: '—',
+                    $due->property?->block_lot_label ?: 'Not recorded',
                     $due->issued_to_name,
                     $due->billing_period_display,
                     $due->subtotal_display,

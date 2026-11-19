@@ -38,7 +38,7 @@
         <div class="col-md-3 col-6 mb-3">
             <div class="small-box bg-info">
                 <div class="inner">
-                    <h3>{{ $stats['requests'] ?? '—' }}</h3>
+                    <h3>{{ $stats['requests'] ?? 'Not recorded' }}</h3>
                     <p>Requests</p>
                 </div>
                 <div class="icon"><i class="fas fa-fw fa-clipboard-list"></i></div>
@@ -51,7 +51,7 @@
         <div class="col-md-3 col-6 mb-3">
             <div class="small-box bg-warning">
                 <div class="inner">
-                    <h3>{{ $stats['complaints'] ?? '—' }}</h3>
+                    <h3>{{ $stats['complaints'] ?? 'Not recorded' }}</h3>
                     <p>Complaints</p>
                 </div>
                 <div class="icon"><i class="fas fa-fw fa-comment-dots"></i></div>
@@ -64,7 +64,7 @@
         <div class="col-md-3 col-6 mb-3">
             <div class="small-box bg-danger">
                 <div class="inner">
-                    <h3>{{ $stats['violations'] ?? '—' }}</h3>
+                    <h3>{{ $stats['violations'] ?? 'Not recorded' }}</h3>
                     <p>Violations</p>
                 </div>
                 <div class="icon"><i class="fas fa-fw fa-exclamation-triangle"></i></div>
@@ -77,7 +77,7 @@
         <div class="col-md-3 col-6 mb-3">
             <div class="small-box bg-success">
                 <div class="inner">
-                    <h3>{{ $stats['bookings'] ?? '—' }}</h3>
+                    <h3>{{ $stats['bookings'] ?? 'Not recorded' }}</h3>
                     <p>Bookings</p>
                 </div>
                 <div class="icon"><i class="far fa-fw fa-calendar-check"></i></div>
@@ -136,7 +136,7 @@
                                             <td class="text-truncate" style="max-width:0;">
                                                 {{ $request->type_label }}
                                                 <div class="text-muted small text-truncate">
-                                                    {{ $request->created_at ? $request->created_at->format('M j, Y') : '—' }}
+                                                    {{ $request->created_at ? $request->created_at->format('M j, Y') : 'Not recorded' }}
                                                 </div>
                                             </td>
                                             <td class="text-truncate" style="max-width:0;">

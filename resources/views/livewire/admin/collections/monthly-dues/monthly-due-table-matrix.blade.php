@@ -84,7 +84,7 @@
                     <tr>
                         <th class="px-1 py-3 small">Monthly Collected</th>
                         @foreach ($matrix['months'] as $month)
-                            <th class="px-1 py-3 small">{{ $matrix['collected_display'][$month['value']] ?? '—' }}</th>
+                            <th class="px-1 py-3 small">{{ $matrix['collected_display'][$month['value']] ?? 'Not recorded' }}</th>
                         @endforeach
                         <th class="px-1 py-3 small">{{ $matrix['year_collected'] }}</th>
                         <th class="px-1 py-3 small">{{ $matrix['year_balance'] }}</th>
@@ -109,7 +109,7 @@
                     <div class="border rounded px-2 py-1 text-center" style="min-width:64px;">
                         <div class="text-muted" style="font-size:0.65rem;">{{ $month['label'] }}</div>
                         <div class="small font-weight-medium">
-                            {{ $matrix['collected_display'][$month['value']] ?? '—' }}
+                            {{ $matrix['collected_display'][$month['value']] ?? 'Not recorded' }}
                         </div>
                     </div>
                 @endforeach

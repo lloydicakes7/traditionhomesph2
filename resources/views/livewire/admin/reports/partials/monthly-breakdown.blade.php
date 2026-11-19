@@ -94,7 +94,7 @@
                         <td class="px-1 text-break">{{ $row['account']->name }}</td>
                         @foreach ($row['months'] as $amount)
                             <td class="px-1 amount-mono">
-                                {{ round((float) $amount, 2) != 0.0 ? \App\Utility\MoneyHelper::format($amount) : '—' }}
+                                {{ round((float) $amount, 2) != 0.0 ? \App\Utility\MoneyHelper::format($amount) : 'Not recorded' }}
                             </td>
                         @endforeach
                         <td class="px-1 amount-mono font-weight-bold">
@@ -145,7 +145,7 @@
                                     {{ $report['month_labels'][$month] ?? $month }}
                                 </div>
                                 <div class="small amount-mono">
-                                    {{ round((float) $amount, 2) != 0.0 ? \App\Utility\MoneyHelper::format($amount) : '—' }}
+                                    {{ round((float) $amount, 2) != 0.0 ? \App\Utility\MoneyHelper::format($amount) : 'Not recorded' }}
                                 </div>
                             </div>
                         @endforeach

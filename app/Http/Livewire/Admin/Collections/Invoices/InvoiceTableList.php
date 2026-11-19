@@ -176,7 +176,7 @@ class InvoiceTableList extends AdminComponent
                 return [
                     $invoice->bill_date_display,
                     $invoice->reference,
-                    $invoice->property?->block_lot_label ?: '—',
+                    $invoice->property?->block_lot_label ?: 'Not recorded',
                     $invoice->issued_to_name,
                     $invoice->total_display,
                     $invoice->penalty_display,

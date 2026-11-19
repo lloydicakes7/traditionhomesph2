@@ -40,8 +40,8 @@
                     @forelse ($bookings as $booking)
                         <tr wire:key="booking-row-{{ $booking->id }}">
                             <td class="align-middle text-truncate" style="max-width:0;">
-                                <div class="font-weight-medium text-truncate">{{ $booking->amenity->name ?? '—' }}</div>
-                                <div class="text-muted small text-truncate">{{ $booking->reference ?: '—' }}</div>
+                                <div class="font-weight-medium text-truncate">{{ $booking->amenity->name ?? 'Not recorded' }}</div>
+                                <div class="text-muted small text-truncate">{{ $booking->reference ?: 'Not recorded' }}</div>
                             </td>
                             <td class="align-middle text-truncate" style="max-width:0;">
                                 <div class="small text-truncate">{{ $booking->date_time_display }}</div>
@@ -97,8 +97,8 @@
                 <div class="card-header bg-white py-2">
                     <div class="d-flex justify-content-between align-items-start" style="gap:0.5rem;">
                         <div class="min-width-0">
-                            <div class="font-weight-bold text-truncate">{{ $booking->amenity->name ?? '—' }}</div>
-                            <div class="text-muted small text-truncate">{{ $booking->reference ?: '—' }}</div>
+                            <div class="font-weight-bold text-truncate">{{ $booking->amenity->name ?? 'Not recorded' }}</div>
+                            <div class="text-muted small text-truncate">{{ $booking->reference ?: 'Not recorded' }}</div>
                         </div>
                         <span class="badge badge-{{ $booking->status_enum?->badgeTheme() ?? 'secondary' }} flex-shrink-0">
                             {{ $booking->status_enum?->label() ?? $booking->status }}

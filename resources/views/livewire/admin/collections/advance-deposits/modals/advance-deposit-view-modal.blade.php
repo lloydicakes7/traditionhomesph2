@@ -14,7 +14,7 @@
                         <div class="text-muted small">credit still held</div>
                     </div>
                     <span class="badge badge-{{ $deposit->status_enum?->badgeTheme() ?? 'secondary' }}">
-                        {{ $deposit->status_enum?->label() ?? '—' }}
+                        {{ $deposit->status_enum?->label() ?? 'Not recorded' }}
                     </span>
                 </div>
 
@@ -49,7 +49,7 @@
                                 <tr>
                                     <td class="small">{{ $payment->paid_at_display }}</td>
                                     <td class="small">
-                                        {{ $payment->bill?->reference ?? '—' }}
+                                        {{ $payment->bill?->reference ?? 'Not recorded' }}
                                     </td>
                                     <td class="text-right">{{ $payment->amount_display }}</td>
                                 </tr>

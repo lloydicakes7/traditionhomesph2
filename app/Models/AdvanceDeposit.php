@@ -141,7 +141,7 @@ class AdvanceDeposit extends Model
      */
     public function getPropertyLabelAttribute(): string
     {
-        return $this->user?->household?->property?->block_lot_label ?? '—';
+        return $this->user?->household?->property?->block_lot_label ?? 'Not recorded';
     }
 
     /**
@@ -149,7 +149,7 @@ class AdvanceDeposit extends Model
      */
     public function getHolderNameAttribute(): string
     {
-        return $this->user?->name ?: '—';
+        return $this->user?->name ?: 'Not recorded';
     }
 
     /**
@@ -173,7 +173,7 @@ class AdvanceDeposit extends Model
      */
     public function getDepositedAtDisplayAttribute(): string
     {
-        return $this->deposited_at ? $this->deposited_at->format('M j, Y') : '—';
+        return $this->deposited_at ? $this->deposited_at->format('M j, Y') : 'Not recorded';
     }
 
     /**

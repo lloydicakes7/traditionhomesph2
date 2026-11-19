@@ -120,7 +120,7 @@
             @foreach ($rows as $label => $value)
                 <div class="col-12 col-md-6 mb-1">
                     <div class="text-muted small">{{ $label }}</div>
-                    <div class="font-weight-medium text-break">{{ $value !== '' ? $value : '—' }}</div>
+                    <div class="font-weight-medium text-break">{{ $value !== '' ? $value : 'Not recorded' }}</div>
                 </div>
             @endforeach
         </div>
@@ -149,10 +149,10 @@
                             aria-controls="{{ $memberId }}">
                             <span class="flex-grow-1 mr-2" style="min-width:0;">
                                 <span class="font-weight-bold text-break d-block">
-                                    {{ $member['name'] !== '' ? $member['name'] : '—' }}
+                                    {{ $member['name'] !== '' ? $member['name'] : 'Not recorded' }}
                                 </span>
                                 <span class="small text-muted text-break d-block">
-                                    {{ $member['relation'] !== '' ? $member['relation'] : '—' }}
+                                    {{ $member['relation'] !== '' ? $member['relation'] : 'Not recorded' }}
                                 </span>
                             </span>
                             <i class="fas fa-fw fa-chevron-down thha-household-member-chevron text-muted flex-shrink-0"
@@ -171,7 +171,7 @@
                                     ] as $label => $value)
                                         <div class="col-12 col-sm-6 mb-2">
                                             <div class="text-muted small">{{ $label }}</div>
-                                            <div class="font-weight-medium text-break">{{ $value !== '' ? $value : '—' }}</div>
+                                            <div class="font-weight-medium text-break">{{ $value !== '' ? $value : 'Not recorded' }}</div>
                                         </div>
                                     @endforeach
                                 </div>
@@ -186,7 +186,7 @@
 
         <div class="mt-2 small">
             <span class="text-muted">Name of the Owner:</span>
-            <span class="font-weight-medium">{{ $data['owner_name'] !== '' ? $data['owner_name'] : '—' }}</span>
+            <span class="font-weight-medium">{{ $data['owner_name'] !== '' ? $data['owner_name'] : 'Not recorded' }}</span>
         </div>
     </div>
 @endif

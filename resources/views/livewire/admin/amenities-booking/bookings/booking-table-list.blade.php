@@ -122,7 +122,7 @@
                                     @endcan
                                     <div class="min-width-0">
                                         <div class="font-weight-medium text-truncate">{{ $booking->date_time_display }}</div>
-                                        <div class="text-muted small text-truncate">{{ $booking->reference ?: '—' }}</div>
+                                        <div class="text-muted small text-truncate">{{ $booking->reference ?: 'Not recorded' }}</div>
                                         <div class="small">
                                             <span class="badge badge-{{ $booking->status_enum?->badgeTheme() ?? 'secondary' }}">
                                                 {{ $booking->status_enum?->label() ?? $booking->status }}
@@ -132,7 +132,7 @@
                                 </div>
                             </td>
                             <td class="align-middle text-truncate" style="max-width:0;">
-                                <div class="small text-truncate">{{ $booking->amenity->name ?? '—' }}</div>
+                                <div class="small text-truncate">{{ $booking->amenity->name ?? 'Not recorded' }}</div>
                                 @if ($booking->purpose)
                                     <div class="text-muted small text-truncate">{{ $booking->purpose }}</div>
                                 @endif
@@ -197,7 +197,7 @@
                                 <div class="font-weight-bold text-truncate" style="font-size:0.95rem;">
                                     {{ $booking->date_time_display }}
                                 </div>
-                                <div class="small text-muted text-truncate">{{ $booking->amenity->name ?? '—' }}</div>
+                                <div class="small text-muted text-truncate">{{ $booking->amenity->name ?? 'Not recorded' }}</div>
                             </div>
                         </div>
                         <span class="badge badge-{{ $booking->status_enum?->badgeTheme() ?? 'secondary' }} flex-shrink-0">
@@ -209,7 +209,7 @@
                     <div class="mb-2">
                         <div class="small text-truncate">{{ $booking->property_display }}</div>
                         <div class="font-weight-medium text-truncate">{{ $booking->booker_name }}</div>
-                        <div class="text-muted small text-truncate">{{ $booking->reference ?: '—' }}</div>
+                        <div class="text-muted small text-truncate">{{ $booking->reference ?: 'Not recorded' }}</div>
                         @if ($booking->purpose)
                             <div class="text-muted small text-truncate">{{ $booking->purpose }}</div>
                         @endif

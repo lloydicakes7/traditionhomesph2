@@ -34,7 +34,7 @@
                                 <small class="text-muted">
                                     <i class="fas fa-fw fa-tag mr-1"></i>{{ $complaint->category_label }}
                                     · Submitted
-                                    {{ $complaint->created_at ? $complaint->created_at->format('M j, Y g:i A') : '—' }}
+                                    {{ $complaint->created_at ? $complaint->created_at->format('M j, Y g:i A') : 'Not recorded' }}
                                 </small>
                             </div>
                             <span class="badge badge-{{ $complaint->status_badge_theme }}">

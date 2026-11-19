@@ -29,7 +29,7 @@
         </div>
         <div class="col-6 col-lg-3 mb-3">
             <x-reports.kpi label="Best Month" theme="primary" icon="fas fa-fw fa-award"
-                :value="$report['best_month'] ? \App\Utility\PeriodHelper::shortLabel($report['best_month']['period']) : '—'"
+                :value="$report['best_month'] ? \App\Utility\PeriodHelper::shortLabel($report['best_month']['period']) : 'Not recorded'"
                 :note="$report['best_month']
                     ? \App\Utility\MoneyHelper::format($report['best_month']['amount']) . ' earned in it'
                     : 'Nothing posted in this year yet'" />

@@ -111,8 +111,14 @@
                                         @enderror
                                     </td>
                                     <td>
-                                        <input type="number" step="0.01" min="0" class="form-control form-control text-right"
-                                            wire:model.lazy="items.{{ $index }}.amount">
+                                        <div class="input-group input-group-sm">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">{{ \App\Utility\MoneyHelper::symbol() }}</span>
+                                            </div>
+                                            <input type="text" inputmode="decimal" data-thha-money placeholder="0.00"
+                                                class="form-control text-right @error('items.' . $index . '.amount') is-invalid @enderror"
+                                                wire:model.lazy="items.{{ $index }}.amount">
+                                        </div>
                                         @error('items.' . $index . '.amount')
                                             <span class="text-danger small">{{ $message }}</span>
                                         @enderror

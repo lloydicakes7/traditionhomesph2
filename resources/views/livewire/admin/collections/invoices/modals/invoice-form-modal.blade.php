@@ -23,7 +23,7 @@
                             </x-adminlte-input>
                         @else
                             <x-adminlte-input name="booking_homeowner" label="Homeowner" disabled
-                                value="{{ $currentBooking->booker_name ?? '—' }}" igroup-size="sm" />
+                                value="{{ $currentBooking->booker_name ?? 'Not recorded' }}" igroup-size="sm" />
                         @endif
                     @else
                         @unless ($invoiceId)
@@ -83,12 +83,8 @@
                         </div>
                     </div>
 
-                    <x-adminlte-input name="form.discount" label="Discount" type="number" step="0.01" min="0"
-                        wire:model.lazy="form.discount" igroup-size="sm">
-                        <x-slot name="prependSlot">
-                            <div class="input-group-text"><i class="fas fa-fw fa-tag"></i></div>
-                        </x-slot>
-                    </x-adminlte-input>
+                    <x-form.money-input name="form.discount" label="Discount"
+                        wire:model.lazy="form.discount" igroup-size="sm" />
                 </div>
 
                 <div class="col-12">
@@ -141,7 +137,7 @@
                                                 <optgroup label="{{ $categoryName }}">
                                                     @foreach ($group as $product)
                                                         <option value="{{ $product->id }}">
-                                                            {{ $product->name }} — {{ $product->price_display }}
+                                                            {{ $product->name }} ({{ $product->price_display }})
                                                         </option>
                                                     @endforeach
                                                 </optgroup>
@@ -158,9 +154,14 @@
                                         wire:model.lazy="items.{{ $index }}.quantity" {{ $bookingId ? 'disabled' : '' }}>
                                 </td>
                                 <td>
-                                    <input type="number" step="1" min="0"
-                                        class="form-control form-control @error('items.' . $index . '.unit_price') is-invalid @enderror"
-                                        wire:model.lazy="items.{{ $index }}.unit_price" {{ $bookingId ? 'disabled' : '' }}>
+                                    <div class="input-group input-group-sm">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">{{ \App\Utility\MoneyHelper::symbol() }}</span>
+                                        </div>
+                                        <input type="text" inputmode="decimal" data-thha-money placeholder="0.00"
+                                            class="form-control @error('items.' . $index . '.unit_price') is-invalid @enderror"
+                                            wire:model.lazy="items.{{ $index }}.unit_price" {{ $bookingId ? 'disabled' : '' }}>
+                                    </div>
                                 </td>
                                 <td>
                                     <span class="font-weight-medium">{{ \App\Utility\MoneyHelper::format($item['amount'] ?? 0) }}</span>

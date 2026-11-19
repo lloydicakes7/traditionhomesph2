@@ -110,7 +110,7 @@ class TransferFormModal extends AdminModalComponent
 
         $this->validate($this->rules(), [
             'memo.required'            => 'Say what the money was moved for.',
-            'amount.min'               => 'The amount has to be more than zero.',
+            'amount.min'               => 'The amount cannot be negative.',
             'to_account_id.different'  => 'Pick two different accounts.',
             'from_account_id.required' => 'Choose the account the money left.',
             'to_account_id.required'   => 'Choose the account the money arrived in.',
@@ -186,7 +186,7 @@ class TransferFormModal extends AdminModalComponent
             'transfer_date'   => 'required|date',
             'from_account_id' => ['required', Rule::exists('accounts', 'id')],
             'to_account_id'   => ['required', Rule::exists('accounts', 'id'), 'different:from_account_id'],
-            'amount'          => 'required|numeric|min:0.01',
+            'amount'          => 'required|numeric|min:0|max:9999999999999',
             'memo'            => 'required|string|max:2000',
             'reference_no'    => 'nullable|string|max:100',
         ];

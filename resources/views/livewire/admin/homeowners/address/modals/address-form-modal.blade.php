@@ -62,7 +62,7 @@
                             <x-slot name="prependSlot">
                                 <div class="input-group-text"><i class="fas fa-fw fa-map-marker-alt"></i></div>
                             </x-slot>
-                            <option value="">— Select Region —</option>
+                            <option value="">Select Region</option>
                             @foreach ($regions as $region)
                                 <option value="{{ $region['name'] }}">{{ $region['name'] }}</option>
                             @endforeach
@@ -78,7 +78,7 @@
                             <x-slot name="prependSlot">
                                 <div class="input-group-text"><i class="fas fa-fw fa-map"></i></div>
                             </x-slot>
-                            <option value="">— Select Province —</option>
+                            <option value="">Select Province</option>
                             @foreach ($provinces as $province)
                                 <option value="{{ $province['name'] }}">{{ $province['name'] }}</option>
                             @endforeach
@@ -93,7 +93,7 @@
                             <x-slot name="prependSlot">
                                 <div class="input-group-text"><i class="fas fa-fw fa-city"></i></div>
                             </x-slot>
-                            <option value="">— Select City —</option>
+                            <option value="">Select City</option>
                             @foreach ($citiesMunicipalities as $city)
                                 <option value="{{ $city['name'] }}">{{ $city['name'] }}</option>
                             @endforeach
@@ -106,7 +106,7 @@
                             <x-slot name="prependSlot">
                                 <div class="input-group-text"><i class="fas fa-fw fa-map-pin"></i></div>
                             </x-slot>
-                            <option value="">— Select Barangay —</option>
+                            <option value="">Select Barangay</option>
                             @foreach ($barangays as $barangay)
                                 <option value="{{ $barangay['name'] }}">{{ $barangay['name'] }}</option>
                             @endforeach

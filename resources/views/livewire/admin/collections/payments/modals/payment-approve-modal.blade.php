@@ -39,7 +39,7 @@
                 <p class="mb-0">
                     Record this payment against the bill?
                     <span class="d-block text-muted small mt-1">
-                        The bill recomputes from it — its balance drops by
+                        The bill recomputes from it. Its balance drops by
                         {{ $payment->amount_display }}, and it settles when nothing is left.
                     </span>
                 </p>

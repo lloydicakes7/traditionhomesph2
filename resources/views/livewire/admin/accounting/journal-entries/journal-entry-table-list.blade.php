@@ -147,7 +147,7 @@
                                 <p class="mb-0">
                                     {{ $search || $filterSource || $filterClassification || $filterPeriod
                                         ? 'No journal entries match your filters.'
-                                        : 'The books are empty — every payment and expense posts its own entry here.' }}
+                                        : 'The books are empty. Every payment and expense posts its own entry here.' }}
                                 </p>
                             </td>
                         </tr>

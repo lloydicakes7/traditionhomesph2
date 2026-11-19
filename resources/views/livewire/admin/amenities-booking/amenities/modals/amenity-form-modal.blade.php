@@ -70,12 +70,8 @@
 
             <div class="row">
                 <div class="col-sm-7">
-                    <x-adminlte-input name="form.rate" label="Rate" type="number" step="0.01" min="0"
-                        placeholder="0.00 (Leave 0 to labeled free)" wire:model.defer="form.rate" igroup-size="sm">
-                        <x-slot name="prependSlot">
-                            <div class="input-group-text">{{ $currencySymbol }}</div>
-                        </x-slot>
-                    </x-adminlte-input>
+                    <x-form.money-input name="form.rate" label="Rate"
+                        placeholder="0.00 (Leave 0 to mark it free)" wire:model.defer="form.rate" igroup-size="sm" />
                 </div>
                 <div class="col-sm-5">
                     <x-adminlte-select name="form.rate_type" label="Rate Type" wire:model.defer="form.rate_type"

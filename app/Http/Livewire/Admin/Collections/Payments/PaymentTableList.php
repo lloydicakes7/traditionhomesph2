@@ -188,7 +188,7 @@ class PaymentTableList extends AdminComponent
             ->map(function (Payment $payment) {
                 return [
                     $payment->paid_at_display,
-                    $payment->reference_no ?: '—',
+                    $payment->reference_no ?: 'Not recorded',
                     $payment->property_label,
                     $payment->bill_type_label,
                     $payment->bill_reference,

@@ -24,13 +24,11 @@
                         @endforeach
                     </x-adminlte-select>
 
-                    <x-adminlte-input name="amount" label="Amount to Apply" type="number" step="0.01" min="0.01"
-                        wire:model.defer="amount" igroup-size="sm"
-                        help="No more than the credit available and no more than the bill's balance.">
-                        <x-slot name="prependSlot">
-                            <div class="input-group-text">{{ \App\Utility\MoneyHelper::symbol() }}</div>
-                        </x-slot>
-                    </x-adminlte-input>
+                    <x-form.money-input name="amount" label="Amount to Apply"
+                        wire:model.defer="amount" igroup-size="sm" />
+                    <p class="form-text text-muted">
+                        No more than the credit available and no more than the bill's balance.
+                    </p>
                 @else
                     <p class="text-muted small mb-0">
                         {{ $deposit->is_open

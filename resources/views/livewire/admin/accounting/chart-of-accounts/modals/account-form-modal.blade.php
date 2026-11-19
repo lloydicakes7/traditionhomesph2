@@ -58,8 +58,7 @@
                     </div>
 
                     <div class="col-12 col-sm-6">
-                        <x-adminlte-input name="form.starting_balance" label="Starting Balance"
-                            type="number" step="0.01" min="0"
+                        <x-form.money-input name="form.starting_balance" label="Starting Balance"
                             wire:model.defer="form.starting_balance" igroup-size="sm"
                             :disabled="$readOnly" />
                     </div>

@@ -15,7 +15,7 @@
                 <x-adminlte-card title="Personal Information" icon="fas fa-fw fa-user-edit">
 
                     <div class="row">
-                        <div class="col-12 col-sm-6 col-lg-3">
+                        <div class="col-12 col-sm-8 col-md-6 col-lg-5">
                             <x-adminlte-input name="form.philsys_card_no" label="PhilSys Card No."
                                 placeholder="1234-5678-9101-1213" maxlength="19" data-thha-philsys
                                 wire:model.defer="form.philsys_card_no" igroup-size="sm">
@@ -24,6 +24,9 @@
                                 </x-slot>
                             </x-adminlte-input>
                         </div>
+                    </div>
+
+                    <div class="row">
                         <div class="col-12 col-sm-6 col-lg-3">
                             <x-adminlte-input name="form.surname" label="Surname" placeholder="Enter surname"
                                 maxlength="255" data-thha-capitalize wire:model.defer="form.surname" igroup-size="sm">
@@ -48,10 +51,7 @@
                                 </x-slot>
                             </x-adminlte-input>
                         </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-12 col-md-3">
+                        <div class="col-12 col-sm-6 col-lg-3">
                             <x-adminlte-select name="form.suffix" label="Suffix"
                                 wire:model.defer="form.suffix" igroup-size="sm">
                                 <x-slot name="prependSlot">
@@ -63,25 +63,10 @@
                                 @endforeach
                             </x-adminlte-select>
                         </div>
-                        <div class="col-12 col-md-5">
-                            <x-adminlte-input name="form.birth_date" label="Birth Date" type="date"
-                                wire:model.defer="form.birth_date" igroup-size="sm">
-                                <x-slot name="prependSlot">
-                                    <div class="input-group-text"><i class="fas fa-fw fa-calendar"></i></div>
-                                </x-slot>
-                            </x-adminlte-input>
-                        </div>
-                        <div class="col-12 col-md-4">
-                            <x-adminlte-input name="form.birth_place" label="Birth Place" placeholder="Enter birth place"
-                                maxlength="255" data-thha-capitalize
-                                wire:model.defer="form.birth_place" igroup-size="sm" enable-old-support>
-                                <x-slot name="prependSlot"><div class="input-group-text"><i class="fas fa-fw fa-map-pin"></i></div></x-slot>
-                            </x-adminlte-input>
-                        </div>
                     </div>
 
                     <div class="row">
-                        <div class="col-12 col-md-6">
+                        <div class="col-12 col-sm-6 col-md-4">
                             <x-adminlte-select name="form.sex" label="Sex" wire:model.defer="form.sex" igroup-size="sm">
                                 <x-slot name="prependSlot">
                                     <div class="input-group-text"><i class="fas fa-fw fa-venus-mars"></i></div>
@@ -91,7 +76,22 @@
                                 @endforeach
                             </x-adminlte-select>
                         </div>
-                        <div class="col-12 col-md-6">
+                        <div class="col-12 col-sm-6 col-md-4">
+                            <x-adminlte-input name="form.birth_date" label="Birth Date" type="date"
+                                wire:model.defer="form.birth_date" igroup-size="sm">
+                                <x-slot name="prependSlot">
+                                    <div class="input-group-text"><i class="fas fa-fw fa-calendar"></i></div>
+                                </x-slot>
+                            </x-adminlte-input>
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-4">
+                            <x-adminlte-input name="form.birth_place" label="Birth Place" placeholder="Enter birth place"
+                                maxlength="255" data-thha-capitalize
+                                wire:model.defer="form.birth_place" igroup-size="sm" enable-old-support>
+                                <x-slot name="prependSlot"><div class="input-group-text"><i class="fas fa-fw fa-map-pin"></i></div></x-slot>
+                            </x-adminlte-input>
+                        </div>
+                        <div class="col-12 col-sm-6">
                             <x-adminlte-select name="form.civil_status" label="Civil Status"
                                 wire:model="form.civil_status" igroup-size="sm">
                                 <x-slot name="prependSlot">
@@ -102,10 +102,7 @@
                                 @endforeach
                             </x-adminlte-select>
                         </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-12 col-md-7">
+                        <div class="col-12 col-sm-6">
                             <x-adminlte-input name="form.spouse_name"
                                 label="Spouse Name"
                                 placeholder="Name of spouse" maxlength="255" data-thha-capitalize
@@ -117,7 +114,6 @@
                             </x-adminlte-input>
                         </div>
                     </div>
-
                 </x-adminlte-card>
 
                 {{-- ========================================================= --}}

@@ -16,10 +16,10 @@
                     <dd class="col-sm-8">{{ $household->rbi_name }}</dd>
 
                     <dt class="col-sm-4">{{ __('rbi.hub.columns.unit') }}</dt>
-                    <dd class="col-sm-8">{{ $household->property ? $household->property->block_lot_label : '—' }}</dd>
+                    <dd class="col-sm-8">{{ $household->property ? $household->property->block_lot_label : 'Not recorded' }}</dd>
 
                     <dt class="col-sm-4">{{ __('rbi.hub.columns.head') }}</dt>
-                    <dd class="col-sm-8">{{ $head ? $head->full_name : '—' }}</dd>
+                    <dd class="col-sm-8">{{ $head ? $head->full_name : 'Not recorded' }}</dd>
                 </dl>
 
                 <a href="{{ route('portal.rbi.form-a', $household) }}" target="_blank" rel="noopener"

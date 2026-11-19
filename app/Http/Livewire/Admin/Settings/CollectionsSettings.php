@@ -106,12 +106,12 @@ class CollectionsSettings extends AdminComponent
 
         $this->validate([
             'billing_method'        => ['required', Rule::in(BillingMethod::values())],
-            'monthly_rate'          => ['required', 'numeric', 'min:0', 'regex:/^\d+(\.\d{1,2})?$/'],
+            'monthly_rate'          => ['required', 'numeric', 'min:0', 'max:9999999999999', 'regex:/^\d+(\.\d{1,2})?$/'],
             'generation_mode'       => ['required', Rule::in(GenerationMode::values())],
             'generation_day'        => ['required', 'integer', 'min:1', 'max:28'],
             'grace_period_days'     => ['required', 'integer', 'min:0', 'max:60'],
             'penalty_type'          => ['required', Rule::in(AdjustmentType::values())],
-            'penalty_value'         => ['required', 'numeric', 'min:0'],
+            'penalty_value'         => ['required', 'numeric', 'min:0', 'max:9999999999999'],
             'auto_email_reminders'  => ['boolean'],
         ], [
             'generation_day.min'   => 'The generation day must fall between the 1st and the 28th, so every month has it.',

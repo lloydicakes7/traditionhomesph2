@@ -77,8 +77,8 @@
                     <div class="col-12 col-md-6">
                         <x-adminlte-select2 id="memberGroupId" name="form.hoa_member_group_id" label="Group"
                             wire:model="form.hoa_member_group_id" igroup-size="sm"
-                            :config="['placeholder' => '— Select Group —']">
-                            <option value="">— Select Group —</option>
+                            :config="['placeholder' => 'Select a group']">
+                            <option value="">Select a group</option>
                             @foreach ($groups as $group)
                                 <option value="{{ $group->id }}">{{ $group->name }} ({{ $group->members_count }})</option>
                             @endforeach
@@ -110,12 +110,8 @@
 
                 <div class="row">
                     <div class="col-12 col-md-6">
-                        <x-adminlte-input name="form.phone" label="Phone Number" placeholder="e.g., 0917 123 4567 (optional)"
-                            wire:model.defer="form.phone" igroup-size="sm">
-                            <x-slot name="prependSlot">
-                                <div class="input-group-text"><i class="fas fa-fw fa-phone-alt"></i></div>
-                            </x-slot>
-                        </x-adminlte-input>
+                        <x-adminlte-input-contact name="form.phone" label="Phone Number"
+                            wire:model.defer="form.phone" igroup-size="sm" />
                     </div>
                     <div class="col-12 col-md-6">
                         <x-adminlte-input name="form.email" label="Email" type="email"

@@ -12,9 +12,9 @@
                 <div class="d-flex justify-content-between align-items-start mb-3" style="gap:0.75rem;">
                     <div class="min-width-0">
                         <h6 class="mb-0 font-weight-bold text-break">{{ $request->type_label }}</h6>
-                        <small class="text-muted d-block">{{ $request->reference ?: '—' }}</small>
+                        <small class="text-muted d-block">{{ $request->reference ?: 'Not recorded' }}</small>
                         <small class="text-muted">
-                            Filed {{ $request->created_at ? $request->created_at->format('M j, Y g:i A') : '—' }}
+                            Filed {{ $request->created_at ? $request->created_at->format('M j, Y g:i A') : 'Not recorded' }}
                         </small>
                     </div>
                     <span class="badge badge-{{ $request->status_badge_theme }} flex-shrink-0">

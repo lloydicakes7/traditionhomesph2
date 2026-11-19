@@ -120,7 +120,7 @@
                                 <p class="mb-0">
                                     {{ $search
                                         ? 'No accounts match that search.'
-                                        : 'The chart is empty — add the income, expense and cash accounts the association keeps its books in.' }}
+                                        : 'The chart is empty. Add the income, expense and cash accounts the association keeps its books in.' }}
                                 </p>
                             </td>
                         </tr>
@@ -218,7 +218,7 @@
                     <p class="mb-0">
                         {{ $search
                             ? 'No accounts match that search.'
-                            : 'The chart is empty — add the income, expense and cash accounts the association keeps its books in.' }}
+                            : 'The chart is empty. Add the income, expense and cash accounts the association keeps its books in.' }}
                     </p>
                 </div>
             </div>

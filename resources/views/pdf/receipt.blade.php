@@ -91,7 +91,7 @@
             <td class="k">{{ __('payments.receipt.method') }}</td>
             <td class="v">{{ $receipt['method'] }}</td>
             <td class="k">{{ __('payments.receipt.reference') }}</td>
-            <td class="v">{{ $receipt['reference_no'] ?: '—' }}</td>
+            <td class="v">{{ $receipt['reference_no'] ?: 'Not recorded' }}</td>
         </tr>
         <tr>
             <td class="k">{{ __('payments.receipt.amount_paid') }}</td>

@@ -128,7 +128,7 @@
                             <label class="mb-1">Footer Text</label>
                             <div wire:ignore wire:key="print-footer-editor">
                                 <div id="printFooterEditor" data-rich-text="printFooterText"
-                                    data-rich-text-placeholder="Footer note — office hours, contact…">{!! $footerText !!}</div>
+                                    data-rich-text-placeholder="Footer note: office hours, contact…">{!! $footerText !!}</div>
                             </div>
                             <textarea id="printFooterText" class="d-none" wire:model.defer="footerText"></textarea>
                             @error('footerText')<span class="text-danger small d-block">{{ $message }}</span>@enderror

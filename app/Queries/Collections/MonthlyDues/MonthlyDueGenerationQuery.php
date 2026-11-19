@@ -48,10 +48,10 @@ class MonthlyDueGenerationQuery
 
             $rows[] = [
                 'property_id'    => $property->id,
-                'block'          => $property->block ?? '—',
-                'lot'            => $property->lot ?? '—',
-                'location'       => $property->address?->street ?: ($property->address?->subdivision ?: '—'),
-                'owner'          => $property->owner?->name ?: '—',
+                'block'          => $property->block ?? 'Not recorded',
+                'lot'            => $property->lot ?? 'Not recorded',
+                'location'       => $property->address?->street ?: ($property->address?->subdivision ?: 'Not recorded'),
+                'owner'          => $property->owner?->name ?: 'Not recorded',
                 'type'           => $property->type_enum ? $property->type_enum->label() : '—',
                 'sqm'            => $property->sqm !== null ? number_format((float) $property->sqm, 2) : '—',
                 'rate'           => MoneyHelper::format($this->settings->rate()),

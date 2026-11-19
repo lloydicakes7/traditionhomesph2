@@ -116,7 +116,7 @@
                             <td class="align-middle text-truncate" style="max-width:0;">
                                 <div class="font-weight-medium text-truncate">{{ $request->resident_label }}</div>
                                 <div class="text-muted small text-truncate">
-                                    {{ $request->created_at ? $request->created_at->format('M j, Y g:i A') : '—' }}
+                                    {{ $request->created_at ? $request->created_at->format('M j, Y g:i A') : 'Not recorded' }}
                                 </div>
                             </td>
                             <td class="align-middle text-truncate" style="max-width:0;">
@@ -127,7 +127,7 @@
                                     {{ $request->type_label }}
                                 </div>
                                 <div class="text-muted small text-truncate">{{ $request->summary }}</div>
-                                <div class="text-muted small text-truncate">{{ $request->reference ?: '—' }}</div>
+                                <div class="text-muted small text-truncate">{{ $request->reference ?: 'Not recorded' }}</div>
                             </td>
                             <td class="align-middle">
                                 <span class="badge badge-{{ $request->status_badge_theme }}">
@@ -194,7 +194,7 @@
                                     {{ $request->resident_label }}
                                 </div>
                                 <div class="small text-muted text-truncate">{{ $request->type_label }}</div>
-                                <div class="small text-muted text-truncate">{{ $request->reference ?: '—' }}</div>
+                                <div class="small text-muted text-truncate">{{ $request->reference ?: 'Not recorded' }}</div>
                             </div>
                         </div>
                         <span class="badge badge-{{ $request->status_badge_theme }} flex-shrink-0">
@@ -211,7 +211,7 @@
                     @endforeach
 
                     <div class="text-muted small mt-2" style="font-size:0.7rem;">
-                        FILED {{ $request->created_at ? $request->created_at->format('M j, Y g:i A') : '—' }}
+                        FILED {{ $request->created_at ? $request->created_at->format('M j, Y g:i A') : 'Not recorded' }}
                     </div>
                     <div class="mt-1">
                         @if (! $request->has_invoice)

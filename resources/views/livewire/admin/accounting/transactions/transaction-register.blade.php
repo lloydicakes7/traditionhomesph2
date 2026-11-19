@@ -162,7 +162,7 @@
                                 <p class="mb-0">
                                     {{ $search || $filterSource || $filterAccount || $filterMonth
                                         ? 'No movements match your filters.'
-                                        : 'The register is empty — every charge, receipt, payout and transfer posts here.' }}
+                                        : 'The register is empty. Every charge, receipt, payout and transfer posts here.' }}
                                 </p>
                             </td>
                         </tr>

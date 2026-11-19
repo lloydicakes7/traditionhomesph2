@@ -92,7 +92,7 @@ class AdvanceDepositFormModal extends AdminModalComponent
 
         $this->validate([
             'form.user_id'      => ['required', 'exists:users,id'],
-            'form.amount'       => ['required', 'numeric', 'min:0.01'],
+            'form.amount'       => ['required', 'numeric', 'min:0', 'max:9999999999999'],
             'form.deposited_at'             => ['required', 'date'],
             'form.notes'                    => ['nullable', 'string', 'max:1000'],
         ], [

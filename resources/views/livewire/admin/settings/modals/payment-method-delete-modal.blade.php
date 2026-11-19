@@ -11,7 +11,7 @@
             @if ($methodName)
                 <p>Delete <strong>{{ $methodName }}</strong>?</p>
                 <p class="text-muted small mb-0">
-                    A method payments have been recorded through cannot be deleted — switch it off instead.
+                    A method payments have been recorded through cannot be deleted. Switch it off instead.
                 </p>
             @endif
         </div>

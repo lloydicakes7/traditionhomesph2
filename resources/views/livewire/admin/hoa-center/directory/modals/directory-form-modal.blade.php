@@ -102,7 +102,9 @@
 
                                 <div class="col-12 col-md-6">
                                     <x-adminlte-input name="phones.{{ $index }}.number" label="Number"
-                                        placeholder="e.g., 0917 123 4567"
+                                        type="tel" inputmode="numeric" minlength="3" maxlength="11"
+                                        pattern="[0-9]{3,11}" data-thha-directory-phone
+                                        placeholder="e.g., 911 or 09171234567"
                                         wire:model.defer="phones.{{ $index }}.number" igroup-size="sm" />
                                 </div>
 

@@ -14,7 +14,7 @@
             @if (! empty($deletingRequestData['resident']))
                 <div class="text-muted small">
                     <i class="fas fa-fw fa-user mr-1"></i>{{ $deletingRequestData['resident'] }}
-                    @if (! empty($deletingRequestData['summary']) && $deletingRequestData['summary'] !== '—')
+                    @if (! empty($deletingRequestData['summary']) && $deletingRequestData['summary'] !== 'Not recorded')
                         · {{ $deletingRequestData['summary'] }}
                     @endif
                 </div>

@@ -93,7 +93,7 @@
                 <circle cx="{{ $scaleX($point['x']) }}" cy="{{ $scaleY($point['y']) }}"
                     r="{{ $radius($point['r']) }}" class="report-bubble-dot"
                     style="fill: {{ $point['color'] }};">
-                    <title>{{ $point['label'] }}{{ $point['note'] ? ' — ' . $point['note'] : '' }}</title>
+                    <title>{{ $point['label'] }}{{ $point['note'] ? ': ' . $point['note'] : '' }}</title>
                 </circle>
             @endforeach
 

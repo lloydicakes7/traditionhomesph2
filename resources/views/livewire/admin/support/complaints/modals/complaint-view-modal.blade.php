@@ -35,7 +35,7 @@
                     <div class="col-6 mb-2">
                         <div class="text-muted small">Submitted On</div>
                         <div class="font-weight-medium">
-                            {{ $complaint->created_at ? $complaint->created_at->format('M j, Y g:i A') : '—' }}
+                            {{ $complaint->created_at ? $complaint->created_at->format('M j, Y g:i A') : 'Not recorded' }}
                         </div>
                     </div>
                     <div class="col-12">

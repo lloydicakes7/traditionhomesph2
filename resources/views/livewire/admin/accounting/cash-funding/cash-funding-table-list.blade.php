@@ -94,7 +94,7 @@
                                 <p class="mb-0">
                                     {{ $search || $filterPeriod
                                         ? 'No cash funding entries match your filters.'
-                                        : 'No cash funding yet — add cash the association already holds outside the books here.' }}
+                                        : 'No cash funding yet. Add cash the association already holds outside the books here.' }}
                                 </p>
                             </td>
                         </tr>

@@ -11,8 +11,8 @@
             {{-- Header: what was booked, when, and where it stands --}}
             <div class="d-flex justify-content-between align-items-start mb-3">
                 <div>
-                    <h5 class="mb-0 font-weight-bold">{{ $viewBooking->amenity->name ?? '—' }}</h5>
-                    <small class="text-muted d-block">{{ $viewBooking->reference ?: '—' }}</small>
+                    <h5 class="mb-0 font-weight-bold">{{ $viewBooking->amenity->name ?? 'Not recorded' }}</h5>
+                    <small class="text-muted d-block">{{ $viewBooking->reference ?: 'Not recorded' }}</small>
                     <small class="text-muted">
                         <i class="far fa-fw fa-clock mr-1"></i>{{ $viewBooking->date_time_display }}
                     </small>

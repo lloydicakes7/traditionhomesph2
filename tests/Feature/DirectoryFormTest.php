@@ -42,7 +42,7 @@ class DirectoryFormTest extends TestCase
             ->set('form.name', 'IT Support')
             ->set('form.directory_group_id', DirectoryFormModal::NEW_GROUP)
             ->set('form.new_group_name', 'Technical')
-            ->set('phones.0.number', '0917 123 4567')
+            ->set('phones.0.number', '09171234567')
             ->call('save')
             ->assertEmitted('directory-saved');
 

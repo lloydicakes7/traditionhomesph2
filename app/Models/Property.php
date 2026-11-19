@@ -107,7 +107,7 @@ class Property extends Model
             $parts[] = $this->type_enum ? $this->type_enum->shortLabel() : $this->type;
         }
 
-        return ! empty($parts) ? implode(' / ', $parts) : '—';
+        return ! empty($parts) ? implode(' / ', $parts) : 'Not recorded';
     }
 
     /**

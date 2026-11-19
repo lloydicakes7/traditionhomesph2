@@ -120,7 +120,7 @@ class PaymentExportTest extends TestCase
         $this->assertStringContainsString('₱750.00', $csv);
     }
 
-    public function test_the_unit_column_says_dash_when_the_account_holds_no_household()
+    public function test_the_unit_column_says_not_recorded_when_the_account_holds_no_household()
     {
         $user = factory(User::class)->create();   // profiled, but no household yet
 
@@ -146,6 +146,6 @@ class PaymentExportTest extends TestCase
 
         // No household on file: the column says so rather than showing nothing.
         $this->assertNull($payment->bill->property);
-        $this->assertSame('—', $payment->property_label);
+        $this->assertSame('Not recorded', $payment->property_label);
     }
 }

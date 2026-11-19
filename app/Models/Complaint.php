@@ -173,7 +173,7 @@ class Complaint extends Model
      */
     public function getCategoryLabelAttribute(): string
     {
-        return $this->category ? $this->category->label() : '—';
+        return $this->category ? $this->category->label() : 'Not recorded';
     }
 
     /**
@@ -181,7 +181,7 @@ class Complaint extends Model
      */
     public function getStatusLabelAttribute(): string
     {
-        return $this->status ? $this->status->label() : '—';
+        return $this->status ? $this->status->label() : 'Not recorded';
     }
 
     /**

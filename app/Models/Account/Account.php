@@ -525,7 +525,7 @@ class Account extends Model
      */
     public function getTypeLabelAttribute(): string
     {
-        return $this->type ? $this->type->label() : '—';
+        return $this->type ? $this->type->label() : 'Not recorded';
     }
 
     /**

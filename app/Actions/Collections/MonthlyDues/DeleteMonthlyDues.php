@@ -35,7 +35,7 @@ class DeleteMonthlyDues
                 $by,
                 'deleted',
                 'monthly_due',
-                'Deleted monthly due ' . $due->reference . ' for ' . ($due->property?->block_lot_label ?? '—'),
+                'Deleted monthly due ' . $due->reference . ' for ' . ($due->property?->block_lot_label ?? 'Not recorded'),
                 ['bill_id' => $due->id]
             );
         }

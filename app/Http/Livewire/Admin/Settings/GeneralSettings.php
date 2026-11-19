@@ -8,6 +8,7 @@ use App\Actions\Settings\General\UpdateHoaInformation;
 use App\Http\Livewire\AdminComponent;
 use App\Models\Setting;
 use App\Queries\Settings\GeneralSettingsQuery;
+use App\Rules\PhilippineMobileNumber;
 use Livewire\WithFileUploads;
 
 class GeneralSettings extends AdminComponent
@@ -91,7 +92,7 @@ class GeneralSettings extends AdminComponent
     {
         return [
             'email'          => ['nullable', 'email', 'max:255'],
-            'contact_number' => ['nullable', 'string', 'max:50'],
+            'contact_number' => ['nullable', 'string', 'max:11', new PhilippineMobileNumber],
             'working_hours'  => ['nullable', 'string', 'max:255'],
         ];
     }

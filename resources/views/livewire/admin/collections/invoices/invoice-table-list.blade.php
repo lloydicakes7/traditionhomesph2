@@ -258,7 +258,7 @@
                     </div>
                 </div>
                 <div class="card-body px-3 py-3">
-                    <div class="small text-truncate">{{ $invoice->property?->block_lot_label ?: '—' }}</div>
+                    <div class="small text-truncate">{{ $invoice->property?->block_lot_label ?: 'Not recorded' }}</div>
                     <div class="text-muted small text-truncate mb-2">{{ $invoice->issued_to_name }}</div>
 
                     <div class="d-flex justify-content-between align-items-start flex-wrap" style="gap:0.5rem;">

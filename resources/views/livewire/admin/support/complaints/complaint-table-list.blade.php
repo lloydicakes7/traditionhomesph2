@@ -122,7 +122,7 @@
                             <td class="align-middle text-truncate" style="max-width:0;">
                                 <div class="text-truncate">{{ $complaint->submitter_label }}</div>
                                 <div class="text-muted small text-truncate">
-                                    {{ $complaint->created_at ? $complaint->created_at->format('M j, Y g:i A') : '—' }}
+                                    {{ $complaint->created_at ? $complaint->created_at->format('M j, Y g:i A') : 'Not recorded' }}
                                 </div>
                             </td>
                             <td class="align-middle">
@@ -191,7 +191,7 @@
                             <div class="text-muted small" style="font-size:0.7rem;">SUBMITTED BY</div>
                             <div class="small font-weight-medium">{{ $complaint->submitter_label }}</div>
                             <div class="text-muted small">
-                                {{ $complaint->created_at ? $complaint->created_at->format('M j, Y g:i A') : '—' }}
+                                {{ $complaint->created_at ? $complaint->created_at->format('M j, Y g:i A') : 'Not recorded' }}
                             </div>
                         </div>
                         <div class="text-right">

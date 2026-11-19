@@ -58,7 +58,7 @@
 
     <table>
         <tr><td class="k">{{ __('payments.receipt.method') }}</td><td class="v">{{ $receipt['method'] }}</td></tr>
-        <tr><td class="k">{{ __('payments.receipt.reference') }}</td><td class="v">{{ $receipt['reference_no'] ?: '—' }}</td></tr>
+        <tr><td class="k">{{ __('payments.receipt.reference') }}</td><td class="v">{{ $receipt['reference_no'] ?: 'Not recorded' }}</td></tr>
         <tr><td class="k">{{ __('payments.receipt.balance_after') }}</td><td class="v">{{ $receipt['balance_after'] }}</td></tr>
     </table>
 

@@ -87,7 +87,7 @@ class ExpenseWizardModal extends AdminModalComponent
             'items'                   => ['required', 'array', 'min:1'],
             'items.*.expense_category_id' => ['nullable', Rule::exists('expense_categories', 'id')],
             'items.*.description'     => ['required', 'string', 'max:500'],
-            'items.*.amount'          => ['required', 'numeric', 'min:0.01'],
+            'items.*.amount'          => ['required', 'numeric', 'min:0', 'max:9999999999999'],
         ];
     }
 
@@ -130,7 +130,7 @@ class ExpenseWizardModal extends AdminModalComponent
             'items.*.expense_category_id.exists' => 'Pick a category for this line.',
             'items.*.description.required' => 'Describe what this line is for.',
             'items.*.amount.required'    => 'Enter the amount.',
-            'items.*.amount.min'         => 'The amount must be more than zero.',
+            'items.*.amount.min'         => 'The amount cannot be negative.',
         ];
     }
 

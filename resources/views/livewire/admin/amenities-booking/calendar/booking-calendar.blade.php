@@ -57,7 +57,7 @@
                                             class="btn btn-{{ $booking->status_enum?->badgeTheme() ?? 'secondary' }} btn-block text-left px-1 py-0 mb-1"
                                             data-toggle="modal" data-target="#bookingViewModal"
                                             data-id="{{ $booking->id }}"
-                                            title="{{ $booking->booker_name }} — {{ $booking->amenity->name ?? '' }}">
+                                            title="{{ $booking->booker_name }}, {{ $booking->amenity->name ?? '' }}">
                                             <small>
                                                 {{ $booking->time_range_display }}
                                                 {{ $booking->amenity->name ?? '' }}
@@ -99,7 +99,7 @@
                             class="btn btn-{{ $booking->status_enum?->badgeTheme() ?? 'secondary' }} btn-sm btn-block text-left px-2 py-1 {{ $loop->last ? 'mb-0' : 'mb-1' }}"
                             data-toggle="modal" data-target="#bookingViewModal"
                             data-id="{{ $booking->id }}"
-                            title="{{ $booking->booker_name }} — {{ $booking->amenity->name ?? '' }}">
+                            title="{{ $booking->booker_name }}, {{ $booking->amenity->name ?? '' }}">
                             <small>
                                 {{ $booking->time_range_display }}
                                 {{ $booking->amenity->name ?? '' }}

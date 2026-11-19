@@ -18,12 +18,8 @@
 
             <div class="row">
                 <div class="col-12 col-sm-6">
-                    <x-adminlte-input name="form.amount" label="Amount Received" type="number" step="0.01" min="0.01"
-                        wire:model.lazy="form.amount" igroup-size="sm">
-                        <x-slot name="prependSlot">
-                            <div class="input-group-text">{{ \App\Utility\MoneyHelper::symbol() }}</div>
-                        </x-slot>
-                    </x-adminlte-input>
+                    <x-form.money-input name="form.amount" label="Amount Received"
+                        wire:model.lazy="form.amount" igroup-size="sm" />
                 </div>
                 <div class="col-12 col-sm-6">
                     <x-adminlte-input name="form.deposited_at" label="Date Received" type="date"

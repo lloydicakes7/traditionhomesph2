@@ -140,7 +140,7 @@
                             </td>
                             <td class="align-middle text-center">
                                 <span class="badge badge-{{ $statement->status_enum?->badgeTheme() ?? 'secondary' }}">
-                                    {{ $statement->status_enum?->label() ?? '—' }}
+                                    {{ $statement->status_enum?->label() ?? 'Not recorded' }}
                                 </span>
                             </td>
                             <td class="align-middle text-center">
@@ -165,7 +165,7 @@
                                             @endcan
                                         @else
                                             <a class="dropdown-item disabled" href="#" title="No email address on file">
-                                                <i class="fas fa-fw fa-paper-plane mr-1"></i> Send / Retry — no email on file
+                                                <i class="fas fa-fw fa-paper-plane mr-1"></i> Send / Retry (no email on file) on file
                                             </a>
                                         @endif
                                         @can('delete', \App\Models\SoaEmail::class)
@@ -221,7 +221,7 @@
                             </div>
                         </div>
                         <span class="badge badge-{{ $statement->status_enum?->badgeTheme() ?? 'secondary' }} flex-shrink-0">
-                            {{ $statement->status_enum?->label() ?? '—' }}
+                            {{ $statement->status_enum?->label() ?? 'Not recorded' }}
                         </span>
                     </div>
                 </div>
@@ -259,7 +259,7 @@
                                 @endcan
                             @else
                                 <a class="dropdown-item disabled" href="#" title="No email address on file">
-                                    <i class="fas fa-fw fa-paper-plane mr-1"></i> Send / Retry — no email on file
+                                    <i class="fas fa-fw fa-paper-plane mr-1"></i> Send / Retry (no email on file) on file
                                 </a>
                             @endif
                             @can('delete', \App\Models\SoaEmail::class)

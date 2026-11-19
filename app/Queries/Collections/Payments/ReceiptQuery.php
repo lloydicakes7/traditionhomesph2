@@ -32,7 +32,7 @@ class ReceiptQuery
             'receipt_no'      => (string) $payment->receipt_no,
             'date_paid'       => $payment->paid_at ? $payment->paid_at->format('F j, Y') : '',
             'payer'           => $bill ? $bill->issued_to_name : '',
-            'unit'            => $bill?->property?->block_lot_label ?? '—',
+            'unit'            => $bill?->property?->block_lot_label ?? 'Not recorded',
             'bill_reference'  => $bill->reference ?? '',
             'bill_period'     => $bill && $bill->billing_period ? PeriodHelper::label($bill->billing_period) : '—',
             'bill_type'       => $bill->type_label ?? '',

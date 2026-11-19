@@ -33,13 +33,9 @@
             </div>
 
             <div class="col-12 col-md-6">
-                <x-adminlte-input name="form.contact_number" type="tel"
-                    label="{{ __('public.contact.contact_number') }}" maxlength="30"
-                    placeholder="e.g., 0917 123 4567" wire:model.defer="form.contact_number" igroup-size="sm">
-                    <x-slot name="prependSlot">
-                        <div class="input-group-text"><i class="fas fa-fw fa-phone"></i></div>
-                    </x-slot>
-                </x-adminlte-input>
+                <x-adminlte-input-contact name="form.contact_number"
+                    label="{{ __('public.contact.contact_number') }}"
+                    wire:model.defer="form.contact_number" igroup-size="sm" />
             </div>
 
             <div class="col-12 col-md-6">

@@ -133,7 +133,7 @@ class AccountTransfer extends Model
      */
     public function getTransferDateDisplayAttribute(): string
     {
-        return $this->transfer_date ? $this->transfer_date->format('M j, Y') : '—';
+        return $this->transfer_date ? $this->transfer_date->format('M j, Y') : 'Not recorded';
     }
 
     /**
@@ -149,7 +149,7 @@ class AccountTransfer extends Model
      */
     public function getFromLabelAttribute(): string
     {
-        return $this->fromAccount ? $this->fromAccount->label : '—';
+        return $this->fromAccount ? $this->fromAccount->label : 'Not recorded';
     }
 
     /**
@@ -157,7 +157,7 @@ class AccountTransfer extends Model
      */
     public function getToLabelAttribute(): string
     {
-        return $this->toAccount ? $this->toAccount->label : '—';
+        return $this->toAccount ? $this->toAccount->label : 'Not recorded';
     }
 
     /**

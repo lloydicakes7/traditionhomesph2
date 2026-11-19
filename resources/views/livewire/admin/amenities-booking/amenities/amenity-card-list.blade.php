@@ -37,7 +37,7 @@
 
                         <span class="badge bg-light text-dark position-absolute"
                             style="top:0.75rem; left:0.75rem;">
-                            {{ $amenity->rate_type_enum?->label() ?? '—' }}
+                            {{ $amenity->rate_type_enum?->label() ?? 'Not recorded' }}
                         </span>
                     </div>
 

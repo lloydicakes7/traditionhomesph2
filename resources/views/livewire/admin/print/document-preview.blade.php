@@ -39,7 +39,7 @@
                 {{-- ------------------------------------------------------ --}}
                 @if ($document->value === \App\Enums\PrintDocument::MEMBERSHIP_FORM)
                     <x-adminlte-select2 name="residentId" label="Member" igroup-size="sm">
-                        <option value="">— Print a blank form —</option>
+                        <option value="">Print a blank form</option>
                         @foreach ($residents as $id => $name)
                             <option value="{{ $id }}">{{ $name }}</option>
                         @endforeach
@@ -102,7 +102,7 @@
                 {{-- ------------------------------------------------------ --}}
                 @if ($document->value === \App\Enums\PrintDocument::BUSINESS_PERMIT)
                     <x-adminlte-select2 name="residentId" label="Name of Applicant" igroup-size="sm">
-                        <option value="">— Select a resident —</option>
+                        <option value="">Select a resident</option>
                         @foreach ($residents as $id => $name)
                             <option value="{{ $id }}">{{ $name }}</option>
                         @endforeach
@@ -111,7 +111,7 @@
                     <x-adminlte-select name="purpose" label="Purpose" igroup-size="sm"
                         data-print-reveal="#businessPurposeOther"
                         data-print-reveal-value="{{ \App\Enums\BusinessPermitPurpose::OTHER }}">
-                        <option value="">— Select a purpose —</option>
+                        <option value="">Select a purpose</option>
                         @foreach ($permitPurposes as $value => $label)
                             <option value="{{ $value }}">{{ $label }}</option>
                         @endforeach
@@ -141,7 +141,7 @@
                 {{-- ------------------------------------------------------ --}}
                 @if ($document->value === \App\Enums\PrintDocument::HOA_PERMIT)
                     <x-adminlte-select2 name="residentId" label="Permit is hereby granted to" igroup-size="sm">
-                        <option value="">— Select a resident —</option>
+                        <option value="">Select a resident</option>
                         @foreach ($residents as $id => $name)
                             <option value="{{ $id }}">{{ $name }}</option>
                         @endforeach
@@ -192,14 +192,14 @@
                 {{-- ------------------------------------------------------ --}}
                 @if ($document->value === \App\Enums\PrintDocument::ENDORSEMENT_LETTER)
                     <x-adminlte-select2 name="residentId" label="Complainant" igroup-size="sm">
-                        <option value="">— Select a resident —</option>
+                        <option value="">Select a resident</option>
                         @foreach ($residents as $id => $name)
                             <option value="{{ $id }}">{{ $name }}</option>
                         @endforeach
                     </x-adminlte-select2>
 
                     <x-adminlte-select2 name="respondentId" label="Complained of" igroup-size="sm">
-                        <option value="">— Select a resident —</option>
+                        <option value="">Select a resident</option>
                         @foreach ($residents as $id => $name)
                             <option value="{{ $id }}">{{ $name }}</option>
                         @endforeach
@@ -251,7 +251,7 @@
                 {{-- ------------------------------------------------------ --}}
                 @if ($document->value === \App\Enums\PrintDocument::CERTIFICATION)
                     <x-adminlte-select2 name="residentId" label="Occupant" igroup-size="sm">
-                        <option value="">— Select a resident —</option>
+                        <option value="">Select a resident</option>
                         @foreach ($residents as $id => $name)
                             <option value="{{ $id }}">{{ $name }}</option>
                         @endforeach
@@ -260,7 +260,7 @@
                     <x-adminlte-select name="purpose" label="Purpose" igroup-size="sm"
                         data-print-reveal="#certificationPurposeOther"
                         data-print-reveal-value="{{ \App\Enums\CertificationPurpose::OTHERS }}">
-                        <option value="">— Select a purpose —</option>
+                        <option value="">Select a purpose</option>
                         @foreach ($certificationPurposes as $value => $label)
                             <option value="{{ $value }}">{{ $label }}</option>
                         @endforeach
@@ -298,7 +298,7 @@
 
                     <div id="inviteResidentField">
                         <x-adminlte-select2 name="residentId" label="Recipient" igroup-size="sm">
-                            <option value="">— Select a resident —</option>
+                            <option value="">Select a resident</option>
                             @foreach ($residents as $id => $name)
                                 <option value="{{ $id }}">{{ $name }}</option>
                             @endforeach
@@ -343,14 +343,14 @@
                 {{-- ------------------------------------------------------ --}}
                 @if ($document->value === \App\Enums\PrintDocument::SINUMPAANG_SALAYSAY)
                     <x-adminlte-select2 name="residentId" label="Affiant (Ako si)" igroup-size="sm">
-                        <option value="">— Select a resident —</option>
+                        <option value="">Select a resident</option>
                         @foreach ($residents as $id => $name)
                             <option value="{{ $id }}">{{ $name }}</option>
                         @endforeach
                     </x-adminlte-select2>
 
                     <x-adminlte-select2 name="respondentId" label="Nirereklamo (respondent)" igroup-size="sm">
-                        <option value="">— Select a resident —</option>
+                        <option value="">Select a resident</option>
                         @foreach ($residents as $id => $name)
                             <option value="{{ $id }}">{{ $name }}</option>
                         @endforeach
@@ -390,7 +390,7 @@
                 {{-- ------------------------------------------------------ --}}
                 @if ($document->value === \App\Enums\PrintDocument::JOURNAL_VOUCHER)
                     <x-adminlte-select2 name="journalEntryId" label="Journal Entry" igroup-size="sm">
-                        <option value="">— Select an entry —</option>
+                        <option value="">Select an entry</option>
                         @foreach ($journalEntries as $id => $name)
                             <option value="{{ $id }}">{{ $name }}</option>
                         @endforeach
@@ -402,7 +402,7 @@
                 {{-- ------------------------------------------------------ --}}
                 @if ($document->value === \App\Enums\PrintDocument::VIOLATION_NOTICE)
                     <x-adminlte-select2 name="violationId" label="Violation" igroup-size="sm">
-                        <option value="">— Select a violation —</option>
+                        <option value="">Select a violation</option>
                         @foreach ($violations as $id => $name)
                             <option value="{{ $id }}">{{ $name }}</option>
                         @endforeach

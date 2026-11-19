@@ -39,7 +39,7 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">{{ \App\Utility\MoneyHelper::symbol() }}</span>
                                 </div>
-                                <input type="number" step="0.01" min="0"
+                                <input type="text" inputmode="decimal" data-thha-money
                                     class="form-control @error('monthly_rate') is-invalid @enderror"
                                     wire:model.lazy="monthly_rate"
                                     aria-label="Monthly rate">
@@ -140,8 +140,16 @@
                                 </div>
                                 <div class="col-12 col-sm-6">
                                     <x-adminlte-input name="penalty_value" label="Penalty"
-                                        type="number" step="0.01" min="0"
-                                        wire:model.lazy="penalty_value" igroup-size="sm" />
+                                        type="text" inputmode="decimal" data-thha-money
+                                        wire:model.lazy="penalty_value" igroup-size="sm">
+                                        <x-slot name="prependSlot">
+                                            <div class="input-group-text">
+                                                {{ $penalty_type === \App\Enums\AdjustmentType::PERCENT
+                                                    ? '%'
+                                                    : \App\Utility\MoneyHelper::symbol() }}
+                                            </div>
+                                        </x-slot>
+                                    </x-adminlte-input>
                                 </div>
                             </div>
                         </x-adminlte-card>

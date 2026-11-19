@@ -8,7 +8,7 @@
 
         <div data-modal-content class="{{ ! $loaded ? 'd-none' : '' }}">
             <p>Are you sure you want to delete the <strong>{{ count($selectedIds) }}</strong> selected categories?</p>
-            <p class="text-muted small mb-0">The items filed under them stay — they simply become uncategorised.</p>
+            <p class="text-muted small mb-0">The items filed under them stay. They simply become uncategorised.</p>
         </div>
 
         <x-slot name="footerSlot">

@@ -156,7 +156,7 @@ class Violation extends Model
      */
     public function getTypeLabelAttribute(): string
     {
-        return $this->violation_type ? $this->violation_type->label() : '—';
+        return $this->violation_type ? $this->violation_type->label() : 'Not recorded';
     }
 
     /**
@@ -164,7 +164,7 @@ class Violation extends Model
      */
     public function getStatusLabelAttribute(): string
     {
-        return $this->status ? $this->status->label() : '—';
+        return $this->status ? $this->status->label() : 'Not recorded';
     }
 
     /**
@@ -189,7 +189,7 @@ class Violation extends Model
     public function getOccurredDisplayAttribute(): string
     {
         if (! $this->occurred_on) {
-            return '—';
+            return 'Not recorded';
         }
 
         $display = $this->occurred_on->format('M j, Y');

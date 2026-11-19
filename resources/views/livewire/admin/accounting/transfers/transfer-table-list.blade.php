@@ -150,7 +150,7 @@
                                 <p class="mb-0">
                                     {{ $search || $filterMonth || $filterAccount
                                         ? 'No transfers match your filters.'
-                                        : 'No transfers recorded yet — move money between the association\'s own accounts here.' }}
+                                        : 'No transfers recorded yet. Move money between the association\'s own accounts here.' }}
                                 </p>
                             </td>
                         </tr>

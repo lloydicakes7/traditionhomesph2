@@ -28,7 +28,7 @@
         </div>
         <div class="col-6 col-lg-3 mb-3">
             <x-reports.kpi label="Highest Month" theme="primary" icon="fas fa-fw fa-award"
-                :value="$report['highest_month'] ? \App\Utility\PeriodHelper::shortLabel($report['highest_month']['period']) : '—'"
+                :value="$report['highest_month'] ? \App\Utility\PeriodHelper::shortLabel($report['highest_month']['period']) : 'Not recorded'"
                 :note="$report['highest_month']
                     ? \App\Utility\MoneyHelper::format($report['highest_month']['amount']) . ' spent in it'
                     : 'Nothing posted in this year yet'" />

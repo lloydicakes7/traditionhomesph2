@@ -124,13 +124,8 @@
                         </x-adminlte-input>
 
                         {{-- Contact Number --}}
-                        <x-adminlte-input name="contact_number" label="Contact Number"
-                            placeholder="e.g., +63 912 345 6789"
-                            wire:model.defer="contact_number" igroup-size="sm" enable-old-support>
-                            <x-slot name="prependSlot">
-                                <div class="input-group-text"><i class="fas fa-fw fa-phone"></i></div>
-                            </x-slot>
-                        </x-adminlte-input>
+                        <x-adminlte-input-contact name="contact_number" label="Contact Number"
+                            wire:model.defer="contact_number" igroup-size="sm" />
                     </div>
                 </div>
 

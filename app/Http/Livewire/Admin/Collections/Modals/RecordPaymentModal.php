@@ -274,7 +274,7 @@ class RecordPaymentModal extends AdminModalComponent
     {
         return [
             'bill'               => ['required', 'string'],
-            'amount'             => ['required', 'numeric', 'min:0.01'],
+            'amount'             => ['required', 'numeric', 'min:0', 'max:9999999999999'],
             'advance_deposit_id' => ['nullable', 'exists:advance_deposits,id'],
             'payment_method_id'  => ['nullable', 'exists:payment_methods,id'],
             'reference_no'       => ['nullable', 'string', 'max:100'],
@@ -294,7 +294,7 @@ class RecordPaymentModal extends AdminModalComponent
         return [
             'bill.required'       => 'Choose the bill this payment settles.',
             'amount.required'     => 'Enter the amount received.',
-            'amount.min'          => 'The amount must be more than zero.',
+            'amount.min'          => 'The amount cannot be negative.',
             'proof.image'     => 'The proof of payment must be an image.',
             'proof.max'       => 'The proof of payment must be 2MB or smaller.',
             'paid_at.required' => 'Enter when the payment was received.',

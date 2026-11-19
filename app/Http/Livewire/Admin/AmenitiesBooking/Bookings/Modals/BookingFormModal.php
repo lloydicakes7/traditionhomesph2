@@ -104,7 +104,7 @@ class BookingFormModal extends AdminModalComponent
             'form.date'           => ['required', 'date_format:Y-m-d'],
             'form.start_time'     => ['required', 'date_format:H:i'],
             'form.end_time'       => ['required', 'date_format:H:i'],
-            'form.deposit_amount' => ['nullable', 'numeric', 'min:0', 'max:9999999'],
+            'form.deposit_amount' => ['nullable', 'numeric', 'min:0', 'max:9999999999999'],
             'form.purpose'        => ['nullable', 'string', 'max:500'],
             'form.remarks'        => ['nullable', 'string', 'max:500'],
         ];
@@ -255,7 +255,6 @@ class BookingFormModal extends AdminModalComponent
             'amountPreview'  => $preview ? MoneyHelper::format($preview['amount']) : null,
             'depositPreview' => $preview ? MoneyHelper::format($preview['deposit']) : null,
             'totalPreview'   => $preview ? MoneyHelper::format($preview['amount'] + $preview['deposit']) : null,
-            'currencySymbol' => MoneyHelper::symbol(),
         ]);
     }
 

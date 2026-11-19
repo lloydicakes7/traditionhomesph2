@@ -7,6 +7,7 @@ use App\Actions\HoaCenter\Members\UpdateMember;
 use App\Http\Livewire\AdminModalComponent;
 use App\Models\HoaMember;
 use App\Queries\HoaCenter\Members\MemberListQuery;
+use App\Rules\PhilippineMobileNumber;
 use Livewire\WithFileUploads;
 
 class MemberFormModal extends AdminModalComponent
@@ -66,7 +67,7 @@ class MemberFormModal extends AdminModalComponent
         $rules = [
             'form.name'           => ['required', 'string', 'max:150'],
             'form.position'       => ['required', 'string', 'max:100'],
-            'form.phone'          => ['nullable', 'string', 'max:50'],
+            'form.phone'          => ['nullable', 'string', 'max:11', new PhilippineMobileNumber],
             'form.email'          => ['nullable', 'email', 'max:150'],
             'form.note'           => ['nullable', 'string', 'max:1000'],
             'form.new_group_name' => ['nullable', 'string', 'max:100', 'required_if:form.hoa_member_group_id,' . self::NEW_GROUP],

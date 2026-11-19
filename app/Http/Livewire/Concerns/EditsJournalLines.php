@@ -33,7 +33,7 @@ trait EditsJournalLines
                 },
             ],
             'lines.*.side'       => 'required|in:' . JournalLine::SIDE_DEBIT . ',' . JournalLine::SIDE_CREDIT,
-            'lines.*.amount'     => 'required|numeric|min:0.01|max:9999999999.99',
+            'lines.*.amount'     => 'required|numeric|min:0|max:9999999999999',
         ];
     }
 

@@ -8,7 +8,7 @@
 
         <div data-modal-content class="{{ ! $loaded ? 'd-none' : '' }}">
             <p>Delete <strong>{{ $deletingCategoryLabel }}</strong>?</p>
-            <p class="text-muted small mb-0">The items filed under it stay — they simply become uncategorised.</p>
+            <p class="text-muted small mb-0">The items filed under it stay. They simply become uncategorised.</p>
         </div>
 
         <x-slot name="footerSlot">

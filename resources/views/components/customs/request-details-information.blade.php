@@ -10,7 +10,7 @@
             @foreach ($rows as $label => $value)
                 <div class="col-12 col-md-6 mb-1">
                     <div class="text-muted small">{{ $label }}</div>
-                    <div class="font-weight-medium text-break">{{ $value !== '' ? $value : '—' }}</div>
+                    <div class="font-weight-medium text-break">{{ $value !== '' ? $value : 'Not recorded' }}</div>
                 </div>
             @endforeach
         </div>

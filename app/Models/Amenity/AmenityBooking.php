@@ -251,7 +251,7 @@ class AmenityBooking extends Model
     public function getDateTimeDisplayAttribute(): string
     {
         if (! $this->starts_at) {
-            return '—';
+            return 'Not recorded';
         }
 
         return $this->starts_at->format('M j') . ' · ' . TimeHelper::window($this->starts_at, $this->ends_at);
@@ -368,7 +368,7 @@ class AmenityBooking extends Model
      */
     public function getBillReferenceDisplayAttribute(): string
     {
-        return $this->bill ? $this->bill->reference : '—';
+        return $this->bill ? $this->bill->reference : 'Not recorded';
     }
 
     /**
@@ -386,7 +386,7 @@ class AmenityBooking extends Model
      */
     public function getBookerNameAttribute(): string
     {
-        return $this->user?->name ?: ($this->guest_name ?: '—');
+        return $this->user?->name ?: ($this->guest_name ?: 'Not recorded');
     }
 
     /**

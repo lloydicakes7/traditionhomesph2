@@ -37,12 +37,12 @@
                                             <td>{{ $index + 1 }}</td>
                                             <td>
                                                 <div class="font-weight-medium small">
-                                                    {{ $member['resident_name'] ?? '—' }}
+                                                    {{ $member['resident_name'] ?? 'Not recorded' }}
                                                     @if (! empty($member['is_head']))
                                                         <span class="badge badge-success ml-1">Head</span>
                                                     @endif
                                                 </div>
-                                                <small class="text-muted">{{ $member['relationship_label'] ?? '—' }}</small>
+                                                <small class="text-muted">{{ $member['relationship_label'] ?? 'Not recorded' }}</small>
                                             </td>
                                             <td class="text-right text-nowrap">
                                                 <div class="btn-group btn-group-xs" role="group">

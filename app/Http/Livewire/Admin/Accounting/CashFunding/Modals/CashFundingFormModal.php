@@ -110,7 +110,7 @@ class CashFundingFormModal extends AdminModalComponent
                 'required',
                 Rule::exists('accounts', 'id')->where('is_cash', true),
             ],
-            'amount'        => 'required|numeric|min:0.01|max:9999999999.99',
+            'amount'        => 'required|numeric|min:0|max:9999999999999',
             'memo'          => 'required|string|max:2000',
             'reference_no'  => 'nullable|string|max:100',
         ];
@@ -126,7 +126,7 @@ class CashFundingFormModal extends AdminModalComponent
             'to_account_id.required' => 'Choose the account the cash was added to.',
             'to_account_id.exists'   => 'Choose a cash or bank account.',
             'amount.required'        => 'Enter the amount.',
-            'amount.min'             => 'The amount has to be more than zero.',
+            'amount.min'             => 'The amount cannot be negative.',
             'memo.required'          => 'Say where the cash came from or what it is for.',
         ];
     }

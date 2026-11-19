@@ -82,13 +82,8 @@
                 </div>
             </div>
 
-            <x-adminlte-input name="form.deposit_amount" label="Refundable Deposit" type="number"
-                step="0.01" min="0" placeholder="0.00"
-                wire:model.debounce.500ms="form.deposit_amount" igroup-size="sm">
-                <x-slot name="prependSlot">
-                    <div class="input-group-text">{{ $currencySymbol }}</div>
-                </x-slot>
-            </x-adminlte-input>
+            <x-form.money-input name="form.deposit_amount" label="Refundable Deposit" placeholder="0.00"
+                wire:model.debounce.500ms="form.deposit_amount" igroup-size="sm" />
 
             <div wire:loading
                 wire:target="form.amenity_id, form.date, form.start_time, form.end_time, form.deposit_amount"

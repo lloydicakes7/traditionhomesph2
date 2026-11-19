@@ -27,7 +27,7 @@
                 <dd class="col-7">{{ $payment->user?->email }}</dd>
 
                 <dt class="col-5 text-muted font-weight-normal">Reference No.</dt>
-                <dd class="col-7">{{ $payment->reference_no ?: '—' }}</dd>
+                <dd class="col-7">{{ $payment->reference_no ?: 'Not recorded' }}</dd>
 
                 <dt class="col-5 text-muted font-weight-normal">Received By</dt>
                 <dd class="col-7">{{ $payment->receivedByAdmin?->name ?: 'System' }}</dd>

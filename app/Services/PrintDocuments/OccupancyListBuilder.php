@@ -100,7 +100,7 @@ final class OccupancyListBuilder extends AbstractPrintDocumentBuilder
                 'unit'          => $property->sqm_type_display,
                 'occupant'      => $head ? Helper::fullName($head) : 'No head on file',
                 'householdType' => $this->typeLabel($household),
-                'contact'       => trim((string) ($head ? $head->mobile_no : '')) ?: '—',
+                'contact'       => trim((string) ($head ? $head->mobile_no : '')) ?: 'Not recorded',
             ];
         });
     }

@@ -34,12 +34,8 @@
                     </x-adminlte-select>
                 </div>
                 <div class="col-12 col-sm-3">
-                    <x-adminlte-input name="form.price" label="Price" type="number" step="0.01" min="0"
-                        wire:model.lazy="form.price" igroup-size="sm">
-                        <x-slot name="prependSlot">
-                            <div class="input-group-text">{{ \App\Utility\MoneyHelper::symbol() }}</div>
-                        </x-slot>
-                    </x-adminlte-input>
+                    <x-form.money-input name="form.price" label="Price"
+                        wire:model.lazy="form.price" igroup-size="sm" />
                 </div>
                 <div class="col-12 col-sm-3">
                     <x-adminlte-input name="form.unit" label="Unit"

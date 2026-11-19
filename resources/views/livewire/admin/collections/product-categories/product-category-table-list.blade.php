@@ -113,7 +113,7 @@
                             <td colspan="4" class="text-center text-muted py-4">
                                 <i class="fas fa-fw fa-folder-open fa-2x mb-2"></i>
                                 <p class="mb-0">
-                                    {{ $search ? 'No categories match your search.' : 'No categories yet. Group the price list — Fees, IDs, Clearances.' }}
+                                    {{ $search ? 'No categories match your search.' : 'No categories yet. Group the price list: Fees, IDs, Clearances.' }}
                                 </p>
                             </td>
                         </tr>
@@ -188,7 +188,7 @@
                 <div class="card-body text-center text-muted py-4">
                     <i class="fas fa-fw fa-folder-open fa-2x mb-2"></i>
                     <p class="mb-0">
-                        {{ $search ? 'No categories match your search.' : 'No categories yet. Group the price list — Fees, IDs, Clearances.' }}
+                        {{ $search ? 'No categories match your search.' : 'No categories yet. Group the price list: Fees, IDs, Clearances.' }}
                     </p>
                 </div>
             </div>

@@ -9,7 +9,7 @@
 
         <div data-modal-content class="{{ ! $loaded ? 'd-none' : '' }}">
             @if ($deletingBooking)
-                <div class="font-weight-bold">{{ $deletingBooking->amenity->name ?? '—' }}</div>
+                <div class="font-weight-bold">{{ $deletingBooking->amenity->name ?? 'Not recorded' }}</div>
                 <div class="text-muted small">
                     {{ $deletingBooking->date_time_display }} · {{ $deletingBooking->booker_name }}
                 </div>
@@ -17,7 +17,7 @@
 
             <p class="text-danger small mt-3 mb-0">
                 <i class="fas fa-fw fa-info-circle"></i>
-                Deleting takes the reservation off the books entirely — cancelling it keeps the record and releases the slot.
+                Deleting takes the reservation off the books entirely. Cancelling it keeps the record and releases the slot.
                 This action cannot be undone.
             </p>
         </div>

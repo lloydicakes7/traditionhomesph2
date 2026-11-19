@@ -54,7 +54,7 @@
         $cards = collect($report['rows'])->map(function ($row) {
             return [
                 'title'    => $row['reference'],
-                'subtitle' => ($row['property'] ? $row['property']->block_lot_label : '—') . ' · ' . $row['homeowner'],
+                'subtitle' => ($row['property'] ? $row['property']->block_lot_label : 'Not recorded') . ' · ' . $row['homeowner'],
                 'facts'    => [
                     ['label' => 'Particulars', 'value' => $row['particulars']],
                     ['label' => 'Method', 'value' => $row['method']],
@@ -95,7 +95,7 @@
                         <tr>
                             <td class="align-middle">{{ $row['reference'] }}</td>
                             <td class="align-middle">
-                                {{ $row['property'] ? $row['property']->block_lot_label : '—' }}
+                                {{ $row['property'] ? $row['property']->block_lot_label : 'Not recorded' }}
                             </td>
                             <td class="align-middle text-break">{{ $row['homeowner'] }}</td>
                             <td class="align-middle text-break">{{ $row['particulars'] }}</td>

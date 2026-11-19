@@ -11,10 +11,10 @@
                 <div class="font-weight-bold mb-0 text-break">{{ $request->type_label }}</div>
                 <div class="text-muted small text-break">
                     {{ $request->resident_label }}
-                    @if ($request->summary !== '—') · {{ $request->summary }} @endif
+                    @if ($request->summary !== 'Not recorded') · {{ $request->summary }} @endif
                 </div>
                 <div class="text-muted small mb-3">
-                    Filed {{ $request->created_at ? $request->created_at->format('M j, Y g:i A') : '—' }}
+                    Filed {{ $request->created_at ? $request->created_at->format('M j, Y g:i A') : 'Not recorded' }}
                 </div>
 
                 <p class="mb-0">
