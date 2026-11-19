@@ -14,6 +14,7 @@ class Violation extends Model
         'resident_id',
         'resident_name',
         'violation_type',
+        'violation_type_other',
         'occurred_on',
         'occurred_time',
         'location',
@@ -22,7 +23,6 @@ class Violation extends Model
         'office_report',
         'issued_by_admin_id',
         'issued_at',
-        'acknowledged_at',
         'resolution_notes',
         'resolved_by_admin_id',
         'resolved_at',
@@ -33,7 +33,6 @@ class Violation extends Model
         'status'          => EnumCast::class . ':' . ViolationStatus::class,
         'occurred_on'     => 'date',
         'issued_at'       => 'datetime',
-        'acknowledged_at' => 'datetime',
         'resolved_at'     => 'datetime',
     ];
 
@@ -87,6 +86,7 @@ class Violation extends Model
                 ->orWhere('location', 'like', $like)
                 ->orWhere('description', 'like', $like)
                 ->orWhere('violation_type', 'like', $like)
+                ->orWhere('violation_type_other', 'like', $like)
                 ->orWhereHas('resident', function ($query) use ($like) {
                     $query->where('first_name', 'like', $like)
                         ->orWhere('middle_name', 'like', $like)
@@ -152,11 +152,22 @@ class Violation extends Model
     // =====================================================================
 
     /**
-     * What the violation was for, as a label.
+     * What the violation was for, as a label. A violation filed as "Other"
+     * reads the description the officer wrote in its place.
      */
     public function getTypeLabelAttribute(): string
     {
-        return $this->violation_type ? $this->violation_type->label() : 'Not recorded';
+        if (! $this->violation_type) {
+            return 'Not recorded';
+        }
+
+        $other = trim((string) $this->violation_type_other);
+
+        if ($this->violation_type->value === ViolationType::OTHER && $other !== '') {
+            return $other;
+        }
+
+        return $this->violation_type->label();
     }
 
     /**
@@ -212,25 +223,6 @@ class Violation extends Model
     }
 
     /**
-     * Whether the homeowner has confirmed receiving the notice.
-     */
-    public function getIsAcknowledgedAttribute(): bool
-    {
-        return $this->acknowledged_at !== null;
-    }
-
-    /**
-     * When the homeowner acknowledged the notice, or a plain statement that
-     * they have not — a column reads as a sentence rather than a bare dash.
-     */
-    public function getAcknowledgedDisplayAttribute(): string
-    {
-        return $this->acknowledged_at
-            ? $this->acknowledged_at->format('M j, Y g:i A')
-            : 'Not yet acknowledged';
-    }
-
-    /**
      * Whether the violation was issued by an officer or is a draft the office
      * has not sent — a violation exists to be sent, so an unissued one is the
      * exception, not the rule.
@@ -267,7 +259,6 @@ class Violation extends Model
     {
         $steps = [
             ['label' => 'Issued', 'at' => $this->issued_at, 'note' => $this->issuedByAdmin->name ?? null],
-            ['label' => 'Acknowledged', 'at' => $this->acknowledged_at, 'note' => null],
             ['label' => 'Resolved', 'at' => $this->resolved_at, 'note' => $this->resolution_notes],
         ];
 

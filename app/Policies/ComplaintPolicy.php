@@ -92,6 +92,26 @@ class ComplaintPolicy
     }
 
     /**
+     * Determine whether this homeowner may correct a complaint they filed: it
+     * is theirs, still pending, and the office has not responded to it yet.
+     */
+    public function updateOwn(User $user, Complaint $complaint): bool
+    {
+        return $this->viewOwn($user, $complaint)
+            && $complaint->can_be_changed_by_homeowner;
+    }
+
+    /**
+     * Determine whether this homeowner may withdraw a complaint they filed: it
+     * is theirs, still pending, and the office has not responded to it yet.
+     */
+    public function deleteOwn(User $user, Complaint $complaint): bool
+    {
+        return $this->viewOwn($user, $complaint)
+            && $complaint->can_be_changed_by_homeowner;
+    }
+
+    /**
      * Determine whether this homeowner may file a complaint: their account is
      * tied to a profiled resident, which is who the complaint is filed against.
      */

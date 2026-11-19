@@ -86,14 +86,22 @@ class PrintSettingsQuery
 
     /**
      * A slot's system image, as the absolute path DomPDF reads, or null while
-     * the file is not on the server.
+     * the file is not on the server or cannot be decoded there. The system
+     * marks ship as JPEG so a server without GD still prints them.
      */
     public static function seededImage(string $side): ?string
     {
         $relative = (string) config(self::SEEDED_IMAGES[$side] ?? '', '');
         $path = $relative !== '' ? public_path($relative) : '';
 
-        return ($path !== '' && is_file($path)) ? $path : null;
+        if ($path === '' || ! is_file($path)) {
+            return null;
+        }
+
+        $decodable = in_array(strtolower(pathinfo($path, PATHINFO_EXTENSION)), ['jpg', 'jpeg'], true)
+            || StorageHelper::supportsImageDecoding();
+
+        return $decodable ? $path : null;
     }
 
     /**

@@ -14,10 +14,9 @@ use App\Models\Violation;
  * violation are all changes to the same record, so they read the same
  * permission rather than inventing abilities nobody can be granted separately.
  *
- * The portal side answers the two questions a homeowner can ask: "is this
- * violation against my household?" and "may I acknowledge it?". A homeowner
- * never sees another household's violations, never resolves one and never
- * issues one — but a notice addressed to them is theirs to confirm receiving.
+ * The portal side answers one question a homeowner can ask: "is this violation
+ * against my household?". A homeowner never sees another household's
+ * violations, never resolves one and never issues one.
  */
 class ViolationPolicy
 {
@@ -88,14 +87,6 @@ class ViolationPolicy
     public function viewOwn(User $user, Violation $violation): bool
     {
         return $this->owns($user, $violation);
-    }
-
-    /**
-     * Determine whether this homeowner may acknowledge the notice: it is theirs,
-     */
-    public function acknowledgeOwn(User $user, Violation $violation): bool
-    {
-        return $this->owns($user, $violation) && ! $violation->is_acknowledged;
     }
 
     /**

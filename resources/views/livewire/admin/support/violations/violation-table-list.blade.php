@@ -117,12 +117,7 @@
                             <td class="align-middle text-truncate" style="max-width:0;">
                                 <div class="font-weight-medium text-truncate">{{ $violation->resident_label }}</div>
                                 <div class="text-muted small text-truncate">
-                                    @if ($violation->is_acknowledged)
-                                        <i class="fas fa-fw fa-check-circle text-success mr-1"></i>Acknowledged
-                                        {{ $violation->acknowledged_at->format('M j, Y') }}
-                                    @else
-                                        <i class="far fa-fw fa-circle mr-1"></i>Awaiting acknowledgment
-                                    @endif
+                                    <i class="fas fa-fw fa-user-shield mr-1"></i>Issued by {{ $violation->issuedByAdmin->name ?? 'the HOA Office' }}
                                 </div>
                             </td>
                             <td class="align-middle text-truncate" style="max-width:0;">
@@ -209,18 +204,14 @@
 
                     <div class="d-flex justify-content-between align-items-start flex-wrap" style="gap:0.5rem;">
                         <div>
-                            <div class="text-muted small" style="font-size:0.7rem;">ACKNOWLEDGMENT</div>
+                            <div class="text-muted small" style="font-size:0.7rem;">ISSUED ON</div>
                             <div class="small font-weight-medium">
-                                {{ $violation->is_acknowledged ? 'Acknowledged' : 'Not yet acknowledged' }}
+                                {{ $violation->issued_at ? $violation->issued_at->format('M j, Y') : 'Not issued' }}
                             </div>
-                            <div class="text-muted small">{{ $violation->acknowledged_display }}</div>
                         </div>
                         <div class="text-right">
                             <div class="text-muted small" style="font-size:0.7rem;">ISSUED BY</div>
                             <div class="small font-weight-medium">{{ $violation->issuedByAdmin->name ?? 'Not recorded' }}</div>
-                            <div class="text-muted small">
-                                {{ $violation->issued_at ? $violation->issued_at->format('M j, Y') : 'Not issued' }}
-                            </div>
                         </div>
                     </div>
                 </div>

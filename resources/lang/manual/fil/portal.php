@@ -277,10 +277,6 @@ return [
                     'title' => 'Pagbasa ng paglabag',
                     'body'  => 'Ang paglabag ay isang paglabag sa tuntuning itinala ng opisina laban sa iyong sambahayan. Ipinapakita ng bawat entry kung ano ito, kailan nangyari at anumang puna. Buksan ang isa upang basahin ito nang buo.',
                 ],
-                [
-                    'title' => 'Pag-acknowledge',
-                    'body'  => 'I-acknowledge ang paglabag kapag nabasa mo na ito. Ang pag-acknowledge ay resibo, hindi pag-amin: sinasabi nito sa opisina na nakita mo ang notice.',
-                ],
             ],
         ],
 
@@ -504,7 +500,6 @@ return [
                 [
                     'title'  => 'Mga terminong ginamit sa manwal na ito',
                     'fields' => [
-                        'I-acknowledge'        => 'Markahan ang paglabag bilang nabasa. Resibo ito, hindi pag-amin.',
                         'Amenity'              => 'Isang pinagsasaluhang pasilidad na maaari mong ireserba, tulad ng clubhouse o court.',
                         'Bill'                 => 'Isang singil na kailangan mong bayaran, may sariling reference.',
                         'Booking'              => 'Isang reserbasyon ng amenity para sa isang petsa at hanay ng oras.',

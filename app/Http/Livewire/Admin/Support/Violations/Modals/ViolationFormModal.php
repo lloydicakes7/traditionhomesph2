@@ -42,13 +42,14 @@ class ViolationFormModal extends AdminModalComponent
 
     /** @var array Form fields */
     public $form = [
-        'resident_id'    => '',
-        'violation_type' => '',
-        'occurred_on'    => '',
-        'occurred_time'  => '',
-        'location'       => '',
-        'description'    => '',
-        'office_report'  => '',
+        'resident_id'          => '',
+        'violation_type'       => '',
+        'violation_type_other' => '',
+        'occurred_on'          => '',
+        'occurred_time'        => '',
+        'location'             => '',
+        'description'          => '',
+        'office_report'        => '',
     ];
 
     /** @var array<string, string> Modal open / load / close events (see public/js/modal-loader.js) */
@@ -80,6 +81,23 @@ class ViolationFormModal extends AdminModalComponent
         $this->detail = $detail;
         $this->issueViolation = $issueViolation;
         $this->updateViolation = $updateViolation;
+    }
+
+    // =====================================================================
+    // Lifecycle
+    // =====================================================================
+
+    /**
+     * Keep the custom type in step with the type the officer picked: another
+     * type never carries a description, and its stale error is dropped.
+     */
+    public function updatedFormViolationType($value): void
+    {
+        $this->resetValidation('form.violation_type_other');
+
+        if ($value !== ViolationType::OTHER) {
+            $this->form['violation_type_other'] = '';
+        }
     }
 
     // =====================================================================
@@ -123,13 +141,14 @@ class ViolationFormModal extends AdminModalComponent
         $this->isEditing = true;
         $this->editingViolationId = $violation->id;
         $this->form = [
-            'resident_id'    => (string) $violation->resident_id,
-            'violation_type' => $violation->violation_type ? $violation->violation_type->value : '',
-            'occurred_on'    => $violation->occurred_on ? $violation->occurred_on->format('Y-m-d') : '',
-            'occurred_time'  => $violation->occurred_time ? substr((string) $violation->occurred_time, 0, 5) : '',
-            'location'       => $violation->location,
-            'description'    => $violation->description,
-            'office_report'  => $violation->office_report ?? '',
+            'resident_id'          => (string) $violation->resident_id,
+            'violation_type'       => $violation->violation_type ? $violation->violation_type->value : '',
+            'violation_type_other' => $violation->violation_type_other ?? '',
+            'occurred_on'          => $violation->occurred_on ? $violation->occurred_on->format('Y-m-d') : '',
+            'occurred_time'        => $violation->occurred_time ? substr((string) $violation->occurred_time, 0, 5) : '',
+            'location'             => $violation->location,
+            'description'          => $violation->description,
+            'office_report'        => $violation->office_report ?? '',
         ];
 
         $this->markLoaded();
@@ -186,13 +205,14 @@ class ViolationFormModal extends AdminModalComponent
         $this->isEditing = false;
         $this->editingViolationId = null;
         $this->form = [
-            'resident_id'    => '',
-            'violation_type' => '',
-            'occurred_on'    => '',
-            'occurred_time'  => '',
-            'location'       => '',
-            'description'    => '',
-            'office_report'  => '',
+            'resident_id'          => '',
+            'violation_type'       => '',
+            'violation_type_other' => '',
+            'occurred_on'          => '',
+            'occurred_time'        => '',
+            'location'             => '',
+            'description'          => '',
+            'office_report'        => '',
         ];
     }
 

@@ -31,7 +31,7 @@ class FaqSeeder extends Seeder
             ],
             [
                 'question' => 'What happens after I receive a violation notice?',
-                'answer'   => 'Go to the HOA office to acknowledge the notice, and the officers will record how the matter is resolved.',
+                'answer'   => 'Read the notice in the portal, and go to the HOA office so the officers can record how the matter is resolved.',
             ],
             [
                 'question' => 'How do I book an amenity for an event?',

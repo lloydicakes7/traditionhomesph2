@@ -17,13 +17,17 @@ trait WithViolationRules
     protected function violationRules(): array
     {
         return [
-            'form.resident_id'    => ['required', Rule::exists('residents', 'id')],
-            'form.violation_type' => ['required', Rule::in(ViolationType::values())],
-            'form.occurred_on'    => ['required', 'date_format:Y-m-d'],
-            'form.occurred_time'  => ['required', 'date_format:H:i'],
-            'form.location'       => ['required', 'string', 'max:255'],
-            'form.description'    => ['required', 'string', 'max:2000'],
-            'form.office_report'  => ['nullable', 'string', 'max:2000'],
+            'form.resident_id'          => ['required', Rule::exists('residents', 'id')],
+            'form.violation_type'       => ['required', Rule::in(ViolationType::values())],
+            'form.violation_type_other' => [
+                'nullable', 'string', 'max:150',
+                'required_if:form.violation_type,' . ViolationType::OTHER,
+            ],
+            'form.occurred_on'          => ['required', 'date_format:Y-m-d'],
+            'form.occurred_time'        => ['required', 'date_format:H:i'],
+            'form.location'             => ['required', 'string', 'max:255'],
+            'form.description'          => ['required', 'string', 'max:2000'],
+            'form.office_report'        => ['nullable', 'string', 'max:2000'],
         ];
     }
 

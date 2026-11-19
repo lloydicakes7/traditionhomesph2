@@ -11,11 +11,6 @@ namespace App\Enums;
  * which is why this enum owns the question "does this still count against the
  * homeowner?" rather than each page asking it with its own status list.
  *
- * Acknowledging is deliberately not a status. A homeowner acknowledging a
- * violation means they received and read the notice, never that they accept it,
- * so the acknowledgment is stamped beside the status (acknowledged_at) instead
- * of replacing it.
- *
  * @method static ViolationStatus ACTIVE()
  * @method static ViolationStatus RESOLVED()
  */

@@ -35,16 +35,15 @@ class SupportComplaintTest extends TestCase
             ->test(ComplaintRequestModal::class)
             ->call('open');
 
-        $component->set('images', [$image])
+        $component->set('attachments', [$image, $pdf, $notes])
+            ->assertSee('Attachments')
             ->assertSee('evidence.png')
-            ->call('removeImage', 0)
-            ->assertSet('images', []);
+            ->assertSee('report.pdf')
+            ->assertDontSee('Image Evidence')
+            ->assertDontSee('Supporting Files')
+            ->call('removeAttachment', 2);
 
-        $component->set('files', [$pdf, $notes])
-            ->call('removeFile', 1);
-
-        $component->set('images', [$this->png('evidence.png')])
-            ->set('form.category', ComplaintCategory::OTHER)
+        $component->set('form.category', ComplaintCategory::OTHER)
             ->set('form.other_description', 'Construction noise')
             ->set('form.subject', 'Noise after hours')
             ->set('form.description', 'Loud drilling at 11 PM.')
@@ -93,17 +92,24 @@ class SupportComplaintTest extends TestCase
 
     public function test_an_admin_records_an_other_complaint_with_its_description(): void
     {
+        Storage::fake('local');
+
         $user = factory(User::class)->create();
         $admin = $this->createAdministrator();
+        $attachment = UploadedFile::fake()->create('office-report.pdf', 100, 'application/pdf');
 
         Livewire::actingAs($admin, 'web')
             ->test(ComplaintFormModal::class)
             ->call('openCreate')
+            ->assertSee('Attachments')
+            ->assertDontSee('Image Evidence')
+            ->assertDontSee('Supporting Files')
             ->set('form.resident_id', (string) $user->resident_id)
             ->set('form.category', ComplaintCategory::OTHER)
             ->set('form.other_description', 'Unlisted concern')
             ->set('form.subject', 'Other concern')
             ->set('form.description', 'A concern outside the listed categories.')
+            ->set('attachments', [$attachment])
             ->call('save')
             ->assertHasNoErrors();
 
@@ -111,6 +117,9 @@ class SupportComplaintTest extends TestCase
 
         $this->assertSame($admin->id, $complaint->filed_by_admin_id);
         $this->assertSame('Unlisted concern', $complaint->other_description);
+        $this->assertCount(1, $complaint->attachments);
+        $this->assertSame('office-report.pdf', $complaint->attachments->first()->original_name);
+        Storage::disk('local')->assertExists($complaint->attachments->first()->path);
     }
 
     public function test_an_admin_can_view_and_download_complaint_attachments(): void

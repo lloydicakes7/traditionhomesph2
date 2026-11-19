@@ -27,79 +27,65 @@
     <div class="row">
         @forelse ($requests as $request)
             <div class="col-12 col-md-6 col-lg-4 mb-3" wire:key="request-{{ $request->id }}">
-                <div class="card h-100 mb-0 shadow-sm">
-                    <div class="card-header bg-white px-3 py-2">
-                        <div class="d-flex align-items-start justify-content-between" style="gap:0.5rem;">
-                            <div class="min-width-0">
-                                <div class="font-weight-bold text-break">{{ $request->type_label }}</div>
-                                <small class="text-muted">
-                                    <i class="far fa-fw fa-calendar-alt mr-1"></i>
-                                    Filed {{ $request->created_at ? $request->created_at->format('M j, Y g:i A') : 'Not recorded' }}
-                                </small>
-                            </div>
-                            <div class="text-right flex-shrink-0">
-                                <span class="badge badge-{{ $request->status_badge_theme }}">
-                                    {{ $request->status_label }}
-                                </span>
-                                @if ($request->has_bill_waiting)
-                                    <div class="mt-1">
-                                        <span class="badge badge-warning">
-                                            <i class="fas fa-fw fa-file-invoice-dollar"></i> Bill waiting
-                                        </span>
-                                    </div>
+                <x-portal.record-card :title="$request->type_label"
+                    :meta="'Filed ' . ($request->created_at ? $request->created_at->format('M j, Y g:i A') : 'Not recorded')"
+                    :status-theme="$request->status_badge_theme"
+                    :status-label="$request->status_label"
+                    :details="$request->details()"
+                    :extra-badge="$request->has_bill_waiting ? 'Bill waiting' : null"
+                    extra-badge-icon="fas fa-fw fa-file-invoice-dollar">
+                    @if ($request->is_processed)
+                        <div class="alert {{ $request->status_badge_theme === 'danger' ? 'alert-danger' : 'alert-success' }} border mt-3 mb-0 small">
+                            <div class="font-weight-bold mb-1">
+                                <i class="fas fa-fw {{ $request->status_badge_theme === 'danger' ? 'fa-times-circle' : 'fa-check-circle' }} mr-1"></i>
+                                {{ $request->status_label }}
+                                @if ($request->processed_at)
+                                    · {{ $request->processed_at->format('M j, Y') }}
                                 @endif
                             </div>
+                            @if ($request->remarks)
+                                <p class="mb-0">{{ $request->remarks }}</p>
+                            @endif
                         </div>
-                    </div>
+                    @endif
 
-                    <div class="card-body px-3 py-3">
-                        @foreach ($request->details() as $label => $value)
-                            <div class="d-flex justify-content-between align-items-start mb-1" style="gap:0.75rem;">
-                                <div class="text-muted small flex-shrink-0">{{ $label }}</div>
-                                <div class="small font-weight-medium text-right text-break">{{ $value }}</div>
-                            </div>
-                        @endforeach
+                    @if ($request->has_bill_waiting)
+                        <div class="alert alert-warning border mb-0 mt-2 small">
+                            <i class="fas fa-fw fa-file-invoice-dollar mr-1"></i>
+                            {{ __('slips.bill_waiting', ['reference' => $request->bill->reference]) }}
+                        </div>
+                    @endif
 
-                        @if ($request->is_processed)
-                            <div class="alert {{ $request->status_badge_theme === 'danger' ? 'alert-danger' : 'alert-success' }} border mt-3 mb-0 small">
-                                <div class="font-weight-bold mb-1">
-                                    <i class="fas fa-fw {{ $request->status_badge_theme === 'danger' ? 'fa-times-circle' : 'fa-check-circle' }} mr-1"></i>
-                                    {{ $request->status_label }}
-                                    @if ($request->processed_at)
-                                        · {{ $request->processed_at->format('M j, Y') }}
-                                    @endif
-                                </div>
-                                @if ($request->remarks)
-                                    <p class="mb-0">{{ $request->remarks }}</p>
-                                @endif
-                            </div>
+                    <x-slot name="actions">
+                        @if ($request->is_approved)
+                            <a href="{{ route('portal.requests.slip', $request->id) }}"
+                                class="btn btn-sm btn-info"
+                                title="{{ __('slips.download_title') }}"
+                                aria-label="{{ __('slips.download') }}">
+                                <i class="fas fa-fw fa-file-pdf"></i>
+                            </a>
                         @endif
 
-                        <div class="mt-3 pt-3 border-top">
-                            @if ($request->is_approved)
-                                <a href="{{ route('portal.requests.slip', $request->id) }}"
-                                    class="btn btn-sm btn-outline-secondary btn-block">
-                                    <i class="fas fa-fw fa-file-pdf mr-1"></i> {{ __('slips.download') }}
-                                </a>
-                                <div class="text-muted small mt-1 text-center">{{ __('slips.printable') }}</div>
-                            @endif
+                        <x-adminlte-button theme="secondary" icon="fas fa-fw fa-eye"
+                            title="View request" aria-label="View request" data-toggle="modal"
+                            data-target="#requestViewModal" data-id="{{ $request->id }}"
+                            class="btn-sm" />
 
-                            @can('deleteOwn', $request)
-                                <x-adminlte-button label="Delete Request" theme="outline-danger"
-                                    icon="fas fa-fw fa-trash" data-toggle="modal"
-                                    data-target="#requestWithdrawModal" data-id="{{ $request->id }}"
-                                    class="btn-sm btn-block" />
-                            @endcan
+                        @can('updateOwn', $request)
+                            <x-adminlte-button theme="primary" icon="fas fa-fw fa-edit"
+                                title="Edit request" aria-label="Edit request" data-toggle="modal"
+                                data-target="#requestEditModal" data-id="{{ $request->id }}"
+                                class="btn-sm" />
+                        @endcan
 
-                            @if ($request->has_bill_waiting)
-                                <div class="alert alert-warning border mb-0 mt-2 small">
-                                    <i class="fas fa-fw fa-file-invoice-dollar mr-1"></i>
-                                    {{ __('slips.bill_waiting', ['reference' => $request->bill->reference]) }}
-                                </div>
-                            @endif
-                        </div>
-                    </div>
-                </div>
+                        @can('deleteOwn', $request)
+                            <x-adminlte-button theme="danger" icon="fas fa-fw fa-trash"
+                                title="Delete request" aria-label="Delete request" data-toggle="modal"
+                                data-target="#requestWithdrawModal" data-id="{{ $request->id }}"
+                                class="btn-sm" />
+                        @endcan
+                    </x-slot>
+                </x-portal.record-card>
             </div>
         @empty
             <div class="col-12">

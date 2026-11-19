@@ -56,73 +56,8 @@
 
             <div class="row mt-3">
                 <div class="col-12">
-                    <label for="complaintImages" class="font-weight-bold">Image Evidence</label>
-                    <div class="custom-file">
-                        <input type="file" class="custom-file-input" id="complaintImages"
-                            wire:model="images" accept=".jpg,.jpeg,.png,.webp" multiple>
-                        <label class="custom-file-label" for="complaintImages">Choose images...</label>
-                    </div>
-                    <small class="text-muted">JPG, JPEG, PNG or WEBP. Up to 5 images, 5 MB each.</small>
-
-                    <div wire:loading wire:target="images" class="mt-1">
-                        <small class="text-info"><i class="fas fa-spinner fa-spin"></i> Uploading images...</small>
-                    </div>
-
-                    @error('images') <span class="text-danger small d-block">{{ $message }}</span> @enderror
-                    @error('images.*') <span class="text-danger small d-block">{{ $message }}</span> @enderror
-
-                    @if (! empty($images))
-                        <ul class="list-group list-group-flush mt-2">
-                            @foreach ($images as $index => $image)
-                                <li class="list-group-item d-flex justify-content-between align-items-center px-0 py-2"
-                                    wire:key="complaint-image-{{ $index }}">
-                                    <span class="small text-truncate pr-2">
-                                        <i class="fas fa-fw fa-image text-muted mr-1"></i>
-                                        {{ $image->getClientOriginalName() }}
-                                    </span>
-                                    <button type="button" class="btn btn-xs btn-outline-danger"
-                                        wire:click="removeImage({{ $index }})">
-                                        Remove
-                                    </button>
-                                </li>
-                            @endforeach
-                        </ul>
-                    @endif
-                </div>
-
-                <div class="col-12 mt-3">
-                    <label for="complaintFiles" class="font-weight-bold">Supporting Files</label>
-                    <div class="custom-file">
-                        <input type="file" class="custom-file-input" id="complaintFiles"
-                            wire:model="files" accept=".pdf,.doc,.docx,.xls,.xlsx,.txt,.csv,.jpg,.jpeg,.png,.webp" multiple>
-                        <label class="custom-file-label" for="complaintFiles">Choose files...</label>
-                    </div>
-                    <small class="text-muted">PDF, Word, Excel, text or image files. Up to 5 files, 10 MB each.</small>
-
-                    <div wire:loading wire:target="files" class="mt-1">
-                        <small class="text-info"><i class="fas fa-spinner fa-spin"></i> Uploading files...</small>
-                    </div>
-
-                    @error('files') <span class="text-danger small d-block">{{ $message }}</span> @enderror
-                    @error('files.*') <span class="text-danger small d-block">{{ $message }}</span> @enderror
-
-                    @if (! empty($files))
-                        <ul class="list-group list-group-flush mt-2">
-                            @foreach ($files as $index => $file)
-                                <li class="list-group-item d-flex justify-content-between align-items-center px-0 py-2"
-                                    wire:key="complaint-file-{{ $index }}">
-                                    <span class="small text-truncate pr-2">
-                                        <i class="fas fa-fw fa-paperclip text-muted mr-1"></i>
-                                        {{ $file->getClientOriginalName() }}
-                                    </span>
-                                    <button type="button" class="btn btn-xs btn-outline-danger"
-                                        wire:click="removeFile({{ $index }})">
-                                        Remove
-                                    </button>
-                                </li>
-                            @endforeach
-                        </ul>
-                    @endif
+                    <x-customs.complaint-attachments :attachments="$attachments"
+                        input-id="complaintAttachments" />
                 </div>
             </div>
 

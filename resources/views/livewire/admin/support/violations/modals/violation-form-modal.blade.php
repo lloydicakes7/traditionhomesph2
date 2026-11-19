@@ -26,7 +26,7 @@
 
                     <div class="col-12 col-xl-5">
                         <x-adminlte-select name="form.violation_type" label="Violation Type"
-                            wire:model.defer="form.violation_type" igroup-size="sm">
+                            wire:model="form.violation_type" igroup-size="sm">
                             <x-slot name="prependSlot">
                                 <div class="input-group-text"><i class="fas fa-fw fa-tag"></i></div>
                             </x-slot>
@@ -35,6 +35,12 @@
                                 <option value="{{ $value }}">{{ $label }}</option>
                             @endforeach
                         </x-adminlte-select>
+
+                        @if ($form['violation_type'] === \App\Enums\ViolationType::OTHER)
+                            <x-adminlte-input name="form.violation_type_other" label="Describe the violation"
+                                maxlength="150" placeholder="e.g., Keeping livestock in the unit"
+                                wire:model.defer="form.violation_type_other" igroup-size="sm" />
+                        @endif
                     </div>
                 </div>
 

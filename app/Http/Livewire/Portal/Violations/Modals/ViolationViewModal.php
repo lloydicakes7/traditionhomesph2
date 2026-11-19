@@ -13,8 +13,7 @@ use App\Queries\Support\Violations\ViolationDetailQuery;
  * `data-id`, and `public/js/modal-loader.js` turns that into
  * `loadViolationViewModal`. The shell is on screen at the click; the record is
  * fetched on that load. It shows what the violation says, when and where it
- * happened, where it stands, whether the notice has been acknowledged, and the
- * timeline behind it.
+ * happened and where it stands.
  *
  * Nothing is written from here, and the record is resolved through the signed-in
  * account rather than by id alone — a homeowner cannot open another household's

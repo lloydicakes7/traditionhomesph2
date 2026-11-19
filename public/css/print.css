@@ -177,7 +177,6 @@ table.sigs td.sig-label { text-align: left; font-size: 10.5px; padding-bottom: 2
 .note { font-size: 10.5px; margin-top: 14px; }
 .note ol { margin: 6px 0 0; padding-left: 22px; font-weight: bold; font-style: italic; line-height: 2; }
 .panel { border: 1px solid #777; padding: 6px 8px; font-size: 9px; line-height: 1.5; margin-top: 4px; }
-.ack { border: 1px solid #111; padding: 6px 8px; font-size: 9px; margin-top: 12px; }
 .small-note { font-size: 8px; color: #444; margin-top: 12px; }
 
 .foot-paper { width: 100%; margin-top: 10px; font-size: 8px; color: #333; page-break-inside: avoid; }

@@ -5,7 +5,7 @@
 
     @var array|null     $violation  null when none was chosen, else:
                                     [homeowner ("Anna Marie Lim · Blk 6 Lot 3"), status, type, occurredAt, location,
-                                     issuedAt, issuedBy, acknowledgment, description (plain text),
+                                     issuedAt, issuedBy, description (plain text),
                                      officeReport (?string), resolution (?[when, by, notes])]
     @var \Carbon\Carbon $printedAt
 --}}
@@ -32,8 +32,7 @@
                 <td class="k">Issued</td><td class="v">{{ $violation['issuedAt'] }}</td>
             </tr>
             <tr>
-                <td class="k">Issued by</td><td class="v">{{ $violation['issuedBy'] }}</td>
-                <td class="k">Acknowledgment</td><td class="v">{{ $violation['acknowledgment'] }}</td>
+                <td class="k">Issued by</td><td class="v" colspan="3">{{ $violation['issuedBy'] }}</td>
             </tr>
         </table>
 
@@ -52,19 +51,6 @@
                 @if ($violation['resolution']['notes'])<br>{{ $violation['resolution']['notes'] }}@endif
             </div>
         @endif
-
-        <div class="ack">
-            <strong>Acknowledgment.</strong>
-            Signing below confirms only that this notice was received and read. It is not an admission that the
-            homeowner agrees with the violation.
-        </div>
-
-        <table class="sigs avoid-break">
-            <tr>
-                <td><div class="sig-line">Received by (Homeowner)</div></td>
-                <td><div class="sig-line">Date received</div></td>
-            </tr>
-        </table>
 
         @include('pdf.partials.printed-note', ['note' => "this notice is part of the homeowner's permanent violation record."])
     @endif

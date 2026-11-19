@@ -19,30 +19,45 @@ class UpdateComplaint
 
     // ===== Handle =====
 
-    public function handle(Complaint $complaint, array $data, Admin $by): Complaint
+    public function handle(Complaint $complaint, array $data, ?Admin $by = null): Complaint
     {
-        if ($complaint->submitted_by_homeowner) {
+        if ($by === null && ! $complaint->can_be_changed_by_homeowner) {
+            throw ValidationException::withMessages([
+                'form.subject' => 'This complaint can no longer be edited — the office has already acted on it.',
+            ]);
+        }
+
+        if ($by !== null && $complaint->submitted_by_homeowner) {
             throw ValidationException::withMessages([
                 'form.subject' => 'A complaint a homeowner filed cannot be edited — respond to it instead.',
             ]);
         }
 
-        $resident = Resident::findOrFail((int) $data['resident_id']);        $complaint->update([
-            'resident_id'       => $resident->id,
-            'submitter_name'    => $complaint->submitter_name ?: $resident->full_name,
+        $attributes = [
             'category'          => $data['category'],
             'other_description' => Complaint::otherDescriptionFrom($data),
             'subject'           => $data['subject'],
             'description'       => $data['description'],
-        ]);
+        ];
 
-        $this->activity->log(
-            $by,
-            'updated',
-            'complaint',
-            "Updated complaint \"{$complaint->subject}\"",
-            ['complaint_id' => $complaint->id]
-        );
+        if ($by !== null) {
+            $resident = Resident::findOrFail((int) $data['resident_id']);
+
+            $attributes['resident_id'] = $resident->id;
+            $attributes['submitter_name'] = $complaint->submitter_name ?: $resident->full_name;
+        }
+
+        $complaint->update($attributes);
+
+        if ($by !== null) {
+            $this->activity->log(
+                $by,
+                'updated',
+                'complaint',
+                "Updated complaint \"{$complaint->subject}\"",
+                ['complaint_id' => $complaint->id]
+            );
+        }
 
         return $complaint->fresh(['resident', 'filedByAdmin', 'respondedByAdmin']);
     }

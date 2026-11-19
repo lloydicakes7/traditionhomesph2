@@ -5,11 +5,11 @@ namespace App\Http\Livewire\Portal\Complaints\Modals;
 use App\Enums\ComplaintCategory;
 use App\Http\Livewire\PortalModalComponent;
 use App\Http\Livewire\Concerns\ResolvesHomeownerAccount;
+use App\Http\Livewire\Concerns\WithComplaintAttachments;
+use App\Http\Livewire\Concerns\WithComplaintRules;
 use App\Models\Complaint;
 use App\Actions\Support\Complaints\FileComplaint;
-use App\Http\Livewire\Concerns\WithComplaintRules;
 use Illuminate\Support\Facades\Auth;
-use Livewire\WithFileUploads;
 
 /**
  * "File a Complaint" modal — the homeowner raising something with the office.
@@ -25,13 +25,13 @@ use Livewire\WithFileUploads;
  * the complaint is filed for the account's own resident and never for somebody
  * else, and the submitter is that resident — the office's queue shows the same
  * person the portal shows. The field rules are the service's, so both sides ask
- * for a complaint the same way.
+ * for a complaint the same way. Images and documents share one attachment list.
  */
 class ComplaintRequestModal extends PortalModalComponent
 {
     use ResolvesHomeownerAccount;
     use WithComplaintRules;
-    use WithFileUploads;
+    use WithComplaintAttachments;
 
     const MODAL_ID = 'complaintRequestModal';
 
@@ -42,12 +42,6 @@ class ComplaintRequestModal extends PortalModalComponent
         'subject'           => '',
         'description'       => '',
     ];
-
-    /** @var array<int, \Livewire\TemporaryUploadedFile> */
-    public $images = [];
-
-    /** @var array<int, \Livewire\TemporaryUploadedFile> */
-    public $files = [];
 
     /** @var array<string, string> Modal load / close events (see public/js/modal-loader.js) */
     protected $listeners = [
@@ -69,12 +63,7 @@ class ComplaintRequestModal extends PortalModalComponent
 
     protected function rules(): array
     {
-        return $this->complaintRules() + [
-            'images'   => ['array', 'max:5'],
-            'images.*' => ['image', 'mimes:jpg,jpeg,png,webp', 'max:5120'],
-            'files'    => ['array', 'max:5'],
-            'files.*'  => ['file', 'mimes:pdf,doc,docx,xls,xlsx,txt,csv,jpg,jpeg,png,webp', 'max:10240'],
-        ];
+        return $this->complaintRules() + $this->complaintAttachmentRules();
     }
 
     // =====================================================================
@@ -85,14 +74,8 @@ class ComplaintRequestModal extends PortalModalComponent
     {
         $this->authorize('createOwn', Complaint::class);
 
-        $this->form = [
-            'category'          => '',
-            'other_description' => '',
-            'subject'           => '',
-            'description'       => '',
-        ];
-        $this->images = [];
-        $this->files = [];
+        $this->form = $this->emptyForm();
+        $this->attachments = [];
 
         $this->resetValidation();
 
@@ -104,14 +87,8 @@ class ComplaintRequestModal extends PortalModalComponent
      */
     protected function resetModal(): void
     {
-        $this->form = [
-            'category'          => '',
-            'other_description' => '',
-            'subject'           => '',
-            'description'       => '',
-        ];
-        $this->images = [];
-        $this->files = [];
+        $this->form = $this->emptyForm();
+        $this->attachments = [];
 
         $this->resetValidation();
 
@@ -137,12 +114,10 @@ class ComplaintRequestModal extends PortalModalComponent
         $this->fileComplaint->handle(
             $this->form,
             Auth::guard('homeowner')->user(),
-            $this->images,
-            $this->files
+            $this->attachments
         );
 
-        $this->images = [];
-        $this->files = [];
+        $this->attachments = [];
 
         $this->emit('notify', 'success', 'Complaint submitted — the office will review it and post an update here.');
         $this->emit('complaint-filed');
@@ -150,22 +125,6 @@ class ComplaintRequestModal extends PortalModalComponent
         // Hide through Bootstrap first; the loader's hidden event then drops
         // the form (see public/js/modal-loader.js).
         $this->dispatchBrowserEvent('modal-close', ['id' => self::MODAL_ID]);
-    }
-
-    // =====================================================================
-    // Attachments
-    // =====================================================================
-
-    public function removeImage(int $index): void
-    {
-        unset($this->images[$index]);
-        $this->images = array_values($this->images);
-    }
-
-    public function removeFile(int $index): void
-    {
-        unset($this->files[$index]);
-        $this->files = array_values($this->files);
     }
 
     // =====================================================================
@@ -177,5 +136,20 @@ class ComplaintRequestModal extends PortalModalComponent
         return view('livewire.portal.complaints.modals.complaint-request-modal', [
             'categories' => ComplaintCategory::labels(),
         ]);
+    }
+
+    /**
+     * A blank complaint form.
+     *
+     * @return array
+     */
+    private function emptyForm(): array
+    {
+        return [
+            'category'          => '',
+            'other_description' => '',
+            'subject'           => '',
+            'description'       => '',
+        ];
     }
 }

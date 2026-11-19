@@ -21,7 +21,7 @@ class UpdateRequest
 
     // ===== Handle =====
 
-    public function handle(RequestModel $request, array $data, Admin $by): RequestModel
+    public function handle(RequestModel $request, array $data, ?Admin $by = null): RequestModel
     {
         if (! $request->is_open) {
             throw ValidationException::withMessages([
@@ -33,13 +33,15 @@ class UpdateRequest
 
         $request->update($this->payload($data));
 
-        $this->activity->log(
-            $by,
-            'updated',
-            'request',
-            "Updated {$request->type_label} request for {$request->resident_label}",
-            ['request_id' => $request->id]
-        );
+        if ($by) {
+            $this->activity->log(
+                $by,
+                'updated',
+                'request',
+                "Updated {$request->type_label} request for {$request->resident_label}",
+                ['request_id' => $request->id]
+            );
+        }
 
         return $request->fresh(['resident', 'processedByAdmin']);
     }

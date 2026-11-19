@@ -84,8 +84,8 @@ return [
     // A missing file still draws its box.
     'assets' => [
         'seal'   => 'image/logo.jpg',
-        'hope'   => 'image/hope.png',
-        'bagong' => 'image/documents/bagong-trece.png',
+        'hope'   => 'image/hope.jpg',
+        'bagong' => 'image/documents/bagong-trece.jpg',
     ],
 
     // Where an endorsement letter goes, when the settings do not name it.

@@ -121,6 +121,17 @@ class RequestPolicy
     }
 
     /**
+     * Determine whether this homeowner may correct a request: their own, and
+     * one the office has not decided on yet. An approved request is the
+     * office's record from that point on.
+     */
+    public function updateOwn(User $user, Request $request): bool
+    {
+        return $this->owns($user, $request)
+            && (bool) $request->status?->isPending();
+    }
+
+    /**
      * Determine whether this homeowner may take back a request: their own, and
      * one the office has not acted on yet. A filing still pending is the only
      * one that can be withdrawn.
