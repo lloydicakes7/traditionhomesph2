@@ -43,7 +43,7 @@
                                 @endif
                                 <div>{{ $address->city_line }}</div>
                             </td>
-                            <td class="align-middle">{{ $address->zip_code ?? '—' }}</td>
+                            <td class="align-middle">{{ $address->zip_code ?? 'Not provided' }}</td>
                             <td class="align-middle">{{ $address->country }}</td>
                             <td class="text-right align-middle text-nowrap">
                                 @include('livewire.admin.homeowners.address.partials.address-actions', ['actionKey' => 'Desktop'])

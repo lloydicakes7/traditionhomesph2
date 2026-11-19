@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Portal\Onboarding;
 
 use App\Actions\Homeowners\Profiles\SubmitProfileVerification;
 use App\Enums\PropertyType;
+use App\Exceptions\ProfileSubmissionException;
 use App\Http\Livewire\Concerns\ResolvesHomeownerAccount;
 use App\Http\Livewire\PortalComponent;
 use App\Http\Requests\Portal\Homeowners\SubmitProfileRequest;
@@ -219,6 +220,11 @@ class ProfileWizard extends PortalComponent
                 'property'  => $this->property,
                 'household' => $this->household,
             ], $this->idFile);
+        } catch (ProfileSubmissionException $exception) {
+            $this->step = 2;
+            $this->addError('property.block', $exception->getMessage());
+
+            return;
         } catch (\Throwable $exception) {
             Log::error('Profile submission failed: ' . get_class($exception));
 

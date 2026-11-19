@@ -36,17 +36,18 @@
                     </div>
                     <div class="col-12 col-md-4 mb-2">
                         <div class="text-muted text-uppercase font-weight-bold" style="font-size:.65rem;">Tenure</div>
-                        <div>{{ $viewData['tenure'] ?: '—' }}</div>
+                        <div>{{ $viewData['tenure'] ?: 'Not recorded' }}</div>
                     </div>
                     <div class="col-12 col-md-4 mb-2">
                         <div class="text-muted text-uppercase font-weight-bold" style="font-size:.65rem;">Created</div>
-                        <div>{{ $viewData['created_at'] ?: '—' }}</div>
+                        <div>{{ $viewData['created_at'] ?: 'Not recorded' }}</div>
                     </div>
                 </div>
 
                 <div class="small border-top pt-2 mb-2">
                     <div class="text-muted text-uppercase font-weight-bold" style="font-size:.65rem;">Property</div>
-                    <div>{{ $viewData['property'] }}@if ($viewData['property_address'] !== '—') — {{ $viewData['property_address'] }}@endif</div>
+                    <div>{{ $viewData['property'] }}</div>
+                    <div class="text-muted">{{ $viewData['property_address'] }}</div>
                 </div>
 
                 <div class="small border-top pt-2 mb-5">
@@ -80,7 +81,7 @@
                                             <span class="badge badge-success ml-1">Head</span>
                                         @endif
                                     </td>
-                                    <td class="text-right">{{ $m['age'] ?? '—' }}</td>
+                                    <td class="text-right">{{ $m['age'] ?? 'Not provided' }}</td>
                                 </tr>
                             @empty
                                 <tr>

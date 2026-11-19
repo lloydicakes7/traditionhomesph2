@@ -14,6 +14,7 @@ class CreateHouseholdLinkRequestsTable extends Migration
             $table->foreignId('household_id')->constrained('households')->cascadeOnDelete();
             $table->foreignId('resident_id')->constrained('residents')->cascadeOnDelete();
             $table->string('relationship', 100)->nullable();
+            $table->boolean('wants_head')->default(false);
             $table->string('status', 20)->default(HouseholdLinkStatus::PENDING);
             $table->timestamp('decided_at')->nullable();
             $table->timestamps();

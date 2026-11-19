@@ -4,6 +4,7 @@ namespace App\Queries\Auth;
 
 use App\Enums\CivilStatus;
 use App\Enums\Sex;
+use App\Enums\Suffix;
 
 /**
  * The choices the registration wizard offers: the two lists its personal step
@@ -23,6 +24,7 @@ class RegistrationFormQuery
         return [
             'sexOptions'         => Sex::labels(),
             'civilStatusOptions' => CivilStatus::labels(),
+            'suffixOptions'      => Suffix::labels(),
         ];
     }
 

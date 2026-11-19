@@ -48,7 +48,7 @@ class SubmitProfileRequest extends FormRequest
 
             'household.type'         => ['required', Rule::in(HouseholdType::values())],
             'household.prev_address' => ['nullable', 'string', 'max:500'],
-            'household.relationship' => ['nullable', 'string', 'max:100'],
+            'household.relationship' => ['nullable', 'string', 'max:255'],
             'household.be_head'      => ['boolean'],
 
             'idFile' => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:5120'],

@@ -21,7 +21,7 @@
                 <div class="row">
                     <div class="col-12 col-md-6">
                         <x-adminlte-input name="form.email" label="Email *" placeholder="Enter email address"
-                            wire:model.defer="form.email" igroup-size="sm" enable-old-support>
+                            maxlength="255" wire:model.defer="form.email" igroup-size="sm" enable-old-support>
                             <x-slot name="prependSlot"><div class="input-group-text"><i class="fas fa-fw fa-envelope"></i></div></x-slot>
                         </x-adminlte-input>
                     </div>

@@ -31,7 +31,6 @@ class HouseholdUnitQuery
             ->with([
                 'address',
                 'currentHousehold.headMember.resident',
-                'currentHousehold.memberRecords',
             ])
             ->first();
 
@@ -47,8 +46,6 @@ class HouseholdUnitQuery
             'address'      => $property->full_address_label,
             'is_occupied'  => $household !== null,
             'household_id' => $household ? $household->id : null,
-            'head_name'    => $head ? $head->full_name : null,
-            'member_count' => $household ? $household->memberRecords->count() : 0,
             'is_head'      => $head !== null && $residentId !== null && (int) $head->id === $residentId,
         ];
     }

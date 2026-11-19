@@ -94,7 +94,7 @@ class Household extends Model
      */
     public function getTenureLabelAttribute(): string
     {
-        return $this->type_enum?->label() ?? '—';
+        return $this->type_enum?->label() ?? 'Not recorded';
     }
 
     /**

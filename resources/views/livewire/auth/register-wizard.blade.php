@@ -116,27 +116,31 @@
                             <div class="row">
                                 <div class="col-12 col-sm-6">
                                     <x-adminlte-input name="form.surname" label="Surname *" placeholder="Enter surname"
-                                        wire:model.defer="form.surname" igroup-size="sm">
+                                        maxlength="255" data-thha-capitalize wire:model.defer="form.surname" igroup-size="sm">
                                         <x-slot name="prependSlot"><div class="input-group-text"><i class="fas fa-fw fa-user"></i></div></x-slot>
                                     </x-adminlte-input>
                                 </div>
                                 <div class="col-12 col-sm-6">
                                     <x-adminlte-input name="form.first_name" label="First Name *" placeholder="Enter first name"
-                                        wire:model.defer="form.first_name" igroup-size="sm">
+                                        maxlength="255" data-thha-capitalize wire:model.defer="form.first_name" igroup-size="sm">
                                         <x-slot name="prependSlot"><div class="input-group-text"><i class="fas fa-fw fa-user"></i></div></x-slot>
                                     </x-adminlte-input>
                                 </div>
                                 <div class="col-12 col-sm-6">
                                     <x-adminlte-input name="form.middle_name" label="Middle Name" placeholder="Optional"
-                                        wire:model.defer="form.middle_name" igroup-size="sm">
+                                        maxlength="255" data-thha-capitalize wire:model.defer="form.middle_name" igroup-size="sm">
                                         <x-slot name="prependSlot"><div class="input-group-text"><i class="fas fa-fw fa-user"></i></div></x-slot>
                                     </x-adminlte-input>
                                 </div>
                                 <div class="col-12 col-sm-6">
-                                    <x-adminlte-input name="form.suffix" label="Suffix" placeholder="e.g., Jr., III"
+                                    <x-adminlte-select name="form.suffix" label="Suffix"
                                         wire:model.defer="form.suffix" igroup-size="sm">
                                         <x-slot name="prependSlot"><div class="input-group-text"><i class="fas fa-fw fa-user"></i></div></x-slot>
-                                    </x-adminlte-input>
+                                        <option value="">Select</option>
+                                        @foreach ($suffixOptions as $value => $label)
+                                            <option value="{{ $value }}">{{ $label }}</option>
+                                        @endforeach
+                                    </x-adminlte-select>
                                 </div>
                             </div>
 
@@ -183,7 +187,8 @@
                             <div class="row">
                                 <div class="col-12 col-md-8">
                                     <x-adminlte-input name="email" type="email" label="{{ __('auth.email') }} *"
-                                        placeholder="you@example.com" wire:model.defer="email" igroup-size="sm" autofocus>
+                                        placeholder="you@example.com" maxlength="255"
+                                        wire:model.defer="email" igroup-size="sm" autofocus>
                                         <x-slot name="prependSlot">
                                             <div class="input-group-text"><i class="fas fa-fw fa-envelope"></i></div>
                                         </x-slot>

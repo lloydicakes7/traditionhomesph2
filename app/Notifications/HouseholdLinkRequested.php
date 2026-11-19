@@ -31,7 +31,7 @@ class HouseholdLinkRequested extends ThhaNotification
             ->subject('A resident has requested to join your household')
             ->greeting('Greetings, ' . ($this->link->headAccount()?->resident?->first_name ?? 'Homeowner') . ',')
             ->line($this->residentName() . ' listed your unit at ' . $this->unitLabel() . ' as their address.')
-            ->line('They requested to be recorded as ' . ($this->link->relationship ?: 'a member') . ' of your household.')
+            ->line($this->requestLine())
             ->line('Kindly confirm whether this person belongs to your household, or decline the request.')
             ->action('Review the request', route('portal.household-requests'));
     }
@@ -43,7 +43,19 @@ class HouseholdLinkRequested extends ThhaNotification
 
     protected function body($notifiable): string
     {
-        return $this->residentName() . ' asked to join your household at ' . $this->unitLabel() . '.';
+        return $this->residentName() . ' ' . $this->requestLine();
+    }
+
+    /**
+     * What the resident asked to become in the household.
+     */
+    private function requestLine(): string
+    {
+        if ($this->link->wantsHead()) {
+            return 'They asked to take over as the household head. Your household keeps its members and its unit.';
+        }
+
+        return 'They requested to be recorded as ' . ($this->link->relationship ?: 'a member') . ' of your household.';
     }
 
     protected function url($notifiable): ?string

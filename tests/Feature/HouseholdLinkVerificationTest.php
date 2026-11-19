@@ -131,7 +131,56 @@ class HouseholdLinkVerificationTest extends TestCase
             ->assertForbidden();
     }
 
-    private function joiningResident(Household $household): User
+    public function test_asking_to_take_over_a_headed_household_waits_for_the_head(): void
+    {
+        Notification::fake();
+
+        [$household, $head] = $this->occupiedHousehold();
+        $user = $this->joiningResident($household, true);
+
+        $link = HouseholdLinkRequest::firstOrFail();
+
+        $this->assertTrue($link->wantsHead());
+        $this->assertSame((int) $head->resident_id, (int) $household->fresh()->head_resident->id);
+        $this->assertSame(0, HouseholdMember::where('resident_id', $user->resident_id)->count());
+
+        Notification::assertSentTo($head, HouseholdLinkRequested::class);
+    }
+
+    public function test_the_head_approves_the_takeover(): void
+    {
+        Notification::fake();
+
+        [$household, $head] = $this->occupiedHousehold();
+        $user = $this->joiningResident($household, true);
+        $link = HouseholdLinkRequest::firstOrFail();
+
+        Livewire::actingAs($head, 'homeowner')
+            ->test(HouseholdLinkRequestList::class)
+            ->call('approve', $link->id)
+            ->assertHasNoErrors();
+
+        $this->assertSame((int) $user->resident_id, (int) $household->fresh()->head_resident->id);
+        $this->assertSame(1, $household->memberRecords()->where('is_head', true)->count());
+    }
+
+    public function test_the_office_cannot_approve_a_profile_while_the_head_has_not_answered(): void
+    {
+        Notification::fake();
+
+        [$household] = $this->occupiedHousehold();
+        $user = $this->joiningResident($household);
+
+        Livewire::actingAs($this->officer(), 'web')
+            ->test(ProfileVerificationViewModal::class)
+            ->call('load', $user->id)
+            ->call('approve')
+            ->assertSee(__('users.verification.awaiting_head'));
+
+        $this->assertSame('submitted', $user->fresh()->profile_status->value);
+    }
+
+    private function joiningResident(Household $household, bool $beHead = false): User
     {
         Storage::fake('local');
 
@@ -173,7 +222,7 @@ class HouseholdLinkVerificationTest extends TestCase
                 'sectors'                => [],
             ],
             'property'  => ['block' => '9', 'lot' => '3'],
-            'household' => ['type' => 'owner', 'prev_address' => '', 'relationship' => 'son', 'be_head' => false],
+            'household' => ['type' => 'owner', 'prev_address' => '', 'relationship' => 'son', 'be_head' => $beHead],
         ], UploadedFile::fake()->image('id.jpg'));
 
         return $user->fresh();

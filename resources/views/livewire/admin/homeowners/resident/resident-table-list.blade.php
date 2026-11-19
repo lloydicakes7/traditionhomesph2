@@ -102,7 +102,7 @@
                                 @endif
                             </td>
                             <td class="text-center align-middle">
-                                <span class="font-weight-medium">{{ $resident->age ?? '—' }}</span>
+                                <span class="font-weight-medium">{{ $resident->age ?? 'Not recorded' }}</span>
                             </td>
                             <td class="align-middle">
                                 @if ($resident->user)
@@ -159,7 +159,7 @@
                         @if ($resident->mobile_no)
                             <span class="small"><i class="fas fa-fw fa-mobile-alt text-muted mr-1" style="width:14px;"></i>{{ $resident->mobile_no }}</span>
                         @endif
-                        <span class="small"><i class="fas fa-fw fa-calendar text-muted mr-1" style="width:14px;"></i>Age: {{ $resident->age ?? '—' }}</span>
+                        <span class="small"><i class="fas fa-fw fa-calendar text-muted mr-1" style="width:14px;"></i>Age: {{ $resident->age ?? 'Not recorded' }}</span>
                         <span class="small">
                             <i class="fas fa-fw fa-user-circle text-muted mr-1" style="width:14px;"></i>
                             Account:

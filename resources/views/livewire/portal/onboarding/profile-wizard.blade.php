@@ -91,7 +91,10 @@
 
                             {{-- 1 — Personal information --}}
                             @if ($number === 1)
-                                @include('partials.personal-fields', ['prefix' => 'form'])
+                                @include('partials.personal-fields', [
+                                    'prefix' => 'form',
+                                    'spouseRequired' => $showSpouse,
+                                ])
                             @endif
 
                             {{-- 2 — Address and household --}}

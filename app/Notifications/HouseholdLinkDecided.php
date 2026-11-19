@@ -39,8 +39,13 @@ class HouseholdLinkDecided extends OfficerNotification
         return $this->head->name
             . ($this->approved() ? ' approved ' : ' rejected ')
             . $this->residentName()
-            . ' as a member of the household at '
+            . ' as ' . $this->role() . ' of the household at '
             . $this->unitLabel() . '.';
+    }
+
+    private function role(): string
+    {
+        return $this->link->wantsHead() ? 'the household head' : 'a member';
     }
 
     protected function url($notifiable): ?string

@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Admin\Homeowners\Verification\Modals;
 
 use App\Actions\Homeowners\Profiles\RejectProfile;
 use App\Actions\Homeowners\Profiles\VerifyProfile;
+use App\Exceptions\ProfileApprovalBlockedException;
 use App\Http\Livewire\AdminModalComponent;
 use App\Models\User;
 use App\Queries\Homeowners\Profiles\ProfileVerificationDetailQuery;
@@ -70,7 +71,13 @@ class ProfileVerificationViewModal extends AdminModalComponent
 
         $this->authorize('verifyProfile', $account);
 
-        app(VerifyProfile::class)->handle($account, auth('web')->user());
+        try {
+            app(VerifyProfile::class)->handle($account, auth('web')->user());
+        } catch (ProfileApprovalBlockedException $exception) {
+            $this->emit('notify', 'warning', __('users.verification.awaiting_head'));
+
+            return;
+        }
 
         $this->finish(__('users.verification.approved_message'));
     }

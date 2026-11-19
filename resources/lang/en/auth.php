@@ -91,7 +91,7 @@ return [
         'choose_id'           => 'Choose a JPG or PNG image',
         'id_on_file'          => 'Your ID is already on file. Upload a new one only if you want to replace it.',
         'available_title'     => 'What you can use now',
-        'locked_title'        => 'What opens after verification',
+        'locked_title'        => 'What requires completion',
         'available'           => [
             'Dashboard',
             'Statement of Account',

@@ -6,6 +6,7 @@ use App\Enums\CivilStatus;
 use App\Enums\EducationalAttainment;
 use App\Enums\SectorType;
 use App\Enums\Sex;
+use App\Enums\Suffix;
 use App\Rules\PhilippineMobileNumber;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -49,7 +50,7 @@ class ResidentRequest extends FormRequest
             'form.surname'                => ['required', 'string', 'max:255'],
             'form.first_name'             => ['required', 'string', 'max:255'],
             'form.middle_name'            => ['nullable', 'string', 'max:255'],
-            'form.suffix'                 => ['nullable', 'string', 'max:50'],
+            'form.suffix'                 => ['nullable', Rule::in(Suffix::values())],
             'form.mobile_no'              => ['nullable', 'string', 'max:11', new PhilippineMobileNumber],
             'form.sex'                    => ['required', Rule::in(Sex::values())],
             'form.birth_date'             => ['required', 'date'],
@@ -61,7 +62,7 @@ class ResidentRequest extends FormRequest
             'form.occupation'             => ['nullable', 'string', 'max:255'],
             'form.educational_attainment' => ['nullable', Rule::in(EducationalAttainment::values())],
 
-            'form.philsys_card_no'        => ['nullable', 'string', 'regex:/^(\d{16}|\d{4}-\d{4}-\d{4}-\d{4})$/'],
+            'form.philsys_card_no'        => ['nullable', 'string', 'max:19', 'regex:/^(\d{16}|\d{4}-\d{4}-\d{4}-\d{4})$/'],
 
             'form.sectors'                => ['nullable', 'array'],
             'form.sectors.*'              => [Rule::in(SectorType::values())],

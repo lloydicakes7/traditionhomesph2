@@ -28,11 +28,16 @@
                         @forelse ($requests as $link)
                             <tr wire:key="household-link-{{ $link->id }}">
                                 <td class="align-middle">
-                                    <span class="font-weight-bold d-block">{{ $link->resident?->full_name ?? '—' }}</span>
+                                    <span class="font-weight-bold d-block">{{ $link->resident?->full_name ?? 'No name on record' }}</span>
                                 </td>
-                                <td class="align-middle">{{ $link->relationship_label }}</td>
                                 <td class="align-middle">
-                                    <small>{{ $link->created_at?->format('M d, Y') ?? '—' }}</small>
+                                    {{ $link->relationship_label }}
+                                    @if ($link->wantsHead())
+                                        <span class="badge badge-warning ml-1">{{ __('households.link.head_request') }}</span>
+                                    @endif
+                                </td>
+                                <td class="align-middle">
+                                    <small>{{ $link->created_at?->format('M d, Y') ?? 'Date not recorded' }}</small>
                                 </td>
                                 <td class="text-right align-middle text-nowrap">
                                     <div class="btn-group btn-group-sm">

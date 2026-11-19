@@ -18,28 +18,28 @@
                 <div class="row">
                     <div class="col-md-6">
                         <table class="table table-sm table-borderless">
-                            <tr><th scope="row" class="thha-view-label text-muted font-weight-normal">PhilSys Card No.</th><td>{{ $viewResident->philsys_card_no ?: '—' }}</td></tr>
+                            <tr><th scope="row" class="thha-view-label text-muted font-weight-normal">PhilSys Card No.</th><td>{{ $viewResident->philsys_card_no ?: 'Not provided' }}</td></tr>
                             <tr><th scope="row" class="thha-view-label text-muted font-weight-normal">Full Name</th><td class="font-weight-medium">{{ $viewResident->full_name }}</td></tr>
-                            <tr><th scope="row" class="thha-view-label text-muted font-weight-normal">Surname</th><td>{{ $viewResident->surname ?: '—' }}</td></tr>
-                            <tr><th scope="row" class="thha-view-label text-muted font-weight-normal">First Name</th><td>{{ $viewResident->first_name ?: '—' }}</td></tr>
-                            <tr><th scope="row" class="thha-view-label text-muted font-weight-normal">Middle Name</th><td>{{ $viewResident->middle_name ?: '—' }}</td></tr>
-                            <tr><th scope="row" class="thha-view-label text-muted font-weight-normal">Suffix</th><td>{{ $viewResident->suffix ?: '—' }}</td></tr>
+                            <tr><th scope="row" class="thha-view-label text-muted font-weight-normal">Surname</th><td>{{ $viewResident->surname ?: 'Not provided' }}</td></tr>
+                            <tr><th scope="row" class="thha-view-label text-muted font-weight-normal">First Name</th><td>{{ $viewResident->first_name ?: 'Not provided' }}</td></tr>
+                            <tr><th scope="row" class="thha-view-label text-muted font-weight-normal">Middle Name</th><td>{{ $viewResident->middle_name ?: 'Not provided' }}</td></tr>
+                            <tr><th scope="row" class="thha-view-label text-muted font-weight-normal">Suffix</th><td>{{ $viewResident->suffix ?: 'Not provided' }}</td></tr>
                             <tr><th scope="row" class="thha-view-label text-muted font-weight-normal">Sex</th><td>{{ $viewResident->sex_label }}</td></tr>
-                            <tr><th scope="row" class="thha-view-label text-muted font-weight-normal">Birth Date</th><td>{{ $viewResident->birth_date?->format('M d, Y') ?? '—' }}</td></tr>
-                            <tr><th scope="row" class="thha-view-label text-muted font-weight-normal">Age</th><td>{{ $viewResident->age ?? '—' }}</td></tr>
-                            <tr><th scope="row" class="thha-view-label text-muted font-weight-normal">Birth Place</th><td>{{ $viewResident->birth_place ?: '—' }}</td></tr>
+                            <tr><th scope="row" class="thha-view-label text-muted font-weight-normal">Birth Date</th><td>{{ $viewResident->birth_date?->format('M d, Y') ?? 'Not provided' }}</td></tr>
+                            <tr><th scope="row" class="thha-view-label text-muted font-weight-normal">Age</th><td>{{ $viewResident->age ?? 'Not provided' }}</td></tr>
+                            <tr><th scope="row" class="thha-view-label text-muted font-weight-normal">Birth Place</th><td>{{ $viewResident->birth_place ?: 'Not provided' }}</td></tr>
                         </table>
                     </div>
 
                     <div class="col-md-6">
                         <table class="table table-sm table-borderless">
                             <tr><th scope="row" class="thha-view-label text-muted font-weight-normal">Civil Status</th><td>{{ $viewResident->civil_status_label }}</td></tr>
-                            <tr><th scope="row" class="thha-view-label text-muted font-weight-normal">Spouse Name</th><td>{{ $viewResident->spouse_name ?: '—' }}</td></tr>
-                            <tr><th scope="row" class="thha-view-label text-muted font-weight-normal">Citizenship</th><td>{{ $viewResident->citizenship ?: '—' }}</td></tr>
-                            <tr><th scope="row" class="thha-view-label text-muted font-weight-normal">Religion</th><td>{{ $viewResident->religion ?: '—' }}</td></tr>
-                            <tr><th scope="row" class="thha-view-label text-muted font-weight-normal">Occupation</th><td>{{ $viewResident->occupation ?: '—' }}</td></tr>
+                            <tr><th scope="row" class="thha-view-label text-muted font-weight-normal">Spouse Name</th><td>{{ $viewResident->spouse_name ?: 'Not provided' }}</td></tr>
+                            <tr><th scope="row" class="thha-view-label text-muted font-weight-normal">Citizenship</th><td>{{ $viewResident->citizenship ?: 'Not provided' }}</td></tr>
+                            <tr><th scope="row" class="thha-view-label text-muted font-weight-normal">Religion</th><td>{{ $viewResident->religion ?: 'Not provided' }}</td></tr>
+                            <tr><th scope="row" class="thha-view-label text-muted font-weight-normal">Occupation</th><td>{{ $viewResident->occupation ?: 'Not provided' }}</td></tr>
                             <tr><th scope="row" class="thha-view-label text-muted font-weight-normal">Educational Attainment</th><td>{{ $viewResident->educational_attainment_label }}</td></tr>
-                            <tr><th scope="row" class="thha-view-label text-muted font-weight-normal">Mobile No.</th><td>{{ $viewResident->mobile_no ?: '—' }}</td></tr>
+                            <tr><th scope="row" class="thha-view-label text-muted font-weight-normal">Mobile No.</th><td>{{ $viewResident->mobile_no ?: 'Not provided' }}</td></tr>
                             <tr>
                                 <th scope="row" class="thha-view-label text-muted font-weight-normal">Sectoral Tags</th>
                                 <td>
@@ -48,7 +48,7 @@
                                             {{ \App\Enums\SectorType::tryFrom((string) $sector)?->label() ?? $sector }}
                                         </span>
                                     @empty
-                                        <span class="text-muted">—</span>
+                                        <span class="text-muted">None recorded</span>
                                     @endforelse
                                 </td>
                             </tr>
@@ -69,15 +69,15 @@
                                     @endif
                                 </td>
                             </tr>
-                            <tr><th scope="row" class="thha-view-label text-muted font-weight-normal">Recorded</th><td>{{ $viewResident->created_at?->format('M d, Y g:i A') ?? '—' }}</td></tr>
-                            <tr><th scope="row" class="thha-view-label text-muted font-weight-normal">Last Updated</th><td>{{ $viewResident->updated_at?->format('M d, Y g:i A') ?? '—' }}</td></tr>
+                            <tr><th scope="row" class="thha-view-label text-muted font-weight-normal">Recorded</th><td>{{ $viewResident->created_at?->format('M d, Y g:i A') ?? 'Not provided' }}</td></tr>
+                            <tr><th scope="row" class="thha-view-label text-muted font-weight-normal">Last Updated</th><td>{{ $viewResident->updated_at?->format('M d, Y g:i A') ?? 'Not provided' }}</td></tr>
                         </table>
                     </div>
                 </div>
 
                 <h6 class="font-weight-bold mb-2 mt-3"><i class="fas fa-fw fa-user-circle mr-1"></i>Account Information</h6>
                 <table class="table table-sm table-borderless">
-                    <tr><th scope="row" class="thha-view-label text-muted font-weight-normal">Email</th><td>{{ $viewResident->user?->email ?? '—' }}</td></tr>
+                    <tr><th scope="row" class="thha-view-label text-muted font-weight-normal">Email</th><td>{{ $viewResident->user?->email ?? 'Not provided' }}</td></tr>
                     <tr>
                         <th scope="row" class="thha-view-label text-muted font-weight-normal">Account Status</th>
                         <td>
@@ -90,7 +90,7 @@
                             @endif
                         </td>
                     </tr>
-                    <tr><th scope="row" class="thha-view-label text-muted font-weight-normal">Linked Since</th><td>{{ $viewResident->user?->created_at?->format('M d, Y') ?? '—' }}</td></tr>
+                    <tr><th scope="row" class="thha-view-label text-muted font-weight-normal">Linked Since</th><td>{{ $viewResident->user?->created_at?->format('M d, Y') ?? 'Not provided' }}</td></tr>
                 </table>
             @endif
         </div>

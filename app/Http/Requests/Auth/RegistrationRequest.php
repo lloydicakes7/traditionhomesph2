@@ -4,6 +4,7 @@ namespace App\Http\Requests\Auth;
 
 use App\Enums\CivilStatus;
 use App\Enums\Sex;
+use App\Enums\Suffix;
 use App\Rules\EmailAvailable;
 use App\Rules\PasswordPolicy;
 use App\Rules\PhilippineMobileNumber;
@@ -37,7 +38,7 @@ class RegistrationRequest extends FormRequest
             'form.surname'      => ['required', 'string', 'max:255', 'regex:/^[^\d]+$/u'],
             'form.first_name'   => ['required', 'string', 'max:255', 'regex:/^[^\d]+$/u'],
             'form.middle_name'  => ['nullable', 'string', 'max:255', 'regex:/^[^\d]*$/u'],
-            'form.suffix'       => ['nullable', 'string', 'max:50', 'regex:/^[^\d]*$/u'],
+            'form.suffix'       => ['nullable', Rule::in(Suffix::values())],
             'form.mobile_no'    => ['required', 'string', 'max:11', new PhilippineMobileNumber],
             'form.birth_date'   => ['required', 'date', 'before:today', 'after:1900-01-01'],
             'form.sex'          => ['required', Rule::in(Sex::values())],

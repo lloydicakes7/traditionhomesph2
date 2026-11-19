@@ -19,7 +19,7 @@ class HouseholdMemberQuery
             return [
                 'id'                 => $record->id,
                 'resident_id'        => (string) $record->resident_id,
-                'resident_name'      => $record->resident?->full_name ?? '—',
+                'resident_name'      => $record->resident?->full_name ?? 'No name on record',
                 'relationship'       => $record->relationship ?? '',
                 'relationship_label' => $record->relationship_label,
                 'is_head'            => (bool) $record->is_head,

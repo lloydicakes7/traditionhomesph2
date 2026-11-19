@@ -157,7 +157,7 @@ class RegistrationTest extends TestCase
         $this->post('/login', [
             'email'    => 'applicant@example.com',
             'password' => 'ChosenPass1!',
-        ])->assertRedirect(route('portal.personal-information'));
+        ])->assertRedirect(route('portal.onboarding'));
 
         $this->assertAuthenticated('homeowner');
     }

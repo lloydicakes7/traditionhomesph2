@@ -115,7 +115,7 @@
                                         {{ $property->address->subdivision }}
                                     </small>
                                 @else
-                                    <span class="text-danger">—</span>
+                                    <span class="text-danger">Not provided</span>
                                 @endif
                             </td>
                             <td class="align-middle">
@@ -153,7 +153,7 @@
                             <td class="align-middle">
                                 <div class="small font-weight-medium">{{ $property->sqm_type_display }}</div>
                                 <span class="badge badge-{{ $property->type_enum?->badgeTheme() ?? 'secondary' }} mt-1">
-                                    {{ $property->type_enum?->label() ?? '—' }}
+                                    {{ $property->type_enum?->label() ?? 'Not provided' }}
                                 </span>
                             </td>
                             <td class="text-right align-middle text-nowrap">

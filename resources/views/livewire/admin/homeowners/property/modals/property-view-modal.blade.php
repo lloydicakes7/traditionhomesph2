@@ -17,19 +17,19 @@
 
                 <table class="table table-sm table-borderless">
                     <tr><td class="text-muted" style="width:30%;">Block / Lot</td><td class="font-weight-medium">{{ $viewProperty->block_lot_label }}</td></tr>
-                    <tr><td class="text-muted">Address</td><td>{{ $viewProperty->address?->full_address ?? '—' }}</td></tr>
+                    <tr><td class="text-muted">Address</td><td>{{ $viewProperty->address?->full_address ?? 'Not provided' }}</td></tr>
                     <tr><td class="text-muted">SQM</td><td>{{ $viewProperty->sqm_type_display }}</td></tr>
-                    <tr><td class="text-muted">Type</td><td>{{ $viewProperty->type_enum?->label() ?? '—' }}</td></tr>
+                    <tr><td class="text-muted">Type</td><td>{{ $viewProperty->type_enum?->label() ?? 'Not provided' }}</td></tr>
                     <tr><td class="text-muted">Homeowner</td>
                         <td>
                             @if ($viewProperty->owner)
                                 {{ $viewProperty->owner->name }}
-                                <br><small class="text-muted"><i class="fas fa-fw fa-envelope mr-1"></i>{{ $viewProperty->owner->email ?? '—' }}</small>
+                                <br><small class="text-muted"><i class="fas fa-fw fa-envelope mr-1"></i>{{ $viewProperty->owner->email ?? 'Not provided' }}</small>
                                 @if ($viewProperty->owner->resident && $viewProperty->owner->resident->mobile_no)
                                     <br><small class="text-muted"><i class="fas fa-fw fa-phone mr-1"></i>{{ $viewProperty->owner->resident->mobile_no }}</small>
                                 @endif
                             @else
-                                <span class="text-muted">—</span>
+                                <span class="text-muted">None recorded</span>
                             @endif
                         </td>
                     </tr>

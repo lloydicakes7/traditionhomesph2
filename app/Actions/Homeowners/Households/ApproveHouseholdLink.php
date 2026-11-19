@@ -27,16 +27,20 @@ class ApproveHouseholdLink
         }
 
         DB::transaction(function () use ($link) {
-            if (HouseholdMember::residentIsPlaced($link->resident_id)) {
+            if (HouseholdMember::residentIsPlaced($link->resident_id, $link->household_id)) {
                 throw new \RuntimeException('This resident already belongs to a household.');
             }
 
-            HouseholdMember::create([
-                'household_id' => $link->household_id,
-                'resident_id'  => $link->resident_id,
-                'relationship' => $link->relationship,
-                'is_head'      => false,
-            ]);
+            if ($link->wantsHead()) {
+                $link->household->placeHead($link->resident_id, $link->relationship);
+            } else {
+                HouseholdMember::create([
+                    'household_id' => $link->household_id,
+                    'resident_id'  => $link->resident_id,
+                    'relationship' => $link->relationship,
+                    'is_head'      => false,
+                ]);
+            }
 
             $link->forceFill([
                 'status'     => HouseholdLinkStatus::APPROVED,

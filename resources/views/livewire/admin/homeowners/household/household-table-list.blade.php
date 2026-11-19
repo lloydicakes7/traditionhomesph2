@@ -51,7 +51,7 @@
                                             @if ($household->property)
                                                 {{ $household->property->block_lot_label }}
                                             @else
-                                                <span class="text-muted">—</span>
+                                                <span class="text-muted">No unit on record</span>
                                             @endif
                                         </div>
                                         @if ($household->property?->address)
@@ -79,7 +79,7 @@
                                             @if ($mr->is_head)
                                                 <i class="fas fa-fw fa-crown text-warning mr-1" title="Head of the family"></i>
                                             @endif
-                                            {{ $mr->resident?->full_name ?? '—' }}
+                                            {{ $mr->resident?->full_name ?? 'No name on record' }}
                                         </span>
                                     </div>
                                 </td>
@@ -95,7 +95,7 @@
                                 @if ($index === 0)
                                     {{-- Created --}}
                                     <td rowspan="{{ $span }}" class="align-middle">
-                                        <small class="text-muted">{{ $household->created_at?->format('M d, Y') ?? '—' }}</small>
+                                        <small class="text-muted">{{ $household->created_at?->format('M d, Y') ?? 'Not recorded' }}</small>
                                     </td>
 
                                     {{-- Actions --}}
@@ -113,7 +113,7 @@
                                         @if ($household->property)
                                             {{ $household->property->block_lot_label }}
                                         @else
-                                            <span class="text-muted">—</span>
+                                            <span class="text-muted">No unit on record</span>
                                         @endif
                                     </div>
                                     @if ($household->property?->address)
@@ -127,7 +127,7 @@
                                 </td>
                                 <td colspan="3" class="align-middle text-muted small">No members on record.</td>
                                 <td class="align-middle">
-                                    <small class="text-muted">{{ $household->created_at?->format('M d, Y') ?? '—' }}</small>
+                                    <small class="text-muted">{{ $household->created_at?->format('M d, Y') ?? 'Not recorded' }}</small>
                                 </td>
                                 <td class="text-right align-middle text-nowrap" style="overflow: visible;">
                                     @include('livewire.admin.homeowners.household.partials.household-actions', ['actionKey' => 'Desktop'])
@@ -182,7 +182,7 @@
                                     @if ($mr->is_head)
                                         <i class="fas fa-fw fa-crown text-warning"></i>
                                     @endif
-                                    {{ $mr->resident?->full_name ?? '—' }}
+                                    {{ $mr->resident?->full_name ?? 'No name on record' }}
                                 </small>
                                 <small class="text-muted">({{ $mr->relationship_label }})</small>
                             </div>
@@ -190,7 +190,7 @@
                     </div>
 
                     <div class="small text-muted mb-2">
-                        Created: {{ $household->created_at?->format('M d, Y') ?? '—' }}
+                        Created: {{ $household->created_at?->format('M d, Y') ?? 'Not recorded' }}
                     </div>
 
                     <div class="float-right">

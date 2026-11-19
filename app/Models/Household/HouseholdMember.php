@@ -53,7 +53,7 @@ class HouseholdMember extends Model
      */
     public function getFullNameAttribute(): string
     {
-        return $this->resident?->full_name ?? '—';
+        return $this->resident?->full_name ?? 'No name on record';
     }
 
     /**
@@ -75,7 +75,7 @@ class HouseholdMember extends Model
         $relationship = trim((string) $relationship);
 
         if ($relationship === '') {
-            return '—';
+            return 'Not stated';
         }
 
         return HouseholdRelationship::tryFrom($relationship)?->label() ?? $relationship;

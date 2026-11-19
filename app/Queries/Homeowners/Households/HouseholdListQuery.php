@@ -59,12 +59,12 @@ class HouseholdListQuery
         $data = [
             'id'               => $household->id,
             'name'             => $household->rbi_name,
-            'homeowner'        => $head?->full_name ?? '—',
+            'homeowner'        => $head?->full_name ?? 'No head on record',
             'homeowner_id'     => $head?->id,
             'homeowner_photo'  => $head?->photo_url,
             'head_relationship' => $household->head_relationship_label,
-            'property'         => $household->property?->block_lot_label ?? '—',
-            'property_address' => $household->property?->address?->full_address ?? '—',
+            'property'         => $household->property?->block_lot_label ?? 'No unit on record',
+            'property_address' => $household->property?->address?->full_address ?? 'No address on record',
             'type'             => HouseholdType::labels()[$household->type] ?? $household->type,
             'type_badge'       => $household->type_enum?->badgeTheme() ?? 'secondary',
             'families_count'   => (int) ($household->families_count ?: 1),
@@ -77,7 +77,7 @@ class HouseholdListQuery
         foreach ($household->memberRecords as $record) {
             $data['members'][] = [
                 'id'            => $record->id,
-                'full_name'     => $record->resident?->full_name ?? '—',
+                'full_name'     => $record->resident?->full_name ?? 'No name on record',
                 'relationship'  => $record->relationship_label,
                 'age'           => $record->resident?->birth_date ? $record->resident->birth_date->age : null,
                 'resident_id'   => $record->resident_id,

@@ -16,11 +16,13 @@ class HouseholdLinkRequest extends Model
         'household_id',
         'resident_id',
         'relationship',
+        'wants_head',
         'status',
         'decided_at',
     ];
 
     protected $casts = [
+        'wants_head' => 'boolean',
         'status'     => EnumCast::class . ':' . HouseholdLinkStatus::class,
         'decided_at' => 'datetime',
     ];
@@ -53,5 +55,10 @@ class HouseholdLinkRequest extends Model
     public function isPending(): bool
     {
         return (bool) $this->status?->isPending();
+    }
+
+    public function wantsHead(): bool
+    {
+        return (bool) $this->wants_head;
     }
 }

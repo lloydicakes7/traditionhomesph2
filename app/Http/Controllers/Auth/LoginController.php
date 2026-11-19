@@ -76,12 +76,8 @@ class LoginController extends Controller
 
         $this->clearLoginAttempts($request);
 
-        if ($outcome === SignInAccount::HOMEOWNER) {
-            $resident = Auth::guard('homeowner')->user()->resident;
-
-            if ($resident && ! $resident->hasCompletePersonalInformation()) {
-                return redirect()->route('portal.personal-information');
-            }
+        if ($outcome === SignInAccount::HOMEOWNER && ! Auth::guard('homeowner')->user()->hasCompletedProfile()) {
+            return redirect()->route('portal.onboarding');
         }
 
         return redirect()->intended(

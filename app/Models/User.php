@@ -142,7 +142,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function getNameAttribute(): string
     {
-        return $this->resident?->full_name ?? '—';
+        return $this->resident?->full_name ?? 'No name on record';
     }
 
     /**

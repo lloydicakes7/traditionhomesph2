@@ -130,18 +130,18 @@
                                 <h6 class="font-weight-bold mb-2"><i class="fas fa-fw fa-id-card mr-1"></i>Personal Information</h6>
                                 <table class="table table-sm table-borderless">
                                     <tr><td class="text-muted" style="width:40%;">Full Name</td><td class="font-weight-medium">{{ $viewHomeowner->full_name }}</td></tr>
-                                    <tr><td class="text-muted">Surname</td><td>{{ $viewHomeowner->surname ?? '—' }}</td></tr>
-                                    <tr><td class="text-muted">First Name</td><td>{{ $viewHomeowner->first_name ?? '—' }}</td></tr>
-                                    <tr><td class="text-muted">Middle Name</td><td>{{ $viewHomeowner->middle_name ?? '—' }}</td></tr>
-                                    <tr><td class="text-muted">Suffix</td><td>{{ $viewHomeowner->suffix ?? '—' }}</td></tr>
-                                    <tr><td class="text-muted">Mobile No.</td><td>{{ $viewHomeowner->mobile_no ?? '—' }}</td></tr>
+                                    <tr><td class="text-muted">Surname</td><td>{{ $viewHomeowner->surname ?? 'Not provided' }}</td></tr>
+                                    <tr><td class="text-muted">First Name</td><td>{{ $viewHomeowner->first_name ?? 'Not provided' }}</td></tr>
+                                    <tr><td class="text-muted">Middle Name</td><td>{{ $viewHomeowner->middle_name ?? 'Not provided' }}</td></tr>
+                                    <tr><td class="text-muted">Suffix</td><td>{{ $viewHomeowner->suffix ?? 'Not provided' }}</td></tr>
+                                    <tr><td class="text-muted">Mobile No.</td><td>{{ $viewHomeowner->mobile_no ?? 'Not provided' }}</td></tr>
                                     <tr><td class="text-muted">Sex</td><td>{{ $viewHomeowner->sex_label }}</td></tr>
-                                    <tr><td class="text-muted">Birth Date</td><td>{{ $viewHomeowner->birth_date?->format('M d, Y') ?? '—' }}</td></tr>
-                                    <tr><td class="text-muted">Birth Place</td><td>{{ $viewHomeowner->birth_place ?? '—' }}</td></tr>
+                                    <tr><td class="text-muted">Birth Date</td><td>{{ $viewHomeowner->birth_date?->format('M d, Y') ?? 'Not provided' }}</td></tr>
+                                    <tr><td class="text-muted">Birth Place</td><td>{{ $viewHomeowner->birth_place ?? 'Not provided' }}</td></tr>
                                     <tr><td class="text-muted">Civil Status</td><td>{{ $viewHomeowner->civil_status_label }}</td></tr>
-                                    <tr><td class="text-muted">Religion</td><td>{{ $viewHomeowner->religion ?? '—' }}</td></tr>
-                                    <tr><td class="text-muted">Citizenship</td><td>{{ $viewHomeowner->citizenship ?? '—' }}</td></tr>
-                                    <tr><td class="text-muted">Occupation</td><td>{{ $viewHomeowner->occupation ?? '—' }}</td></tr>
+                                    <tr><td class="text-muted">Religion</td><td>{{ $viewHomeowner->religion ?? 'Not provided' }}</td></tr>
+                                    <tr><td class="text-muted">Citizenship</td><td>{{ $viewHomeowner->citizenship ?? 'Not provided' }}</td></tr>
+                                    <tr><td class="text-muted">Occupation</td><td>{{ $viewHomeowner->occupation ?? 'Not provided' }}</td></tr>
                                     <tr><td class="text-muted">Educational Attainment</td><td>{{ $viewHomeowner->educational_attainment_label }}</td></tr>
                                 </table>
                             </div>
@@ -150,7 +150,7 @@
                             <div class="col-xl-6">
                                 <h6 class="font-weight-bold mb-2"><i class="fas fa-fw fa-user-circle mr-1"></i>Account Information</h6>
                                 <table class="table table-sm table-borderless">
-                                    <tr><td class="text-muted" style="width:40%;">Email</td><td>{{ $viewHomeowner->user?->email ?? '—' }}</td></tr>
+                                    <tr><td class="text-muted" style="width:40%;">Email</td><td>{{ $viewHomeowner->user?->email ?? 'Not provided' }}</td></tr>
                                     <tr><td class="text-muted">Account Status</td>
                                         <td>
                                             @if ($viewHomeowner->user && $viewHomeowner->user->is_active)
@@ -163,7 +163,7 @@
                                         </td>
                                     </tr>
                                     <tr><td class="text-muted">Last Login</td><td><small>{{ $viewHomeowner->user && $viewHomeowner->user->last_login_at ? $viewHomeowner->user->last_login_at->format('M d, Y h:i A') : 'Never' }}</small></td></tr>
-                                    <tr><td class="text-muted">Recorded Since</td><td><small>{{ $viewHomeowner->created_at ? $viewHomeowner->created_at->format('M d, Y') : '—' }}</small></td></tr>
+                                    <tr><td class="text-muted">Recorded Since</td><td><small>{{ $viewHomeowner->created_at ? $viewHomeowner->created_at->format('M d, Y') : 'Not provided' }}</small></td></tr>
                                 </table>
                             </div>
                         </div>
@@ -194,7 +194,7 @@
                                                 <td>{{ $idx + 1 }}</td>
                                                 <td>{{ $m['full_name'] }}</td>
                                                 <td>{{ $m['relationship'] }}</td>
-                                                <td>{{ $m['age'] ?? '—' }}</td>
+                                                <td>{{ $m['age'] ?? 'Not provided' }}</td>
                                             </tr>
                                             @endforeach
                                         </tbody>
@@ -243,7 +243,7 @@
                                         <tbody>
                                             @foreach ($viewRequests as $request)
                                                 <tr>
-                                                    <td class="text-nowrap">{{ $request->reference ?: '—' }}</td>
+                                                    <td class="text-nowrap">{{ $request->reference ?: 'Not provided' }}</td>
                                                     <td>{{ $request->type_label }}</td>
                                                     <td class="d-none d-sm-table-cell text-muted small">{{ $request->purpose_display }}</td>
                                                     <td class="text-nowrap small">{{ $request->created_at?->format('M d, Y') }}</td>
@@ -400,7 +400,7 @@
                                         <tbody>
                                             @foreach ($viewPayments as $payment)
                                                 <tr>
-                                                    <td class="text-nowrap">{{ $payment->receipt_no ?: $payment->reference_no ?: '—' }}</td>
+                                                    <td class="text-nowrap">{{ $payment->receipt_no ?: $payment->reference_no ?: 'Not provided' }}</td>
                                                     <td class="d-none d-sm-table-cell small">{{ $payment->method_label }}</td>
                                                     <td class="text-nowrap small">{{ $payment->paid_at_display }}</td>
                                                     <td class="text-right small text-nowrap">{{ $payment->amount_display }}</td>
@@ -496,9 +496,9 @@
                                                     <td>{{ $violation->type_label }}</td>
                                                     <td class="text-nowrap">{{ $violation->occurred_display }}</td>
                                                     <td class="text-nowrap">
-                                                        {{ $violation->resolved_at ? $violation->resolved_at->format('M j, Y') : '—' }}
+                                                        {{ $violation->resolved_at ? $violation->resolved_at->format('M j, Y') : 'Not provided' }}
                                                     </td>
-                                                    <td class="text-muted small">{{ $violation->resolution_notes ?: '—' }}</td>
+                                                    <td class="text-muted small">{{ $violation->resolution_notes ?: 'Not provided' }}</td>
                                                 </tr>
                                             @endforeach
                                         </tbody>

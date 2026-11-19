@@ -37,14 +37,6 @@ class Resident extends Model
         'mobile_no'    => 'Mobile Phone Number',
     ];
 
-    /**
-     * The details the Personal Information form requires before the portal
-     * proceeds to its normal dashboard flow.
-     */
-    const PERSONAL_INFORMATION_REQUIRED = [
-        'surname', 'first_name', 'sex', 'birth_date', 'citizenship', 'civil_status',
-    ];
-
     protected $table = 'residents';
 
     protected $fillable = [
@@ -193,20 +185,6 @@ class Resident extends Model
         return $missing;
     }
 
-    /**
-     * Whether the resident has every personal detail the portal asks for.
-     */
-    public function hasCompletePersonalInformation(): bool
-    {
-        foreach (self::PERSONAL_INFORMATION_REQUIRED as $column) {
-            if ($this->{$column} === null || trim((string) $this->{$column}) === '') {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
     // =====================================================================
     // Display
     // =====================================================================
@@ -238,7 +216,7 @@ class Resident extends Model
             $full .= ', ' . $this->suffix;
         }
 
-        return $full ?: '—';
+        return $full ?: 'No name on record';
     }
 
     /**
@@ -280,7 +258,7 @@ class Resident extends Model
      */
     public function getSexLabelAttribute(): string
     {
-        return $this->sex ? ucfirst($this->sex) : '—';
+        return $this->sex ? ucfirst($this->sex) : 'Not provided';
     }
 
     /**
@@ -288,7 +266,7 @@ class Resident extends Model
      */
     public function getCivilStatusLabelAttribute(): string
     {
-        return $this->civil_status ? ucfirst($this->civil_status) : '—';
+        return $this->civil_status ? ucfirst($this->civil_status) : 'Not provided';
     }
 
     /**
@@ -298,7 +276,7 @@ class Resident extends Model
     {
         return EducationalAttainment::tryFrom($this->educational_attainment)?->label()
             ?? $this->educational_attainment
-            ?? '—';
+            ?? 'Not provided';
     }
 
     // =====================================================================

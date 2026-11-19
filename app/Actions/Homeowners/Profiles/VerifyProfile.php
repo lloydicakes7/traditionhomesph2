@@ -3,7 +3,9 @@
 namespace App\Actions\Homeowners\Profiles;
 
 use App\Enums\ProfileStatus;
+use App\Exceptions\ProfileApprovalBlockedException;
 use App\Models\Admin;
+use App\Models\Household\HouseholdLinkRequest;
 use App\Models\User;
 use App\Notifications\ProfileVerifiedNotification;
 use App\Services\ActivityLogService;
@@ -35,6 +37,8 @@ class VerifyProfile
 
     public function handle(User $account, Admin $by): User
     {
+        $this->ensureTheHeadHasAnswered($account);
+
         $account->forceFill([
             'profile_status'               => ProfileStatus::VERIFIED,
             'profile_verified_at'          => now(),
@@ -56,6 +60,18 @@ class VerifyProfile
     }
 
     // ===== Helpers =====
+
+    private function ensureTheHeadHasAnswered(User $account): void
+    {
+        $waiting = HouseholdLinkRequest::query()
+            ->pending()
+            ->where('resident_id', $account->resident_id)
+            ->exists();
+
+        if ($waiting) {
+            throw new ProfileApprovalBlockedException('The household head has not answered this resident\'s request yet.');
+        }
+    }
 
     private function tellTheResident(User $account): void
     {

@@ -19,6 +19,7 @@
 
 @section('js')
     <script src="{{ asset('js/modal-loader.js') }}"></script>
+    <script src="{{ asset('js/form-input.js') }}"></script>
     <script src="{{ asset('js/public-navbar.js') }}"></script>
     <script src="{{ asset('js/clock.js') }}"></script>
 @stop

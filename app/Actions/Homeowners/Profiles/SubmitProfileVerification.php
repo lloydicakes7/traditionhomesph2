@@ -3,6 +3,7 @@
 namespace App\Actions\Homeowners\Profiles;
 
 use App\Enums\HouseholdLinkStatus;
+use App\Exceptions\ProfileSubmissionException;
 use App\Enums\HouseholdType;
 use App\Enums\ProfileStatus;
 use App\Models\Address;
@@ -128,7 +129,7 @@ class SubmitProfileVerification
         $address = Address::query()->primary()->first();
 
         if ($address === null) {
-            throw new \RuntimeException('The association address is not recorded.');
+            throw new ProfileSubmissionException('The office has not recorded the association address yet. Please contact the office before you submit your profile.');
         }
 
         return Property::create(Property::payloadFrom([
@@ -143,6 +144,8 @@ class SubmitProfileVerification
     /**
      * Put the resident in the household at the unit: its head when the unit has
      * none, and otherwise a member, or the head when the resident says they are.
+     * A household the resident already heads moves with them; a household they
+     * only belong to, or one another family already holds, is refused.
      *
      * @param  array<string, mixed>  $details
      */
@@ -151,48 +154,101 @@ class SubmitProfileVerification
         $relationship = $details['relationship'] ?? null;
         $beHead = (bool) ($details['be_head'] ?? false);
         $household = $property->currentHousehold;
+        $current = $resident->household;
+
+        if ($current !== null && $household !== null && (int) $current->id === (int) $household->id) {
+            return $this->keepPlacement($household, $resident, $relationship, $beHead);
+        }
+
+        if ($current !== null && ! $this->isHeadOf($current, $resident)) {
+            throw new ProfileSubmissionException('You already belong to another household. Ask the office to move you to this unit.');
+        }
 
         if ($household === null) {
-            $household = Household::create(Household::payloadFrom([
-                'property_id'  => $property->id,
-                'type'         => $details['type'] ?? HouseholdType::OWNER,
-                'prev_address' => $details['prev_address'] ?? null,
-            ]));
+            $household = $current !== null
+                ? $this->moveHousehold($current, $property, $details)
+                : Household::create(Household::payloadFrom([
+                    'property_id'  => $property->id,
+                    'type'         => $details['type'] ?? HouseholdType::OWNER,
+                    'prev_address' => $details['prev_address'] ?? null,
+                ]));
 
             $household->placeHead($resident->id, $relationship);
 
             return null;
         }
 
-        if ($household->memberRecords()->where('resident_id', $resident->id)->exists()) {
-            if ($beHead) {
+        if ($current !== null) {
+            throw new ProfileSubmissionException('This unit already belongs to another household. Keep the unit on file for your household, or ask the office to move it.');
+        }
+
+        if (! $household->hasHead() || ! $this->headHasAccount($household)) {
+            if ($beHead || ! $household->hasHead()) {
                 $household->placeHead($resident->id, $relationship);
+            } else {
+                $this->placeMember($household, $resident, $relationship);
             }
 
             return null;
         }
 
-        if ($beHead || ! $household->hasHead()) {
+        return $this->requestTheHead($household, $resident, $relationship, $beHead);
+    }
+
+    /**
+     * An existing member asking to take over a household someone else heads.
+     */
+    private function keepPlacement(Household $household, Resident $resident, ?string $relationship, bool $beHead): ?HouseholdLinkRequest
+    {
+        if (! $beHead || $this->isHeadOf($household, $resident)) {
+            return null;
+        }
+
+        if (! $this->headHasAccount($household)) {
             $household->placeHead($resident->id, $relationship);
 
             return null;
         }
 
-        if ($household->head_resident?->user === null) {
-            HouseholdMember::create([
-                'household_id' => $household->id,
-                'resident_id'  => $resident->id,
-                'relationship' => HouseholdMember::valueFrom($relationship),
-                'is_head'      => false,
-            ]);
+        $relationship = $relationship ?: $household->memberRecords()
+            ->where('resident_id', $resident->id)
+            ->value('relationship');
 
-            return null;
-        }
-
-        return $this->requestTheHead($household, $resident, $relationship);
+        return $this->requestTheHead($household, $resident, $relationship, true);
     }
 
-    private function requestTheHead(Household $household, Resident $resident, ?string $relationship): ?HouseholdLinkRequest
+    private function placeMember(Household $household, Resident $resident, ?string $relationship): void
+    {
+        HouseholdMember::create([
+            'household_id' => $household->id,
+            'resident_id'  => $resident->id,
+            'relationship' => HouseholdMember::valueFrom($relationship),
+            'is_head'      => false,
+        ]);
+    }
+
+    private function headHasAccount(Household $household): bool
+    {
+        return $household->head_resident?->user !== null;
+    }
+
+    private function moveHousehold(Household $household, Property $property, array $details): Household
+    {
+        $household->update(Household::payloadFrom([
+            'property_id'  => $property->id,
+            'type'         => $details['type'] ?? $household->type,
+            'prev_address' => $details['prev_address'] ?? null,
+        ]));
+
+        return $household;
+    }
+
+    private function isHeadOf(Household $household, Resident $resident): bool
+    {
+        return (int) $household->head_resident?->id === (int) $resident->id;
+    }
+
+    private function requestTheHead(Household $household, Resident $resident, ?string $relationship, bool $wantsHead): ?HouseholdLinkRequest
     {
         $link = HouseholdLinkRequest::query()
             ->where('household_id', $household->id)
@@ -205,6 +261,7 @@ class SubmitProfileVerification
             ['household_id' => $household->id, 'resident_id' => $resident->id],
             [
                 'relationship' => HouseholdMember::valueFrom($relationship),
+                'wants_head'   => $wantsHead,
                 'status'       => HouseholdLinkStatus::PENDING,
                 'decided_at'   => null,
             ]

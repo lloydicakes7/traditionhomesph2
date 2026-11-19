@@ -6,6 +6,7 @@ use App\Enums\CivilStatus;
 use App\Enums\EducationalAttainment;
 use App\Enums\SectorType;
 use App\Enums\Sex;
+use App\Enums\Suffix;
 use App\Models\Resident;
 
 class ResidentFormQuery
@@ -19,6 +20,7 @@ class ResidentFormQuery
             'civilStatusOptions'           => CivilStatus::labels(),
             'educationalAttainmentOptions' => EducationalAttainment::labels(),
             'sectorOptions'                => SectorType::labels(),
+            'suffixOptions'                => Suffix::labels(),
         ];
     }
 

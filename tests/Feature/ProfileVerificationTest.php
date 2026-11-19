@@ -94,7 +94,7 @@ class ProfileVerificationTest extends TestCase
 
         $this->actingAs($user, 'homeowner')
             ->get('/portal/personal-information')
-            ->assertOk();
+            ->assertRedirect(route('portal.onboarding'));
 
         $this->actingAs($user, 'homeowner')
             ->get('/portal/notifications')
@@ -166,6 +166,20 @@ class ProfileVerificationTest extends TestCase
             ->assertSet('step', 3)
             ->call('open', 2)
             ->assertSet('step', 2);
+    }
+
+    public function test_a_married_resident_is_shown_the_spouse_error_before_continuing(): void
+    {
+        $user = $this->registered();
+
+        Livewire::actingAs($user, 'homeowner')
+            ->test(ProfileWizard::class)
+            ->set('form.civil_status', 'married')
+            ->set('form.spouse_name', '')
+            ->call('next')
+            ->assertHasErrors(['form.spouse_name'])
+            ->assertSet('step', 1)
+            ->assertSee('The spouse name field is required when civil status is married.');
     }
 
     // ===== Submission =====
@@ -258,6 +272,135 @@ class ProfileVerificationTest extends TestCase
         $this->assertSame('mother', $household->headMember->relationship);
     }
 
+    public function test_a_household_headed_by_the_resident_moves_to_the_unit_they_name(): void
+    {
+        Storage::fake('local');
+
+        $user = $this->registered();
+        $address = $this->primaryAddress();
+
+        $old = Property::create([
+            'block'      => 1,
+            'lot'        => 1,
+            'address_id' => $address->id,
+            'sqm'        => 80,
+            'type'       => 'house',
+        ]);
+
+        $household = Household::create(['property_id' => $old->id, 'type' => 'owner']);
+        $household->placeHead($user->resident_id, 'father');
+
+        Livewire::actingAs($user, 'homeowner')
+            ->test(ProfileWizard::class)
+            ->set('form.birth_place', 'Trece Martires City')
+            ->set('form.citizenship', 'Filipino')
+            ->set('property.block', '9')
+            ->set('property.lot', '3')
+            ->set('property.sqm', '90')
+            ->set('property.type', 'house')
+            ->set('household.relationship', 'father')
+            ->set('idFile', UploadedFile::fake()->image('id.jpg'))
+            ->call('submit')
+            ->assertHasNoErrors();
+
+        $moved = $household->fresh();
+
+        $this->assertSame(1, Household::count());
+        $this->assertSame(9, (int) $moved->property->block);
+        $this->assertSame(3, (int) $moved->property->lot);
+        $this->assertSame((int) $user->resident_id, (int) $moved->head_resident->id);
+    }
+
+    public function test_a_unit_held_by_another_household_is_refused_on_the_block_field(): void
+    {
+        $user = $this->registered();
+        $address = $this->primaryAddress();
+
+        $old = Property::create([
+            'block'      => 1,
+            'lot'        => 1,
+            'address_id' => $address->id,
+            'sqm'        => 80,
+            'type'       => 'house',
+        ]);
+
+        $household = Household::create(['property_id' => $old->id, 'type' => 'owner']);
+        $household->placeHead($user->resident_id, 'father');
+
+        $unit = Property::create([
+            'block'      => 9,
+            'lot'        => 3,
+            'address_id' => $address->id,
+            'sqm'        => 90,
+            'type'       => 'house',
+        ]);
+
+        $other = Household::create(['property_id' => $unit->id, 'type' => 'owner']);
+        $other->placeHead(factory(Resident::class)->create()->id, 'mother');
+
+        $user->resident->forceFill(['valid_id_path' => 'ids/residents/id.jpg'])->save();
+
+        Livewire::actingAs($user, 'homeowner')
+            ->test(ProfileWizard::class)
+            ->set('form.birth_place', 'Trece Martires City')
+            ->set('form.citizenship', 'Filipino')
+            ->set('property.block', '9')
+            ->set('property.lot', '3')
+            ->call('submit')
+            ->assertHasErrors(['property.block'])
+            ->assertSet('step', 2)
+            ->assertSee('This unit already belongs to another household.');
+
+        $this->assertSame(ProfileStatus::INCOMPLETE, $user->fresh()->profile_status->value);
+    }
+
+    public function test_a_missing_association_address_is_reported_on_the_address_step(): void
+    {
+        $user = $this->registered();
+        $user->resident->forceFill(['valid_id_path' => 'ids/residents/id.jpg'])->save();
+
+        Livewire::actingAs($user, 'homeowner')
+            ->test(ProfileWizard::class)
+            ->set('form.birth_place', 'Trece Martires City')
+            ->set('form.citizenship', 'Filipino')
+            ->set('property.block', '9')
+            ->set('property.lot', '3')
+            ->set('property.sqm', '90')
+            ->set('property.type', 'house')
+            ->call('submit')
+            ->assertHasErrors(['property.block'])
+            ->assertSet('step', 2)
+            ->assertSee('The office has not recorded the association address yet.');
+    }
+
+    public function test_an_occupied_unit_does_not_show_the_head_or_the_member_count(): void
+    {
+        $user = $this->registered();
+        $address = $this->primaryAddress();
+
+        $unit = Property::create([
+            'block'      => 9,
+            'lot'        => 3,
+            'address_id' => $address->id,
+            'sqm'        => 90,
+            'type'       => 'townhouse',
+        ]);
+
+        $household = Household::create(['property_id' => $unit->id, 'type' => 'owner']);
+        $head = factory(Resident::class)->create(['surname' => 'Santos', 'first_name' => 'Rosa']);
+        $household->placeHead($head->id, 'mother');
+
+        Livewire::actingAs($user, 'homeowner')
+            ->test(ProfileWizard::class)
+            ->set('property.block', '9')
+            ->set('property.lot', '3')
+            ->assertSee(__('households.note.occupied'))
+            ->assertSee(__('households.be_head_toggle'))
+            ->assertDontSee('Rosa Santos')
+            ->assertDontSee('This person heads the household')
+            ->assertDontSee('member(s) on file');
+    }
+
     public function test_an_occupied_unit_joins_the_resident_as_a_member_unless_they_ask_to_head_it(): void
     {
         $user = $this->registered();
@@ -313,7 +456,7 @@ class ProfileVerificationTest extends TestCase
             ->test(ProfileWizard::class)
             ->assertSee(__('households.note.own_head'))
             ->assertDontSee(__('households.note.occupied'))
-            ->assertDontSee(__('households.be_head'));
+            ->assertDontSee(__('households.be_head_toggle'));
     }
 
     public function test_an_occupied_unit_lets_the_resident_take_over_as_head(): void

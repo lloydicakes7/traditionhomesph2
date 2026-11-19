@@ -21,7 +21,7 @@
                         <label class="small font-weight-bold mb-1">Associated Address</label>
                         <p class="form-control-plaintext border rounded bg-light px-2 py-1 mb-0 small">
                             <i class="fas fa-fw fa-map-marker-alt mr-1"></i>
-                            {{ $unit ? $unit['address'] : ($associationAddress ? $associationAddress->full_address : '—') }}
+                            {{ $unit ? $unit['address'] : ($associationAddress ? $associationAddress->full_address : 'Not recorded yet') }}
                         </p>
                     </div>
                 </div>
@@ -47,7 +47,7 @@
                     <div class="col-12 col-md-6">
                         <x-adminlte-select name="form.relationship" label="Relationship" wire:model.defer="form.relationship" igroup-size="sm">
                             <x-slot name="prependSlot"><div class="input-group-text"><i class="fas fa-fw fa-link"></i></div></x-slot>
-                            <option value="">— Select —</option>
+                            <option value="">Select</option>
                             @foreach ($relationshipOptions as $key => $label)
                                 <option value="{{ $key }}">{{ $label }}</option>
                             @endforeach

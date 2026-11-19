@@ -42,7 +42,7 @@
             <x-adminlte-select name="property.type" label="{{ __('households.unit_type') }} *"
                 wire:model.defer="property.type" igroup-size="sm">
                 <x-slot name="prependSlot"><div class="input-group-text"><i class="fas fa-fw fa-home"></i></div></x-slot>
-                <option value="">— Select —</option>
+                <option value="">Select</option>
                 @foreach ($propertyTypeOptions as $value => $label)
                     <option value="{{ $value }}">{{ $label }}</option>
                 @endforeach
@@ -53,24 +53,11 @@
     @if ($unitNamed && $canJoin)
         <div class="col-12 col-md-6">
             <x-adminlte-input name="household.relationship"
-                label="{{ __('households.relationship') }}" maxlength="100"
+                label="{{ __('households.relationship') }}" maxlength="255" data-thha-capitalize
                 placeholder="{{ __('households.relationship_hint') }}"
                 wire:model.defer="household.relationship" igroup-size="sm">
                 <x-slot name="prependSlot"><div class="input-group-text"><i class="fas fa-fw fa-users"></i></div></x-slot>
             </x-adminlte-input>
-        </div>
-    @endif
-
-    @if ($unitNamed && $occupied && $canJoin)
-        <div class="col-12">
-            <div class="custom-control custom-switch">
-                <input type="checkbox" class="custom-control-input" id="householdBeHead"
-                    wire:model.defer="household.be_head">
-                <label class="custom-control-label" for="householdBeHead">
-                    {{ __('households.be_head') }}
-                    <br><small class="text-muted">{{ __('households.be_head_hint') }}</small>
-                </label>
-            </div>
         </div>
     @endif
 
@@ -96,10 +83,15 @@
 
 <div class="alert alert-info small py-2 mt-4 mb-0">
     <i class="fas fa-fw fa-info-circle mr-1"></i>{{ $note }}
-    @if ($unitNamed && $occupied && ! $ownHead)
-        <span class="d-block mt-1">
-            {{ __('households.head') }} <strong>{{ $unit['head_name'] ?? '—' }}</strong>
-            <span class="text-muted">· {{ __('households.member_count', ['count' => $unit['member_count']]) }}</span>
-        </span>
+
+    @if ($unitNamed && $occupied && $canJoin)
+        <div class="custom-control custom-switch mt-2">
+            <input type="checkbox" class="custom-control-input" id="householdBeHead"
+                wire:model.defer="household.be_head">
+            <label class="custom-control-label" for="householdBeHead">
+                {{ __('households.be_head_toggle') }}
+                <small class="d-block text-muted">{{ __('households.be_head_hint') }}</small>
+            </label>
+        </div>
     @endif
 </div>

@@ -3,6 +3,7 @@
 use App\Enums\CivilStatus;
 use App\Enums\EducationalAttainment;
 use App\Enums\Sex;
+use App\Enums\Suffix;
 use App\Models\Resident;
 use Faker\Generator as Faker;
 
@@ -23,7 +24,7 @@ $factory->define(Resident::class, function (Faker $faker) {
         'surname'                => $faker->lastName,
         'first_name'             => $faker->firstName,
         'middle_name'            => $faker->optional(0.7)->lastName,
-        'suffix'                 => $faker->optional(0.1)->suffix,
+        'suffix'                 => $faker->optional(0.1)->randomElement(Suffix::values()),
         'birth_date'             => $faker->dateTimeBetween('-90 years', '-1 year')->format('Y-m-d'),
         'birth_place'            => $faker->city,
         'sex'                    => $faker->randomElement(Sex::values()),

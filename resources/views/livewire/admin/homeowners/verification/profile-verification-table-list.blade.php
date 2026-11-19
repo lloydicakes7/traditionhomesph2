@@ -45,7 +45,7 @@
                                     <small class="text-muted">{{ $account->email }}</small>
                                 </td>
                                 <td>
-                                    {{ $account->resident?->household?->property?->block_lot_label ?? '—' }}
+                                    {{ $account->resident?->household?->property?->block_lot_label ?? 'No unit on record' }}
                                 </td>
                                 <td>
                                     <span class="badge badge-{{ $account->profile_status->badgeTheme() }}">
@@ -53,7 +53,7 @@
                                     </span>
                                 </td>
                                 <td>
-                                    <small>{{ $account->profile_submitted_at?->format('M d, Y g:i A') ?? '—' }}</small>
+                                    <small>{{ $account->profile_submitted_at?->format('M d, Y g:i A') ?? 'Not recorded' }}</small>
                                 </td>
                                 <td class="text-right">
                                     <button type="button" class="btn btn-outline-primary btn-xs"

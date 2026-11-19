@@ -44,11 +44,11 @@ class HomeownerDetailQuery
                     'type_label'          => HouseholdType::labels()[$household->type] ?? $household->type,
                     'property_label'      => $household->property
                         ? "{$household->property->block_lot_label}"
-                        : '—',
-                    'property_address'    => $household->property?->address?->full_address ?? '—',
+                        : 'No unit on record',
+                    'property_address'    => $household->property?->address?->full_address ?? 'No address on record',
                     'property_type_label' => $household->property
-                        ? (PropertyType::tryFrom($household->property->type)?->label() ?? $household->property->type ?? '—')
-                        : '—',
+                        ? (PropertyType::tryFrom($household->property->type)?->label() ?? $household->property->type ?? 'Not recorded')
+                        : 'Not recorded',
                     'prev_address'        => $household->prev_address,
                     'members'             => [],
                 ];
@@ -56,7 +56,7 @@ class HomeownerDetailQuery
                 foreach ($household->memberRecords as $record) {
                     $householdData['members'][] = [
                         'id'           => $record->id,
-                        'full_name'    => $record->resident?->full_name ?? '—',
+                        'full_name'    => $record->resident?->full_name ?? 'No name on record',
                         'relationship' => $record->relationship ? ucfirst($record->relationship) : 'Others',
                         'age'          => $record->resident?->birth_date ? $record->resident->birth_date->age : null,
                     ];

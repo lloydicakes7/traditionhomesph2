@@ -1,6 +1,6 @@
 <div wire:ignore.self>
     <x-adminlte-modal id="manageMembersModal" title="Manage Household Members"
-        icon="fas fa-fw fa-users" theme="primary" size="lg" v-centered scrollable wire:ignore.self>
+        icon="fas fa-fw fa-users" theme="primary" size="xl" v-centered scrollable wire:ignore.self>
 
         <div data-modal-skeleton class="{{ $loaded ? 'd-none' : '' }}">
             <x-ui.modals.modal-loading message="Loading household members…" />
@@ -71,8 +71,8 @@
                                         <tr wire:key="member-{{ $member['resident_id'] }}">
                                             <td>{{ $index + 1 }}</td>
                                             <td>
-                                                <div class="font-weight-medium small">{{ $member['resident_name'] ?? '—' }}</div>
-                                                <small class="text-muted">{{ $member['relationship_label'] ?? '—' }}</small>
+                                                <div class="font-weight-medium small">{{ $member['resident_name'] ?? 'No name on record' }}</div>
+                                                <small class="text-muted">{{ $member['relationship_label'] ?? 'Not stated' }}</small>
                                                 @if (! empty($member['is_head']))
                                                     <span class="badge badge-success ml-1">Head</span>
                                                 @endif

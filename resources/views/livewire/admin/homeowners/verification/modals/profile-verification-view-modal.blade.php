@@ -12,6 +12,7 @@
                 @php
                     $resident = $verificationAccount->resident;
                     $link = $resident?->householdLinkRequest;
+                    $awaitingHead = (bool) $link?->isPending();
                     $household = $resident?->household ?? $link?->household;
                     $property = $household?->property;
                     $head = $household?->headMember?->resident;
@@ -50,9 +51,16 @@
                     </div>
                 </div>
 
+                @if ($awaitingHead)
+                    <div class="alert alert-warning py-2 small">
+                        <i class="fas fa-fw fa-clock mr-1"></i>
+                        {{ __('users.verification.awaiting_head') }}
+                    </div>
+                @endif
+
                 {{-- Previous correction request, only when there is one --}}
                 @if (filled($verificationAccount->profile_rejection_note))
-                    <div class="alert alert-warning py-2 small">
+                    <div class="alert alert-danger py-2 small">
                         <i class="fas fa-fw fa-exclamation-triangle mr-1"></i>
                         <strong>Correction previously requested:</strong>
                         {{ $verificationAccount->profile_rejection_note }}
@@ -168,8 +176,11 @@
                                     <dt class="col-sm-5 text-muted font-weight-normal">Head Confirmation</dt>
                                     <dd class="col-sm-7 text-break">
                                         @if ($link)
+                                            @if ($link->wantsHead())
+                                                <div class="mb-1">{{ __('users.verification.head_requested') }}</div>
+                                            @endif
                                             <span class="badge badge-{{ $link->status?->badgeTheme() ?? 'secondary' }}">
-                                                {{ $link->status?->label() ?? '—' }}
+                                                {{ $link->status?->label() ?? 'No answer yet' }}
                                             </span>
                                             @if ($link->decided_at)
                                                 <div class="text-muted">{{ $link->decided_at->format('M d, Y g:i A') }}</div>
@@ -249,7 +260,7 @@
                 </button>
 
                 <button type="button" class="btn btn-success btn-sm" wire:click="approve"
-                    wire:loading.attr="disabled" wire:target="approve">
+                    wire:loading.attr="disabled" wire:target="approve" {{ $awaitingHead ? 'disabled' : '' }}>
                     <span wire:loading.remove wire:target="approve">
                         <i class="fas fa-fw fa-check mr-1"></i>{{ __('users.verification.approve') }}
                     </span>

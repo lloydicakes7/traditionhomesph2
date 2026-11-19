@@ -8,6 +8,7 @@ use App\Enums\HouseholdType;
 use App\Enums\PropertyType;
 use App\Enums\SectorType;
 use App\Enums\Sex;
+use App\Enums\Suffix;
 use App\Models\Address;
 use App\Models\User;
 
@@ -31,6 +32,7 @@ class OnboardingFormQuery
             'sectorOptions'                => SectorType::labels(),
             'householdTypeOptions'         => HouseholdType::labels(),
             'propertyTypeOptions'          => PropertyType::labels(),
+            'suffixOptions'                => Suffix::labels(),
         ];
     }
 

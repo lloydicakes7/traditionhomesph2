@@ -52,6 +52,8 @@ return [
         'close'              => 'Close',
         'approved_message'   => 'Profile verified. The portal services are open to this account.',
         'rejected_message'   => 'Profile sent back to the resident for correction.',
+        'awaiting_head'      => 'The household head has not answered this resident yet. Approve the profile once the head confirms or declines the request.',
+        'head_requested'     => 'This resident asked to take over as the household head.',
     ],
 
 ];
