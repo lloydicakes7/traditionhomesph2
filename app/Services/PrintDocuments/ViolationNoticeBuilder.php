@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Services\PrintDocuments;
 
-use App\Enums\PrintDocument;
 use App\Models\Violation;
 use App\Utility\PrintDocumentsHelper as Helper;
 
@@ -43,10 +42,9 @@ final class ViolationNoticeBuilder extends AbstractPrintDocumentBuilder
             'status'         => (string) $violation->status_label,
             'type'           => (string) $violation->type_label,
             'occurredAt'     => Helper::stamp($violation->occurred_on, $violation->occurred_time),
-            'location'       => trim((string) $violation->location) !== '' ? (string) $violation->location : '—',
-            'issuedAt'       => $violation->issued_at ? Helper::stamp($violation->issued_at) : '—',
-            'issuedBy'       => $violation->issuedByAdmin ? (string) $violation->issuedByAdmin->name : '—',
-            'acknowledgment' => $violation->acknowledged_at ? Helper::stamp($violation->acknowledged_at) : 'Pending',
+            'location'       => trim((string) $violation->location) !== '' ? (string) $violation->location : 'Not recorded',
+            'issuedAt'       => $violation->issued_at ? Helper::stamp($violation->issued_at) : 'Not issued',
+            'issuedBy'       => $violation->issuedByAdmin ? (string) $violation->issuedByAdmin->name : 'Not recorded',
             'description'    => (string) $violation->description,
             'officeReport'   => $violation->has_office_report ? (string) $violation->office_report : null,
             'resolution'     => $this->resolution($violation),

@@ -170,12 +170,9 @@
                                                 </div>
                                             </td>
                                             <td class="text-center align-middle text-nowrap dash-cell-fixed">
-                                                @if ($violation->is_acknowledged)
-                                                    <i class="fas fa-fw fa-check-circle text-success"
-                                                        title="Acknowledged {{ $violation->acknowledged_display }}"></i>
-                                                @else
-                                                    <i class="far fa-fw fa-circle text-muted" title="Not yet acknowledged"></i>
-                                                @endif
+                                                <span class="badge badge-{{ $violation->status_badge_theme }}">
+                                                    {{ $violation->status_label }}
+                                                </span>
                                             </td>
                                         </tr>
                                     @endforeach

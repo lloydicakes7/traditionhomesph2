@@ -75,6 +75,15 @@
                             wire:model.defer="form.description" igroup-size="sm" />
                     </div>
                 </div>
+
+                @if (! $isEditing)
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <x-customs.complaint-attachments :attachments="$attachments"
+                                input-id="complaintAdminAttachments" />
+                        </div>
+                    </div>
+                @endif
             </form>
         </div>
 

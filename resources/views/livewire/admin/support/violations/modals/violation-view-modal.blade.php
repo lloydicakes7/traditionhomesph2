@@ -43,17 +43,6 @@
                             {{ $violation->issued_at ? $violation->issued_at->format('M j, Y g:i A') : 'Not issued' }}
                         </div>
                     </div>
-                    <div class="col-6 col-md-4 mb-2">
-                        <div class="text-muted small">Acknowledgment</div>
-                        <div class="font-weight-medium">
-                            @if ($violation->is_acknowledged)
-                                <i class="fas fa-fw fa-check-circle text-success mr-1"></i>
-                            @else
-                                <i class="far fa-fw fa-circle text-muted mr-1"></i>
-                            @endif
-                            {{ $violation->acknowledged_display }}
-                        </div>
-                    </div>
                 </div>
 
                 {{-- =============================================================== --}}

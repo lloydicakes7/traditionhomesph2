@@ -118,8 +118,9 @@ class RequestFilingTest extends TestCase
         // the letter's date starts at today.
         $form(RequestType::ENDORSEMENT_LETTER)
             ->assertSee('Addressee')
-            ->assertSee('requestFileType_respondent_block', false)
-            ->assertSee('requestFileType_respondent_lot', false)
+            ->assertSee('Respondent Block')
+            ->assertSee('Respondent Lot')
+            ->assertDontSee('read from the household on file')
             ->assertSee('Date')
             ->assertSet('form.letter_date', now()->toDateString());
     }

@@ -6,6 +6,7 @@ use App\Enums\RequestStatus;
 use App\Models\Admin;
 use App\Models\Request as RequestModel;
 use App\Notifications\RequestDecidedNotification;
+use Carbon\CarbonInterface;
 use Illuminate\Validation\ValidationException;
 
 trait DecidesRequest
@@ -17,10 +18,16 @@ trait DecidesRequest
      *
      * The status, the officer and the moment are written together, and only a
      * move the request's own status allows is accepted. Approving dates the
-     * certification the office will print and hand over.
+     * certification the office will print and hand over, and records when the
+     * document may be claimed.
      */
-    protected function decide(RequestModel $request, RequestStatus $status, ?string $remarks, Admin $by): RequestModel
-    {
+    protected function decide(
+        RequestModel $request,
+        RequestStatus $status,
+        ?string $remarks,
+        Admin $by,
+        ?CarbonInterface $claimingAt = null
+    ): RequestModel {
         $this->refuseUnlessPending($request);
 
         if (! in_array($status->value, $request->status->canMoveTo(), true)) {
@@ -38,6 +45,7 @@ trait DecidesRequest
 
         if ($status->isApproved()) {
             $attributes['document_expires_at'] = now()->addDays(RequestModel::DOCUMENT_VALID_DAYS);
+            $attributes['claiming_at'] = $claimingAt;
         }
 
         $request->update($attributes);

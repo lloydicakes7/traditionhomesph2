@@ -70,6 +70,7 @@ class Request extends Model
         'completed_at',
         'bill_id',
         'document_expires_at',
+        'claiming_at',
     ];
 
     /**
@@ -89,6 +90,7 @@ class Request extends Model
         'processed_at'            => 'datetime',
         'completed_at'            => 'datetime',
         'document_expires_at'     => 'datetime',
+        'claiming_at'             => 'datetime',
         'letter_date'             => 'date',
         'membership_data'          => 'array',
     ];
@@ -511,6 +513,30 @@ class Request extends Model
     public function getIsDocumentExpiredAttribute(): bool
     {
         return $this->document_expires_at !== null && $this->document_expires_at->isPast();
+    }
+
+    /**
+     * Whether the office named when the document may be claimed.
+     */
+    public function getHasClaimingScheduleAttribute(): bool
+    {
+        return $this->claiming_at !== null;
+    }
+
+    /**
+     * The day the homeowner may claim the document, as the portal writes it.
+     */
+    public function getClaimingDateLabelAttribute(): string
+    {
+        return $this->claiming_at ? $this->claiming_at->format('F j, Y') : 'Not recorded';
+    }
+
+    /**
+     * The time on that day, as the portal writes it.
+     */
+    public function getClaimingTimeLabelAttribute(): string
+    {
+        return $this->claiming_at ? $this->claiming_at->format('g:i A') : 'Not recorded';
     }
 
     // =====================================================================

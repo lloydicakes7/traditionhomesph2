@@ -134,13 +134,6 @@
                     </x-slot>
                 </x-adminlte-input>
             </div>
-
-            <div class="col-12">
-                <div class="alert alert-light border mb-0 small">
-                    <i class="fas fa-fw fa-map-marker-alt mr-1"></i>
-                    The respondent's unit is read from the household on file — it is never typed in.
-                </div>
-            </div>
         @endif
 
         {{-- WHY IT IS BEING REQUESTED — optional, for every type --}}

@@ -443,7 +443,6 @@
                                                 <th>Violation</th>
                                                 <th>When</th>
                                                 <th>Location</th>
-                                                <th class="text-center">Acknowledged</th>
                                                 <th class="text-center">Status</th>
                                             </tr>
                                         </thead>
@@ -453,14 +452,6 @@
                                                     <td>{{ $violation->type_label }}</td>
                                                     <td class="text-nowrap">{{ $violation->occurred_display }}</td>
                                                     <td>{{ $violation->location }}</td>
-                                                    <td class="text-center">
-                                                        @if ($violation->is_acknowledged)
-                                                            <i class="fas fa-fw fa-check-circle text-success"
-                                                                title="Acknowledged {{ $violation->acknowledged_display }}"></i>
-                                                        @else
-                                                            <i class="far fa-fw fa-circle text-muted" title="Not yet acknowledged"></i>
-                                                        @endif
-                                                    </td>
                                                     <td class="text-center">
                                                         <span class="badge badge-{{ $violation->status_badge_theme }}">
                                                             {{ $violation->status_label }}

@@ -60,21 +60,6 @@
                 @endif
             </div>
         @endif
-
-        {{-- =============================================================== --}}
-        {{-- ACKNOWLEDGMENT — what it means, said where it is recorded        --}}
-        {{-- =============================================================== --}}
-        <div class="alert alert-info mt-3 mb-0 small">
-            <i class="fas fa-fw fa-info-circle mr-1"></i>
-            @if ($violation->is_acknowledged)
-                You acknowledged this notice on
-                {{ $violation->acknowledged_at->format('M j, Y g:i A') }}. Acknowledging confirms you received
-                and read it — it is not an admission that you agree with the violation.
-            @else
-                Acknowledging confirms you received and read this notice. It is <strong>not</strong> an admission
-                that you agree with the violation.
-            @endif
-        </div>
         @endif
         </div>
 

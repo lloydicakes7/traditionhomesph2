@@ -35,6 +35,9 @@ class RequestApproveModal extends AdminModalComponent
     /** @var string Optional note on the approval */
     public $remarks = '';
 
+    /** @var string When the homeowner may claim the document, as the input sends it */
+    public $claimingAt = '';
+
     /** @var array<string, string> Modal load / close events (see public/js/modal-loader.js) */
     protected $listeners = [
         'loadRequestApproveModal'  => 'load',
@@ -60,6 +63,11 @@ class RequestApproveModal extends AdminModalComponent
     protected function rules(): array
     {
         return [
+            'claimingAt' => [
+                'required',
+                'date_format:Y-m-d\TH:i',
+                'after_or_equal:' . now()->startOfMinute()->format('Y-m-d H:i:s'),
+            ],
             'remarks' => ['nullable', 'string', 'max:2000'],
         ];
     }
@@ -81,6 +89,7 @@ class RequestApproveModal extends AdminModalComponent
         $this->request = $request;
         $this->approvingRequestId = $request->id;
         $this->remarks = '';
+        $this->claimingAt = now()->format('Y-m-d\TH:i');
 
         $this->resetValidation();
 
@@ -95,6 +104,7 @@ class RequestApproveModal extends AdminModalComponent
         $this->approvingRequestId = null;
         $this->request = null;
         $this->remarks = '';
+        $this->claimingAt = '';
 
         $this->resetValidation();
 
@@ -120,11 +130,11 @@ class RequestApproveModal extends AdminModalComponent
         try {
             $this->approveRequest->handle(
                 $this->detail->find($this->approvingRequestId),
-                ['remarks' => $this->remarks],
+                ['remarks' => $this->remarks, 'claiming_at' => $this->claimingAt],
                 auth('web')->user()
             );
         } catch (ValidationException $e) {
-            $this->addError('remarks', $e->errors()['remarks'][0] ?? 'This request can no longer be approved.');
+            $this->addErrorsFrom($e);
 
             return;
         }
@@ -133,6 +143,20 @@ class RequestApproveModal extends AdminModalComponent
         $this->emit('request-saved');
 
         $this->dispatchBrowserEvent('modal-close', ['id' => self::MODAL_ID]);
+    }
+
+    // =====================================================================
+    // Helpers
+    // =====================================================================
+
+    /**
+     * Put a refusal from the write beside the field it belongs to.
+     */
+    private function addErrorsFrom(ValidationException $exception): void
+    {
+        foreach ($exception->errors() as $field => $messages) {
+            $this->addError($field, $messages[0]);
+        }
     }
 
     // =====================================================================

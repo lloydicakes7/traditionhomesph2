@@ -6,6 +6,7 @@ use App\Enums\ComplaintCategory;
 use App\Actions\Support\Complaints\RecordComplaint;
 use App\Actions\Support\Complaints\UpdateComplaint;
 use App\Http\Livewire\AdminModalComponent;
+use App\Http\Livewire\Concerns\WithComplaintAttachments;
 use App\Http\Livewire\Concerns\WithComplaintRules;
 use App\Models\Complaint;
 use App\Queries\Homeowners\Residents\ResidentOptionQuery;
@@ -31,6 +32,7 @@ use App\Queries\Support\Complaints\ComplaintDetailQuery;
 class ComplaintFormModal extends AdminModalComponent
 {
     use WithComplaintRules;
+    use WithComplaintAttachments;
 
     /** @var bool Whether editing an existing complaint */
     public $isEditing = false;
@@ -84,7 +86,7 @@ class ComplaintFormModal extends AdminModalComponent
 
     protected function rules(): array
     {
-        return $this->complaintAdminRules();
+        return $this->complaintAdminRules() + $this->complaintAttachmentRules();
     }
 
     // =====================================================================
@@ -156,7 +158,7 @@ class ComplaintFormModal extends AdminModalComponent
         if ($this->isEditing) {
             $this->updateComplaint->handle($this->detail->find($this->editingComplaintId), $this->form, $by);
         } else {
-            $this->recordComplaint->handle($this->form, $by);
+            $this->recordComplaint->handle($this->form, $by, $this->attachments);
         }
 
         $this->emit('notify', 'success',
@@ -177,6 +179,7 @@ class ComplaintFormModal extends AdminModalComponent
     {
         $this->isEditing = false;
         $this->editingComplaintId = null;
+        $this->attachments = [];
         $this->form = [
             'resident_id'       => '',
             'category'          => '',

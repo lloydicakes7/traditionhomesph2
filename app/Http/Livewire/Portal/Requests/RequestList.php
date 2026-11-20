@@ -27,6 +27,7 @@ class RequestList extends PortalComponent
     /** @var array<string, string> Cross-component listeners */
     protected $listeners = [
         'request-filed'      => '$refresh',
+        'request-edited'     => '$refresh',
         'request-withdrawn'  => '$refresh',
     ];
 

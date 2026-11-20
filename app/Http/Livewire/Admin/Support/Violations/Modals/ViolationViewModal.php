@@ -14,8 +14,7 @@ use App\Queries\Support\Violations\ViolationDetailQuery;
  * afterwards, when `public/js/modal-loader.js` fires `loadViolationViewModal`.
  * It shows what the record says and how far it has come: the member it is
  * against, what it was for, when and where it happened, the officer's own report
- * when one was filed, whether the homeowner has confirmed receiving it, and the
- * timeline from issued to acknowledged to resolved.
+ * when one was filed, and the timeline from issued to resolved.
  *
  * Nothing is written from here. The one move a reader makes is to print the
  * notice, which is a normal route to a single-action controller because Livewire

@@ -17,6 +17,19 @@
                     Filed {{ $request->created_at ? $request->created_at->format('M j, Y g:i A') : 'Not recorded' }}
                 </div>
 
+                <x-adminlte-input name="claimingAt" type="datetime-local"
+                    label="Claiming Date and Time"
+                    wire:model.defer="claimingAt" igroup-size="sm" required>
+                    <x-slot name="prependSlot">
+                        <div class="input-group-text"><i class="far fa-fw fa-calendar-check"></i></div>
+                    </x-slot>
+                    <x-slot name="bottomSlot">
+                        <span class="text-muted small">
+                            The homeowner may claim the document at the HOA office from this moment.
+                        </span>
+                    </x-slot>
+                </x-adminlte-input>
+
                 <x-adminlte-textarea name="remarks" label="Remarks (optional)" rows="3"
                     placeholder="Anything worth keeping on record — what was issued, when it was released, who attended to it."
                     wire:model.defer="remarks" igroup-size="sm" />

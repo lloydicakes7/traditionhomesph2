@@ -277,10 +277,6 @@ return [
                     'title' => 'Reading a violation',
                     'body'  => 'A violation is a rule breach the office recorded against your household. Each entry shows what it was, when it happened and any remarks. Open one to read it in full.',
                 ],
-                [
-                    'title' => 'Acknowledging',
-                    'body'  => 'Acknowledge a violation once you have read it. Acknowledging is a receipt, not an admission: it tells the office you have seen the notice.',
-                ],
             ],
         ],
 
@@ -504,7 +500,6 @@ return [
                 [
                     'title'  => 'Terms used in this manual',
                     'fields' => [
-                        'Acknowledge'          => 'Mark a violation as read. It is a receipt, not an admission.',
                         'Amenity'              => 'A shared facility you can reserve, such as a clubhouse or a court.',
                         'Bill'                 => 'One charge you have to settle, with its own reference.',
                         'Booking'              => 'A reservation of an amenity for a date and a window of hours.',

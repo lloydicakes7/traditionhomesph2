@@ -232,6 +232,19 @@ class Complaint extends Model
     }
 
     /**
+     * Whether the homeowner may still correct or withdraw this complaint: it is
+     * their own filing, the office has not picked it up yet, and no response has
+     * been written. Once the office acts, the record belongs to the office.
+     */
+    public function getCanBeChangedByHomeownerAttribute(): bool
+    {
+        return $this->submitted_by_homeowner
+            && $this->status !== null
+            && $this->status->value === ComplaintStatus::PENDING
+            && ! $this->is_responded;
+    }
+
+    /**
      * Whether the office still has something to do with this complaint.
      */
     public function getIsOpenAttribute(): bool

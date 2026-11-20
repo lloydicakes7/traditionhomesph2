@@ -9,11 +9,10 @@ use Illuminate\Notifications\Messages\MailMessage;
 /**
  * A violation was recorded against the homeowner's household.
  *
- * The one notice that is both mailed and kept: it is a document the homeowner
- * has to acknowledge, so the mail carries the full notice and the bell keeps
- * the line until they read it. It is issued by an officer only, never by the
- * homeowner, so no "your own doing" case exists here (see
- * App\Actions\Support\Violations\IssueViolation).
+ * The one notice that is both mailed and kept: the mail carries the full
+ * notice and the bell keeps the line until the homeowner reads it. It is
+ * issued by an officer only, never by the homeowner, so no "your own doing"
+ * case exists here (see App\Actions\Support\Violations\IssueViolation).
  */
 class ViolationIssuedNotification extends ThhaNotification
 {
@@ -49,7 +48,7 @@ class ViolationIssuedNotification extends ThhaNotification
     protected function body($notifiable): string
     {
         return 'Recorded on ' . $this->violation->occurred_display . ' at ' . $this->violation->location
-            . '. Open the notice to read it and confirm receipt.';
+            . '. Open the notice to read it.';
     }
 
     protected function url($notifiable): ?string
@@ -75,8 +74,7 @@ class ViolationIssuedNotification extends ThhaNotification
             ->line('Date and time: ' . $violation->occurred_display)
             ->line('Location: ' . $violation->location)
             ->line('Details: ' . $violation->description)
-            ->line('Kindly sign in to the homeowner portal to read the full notice and confirm that you have received it.')
-            ->line('Confirming receipt only acknowledges that you have read this notice. It does not mean that you agree with it.')
+            ->line('Kindly sign in to the homeowner portal to read the full notice.')
             ->action('Read the notice', route('portal.violations'));
     }
 }

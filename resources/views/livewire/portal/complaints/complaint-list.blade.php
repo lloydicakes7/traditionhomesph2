@@ -25,54 +25,63 @@
     {{-- =================================================================== --}}
     <div class="row">
         @forelse ($complaints as $complaint)
-            <div class="col-12 col-md-6 mb-3">
-                <div class="card shadow-sm mb-3" wire:key="complaint-{{ $complaint->id }}">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-start mb-2">
-                            <div>
-                                <h6 class="mb-0 font-weight-bold">{{ $complaint->subject }}</h6>
-                                <small class="text-muted">
-                                    <i class="fas fa-fw fa-tag mr-1"></i>{{ $complaint->category_label }}
-                                    · Submitted
-                                    {{ $complaint->created_at ? $complaint->created_at->format('M j, Y g:i A') : 'Not recorded' }}
-                                </small>
-                            </div>
-                            <span class="badge badge-{{ $complaint->status_badge_theme }}">
-                                {{ $complaint->status_label }}
-                            </span>
+            <div class="col-12 col-md-6 col-lg-4 mb-3" wire:key="complaint-{{ $complaint->id }}">
+                <x-portal.record-card :title="$complaint->subject"
+                    :meta="'Submitted ' . ($complaint->created_at ? $complaint->created_at->format('M j, Y g:i A') : 'Not recorded')"
+                    :status-theme="$complaint->status_badge_theme"
+                    :status-label="$complaint->status_label"
+                    :details="['Category' => $complaint->category_label]">
+                    <div class="small mt-2 text-break" style="white-space: pre-line;">{{ $complaint->description }}</div>
+
+                    @if ($complaint->other_description)
+                        <div class="small text-muted mt-2 text-break">
+                            <span class="font-weight-bold">Specified Complaint:</span>
+                            {{ $complaint->other_description }}
                         </div>
+                    @endif
 
-                        <div class="small">{{ $complaint->description }}</div>
-
-                        @if ($complaint->other_description)
-                            <div class="small text-muted mt-2">
-                                <span class="font-weight-bold">Specified Complaint:</span>
-                                {{ $complaint->other_description }}
-                            </div>
-                        @endif
-
-                        @if ($complaint->is_responded)
-                            <div class="alert alert-light border mt-3 mb-0">
-                                <div class="font-weight-bold small mb-1">
-                                    <i class="fas fa-fw fa-reply mr-1"></i>Response from
-                                    @if ($complaint->respondedByAdmin)
-                                        {{ $complaint->respondedByAdmin->name }}
-                                    @endif
-                                </div>
-                                <p class="mb-0 small">{{ $complaint->response }}</p>
-                                @if ($complaint->responded_at)
-                                    <div class="text-muted small mt-1">
-                                        {{ $complaint->responded_at->format('M j, Y g:i A') }}
-                                    </div>
+                    @if ($complaint->is_responded)
+                        <div class="alert alert-light border mt-3 mb-0">
+                            <div class="font-weight-bold small mb-1">
+                                <i class="fas fa-fw fa-reply mr-1"></i>Response from
+                                @if ($complaint->respondedByAdmin)
+                                    {{ $complaint->respondedByAdmin->name }}
                                 @endif
                             </div>
-                        @endif
-
-                        <div class="text-muted small mt-3">
-                            <i class="far fa-fw fa-clock mr-1"></i>{{ $complaint->status?->description() }}
+                            <p class="mb-0 small text-break">{{ $complaint->response }}</p>
+                            @if ($complaint->responded_at)
+                                <div class="text-muted small mt-1">
+                                    {{ $complaint->responded_at->format('M j, Y g:i A') }}
+                                </div>
+                            @endif
                         </div>
+                    @endif
+
+                    <div class="text-muted small mt-3">
+                        <i class="far fa-fw fa-clock mr-1"></i>{{ $complaint->status?->description() }}
                     </div>
-                </div>
+
+                    <x-slot name="actions">
+                        <x-adminlte-button theme="secondary" icon="fas fa-fw fa-eye"
+                            title="View complaint" aria-label="View complaint"
+                            data-toggle="modal" data-target="#complaintViewModal"
+                            data-id="{{ $complaint->id }}" class="btn-sm" />
+
+                        @can('updateOwn', $complaint)
+                            <x-adminlte-button theme="primary" icon="fas fa-fw fa-edit"
+                                title="Edit complaint" aria-label="Edit complaint"
+                                data-toggle="modal" data-target="#complaintEditModal"
+                                data-id="{{ $complaint->id }}" class="btn-sm" />
+                        @endcan
+
+                        @can('deleteOwn', $complaint)
+                            <x-adminlte-button theme="danger" icon="fas fa-fw fa-trash"
+                                title="Delete complaint" aria-label="Delete complaint"
+                                data-toggle="modal" data-target="#complaintDeleteModal"
+                                data-id="{{ $complaint->id }}" class="btn-sm" />
+                        @endcan
+                    </x-slot>
+                </x-portal.record-card>
             </div>
         @empty
             <div class="col-12">

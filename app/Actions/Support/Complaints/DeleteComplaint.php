@@ -6,6 +6,7 @@ use App\Models\Admin;
 use App\Models\Complaint;
 use App\Services\ActivityLogService;
 use App\Utility\StorageHelper;
+use Illuminate\Validation\ValidationException;
 
 class DeleteComplaint
 {
@@ -18,15 +19,23 @@ class DeleteComplaint
 
     // ===== Handle =====
 
-    public function handle(Complaint $complaint, Admin $by): void
+    public function handle(Complaint $complaint, ?Admin $by = null): void
     {
-        $this->activity->log(
-            $by,
-            'deleted',
-            'complaint',
-            "Deleted complaint \"{$complaint->subject}\"",
-            ['complaint_id' => $complaint->id]
-        );
+        if ($by === null && ! $complaint->can_be_changed_by_homeowner) {
+            throw ValidationException::withMessages([
+                'delete' => 'This complaint can no longer be deleted — the office has already acted on it.',
+            ]);
+        }
+
+        if ($by !== null) {
+            $this->activity->log(
+                $by,
+                'deleted',
+                'complaint',
+                "Deleted complaint \"{$complaint->subject}\"",
+                ['complaint_id' => $complaint->id]
+            );
+        }
 
         foreach ($complaint->attachments as $attachment) {
             StorageHelper::deletePrivate($attachment->path);

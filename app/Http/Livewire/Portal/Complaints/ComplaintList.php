@@ -25,7 +25,9 @@ class ComplaintList extends PortalComponent
 
     /** @var array<string, string> Cross-component listeners */
     protected $listeners = [
-        'complaint-filed' => '$refresh',
+        'complaint-filed'   => '$refresh',
+        'complaint-edited'  => '$refresh',
+        'complaint-deleted' => '$refresh',
     ];
 
     /** @var PortalComplaintQuery */
