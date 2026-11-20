@@ -131,7 +131,7 @@
                 {{ $removingMember['relationship_label'] ?: 'Relationship not recorded' }}
             </div>
             <p class="text-muted small mb-0 mt-2">
-                Their record stays with the association — they are only taken off your household.
+                Their record stays with the association. They are only taken off your household.
             </p>
         @endif
 

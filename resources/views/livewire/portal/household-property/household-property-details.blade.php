@@ -67,7 +67,7 @@
                     <div class="text-center text-muted py-4">
                         <i class="fas fa-fw fa-home fa-2x mb-2"></i>
                         <p class="mb-1">No unit is on record for your account yet.</p>
-                        <small>The office assigns each account to a unit — contact the office if this looks wrong.</small>
+                        <small>The office assigns each account to a unit. Contact the office if this looks wrong.</small>
                     </div>
                 @endif
             </x-adminlte-card>

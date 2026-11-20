@@ -65,7 +65,7 @@
                                     </td>
                                 @endif
 
-                                {{-- Member — head first, crown on the head --}}
+                                {{-- Member: head first, crown on the head --}}
                                 <td class="align-middle">
                                     <div class="d-flex align-items-center" style="gap:0.5rem;">
                                         @if ($mr->resident?->photo_url)

@@ -11,7 +11,6 @@ namespace App\Enums;
  * @method static SectorType OSY()
  * @method static SectorType SOLO_PARENT()
  * @method static SectorType INDIGENOUS_PEOPLE()
- * @method static SectorType MIGRANT()
  * @method static SectorType SENIOR_CITIZEN()
  */
 class SectorType extends Enum
@@ -24,7 +23,6 @@ class SectorType extends Enum
     const OSY                  = 'osy';
     const SOLO_PARENT          = 'solo_parent';
     const INDIGENOUS_PEOPLE    = 'indigenous_people';
-    const MIGRANT              = 'migrant';
     const SENIOR_CITIZEN       = 'senior_citizen';
 
     /**
@@ -41,7 +39,6 @@ class SectorType extends Enum
             self::OSY                  => 'Out of School Youth (OSY)',
             self::SOLO_PARENT          => 'Solo Parent',
             self::INDIGENOUS_PEOPLE    => 'Indigenous People (IP)',
-            self::MIGRANT              => 'Migrant',
             self::SENIOR_CITIZEN       => 'Senior Citizen (SC)',
         ];
     }
@@ -88,21 +85,42 @@ class SectorType extends Enum
     }
 
     /**
+     * The youngest age the sector applies to, or zero when it has no minimum.
+     */
+    public function minimumAge(): int
+    {
+        return [
+            self::LABOR_FORCE_EMPLOYED => 15,
+            self::UNEMPLOYED           => 15,
+            self::OFW                  => 18,
+            self::OSC                  => 6,
+            self::OSY                  => 15,
+            self::SOLO_PARENT          => 18,
+            self::SENIOR_CITIZEN       => 60,
+        ][$this->value] ?? 0;
+    }
+
+    /**
+     * The oldest age the sector applies to, or null when it has no maximum.
+     */
+    public function maximumAge(): ?int
+    {
+        return [
+            self::OSC => 14,
+            self::OSY => 24,
+        ][$this->value] ?? null;
+    }
+
+    /**
      * The ages the sector is limited to, or null when it is not.
      *
      * @return array{0: int, 1: int}|null
      */
     public function ageRange(): ?array
     {
-        if ($this->value === self::OSC) {
-            return [6, 14];
-        }
+        $maximum = $this->maximumAge();
 
-        if ($this->value === self::OSY) {
-            return [15, 24];
-        }
-
-        return null;
+        return $maximum === null ? null : [$this->minimumAge(), $maximum];
     }
 
     /**

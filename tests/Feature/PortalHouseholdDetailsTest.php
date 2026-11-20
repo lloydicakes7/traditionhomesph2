@@ -115,7 +115,7 @@ class PortalHouseholdDetailsTest extends TestCase
             ->call('open')
             ->assertSet('loaded', true)
             ->assertSet('form.type', 'tenant')
-            ->assertSet('form.prev_address', '12 Mabini Street, Cavite');
+            ->assertSet('form.prev_address', '12 MABINI STREET, CAVITE');
     }
 
     /**
@@ -135,7 +135,7 @@ class PortalHouseholdDetailsTest extends TestCase
         $household = $this->household->fresh();
 
         $this->assertSame('tenant', $household->type);
-        $this->assertSame('45 Aguinaldo Highway, Cavite', $household->prev_address);
+        $this->assertSame('45 AGUINALDO HIGHWAY, CAVITE', $household->prev_address);
     }
 
     /**

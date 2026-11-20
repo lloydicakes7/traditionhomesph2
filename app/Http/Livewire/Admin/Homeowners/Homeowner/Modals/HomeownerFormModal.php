@@ -14,7 +14,9 @@ use App\Enums\CivilStatus;
 use App\Enums\HouseholdType;
 use App\Enums\PropertyType;
 use App\Http\Livewire\AdminModalComponent;
+use App\Http\Livewire\Concerns\ValidatesSectoralTags;
 use App\Http\Requests\Homeowners\ResidentRequest;
+use App\Rules\HouseholdHeadAge;
 use App\Models\Admin;
 use App\Models\Household\Household;
 use App\Models\Resident;
@@ -28,7 +30,7 @@ use Livewire\WithFileUploads;
 
 class HomeownerFormModal extends AdminModalComponent
 {
-    use WithFileUploads;
+    use ValidatesSectoralTags, WithFileUploads;
 
     const MODAL_ID = 'homeownerFormModal';
 
@@ -140,7 +142,7 @@ class HomeownerFormModal extends AdminModalComponent
 
     protected function rules(): array
     {
-        return [
+        $rules = [
             'form.email'             => [
                 'required', 'email', 'max:255',
                 'unique:users,email,' . ($this->editingUserId ?? 'NULL') . ',id',
@@ -165,7 +167,26 @@ class HomeownerFormModal extends AdminModalComponent
             'household.prev_address' => ['nullable', 'string', 'max:500'],
             'household.relationship' => ['nullable', 'string', 'max:100'],
             'household.be_head'      => ['boolean'],
-        ] + ResidentRequest::rulesFor('form');
+        ];
+
+        $rules = array_merge($rules, ResidentRequest::rulesFor('form'), $this->sectoralTagRules('form'));
+
+        if ($this->residentBecomesHead()) {
+            $rules['form.birth_date'] = array_merge($rules['form.birth_date'], [new HouseholdHeadAge]);
+        }
+
+        return $rules;
+    }
+
+    private function residentBecomesHead(): bool
+    {
+        if ($this->editingUserId) {
+            return $this->householdId !== null;
+        }
+
+        return (bool) ($this->household['be_head'] ?? false)
+            || $this->unit === null
+            || ! ($this->unit['is_occupied'] ?? false);
     }
 
     // ===== Lifecycle =====
@@ -229,6 +250,12 @@ class HomeownerFormModal extends AdminModalComponent
     /** A changed block or lot is read back from the office's own records. */
     public function updated($name): void
     {
+        if ($name === 'form.sectors') {
+            $this->syncSectoralTags('form');
+
+            return;
+        }
+
         if ($name !== 'property.block' && $name !== 'property.lot') {
             return;
         }

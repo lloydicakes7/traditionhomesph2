@@ -7,6 +7,7 @@ use App\Http\Livewire\PublicComponent;
 use App\Http\Requests\Auth\RegistrationRequest;
 use App\Queries\Auth\RegistrationFormQuery;
 use App\Queries\Settings\AuthenticationSettingsQuery;
+use App\Utility\TextHelper;
 use Illuminate\Cache\RateLimiter;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
@@ -113,6 +114,7 @@ class RegisterWizard extends PublicComponent
     public function next(): void
     {
         $this->resetErrorBag();
+        $this->normalizeForm();
 
         $this->validate($this->stepRules($this->step));
 
@@ -157,6 +159,7 @@ class RegisterWizard extends PublicComponent
         }
 
         $this->resetErrorBag();
+        $this->normalizeForm();
 
         if ($this->limiter()->tooManyAttempts($this->throttleKey(), self::REGISTRATION_LIMIT)) {
             $this->addError(
@@ -201,6 +204,16 @@ class RegisterWizard extends PublicComponent
         $this->registered = true;
 
         $this->reset('password', 'password_confirmation');
+    }
+
+    /**
+     * Keep the name fields in the case the records are written in.
+     */
+    private function normalizeForm(): void
+    {
+        foreach (['surname', 'first_name', 'middle_name'] as $key) {
+            $this->form[$key] = (string) TextHelper::upper($this->form[$key] ?? null);
+        }
     }
 
     /**

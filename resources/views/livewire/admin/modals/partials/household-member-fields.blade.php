@@ -61,7 +61,7 @@
     <div class="form-group mb-2">
         <label class="small font-weight-bold mb-1">Relationship</label>
         <x-adminlte-input name="memberForm.relationship" placeholder="e.g., Son, Mother, Uncle"
-            wire:model.defer="memberForm.relationship" igroup-size="sm">
+            data-thha-uppercase wire:model.defer="memberForm.relationship" igroup-size="sm">
             <x-slot name="prependSlot"><div class="input-group-text"><i class="fas fa-fw fa-link"></i></div></x-slot>
         </x-adminlte-input>
     </div>

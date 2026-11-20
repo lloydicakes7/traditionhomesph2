@@ -13,6 +13,7 @@ use App\Models\Household\Household;
 use App\Models\Household\HouseholdMember;
 use App\Queries\Homeowners\Households\HouseholdMemberQuery;
 use App\Queries\Homeowners\Residents\ResidentFormQuery;
+use App\Rules\HouseholdHeadAge;
 
 /**
  * "Manage Members" modal — the homeowner keeping their own household's member
@@ -136,11 +137,17 @@ class ManageMembersModal extends PortalModalComponent
      */
     protected function rules(): array
     {
-        return (new ResidentRequest)->rules() + [
+        $rules = (new ResidentRequest)->rules() + [
             'form.birth_place'     => ['nullable', 'string', 'max:255'],
             'relationship'         => ['required', 'string', 'max:100'],
             'isHead'               => ['boolean'],
         ];
+
+        if ($this->isHead) {
+            $rules['form.birth_date'] = array_merge($rules['form.birth_date'], [new HouseholdHeadAge]);
+        }
+
+        return $rules;
     }
 
     // =====================================================================
@@ -449,6 +456,12 @@ class ManageMembersModal extends PortalModalComponent
         $member = $this->memberRecord($household, (int) $residentId);
 
         if (! $member) {
+            return;
+        }
+
+        if (! $member->resident?->canHeadHousehold()) {
+            $this->emit('notify', 'error', 'A household head must be at least 18 years old.');
+
             return;
         }
 

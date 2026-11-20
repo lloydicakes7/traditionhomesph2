@@ -50,4 +50,35 @@ class EducationalAttainment extends Enum
     {
         return self::labels()[$this->value] ?? $this->value;
     }
+
+    /**
+     * How far the attainment goes, from no formal education to a doctorate.
+     */
+    public function rank(): int
+    {
+        return self::rankOf($this->value);
+    }
+
+    /**
+     * The place a stored attainment value holds in the ladder, or zero when unknown.
+     */
+    public static function rankOf(string $value): int
+    {
+        $ladder = [
+            self::NO_FORMAL,
+            self::ELEMENTARY_LEVEL,
+            self::ELEMENTARY_GRADUATE,
+            self::HIGH_SCHOOL_LEVEL,
+            self::HIGH_SCHOOL_GRADUATE,
+            self::VOCATIONAL,
+            self::COLLEGE_LEVEL,
+            self::COLLEGE_GRADUATE,
+            self::POST_GRADUATE,
+            self::DOCTORATE,
+        ];
+
+        $rank = array_search($value, $ladder, true);
+
+        return $rank === false ? 0 : (int) $rank;
+    }
 }

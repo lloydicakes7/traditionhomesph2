@@ -39,7 +39,7 @@
             </x-adminlte-input>
         </div>
         <div class="col-12 col-md-6">
-            <x-adminlte-select name="property.type" label="{{ __('households.unit_type') }} *"
+            <x-adminlte-select class="text-uppercase" name="property.type" label="{{ __('households.unit_type') }} *"
                 wire:model.defer="property.type" igroup-size="sm">
                 <x-slot name="prependSlot"><div class="input-group-text"><i class="fas fa-fw fa-home"></i></div></x-slot>
                 <option value="">Select</option>
@@ -53,7 +53,7 @@
     @if ($unitNamed && $canJoin)
         <div class="col-12 col-md-6">
             <x-adminlte-input name="household.relationship"
-                label="{{ __('households.relationship') }}" maxlength="255" data-thha-capitalize
+                label="{{ __('households.relationship') }}" maxlength="255" data-thha-uppercase
                 placeholder="{{ __('households.relationship_hint') }}"
                 wire:model.defer="household.relationship" igroup-size="sm">
                 <x-slot name="prependSlot"><div class="input-group-text"><i class="fas fa-fw fa-users"></i></div></x-slot>
@@ -63,7 +63,7 @@
 
     @if ($unitNamed && $canChangeTenure)
         <div class="col-12 col-md-6">
-            <x-adminlte-select name="household.type" label="{{ __('households.tenure') }} *"
+            <x-adminlte-select class="text-uppercase" name="household.type" label="{{ __('households.tenure') }} *"
                 wire:model.defer="household.type" igroup-size="sm">
                 <x-slot name="prependSlot"><div class="input-group-text"><i class="fas fa-fw fa-key"></i></div></x-slot>
                 @foreach ($householdTypeOptions as $value => $label)
@@ -73,7 +73,7 @@
         </div>
         <div class="col-12">
             <x-adminlte-textarea name="household.prev_address" label="{{ __('households.previous_address') }}"
-                rows="2" maxlength="500" placeholder="Optional"
+                rows="2" maxlength="500" placeholder="Optional" data-thha-uppercase
                 wire:model.defer="household.prev_address" igroup-size="sm">
                 <x-slot name="prependSlot"><div class="input-group-text"><i class="fas fa-fw fa-map-signs"></i></div></x-slot>
             </x-adminlte-textarea>

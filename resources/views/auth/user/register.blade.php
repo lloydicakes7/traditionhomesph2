@@ -20,6 +20,7 @@
 
 @section('adminlte_js')
     @stack('js')
+    <script src="{{ asset('js/form-input.js') }}"></script>
     <script src="{{ asset('js/contact-input.js') }}"></script>
     <script src="{{ asset('js/password-toggle.js') }}"></script>
 @stop

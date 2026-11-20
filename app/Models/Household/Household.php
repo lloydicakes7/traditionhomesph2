@@ -6,6 +6,7 @@ use App\Enums\HouseholdType;
 use App\Models\Property;
 use App\Models\Resident;
 use App\Models\User;
+use App\Utility\TextHelper;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
@@ -173,6 +174,14 @@ class Household extends Model
     // ===== Rules =====
 
     /**
+     * Keep the previous address in the case the records are written in.
+     */
+    public function setPrevAddressAttribute($value): void
+    {
+        $this->attributes['prev_address'] = TextHelper::upper(self::blankToNull($value));
+    }
+
+    /**
      * The household columns out of a submitted form, blanks read as null.
      */
     public static function payloadFrom(array $data): array
@@ -180,7 +189,7 @@ class Household extends Model
         return [
             'property_id'  => $data['property_id'],
             'type'         => $data['type'],
-            'prev_address' => self::blankToNull($data['prev_address'] ?? null),
+            'prev_address' => TextHelper::upper(self::blankToNull($data['prev_address'] ?? null)),
         ];
     }
 
@@ -202,6 +211,8 @@ class Household extends Model
      */
     public function designateHead(int $residentId): void
     {
+        $this->assertHeadIsAdult($residentId);
+
         $this->memberRecords()->update(['is_head' => false]);
 
         $this->memberRecords()
@@ -214,6 +225,8 @@ class Household extends Model
      */
     public function placeHead(int $residentId, ?string $relationship): void
     {
+        $this->assertHeadIsAdult($residentId);
+
         $this->memberRecords()->update(['is_head' => false]);
 
         $this->memberRecords()->updateOrCreate(
@@ -223,6 +236,18 @@ class Household extends Model
                 'is_head'      => true,
             ]
         );
+    }
+
+    /**
+     * A household is headed by an adult: nobody below 18 may take the role.
+     */
+    private function assertHeadIsAdult(int $residentId): void
+    {
+        $resident = Resident::find($residentId);
+
+        if ($resident === null || ! $resident->canHeadHousehold()) {
+            throw new \RuntimeException('A household head must be at least '.Resident::MINIMUM_HEAD_AGE.' years old.');
+        }
     }
 
     private static function blankToNull($value)

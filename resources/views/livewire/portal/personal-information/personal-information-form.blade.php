@@ -2,6 +2,15 @@
 {{-- THE PROFILE THE ASSOCIATION KEEPS                                  --}}
 {{-- Three sections: the person, how the office reaches them, and the   --}}
 {{-- sectoral tags their record carries.                                --}}
+@php
+    $selectedSectors = (array) ($this->form['sectors'] ?? []);
+    $employed = in_array(\App\Enums\SectorType::LABOR_FORCE_EMPLOYED, $selectedSectors, true);
+    $unemployed = in_array(\App\Enums\SectorType::UNEMPLOYED, $selectedSectors, true) && ! $employed;
+    $married = ($this->form['civil_status'] ?? '') === \App\Enums\CivilStatus::MARRIED;
+    $soloParent = in_array(\App\Enums\SectorType::SOLO_PARENT, $selectedSectors, true);
+    $sectorWarnings = $this->sectoralWarnings('form');
+@endphp
+
 {{-- =================================================================== --}}
 <div class="row">
     <div class="col-md-12">
@@ -29,7 +38,7 @@
                     <div class="row">
                         <div class="col-12 col-sm-6 col-lg-3">
                             <x-adminlte-input name="form.surname" label="Surname" placeholder="Enter surname"
-                                maxlength="255" data-thha-capitalize wire:model.defer="form.surname" igroup-size="sm">
+                                maxlength="255" data-thha-uppercase wire:model.defer="form.surname" igroup-size="sm">
                                 <x-slot name="prependSlot">
                                     <div class="input-group-text"><i class="fas fa-fw fa-user"></i></div>
                                 </x-slot>
@@ -37,7 +46,7 @@
                         </div>
                         <div class="col-12 col-sm-6 col-lg-3">
                             <x-adminlte-input name="form.first_name" label="First Name" placeholder="Enter first name"
-                                maxlength="255" data-thha-capitalize wire:model.defer="form.first_name" igroup-size="sm">
+                                maxlength="255" data-thha-uppercase wire:model.defer="form.first_name" igroup-size="sm">
                                 <x-slot name="prependSlot">
                                     <div class="input-group-text"><i class="fas fa-fw fa-user"></i></div>
                                 </x-slot>
@@ -45,14 +54,14 @@
                         </div>
                         <div class="col-12 col-sm-6 col-lg-3">
                             <x-adminlte-input name="form.middle_name" label="Middle Name" placeholder="Optional"
-                                maxlength="255" data-thha-capitalize wire:model.defer="form.middle_name" igroup-size="sm">
+                                maxlength="255" data-thha-uppercase wire:model.defer="form.middle_name" igroup-size="sm">
                                 <x-slot name="prependSlot">
                                     <div class="input-group-text"><i class="fas fa-fw fa-user"></i></div>
                                 </x-slot>
                             </x-adminlte-input>
                         </div>
                         <div class="col-12 col-sm-6 col-lg-3">
-                            <x-adminlte-select name="form.suffix" label="Suffix"
+                            <x-adminlte-select name="form.suffix" label="Suffix" class="text-uppercase"
                                 wire:model.defer="form.suffix" igroup-size="sm">
                                 <x-slot name="prependSlot">
                                     <div class="input-group-text"><i class="fas fa-fw fa-user"></i></div>
@@ -67,7 +76,8 @@
 
                     <div class="row">
                         <div class="col-12 col-sm-6 col-md-4">
-                            <x-adminlte-select name="form.sex" label="Sex" wire:model.defer="form.sex" igroup-size="sm">
+                            <x-adminlte-select name="form.sex" label="Sex" class="text-uppercase"
+                                wire:model.defer="form.sex" igroup-size="sm">
                                 <x-slot name="prependSlot">
                                     <div class="input-group-text"><i class="fas fa-fw fa-venus-mars"></i></div>
                                 </x-slot>
@@ -78,7 +88,7 @@
                         </div>
                         <div class="col-12 col-sm-6 col-md-4">
                             <x-adminlte-input name="form.birth_date" label="Birth Date" type="date"
-                                wire:model.defer="form.birth_date" igroup-size="sm">
+                                wire:model="form.birth_date" igroup-size="sm">
                                 <x-slot name="prependSlot">
                                     <div class="input-group-text"><i class="fas fa-fw fa-calendar"></i></div>
                                 </x-slot>
@@ -86,13 +96,13 @@
                         </div>
                         <div class="col-12 col-sm-6 col-md-4">
                             <x-adminlte-input name="form.birth_place" label="Birth Place" placeholder="Enter birth place"
-                                maxlength="255" data-thha-capitalize
+                                maxlength="255" data-thha-uppercase
                                 wire:model.defer="form.birth_place" igroup-size="sm" enable-old-support>
                                 <x-slot name="prependSlot"><div class="input-group-text"><i class="fas fa-fw fa-map-pin"></i></div></x-slot>
                             </x-adminlte-input>
                         </div>
                         <div class="col-12 col-sm-6">
-                            <x-adminlte-select name="form.civil_status" label="Civil Status"
+                            <x-adminlte-select name="form.civil_status" label="Civil Status" class="text-uppercase"
                                 wire:model="form.civil_status" igroup-size="sm">
                                 <x-slot name="prependSlot">
                                     <div class="input-group-text"><i class="fas fa-fw fa-ring"></i></div>
@@ -105,7 +115,7 @@
                         <div class="col-12 col-sm-6">
                             <x-adminlte-input name="form.spouse_name"
                                 label="Spouse Name"
-                                placeholder="Name of spouse" maxlength="255" data-thha-capitalize
+                                placeholder="Name of spouse" maxlength="255" data-thha-uppercase
                                 wire:model.defer="form.spouse_name" igroup-size="sm"
                                 :disabled="! $showSpouse">
                                 <x-slot name="prependSlot">
@@ -132,7 +142,7 @@
                         </div>
                         <div class="col-12 col-md-6">
                             <x-adminlte-input name="form.citizenship" label="Citizenship" placeholder="e.g., Filipino"
-                                maxlength="255" data-thha-capitalize wire:model.defer="form.citizenship" igroup-size="sm">
+                                maxlength="255" data-thha-uppercase wire:model.defer="form.citizenship" igroup-size="sm">
                                 <x-slot name="prependSlot">
                                     <div class="input-group-text"><i class="fas fa-fw fa-globe"></i></div>
                                 </x-slot>
@@ -143,15 +153,18 @@
                     <div class="row">
                         <div class="col-12 col-md-6">
                             <x-adminlte-input name="form.religion" label="Religion" placeholder="Optional"
-                                maxlength="255" data-thha-capitalize wire:model.defer="form.religion" igroup-size="sm">
+                                maxlength="255" data-thha-uppercase wire:model.defer="form.religion" igroup-size="sm">
                                 <x-slot name="prependSlot">
                                     <div class="input-group-text"><i class="fas fa-fw fa-church"></i></div>
                                 </x-slot>
                             </x-adminlte-input>
                         </div>
                         <div class="col-12 col-md-6">
-                            <x-adminlte-input name="form.occupation" label="Occupation" placeholder="Optional"
-                                maxlength="255" data-thha-capitalize wire:model.defer="form.occupation" igroup-size="sm">
+                            <x-adminlte-input name="form.occupation"
+                                label="Occupation{{ $employed ? ' *' : '' }}"
+                                placeholder="{{ $unemployed ? 'Cleared for an unemployed resident' : 'Optional' }}"
+                                maxlength="255" data-thha-uppercase wire:model="form.occupation"
+                                igroup-size="sm" :disabled="$unemployed">
                                 <x-slot name="prependSlot">
                                     <div class="input-group-text"><i class="fas fa-fw fa-briefcase"></i></div>
                                 </x-slot>
@@ -162,7 +175,7 @@
                     <div class="row">
                         <div class="col-12 col-md-6">
                             <x-adminlte-select name="form.educational_attainment" label="Educational Attainment"
-                                wire:model.defer="form.educational_attainment" igroup-size="sm">
+                                class="text-uppercase" wire:model="form.educational_attainment" igroup-size="sm">
                                 <x-slot name="prependSlot">
                                     <div class="input-group-text"><i class="fas fa-fw fa-graduation-cap"></i></div>
                                 </x-slot>
@@ -189,13 +202,46 @@
                             <div class="col-md-4 mb-1">
                                 <div class="custom-control custom-checkbox">
                                     <input type="checkbox" class="custom-control-input" id="portal-sector-{{ $value }}"
-                                        value="{{ $value }}" wire:model.defer="form.sectors">
+                                        value="{{ $value }}" wire:model="form.sectors">
                                     <label class="custom-control-label" for="portal-sector-{{ $value }}">{{ $label }}</label>
                                 </div>
                             </div>
                         @endforeach
                     </div>
-                    @error('form.sectors')<span class="text-danger small">{{ $message }}</span>@enderror
+                    @error('form.sectors')
+                        <div class="alert alert-danger small py-2 mt-3 mb-0">
+                            <ul class="mb-0 pl-3">
+                                <li>{{ $message }}</li>
+                            </ul>
+                        </div>
+                    @enderror
+
+                    @if ($married && $soloParent)
+                        <div class="custom-control custom-checkbox mt-2">
+                            <input type="checkbox" class="custom-control-input" id="portal-solo-parent-special"
+                                wire:model="form.solo_parent_special_case">
+                            <label class="custom-control-label small" for="portal-solo-parent-special">
+                                My spouse is incapacitated, detained, or working abroad
+                            </label>
+                        </div>
+                        @error('form.solo_parent_special_case')
+                            <div class="alert alert-danger small py-2 mt-2 mb-0">
+                                <ul class="mb-0 pl-3">
+                                    <li>{{ $message }}</li>
+                                </ul>
+                            </div>
+                        @enderror
+                    @endif
+
+                    @if ($sectorWarnings)
+                        <div class="alert alert-warning small py-2 mt-3 mb-0">
+                            <ul class="mb-0 pl-3">
+                                @foreach ($sectorWarnings as $warning)
+                                    <li>{{ $warning }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
 
                     <div class="text-right mt-3">
                         <x-adminlte-button type="submit" label="Save Changes" theme="primary"
@@ -215,7 +261,7 @@
                     <i class="fas fa-fw fa-user-edit fa-2x mb-2"></i>
                     <p class="mb-1">No profile has been recorded for your account yet.</p>
                     <small>
-                        The office profiles every homeowner before it issues a portal account — contact the office
+                        The office profiles every homeowner before it issues a portal account. Contact the office
                         if this looks wrong.
                     </small>
                 </div>

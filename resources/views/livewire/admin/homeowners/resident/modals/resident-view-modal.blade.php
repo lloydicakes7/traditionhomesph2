@@ -62,10 +62,10 @@
                                                 <i class="fas fa-fw fa-eye mr-1"></i>Preview
                                             </a>
                                         @else
-                                            —
+                                            <span class="text-muted">Restricted</span>
                                         @endcan
                                     @else
-                                        —
+                                        <span class="text-muted">Not provided</span>
                                     @endif
                                 </td>
                             </tr>

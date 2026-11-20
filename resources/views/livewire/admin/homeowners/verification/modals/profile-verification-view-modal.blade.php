@@ -20,10 +20,9 @@
                         ? route('homeowners.residents.valid-id', $resident)
                         : null;
 
-                    // Escaped value, or a muted "Not Provided" when empty.
                     $v = fn ($value) => filled($value)
                         ? e($value)
-                        : '<span class="text-muted font-italic">Not Provided</span>';
+                        : '<span class="text-muted font-italic">Not provided</span>';
                 @endphp
 
                 {{-- ===== Identity header ===== --}}
@@ -220,7 +219,7 @@
                                         <span class="small text-muted font-italic">You don't have permission to view this ID.</span>
                                     @endcan
                                 @else
-                                    <span class="small text-muted font-italic">Not Provided</span>
+                                    <span class="small text-muted font-italic">Not provided</span>
                                 @endif
                             </div>
                         </div>

@@ -74,7 +74,7 @@ class ProfileVerificationViewModal extends AdminModalComponent
         try {
             app(VerifyProfile::class)->handle($account, auth('web')->user());
         } catch (ProfileApprovalBlockedException $exception) {
-            $this->emit('notify', 'warning', __('users.verification.awaiting_head'));
+            $this->emit('notify', 'warning', $exception->getMessage());
 
             return;
         }

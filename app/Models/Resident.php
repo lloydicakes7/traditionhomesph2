@@ -8,6 +8,7 @@ use App\Models\Household\HouseholdLinkRequest;
 use App\Models\Household\HouseholdMember;
 use App\Enums\EducationalAttainment;
 use App\Enums\SectorType;
+use App\Utility\TextHelper;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -26,6 +27,8 @@ class Resident extends Model
      * optional too: a form is never refused for either, and an empty one prints
      * blank.
      */
+    const MINIMUM_HEAD_AGE = 18;
+
     const MEMBERSHIP_FORM_REQUIRED = [
         'surname'      => 'Surname',
         'first_name'   => 'First Name',
@@ -196,7 +199,12 @@ class Resident extends Model
      */
     public function sectorValues(): array
     {
-        return (array) ($this->sectors ?? []);
+        return array_values(array_filter(
+            (array) ($this->sectors ?? []),
+            function ($sector): bool {
+                return SectorType::tryFrom((string) $sector) !== null;
+            }
+        ));
     }
 
     /**
@@ -243,6 +251,14 @@ class Resident extends Model
     public function getAgeAttribute(): ?int
     {
         return $this->birth_date ? $this->birth_date->age : null;
+    }
+
+    /**
+     * Whether the resident is old enough to be a household head.
+     */
+    public function canHeadHousehold(): bool
+    {
+        return $this->age !== null && $this->age >= self::MINIMUM_HEAD_AGE;
     }
 
     /**
@@ -300,12 +316,23 @@ class Resident extends Model
             }
         }
 
+        foreach (['surname', 'first_name', 'middle_name', 'birth_place', 'religion', 'citizenship', 'occupation', 'spouse_name'] as $field) {
+            if (array_key_exists($field, $data)) {
+                $data[$field] = TextHelper::upper($data[$field]);
+            }
+        }
+
         if (! CivilStatus::isMarried($data['civil_status'] ?? '')) {
             $data['spouse_name'] = null;
         }
 
         if (array_key_exists('sectors', $data)) {
             $data['sectors'] = self::sectorValuesFrom($data['sectors'] ?? []);
+
+            if (in_array(SectorType::UNEMPLOYED, $data['sectors'], true)
+                && ! in_array(SectorType::LABOR_FORCE_EMPLOYED, $data['sectors'], true)) {
+                $data['occupation'] = null;
+            }
         }
 
         return $data;
@@ -319,11 +346,18 @@ class Resident extends Model
      */
     public static function sectorValuesFrom($sectors): array
     {
-        return array_values(array_unique(array_filter(
+        $values = array_values(array_unique(array_filter(
             (array) $sectors,
             function ($sector): bool {
                 return SectorType::tryFrom((string) $sector) !== null;
             }
         )));
+
+        if (in_array(SectorType::OFW, $values, true)
+            && ! in_array(SectorType::LABOR_FORCE_EMPLOYED, $values, true)) {
+            $values[] = SectorType::LABOR_FORCE_EMPLOYED;
+        }
+
+        return $values;
     }
 }

@@ -31,6 +31,14 @@
         }
     });
 
+    $(document).on('input', '[data-thha-uppercase]', function () {
+        const uppercased = this.value.toUpperCase();
+
+        if (this.value !== uppercased) {
+            this.value = uppercased;
+        }
+    });
+
     $(document).on('input', '[data-thha-philsys]', function () {
         const formatted = philsys(this.value);
 

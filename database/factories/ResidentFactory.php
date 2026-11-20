@@ -25,7 +25,7 @@ $factory->define(Resident::class, function (Faker $faker) {
         'first_name'             => $faker->firstName,
         'middle_name'            => $faker->optional(0.7)->lastName,
         'suffix'                 => $faker->optional(0.1)->randomElement(Suffix::values()),
-        'birth_date'             => $faker->dateTimeBetween('-90 years', '-1 year')->format('Y-m-d'),
+        'birth_date'             => $faker->dateTimeBetween('-90 years', '-18 years')->format('Y-m-d'),
         'birth_place'            => $faker->city,
         'sex'                    => $faker->randomElement(Sex::values()),
         'civil_status'           => $faker->randomElement(CivilStatus::values()),

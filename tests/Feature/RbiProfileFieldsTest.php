@@ -85,18 +85,18 @@ class RbiProfileFieldsTest extends TestCase
             ->set('form.civil_status', 'married')
             ->set('form.educational_attainment', 'college_graduate')
             ->set('form.philsys_card_no', '1234-5678-9101-1213')
-            ->set('form.sectors', ['pwd', 'senior_citizen'])
+            ->set('form.sectors', ['pwd', 'indigenous_people'])
             ->set('property.block', (string) $this->unit->block)
             ->set('property.lot', (string) $this->unit->lot)
             ->set('household.relationship', 'son')
             ->call('save')
             ->assertHasNoErrors();
 
-        $resident = Resident::where('first_name', 'Juan')->firstOrFail();
+        $resident = Resident::where('first_name', 'JUAN')->firstOrFail();
 
         $this->assertSame('1234-5678-9101-1213', $resident->philsys_card_no);
 
-        $this->assertSame(['pwd', 'senior_citizen'], $resident->sectorValues());
+        $this->assertSame(['pwd', 'indigenous_people'], $resident->sectorValues());
         $this->assertSame($household->id, (int) $resident->household->id);
     }
 
@@ -118,10 +118,11 @@ class RbiProfileFieldsTest extends TestCase
             ->call('load', $resident->id)
             ->assertSet('form.sectors', ['unemployed'])
             ->set('form.sectors', ['ofw'])
+            ->set('form.occupation', 'Seafarer')
             ->call('save')
             ->assertHasNoErrors();
 
-        $this->assertSame(['ofw'], $resident->fresh()->sectorValues());
+        $this->assertSame(['ofw', 'labor_force_employed'], $resident->fresh()->sectorValues());
     }
 
     public function test_a_philsys_number_that_is_not_sixteen_digits_is_refused(): void
@@ -140,6 +141,71 @@ class RbiProfileFieldsTest extends TestCase
             ->assertHasErrors(['form.philsys_card_no']);
 
         $this->assertSame(0, Resident::count());
+    }
+
+    public function test_a_resident_below_eighteen_cannot_head_the_household(): void
+    {
+        Livewire::test(ResidentFormModal::class)
+            ->call('openCreate')
+            ->set('form.surname', 'Minor')
+            ->set('form.first_name', 'Nino')
+            ->set('form.sex', 'male')
+            ->set('form.birth_date', '2010-01-01')
+            ->set('form.citizenship', 'Filipino')
+            ->set('form.civil_status', 'single')
+            ->set('property.block', '11')
+            ->set('property.lot', '4')
+            ->set('property.sqm', '88.50')
+            ->set('property.type', 'duplex')
+            ->call('save')
+            ->assertHasErrors(['form.birth_date']);
+
+        $this->assertSame(0, Resident::where('first_name', 'NINO')->count());
+    }
+
+    public function test_a_minor_solo_parent_is_allowed_and_every_rule_violation_is_a_warning(): void
+    {
+        $service = app(\App\Services\Homeowners\SectoralTagService::class);
+        $facts = [
+            'age'                      => 16,
+            'occupation'               => '',
+            'civil_status'             => 'single',
+            'educational_attainment'   => null,
+            'solo_parent_special_case' => false,
+        ];
+
+        $this->assertSame([], $service->errors(['solo_parent'], $facts));
+        $this->assertContains(
+            'Solo parent below 18: allowed as a minor parent and flagged for the office.',
+            $service->warnings(['solo_parent'], $facts)
+        );
+        $this->assertContains(
+            'Occupation is required for Labor Force / Employed.',
+            $service->warnings(['labor_force_employed'], $facts)
+        );
+    }
+
+    public function test_a_sectoral_tag_must_agree_with_the_residents_age(): void
+    {
+        Livewire::test(ResidentFormModal::class)
+            ->call('openCreate')
+            ->set('form.surname', 'Cruz')
+            ->set('form.first_name', 'Ana')
+            ->set('form.sex', 'female')
+            ->set('form.birth_date', '1985-06-14')
+            ->set('form.citizenship', 'Filipino')
+            ->set('form.civil_status', 'single')
+            ->set('form.sectors', ['senior_citizen'])
+            ->assertSee('Senior Citizen (SC) requires age 60 or above.')
+            ->set('property.block', '11')
+            ->set('property.lot', '4')
+            ->set('property.sqm', '88.50')
+            ->set('property.type', 'duplex')
+            ->call('save')
+            ->assertHasErrors(['form.sectors'])
+            ->assertSee('Senior Citizen (SC) requires age 60 or above.');
+
+        $this->assertSame(0, Resident::where('first_name', 'ANA')->count());
     }
 
     // =====================================================================
@@ -196,12 +262,13 @@ class RbiProfileFieldsTest extends TestCase
             ->set('form.civil_status', 'married')
             ->set('form.educational_attainment', 'high_school_graduate')
             ->set('form.sectors', ['labor_force_employed'])
+            ->set('form.occupation', 'Teacher')
             ->set('property.block', (string) $this->unit->block)
             ->set('property.lot', (string) $this->unit->lot)
             ->call('save')
             ->assertHasNoErrors();
 
-        $resident = Resident::where('first_name', 'Mario')->firstOrFail();
+        $resident = Resident::where('first_name', 'MARIO')->firstOrFail();
 
         $this->assertSame(['labor_force_employed'], $resident->sectorValues());
         $this->assertSame('wizard@example.test', $resident->user->email);
@@ -235,7 +302,7 @@ class RbiProfileFieldsTest extends TestCase
 
         $this->assertSame('88.50', $unit->sqm);
         $this->assertSame('duplex', $unit->type);
-        $this->assertSame('Rico', $unit->currentHousehold->head_resident->first_name);
+        $this->assertSame('RICO', $unit->currentHousehold->head_resident->first_name);
     }
 
     public function test_the_homeowner_dialog_asks_for_the_floor_area_of_a_new_unit(): void
@@ -307,7 +374,7 @@ class RbiProfileFieldsTest extends TestCase
             ->call('save')
             ->assertHasNoErrors();
 
-        $resident = Resident::where('first_name', 'Juan')->firstOrFail();
+        $resident = Resident::where('first_name', 'JUAN')->firstOrFail();
 
         $this->assertSame((int) $resident->id, (int) $household->fresh()->head_resident->id);
     }
@@ -367,7 +434,7 @@ class RbiProfileFieldsTest extends TestCase
 
         $component->set('form.civil_status', 'married')->call('save')->assertHasNoErrors();
 
-        $this->assertSame('Rosa Santos', $resident->fresh()->spouse_name);
+        $this->assertSame('ROSA SANTOS', $resident->fresh()->spouse_name);
     }
 
     public function test_a_spouse_name_is_dropped_once_the_status_is_no_longer_married(): void
@@ -432,7 +499,7 @@ class RbiProfileFieldsTest extends TestCase
             ->call('addMember')
             ->assertHasNoErrors();
 
-        $resident = Resident::where('first_name', 'Rosa')->firstOrFail();
+        $resident = Resident::where('first_name', 'ROSA')->firstOrFail();
 
         $this->assertSame('1111-2222-3333-4444', $resident->philsys_card_no);
         $this->assertSame(['osy'], $resident->sectorValues());
@@ -487,7 +554,7 @@ class RbiProfileFieldsTest extends TestCase
 
         $member = $household->memberRecords()->firstOrFail();
 
-        $this->assertSame('Aunt', $member->relationship);
+        $this->assertSame('AUNT', $member->relationship);
     }
 
     // =====================================================================

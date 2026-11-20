@@ -5,6 +5,7 @@ namespace App\Http\Livewire\Portal\PersonalInformation;
 use App\Actions\Homeowners\Profiles\UpdateOwnProfile;
 use App\Enums\CivilStatus;
 use App\Http\Livewire\Concerns\ResolvesHomeownerAccount;
+use App\Http\Livewire\Concerns\ValidatesSectoralTags;
 use App\Http\Livewire\PortalComponent;
 use App\Http\Requests\Homeowners\ResidentRequest;
 use App\Models\Resident;
@@ -12,7 +13,7 @@ use App\Queries\Homeowners\Residents\ResidentFormQuery;
 
 class PersonalInformationForm extends PortalComponent
 {
-    use ResolvesHomeownerAccount;
+    use ResolvesHomeownerAccount, ValidatesSectoralTags;
 
     public $form = [];
 
@@ -43,7 +44,14 @@ class PersonalInformationForm extends PortalComponent
 
     protected function rules(): array
     {
-        return (new ResidentRequest)->rules();
+        return array_merge((new ResidentRequest)->rules(), $this->sectoralTagRules('form'));
+    }
+
+    public function updated($name): void
+    {
+        if ($name === 'form.sectors') {
+            $this->syncSectoralTags('form');
+        }
     }
 
     // ===== Save =====
@@ -91,6 +99,7 @@ class PersonalInformationForm extends PortalComponent
             'occupation'             => $resident->occupation ?? '',
             'educational_attainment' => $resident->educational_attainment ?? '',
             'sectors'                => $resident ? $resident->sectorValues() : [],
+            'solo_parent_special_case' => false,
         ];
     }
 

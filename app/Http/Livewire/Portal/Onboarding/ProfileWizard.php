@@ -6,8 +6,11 @@ use App\Actions\Homeowners\Profiles\SubmitProfileVerification;
 use App\Enums\PropertyType;
 use App\Exceptions\ProfileSubmissionException;
 use App\Http\Livewire\Concerns\ResolvesHomeownerAccount;
+use App\Http\Livewire\Concerns\ValidatesSectoralTags;
 use App\Http\Livewire\PortalComponent;
+use App\Rules\HouseholdHeadAge;
 use App\Http\Requests\Portal\Homeowners\SubmitProfileRequest;
+use App\Models\Resident;
 use App\Queries\Homeowners\Households\HouseholdUnitQuery;
 use App\Queries\Homeowners\Profiles\OnboardingFormQuery;
 use Illuminate\Support\Facades\Log;
@@ -25,7 +28,7 @@ use Livewire\WithFileUploads;
  */
 class ProfileWizard extends PortalComponent
 {
-    use ResolvesHomeownerAccount, WithFileUploads;
+    use ResolvesHomeownerAccount, ValidatesSectoralTags, WithFileUploads;
 
     /** The step on screen: 1 personal, 2 household, 3 valid ID. */
     public $step = 1;
@@ -85,6 +88,12 @@ class ProfileWizard extends PortalComponent
     /** A changed block or lot is read back from the association's own records. */
     public function updated($name): void
     {
+        if ($name === 'form.sectors') {
+            $this->syncSectoralTags('form');
+
+            return;
+        }
+
         if ($name !== 'property.block' && $name !== 'property.lot') {
             return;
         }
@@ -117,24 +126,54 @@ class ProfileWizard extends PortalComponent
     /**
      * @return array<string, array<int, mixed>>
      */
-    protected function rules(): array
+    protected function rules(bool $withHeadAge = true): array
     {
-        $rules = (new SubmitProfileRequest)->rules();
+        $rules = array_merge((new SubmitProfileRequest)->rules(), $this->sectoralTagRules('form'));
 
-        if ($this->unit !== null) {
-            return $rules;
+        if ($this->unit === null) {
+            $rules = array_merge($rules, [
+                'property.sqm'  => ['required', 'numeric', 'min:1', 'max:99999'],
+                'property.type' => ['required', Rule::in(PropertyType::values())],
+            ]);
         }
 
-        return array_merge($rules, [
-            'property.sqm'  => ['required', 'numeric', 'min:1', 'max:99999'],
-            'property.type' => ['required', Rule::in(PropertyType::values())],
-        ]);
+        if ($withHeadAge && $this->residentBecomesHead()) {
+            $rules['form.birth_date'] = array_merge(
+                $rules['form.birth_date'],
+                [new HouseholdHeadAge($this->headAgeMessage())]
+            );
+        }
+
+        return $rules;
+    }
+
+    /**
+     * The sentence shown when the resident is too young to head the household.
+     */
+    private function headAgeMessage(): ?string
+    {
+        if ($this->unit === null) {
+            return 'This household has no registered head yet. A household head must be at least '
+                .Resident::MINIMUM_HEAD_AGE
+                .' years old. Please ask an 18+ member of your household to register first.';
+        }
+
+        return null;
+    }
+
+    private function residentBecomesHead(): bool
+    {
+        if ($this->unit === null) {
+            return true;
+        }
+
+        return (bool) ($this->household['be_head'] ?? false) || ! ($this->unit['is_occupied'] ?? false);
     }
 
     /**
      * @return array<string, array<int, mixed>>
      */
-    private function stepRules(int $step): array
+    private function stepRules(int $step, bool $withHeadAge = true): array
     {
         $prefixes = [
             1 => ['form.'],
@@ -142,9 +181,16 @@ class ProfileWizard extends PortalComponent
             3 => ['idFile'],
         ][$step] ?? [];
 
-        return array_filter($this->rules(), function ($key) use ($prefixes) {
+        $rules = $this->rules($withHeadAge);
+        $stepRules = array_filter($rules, function ($key) use ($prefixes) {
             return Str::startsWith($key, $prefixes);
         }, ARRAY_FILTER_USE_KEY);
+
+        if ($step === 2 && $withHeadAge && isset($rules['form.birth_date'])) {
+            $stepRules['form.birth_date'] = $rules['form.birth_date'];
+        }
+
+        return $stepRules;
     }
 
     // ===== Steps =====
@@ -154,7 +200,15 @@ class ProfileWizard extends PortalComponent
         $this->resetErrorBag();
         $this->refreshUnit();
 
-        $this->validate($this->stepRules($this->step));
+        try {
+            $this->validate($this->stepRules($this->step, $this->step > 1));
+        } catch (ValidationException $exception) {
+            if ($this->step === 2 && array_key_exists('form.birth_date', $exception->errors())) {
+                $this->step = 1;
+            }
+
+            throw $exception;
+        }
 
         if ($this->step < 3) {
             $this->step++;
@@ -167,6 +221,10 @@ class ProfileWizard extends PortalComponent
 
         if ($this->step > 1) {
             $this->step--;
+
+            if ($this->step === 1) {
+                $this->flagUnderageHead();
+            }
         }
     }
 
@@ -177,8 +235,31 @@ class ProfileWizard extends PortalComponent
     {
         $this->resetErrorBag();
 
-        if ($step >= 1 && $step <= 3) {
-            $this->step = $step;
+        if ($step < 1 || $step > 3) {
+            return;
+        }
+
+        $returningToPersonal = $step === 1 && $this->step > 1;
+        $this->step = $step;
+
+        if ($returningToPersonal) {
+            $this->flagUnderageHead();
+        }
+    }
+
+    /**
+     * Flag an underage head once the household step has been seen.
+     */
+    private function flagUnderageHead(): void
+    {
+        if (! $this->residentBecomesHead()) {
+            return;
+        }
+
+        $rule = new HouseholdHeadAge($this->headAgeMessage());
+
+        if (! $rule->passes('form.birth_date', $this->form['birth_date'] ?? null)) {
+            $this->addError('form.birth_date', $rule->message());
         }
     }
 
@@ -223,6 +304,11 @@ class ProfileWizard extends PortalComponent
         } catch (ProfileSubmissionException $exception) {
             $this->step = 2;
             $this->addError('property.block', $exception->getMessage());
+
+            return;
+        } catch (\RuntimeException $exception) {
+            $this->step = 2;
+            $this->addError('household.be_head', $exception->getMessage());
 
             return;
         } catch (\Throwable $exception) {

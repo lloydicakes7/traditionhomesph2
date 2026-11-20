@@ -38,6 +38,7 @@ class VerifyProfile
     public function handle(User $account, Admin $by): User
     {
         $this->ensureTheHeadHasAnswered($account);
+        $this->ensureTheHeadIsAnAdult($account);
 
         $account->forceFill([
             'profile_status'               => ProfileStatus::VERIFIED,
@@ -70,6 +71,15 @@ class VerifyProfile
 
         if ($waiting) {
             throw new ProfileApprovalBlockedException('The household head has not answered this resident\'s request yet.');
+        }
+    }
+
+    private function ensureTheHeadIsAnAdult(User $account): void
+    {
+        $head = $account->resident?->household?->head_resident;
+
+        if ($head !== null && ! $head->canHeadHousehold()) {
+            throw new ProfileApprovalBlockedException('A household head must be at least 18 years old. Ask the household to name an adult head before approving this profile.');
         }
     }
 

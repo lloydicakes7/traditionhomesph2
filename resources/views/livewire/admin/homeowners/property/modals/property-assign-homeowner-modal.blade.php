@@ -48,7 +48,7 @@
                 </div>
 
                 <x-adminlte-textarea name="assignForm.prev_address" label="Previous Address"
-                    wire:model.defer="assignForm.prev_address" igroup-size="sm" rows="3">
+                    data-thha-uppercase wire:model.defer="assignForm.prev_address" igroup-size="sm" rows="3">
                     <x-slot name="prependSlot"><div class="input-group-text"><i class="fas fa-fw fa-map-marked-alt"></i></div></x-slot>
                 </x-adminlte-textarea>
             </form>

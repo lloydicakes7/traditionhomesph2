@@ -112,7 +112,7 @@
             <div class="col-lg-9">
                 <div class="tab-content">
 
-                    {{-- Tab 1: Details — Personal + Account Info --}}
+                    {{-- Tab 1: Details: Personal + Account Info --}}
                     <div class="tab-pane fade {{ $activeViewTab === 'details' ? 'show active' : '' }}" id="ho-details" role="tabpanel">
                         <div class="text-center mb-4">
                             @if ($viewHomeowner->photo_url)
@@ -174,7 +174,7 @@
                         @if ($viewHouseholdData)
                             <h6 class="font-weight-bold mb-2"><i class="fas fa-fw fa-home mr-1"></i>Household</h6>
                             <table class="table table-sm table-borderless">
-                                <tr><td class="text-muted" style="width:30%;">Property</td><td>{{ $viewHouseholdData['property_label'] }} — {{ $viewHouseholdData['property_address'] }}</td></tr>
+                                <tr><td class="text-muted" style="width:30%;">Property</td><td>{{ $viewHouseholdData['property_label'] }}, {{ $viewHouseholdData['property_address'] }}</td></tr>
                                 <tr><td class="text-muted">Property Type</td><td>{{ $viewHouseholdData['property_type_label'] }}</td></tr>
                                 <tr><td class="text-muted">Type</td><td><span class="badge badge-primary">{{ $viewHouseholdData['type_label'] }}</span></td></tr>
                                 @if (!empty($viewHouseholdData['prev_address']))

@@ -19,8 +19,8 @@
                     </div>
                     <div class="col-12">
                         <x-adminlte-textarea name="form.prev_address" label="Previous Address"
-                            wire:model.defer="form.prev_address" igroup-size="sm" rows="2"
-                            placeholder="Optional — where the household lived before this unit">
+                            data-thha-uppercase wire:model.defer="form.prev_address" igroup-size="sm" rows="2"
+                            placeholder="Optional. Where the household lived before this unit">
                             <x-slot name="prependSlot"><div class="input-group-text"><i class="fas fa-fw fa-map-marked-alt"></i></div></x-slot>
                         </x-adminlte-textarea>
                     </div>

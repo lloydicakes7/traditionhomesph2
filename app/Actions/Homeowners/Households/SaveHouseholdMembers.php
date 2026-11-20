@@ -5,6 +5,7 @@ namespace App\Actions\Homeowners\Households;
 use App\Models\Admin;
 use App\Models\Household\Household;
 use App\Models\Household\HouseholdMember;
+use App\Models\Resident;
 use App\Services\ActivityLogService;
 use Illuminate\Support\Facades\DB;
 
@@ -33,6 +34,12 @@ class SaveHouseholdMembers
             foreach ($clean as $member) {
                 $isHead = ! empty($member['is_head']) && ! $headPlaced;
                 $headPlaced = $headPlaced || $isHead;
+
+                $resident = Resident::find((int) $member['resident_id']);
+
+                if ($isHead && ($resident === null || ! $resident->canHeadHousehold())) {
+                    throw new \RuntimeException('A household head must be at least '.Resident::MINIMUM_HEAD_AGE.' years old.');
+                }
 
                 HouseholdMember::create([
                     'household_id' => $household->id,

@@ -4,10 +4,10 @@
      The whole set of moves in one dropdown, the way the Collections and Support
      tables lay theirs out:
 
-       • View Details    — the household and its members, read-only.
-       • Edit Household  — the unit, the tenure, the RBI composition and income.
-       • Edit Members    — who lives in the unit and how they are related.
-       • Delete          — for a household entered in error.
+       • View Details   : the household and its members, read-only.
+       • Edit Household : the unit, the tenure, the RBI composition and income.
+       • Edit Members   : who lives in the unit and how they are related.
+       • Delete         : for a household entered in error.
 
      `$actionKey` namespaces the dropdown's id: the desktop row and the mobile
      card are both on the page, and only one of them is ever visible. The same

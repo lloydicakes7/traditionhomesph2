@@ -66,6 +66,27 @@ class RegistrationTest extends TestCase
             ->assertDontSeeHtml('wire:model="idFile"');
     }
 
+    public function test_the_registration_page_loads_the_uppercase_input_handler(): void
+    {
+        $this->get('/portal/register')
+            ->assertOk()
+            ->assertSee('js/form-input.js')
+            ->assertSee('data-thha-uppercase', false);
+    }
+
+    public function test_the_wizard_uppercases_the_name_fields_before_review(): void
+    {
+        $this->wizard([
+            'surname'     => 'dela cruz',
+            'first_name'  => 'juan',
+            'middle_name' => 'santos',
+        ])
+            ->call('next')
+            ->assertSet('form.surname', 'DELA CRUZ')
+            ->assertSet('form.first_name', 'JUAN')
+            ->assertSet('form.middle_name', 'SANTOS');
+    }
+
     public function test_the_three_steps_run_personal_then_account_then_review(): void
     {
         $this->wizard()
@@ -97,7 +118,7 @@ class RegistrationTest extends TestCase
         $user = User::where('email', 'applicant@example.com')->firstOrFail();
 
         $this->assertInstanceOf(Resident::class, $user->resident);
-        $this->assertSame('Dela Cruz', $user->resident->surname);
+        $this->assertSame('DELA CRUZ', $user->resident->surname);
         $this->assertSame('09171234567', $user->resident->mobile_no);
         $this->assertTrue(Hash::check('ChosenPass1!', $user->password), 'password hashed from the chosen one');
         $this->assertNotNull($user->terms_accepted_at);

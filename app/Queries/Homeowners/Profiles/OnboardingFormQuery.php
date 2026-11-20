@@ -66,6 +66,7 @@ class OnboardingFormQuery
             'mobile_no'              => $resident->mobile_no ?? '',
             'educational_attainment' => $resident->educational_attainment ?? '',
             'sectors'                => $resident ? $resident->sectorValues() : [],
+            'solo_parent_special_case' => false,
         ];
     }
 

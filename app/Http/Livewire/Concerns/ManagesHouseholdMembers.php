@@ -8,6 +8,7 @@ use App\Http\Requests\Homeowners\ResidentRequest;
 use App\Models\Household\HouseholdMember;
 use App\Models\Resident;
 use App\Queries\Homeowners\Residents\ResidentFormQuery;
+use App\Rules\HouseholdHeadAge;
 use App\Utility\StorageHelper;
 use Illuminate\Support\Arr;
 
@@ -42,9 +43,18 @@ trait ManagesHouseholdMembers
             return ['memberForm.resident_id' => ['required', 'exists:residents,id']] + $relationship;
         }
 
-        return ResidentRequest::rulesFor('memberForm') + $relationship + [
-            'memberPhoto' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
-        ];
+        $rules = array_merge(
+            ResidentRequest::rulesFor('memberForm'),
+            $this->sectoralTagRules('memberForm'),
+            $relationship,
+            ['memberPhoto' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048']]
+        );
+
+        if (! empty($this->memberForm['is_head'])) {
+            $rules['memberForm.birth_date'] = array_merge($rules['memberForm.birth_date'], [new HouseholdHeadAge]);
+        }
+
+        return $rules;
     }
 
     // ===== Actions =====
@@ -173,6 +183,12 @@ trait ManagesHouseholdMembers
 
         if ($error = $this->memberConflictError($resident?->id, 'memberForm.resident_id')) {
             $this->addError('memberForm.resident_id', $error);
+
+            return false;
+        }
+
+        if (! empty($this->memberForm['is_head']) && ! $resident?->canHeadHousehold()) {
+            $this->addError('memberForm.is_head', 'A household head must be at least '.Resident::MINIMUM_HEAD_AGE.' years old.');
 
             return false;
         }

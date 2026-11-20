@@ -5,6 +5,7 @@ namespace App\Http\Livewire\Admin\Modals;
 use App\Actions\Homeowners\Households\SaveHouseholdMembers;
 use App\Enums\CivilStatus;
 use App\Http\Livewire\Concerns\ManagesHouseholdMembers;
+use App\Http\Livewire\Concerns\ValidatesSectoralTags;
 use App\Http\Livewire\AdminModalComponent;
 use App\Models\Household\Household;
 use App\Queries\Homeowners\Households\HouseholdMemberQuery;
@@ -21,7 +22,7 @@ use App\Queries\Homeowners\Residents\ResidentFormQuery;
  */
 class EditMembersModal extends AdminModalComponent
 {
-    use ManagesHouseholdMembers;
+    use ManagesHouseholdMembers, ValidatesSectoralTags;
 
     public $householdId = null;
 
@@ -75,6 +76,13 @@ class EditMembersModal extends AdminModalComponent
         $this->members = $this->query->rows($this->householdId);
 
         $this->markLoaded();
+    }
+
+    public function updated($name): void
+    {
+        if ($name === 'memberForm.sectors') {
+            $this->syncSectoralTags('memberForm');
+        }
     }
 
     protected function resetModal(): void

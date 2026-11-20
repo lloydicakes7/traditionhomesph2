@@ -3,12 +3,12 @@
 
      The whole set of moves in one dropdown, the way the Collections and Support
      tables lay theirs out. Assigning and removing the occupant stays in the
-     Homeowner column, next to the person it is about — this is the unit's own
+     Homeowner column, next to the person it is about: this is the unit's own
      record:
 
-       • View Details — the unit and whoever holds it, read-only.
-       • Edit         — the unit's own facts (block, lot, type, area, photo).
-       • Delete       — for a unit entered in error.
+       • View Details: the unit and whoever holds it, read-only.
+       • Edit        : the unit's own facts (block, lot, type, area, photo).
+       • Delete      : for a unit entered in error.
 
      `$actionKey` namespaces the dropdown's id: the desktop row and the mobile
      card are both on the page, and only one of them is ever visible. The same

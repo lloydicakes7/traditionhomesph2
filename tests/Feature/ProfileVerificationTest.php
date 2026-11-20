@@ -182,6 +182,65 @@ class ProfileVerificationTest extends TestCase
             ->assertSee('The spouse name field is required when civil status is married.');
     }
 
+    public function test_the_head_age_rule_waits_for_the_household_step_and_points_back_to_personal_information(): void
+    {
+        $user = $this->registered();
+        $this->primaryAddress();
+
+        Livewire::actingAs($user, 'homeowner')
+            ->test(ProfileWizard::class)
+            ->set('form.birth_date', '2010-01-01')
+            ->set('form.birth_place', 'Trece Martires City')
+            ->set('form.citizenship', 'Filipino')
+            ->call('next')
+            ->assertHasNoErrors()
+            ->assertSet('step', 2)
+            ->set('property.block', '7')
+            ->set('property.lot', '12')
+            ->set('property.sqm', '100')
+            ->set('property.type', 'house')
+            ->call('next')
+            ->assertHasErrors(['form.birth_date'])
+            ->assertSet('step', 1)
+            ->assertSee('This household has no registered head yet.');
+    }
+
+    public function test_going_back_to_personal_information_flags_an_underage_head_of_an_existing_household(): void
+    {
+        $user = $this->registered();
+        $address = $this->primaryAddress();
+
+        $property = Property::create([
+            'block'      => 9,
+            'lot'        => 3,
+            'address_id' => $address->id,
+            'sqm'        => 90,
+            'type'       => 'townhouse',
+        ]);
+
+        $household = Household::create(['property_id' => $property->id, 'type' => 'owner']);
+        $household->placeHead(
+            factory(Resident::class)->create(['birth_date' => '1980-01-01'])->id,
+            'father'
+        );
+
+        Livewire::actingAs($user, 'homeowner')
+            ->test(ProfileWizard::class)
+            ->set('form.birth_date', '2010-01-01')
+            ->set('form.birth_place', 'Trece Martires City')
+            ->set('form.citizenship', 'Filipino')
+            ->call('next')
+            ->assertSet('step', 2)
+            ->set('property.block', '9')
+            ->set('property.lot', '3')
+            ->set('household.be_head', true)
+            ->call('back')
+            ->assertSet('step', 1)
+            ->assertHasErrors(['form.birth_date'])
+            ->assertSee('A household head must be at least 18 years old.')
+            ->assertDontSee('This household has no registered head yet.');
+    }
+
     // ===== Submission =====
 
     public function test_submitting_the_form_queues_the_profile_and_writes_the_household(): void
@@ -660,7 +719,7 @@ class ProfileVerificationTest extends TestCase
             ->assertHasNoErrors();
 
         $this->assertSame(ProfileStatus::SUBMITTED, $user->fresh()->profile_status->value);
-        $this->assertSame('Cruz', $user->fresh()->resident->surname);
+        $this->assertSame('CRUZ', $user->fresh()->resident->surname);
     }
 
     // ===== Reminders =====

@@ -58,8 +58,8 @@ class HouseholdCsvTest extends TestCase
 
         $members = HouseholdMember::with('resident')->get()->keyBy('resident.first_name');
 
-        $this->assertSame('mother', $members['Ana']->relationship);
-        $this->assertSame('Uncle', $members['Lito']->relationship);
+        $this->assertSame('mother', $members['ANA']->relationship);
+        $this->assertSame('UNCLE', $members['LITO']->relationship);
 
         @unlink($sheet);
     }

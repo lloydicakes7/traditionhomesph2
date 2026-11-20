@@ -111,29 +111,29 @@
 
                         <h5 class="font-weight-bold text-primary mb-3">{{ $steps[$step][0] }}</h5>
 
-                        {{-- Step 1 — Personal information --}}
+                        {{-- Step 1: Personal information --}}
                         @if ($step === 1)
                             <div class="row">
                                 <div class="col-12 col-sm-6">
                                     <x-adminlte-input name="form.surname" label="Surname *" placeholder="Enter surname"
-                                        maxlength="255" data-thha-capitalize wire:model.defer="form.surname" igroup-size="sm">
+                                        maxlength="255" data-thha-uppercase wire:model.defer="form.surname" igroup-size="sm">
                                         <x-slot name="prependSlot"><div class="input-group-text"><i class="fas fa-fw fa-user"></i></div></x-slot>
                                     </x-adminlte-input>
                                 </div>
                                 <div class="col-12 col-sm-6">
                                     <x-adminlte-input name="form.first_name" label="First Name *" placeholder="Enter first name"
-                                        maxlength="255" data-thha-capitalize wire:model.defer="form.first_name" igroup-size="sm">
+                                        maxlength="255" data-thha-uppercase wire:model.defer="form.first_name" igroup-size="sm">
                                         <x-slot name="prependSlot"><div class="input-group-text"><i class="fas fa-fw fa-user"></i></div></x-slot>
                                     </x-adminlte-input>
                                 </div>
                                 <div class="col-12 col-sm-6">
                                     <x-adminlte-input name="form.middle_name" label="Middle Name" placeholder="Optional"
-                                        maxlength="255" data-thha-capitalize wire:model.defer="form.middle_name" igroup-size="sm">
+                                        maxlength="255" data-thha-uppercase wire:model.defer="form.middle_name" igroup-size="sm">
                                         <x-slot name="prependSlot"><div class="input-group-text"><i class="fas fa-fw fa-user"></i></div></x-slot>
                                     </x-adminlte-input>
                                 </div>
                                 <div class="col-12 col-sm-6">
-                                    <x-adminlte-select name="form.suffix" label="Suffix"
+                                    <x-adminlte-select class="text-uppercase" name="form.suffix" label="Suffix"
                                         wire:model.defer="form.suffix" igroup-size="sm">
                                         <x-slot name="prependSlot"><div class="input-group-text"><i class="fas fa-fw fa-user"></i></div></x-slot>
                                         <option value="">Select</option>
@@ -161,7 +161,7 @@
 
                             <div class="row">
                                 <div class="col-12 col-md-6">
-                                    <x-adminlte-select name="form.sex" label="Sex *" wire:model.defer="form.sex" igroup-size="sm">
+                                    <x-adminlte-select class="text-uppercase" name="form.sex" label="Sex *" wire:model.defer="form.sex" igroup-size="sm">
                                         <x-slot name="prependSlot"><div class="input-group-text"><i class="fas fa-fw fa-venus-mars"></i></div></x-slot>
                                         <option value="">Select sex</option>
                                         @foreach ($sexOptions as $key => $label)
@@ -170,7 +170,7 @@
                                     </x-adminlte-select>
                                 </div>
                                 <div class="col-12 col-md-6">
-                                    <x-adminlte-select name="form.civil_status" label="Civil Status *"
+                                    <x-adminlte-select class="text-uppercase" name="form.civil_status" label="Civil Status *"
                                         wire:model.defer="form.civil_status" igroup-size="sm">
                                         <x-slot name="prependSlot"><div class="input-group-text"><i class="fas fa-fw fa-ring"></i></div></x-slot>
                                         <option value="">Select civil status</option>
@@ -182,7 +182,7 @@
                             </div>
                         @endif
 
-                        {{-- Step 2 — Account --}}
+                        {{-- Step 2: Account --}}
                         @if ($step === 2)
                             <div class="row">
                                 <div class="col-12 col-md-8">
@@ -229,7 +229,7 @@
                             </div>
                         @endif
 
-                        {{-- Step 3 — Review and consent --}}
+                        {{-- Step 3: Review and consent --}}
                         @if ($step === 3)
                             <div class="table-responsive">
                                 <table class="table table-sm table-borderless mb-0">

@@ -93,6 +93,7 @@ class ResidentFormQuery
         return [
             'philsys_card_no' => '',
             'sectors' => [],
+            'solo_parent_special_case' => false,
         ];
     }
 
@@ -106,6 +107,7 @@ class ResidentFormQuery
         return [
             'philsys_card_no' => $resident->philsys_card_no ?? '',
             'sectors' => $resident->sectorValues(),
+            'solo_parent_special_case' => false,
         ];
     }
 }

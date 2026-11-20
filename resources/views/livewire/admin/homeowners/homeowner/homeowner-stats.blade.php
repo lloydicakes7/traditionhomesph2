@@ -1,6 +1,6 @@
 <div>
     {{-- =================================================================== --}}
-    {{-- HOMEOWNER PORTAL ACCESS + STATS DONUT — side by side                --}}
+    {{-- HOMEOWNER PORTAL ACCESS + STATS DONUT: side by side                --}}
     {{-- Isolated component: refreshes on `homeowner-saved` only.            --}}
     {{-- =================================================================== --}}
     <div class="row mb-3">

@@ -69,7 +69,7 @@ class HomeownerActionsTest extends TestCase
             'sectors'                => ['pwd'],
         ], null, $admin);
 
-        $this->assertSame('Dela Cruz', $resident->surname);
+        $this->assertSame('DELA CRUZ', $resident->surname);
         $this->assertSame(['pwd'], $resident->sectorValues());
         $this->assertDatabaseHas('admin_activities', [
             'admin_id' => $admin->id,
@@ -97,7 +97,7 @@ class HomeownerActionsTest extends TestCase
         $second = $action->handle($payload);
 
         $this->assertSame($first->id, $second->id);
-        $this->assertSame(1, Resident::where('surname', 'Santos')->count());
+        $this->assertSame(1, Resident::where('surname', 'SANTOS')->count());
     }
 
     public function test_deleting_residents_unlinks_their_accounts(): void

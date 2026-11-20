@@ -101,7 +101,7 @@
                             @else
                                 @foreach ($addresses as $address)
                                     <option value="{{ $address->id }}">
-                                        {{ $address->label }} — {{ $address->subdivision }}, {{ $address->barangay }}, {{ $address->city }}
+                                        {{ $address->label }}, {{ $address->subdivision }}, {{ $address->barangay }}, {{ $address->city }}
                                     </option>
                                 @endforeach
                             @endif

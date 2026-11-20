@@ -9,6 +9,7 @@ use App\Http\Livewire\AdminModalComponent;
 use App\Models\Household\Household;
 use App\Queries\Homeowners\Households\HouseholdFormQuery;
 use App\Queries\Homeowners\Households\HouseholdListQuery;
+use App\Rules\HouseholdHeadResident;
 use Illuminate\Validation\Rule;
 
 /**
@@ -82,7 +83,7 @@ class HouseholdFormModal extends AdminModalComponent
         return [
             'form.property_id'      => ['required', 'exists:properties,id'],
             'form.type'             => ['required', Rule::in(HouseholdType::values())],
-            'form.head_resident_id' => ['required', 'exists:residents,id'],
+            'form.head_resident_id' => ['required', 'exists:residents,id', new HouseholdHeadResident],
             'form.relationship'     => ['required', 'string', 'max:100'],
             'form.prev_address'     => ['nullable', 'string', 'max:500'],
         ];

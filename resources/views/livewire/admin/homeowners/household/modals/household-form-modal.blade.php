@@ -21,7 +21,7 @@
                         @endforeach
                     </x-adminlte-select2>
 
-                    <x-adminlte-select name="form.type" label="Tenure Type" wire:model.defer="form.type" igroup-size="sm">
+                    <x-adminlte-select class="text-uppercase" name="form.type" label="Tenure Type" wire:model.defer="form.type" igroup-size="sm">
                         <x-slot name="prependSlot"><div class="input-group-text"><i class="fas fa-fw fa-tag"></i></div></x-slot>
                         @foreach ($householdTypes as $key => $label)
                             <option value="{{ $key }}">{{ $label }}</option>
@@ -29,7 +29,8 @@
                     </x-adminlte-select>
 
                     <x-adminlte-input name="form.relationship" label="Relationship"
-                        placeholder="e.g., Son, Mother, Uncle" wire:model.defer="form.relationship" igroup-size="sm">
+                        placeholder="e.g., Son, Mother, Uncle" data-thha-uppercase
+                        wire:model.defer="form.relationship" igroup-size="sm">
                         <x-slot name="prependSlot"><div class="input-group-text"><i class="fas fa-fw fa-link"></i></div></x-slot>
                     </x-adminlte-input>
 
@@ -40,14 +41,14 @@
                         <option value="">Select Property</option>
                         @foreach ($properties as $property)
                             <option value="{{ $property->id }}">
-                                {{ $property->block_lot_label }}@if ($property->address) — {{ $property->address->subdivision }}@endif
+                                {{ $property->block_lot_label }}@if ($property->address), {{ $property->address->subdivision }}@endif
                             </option>
                         @endforeach
                     </x-adminlte-select2>
 
                     <x-adminlte-textarea name="form.prev_address" label="Previous Address"
-                        wire:model.defer="form.prev_address" igroup-size="sm" rows="2"
-                        placeholder="Optional — previous address before moving to this property">
+                        data-thha-uppercase wire:model.defer="form.prev_address" igroup-size="sm" rows="2"
+                        placeholder="Optional. Previous address before moving to this property">
                         <x-slot name="prependSlot"><div class="input-group-text"><i class="fas fa-fw fa-map-marked-alt"></i></div></x-slot>
                     </x-adminlte-textarea>
                 </div>

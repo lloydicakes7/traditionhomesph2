@@ -4,6 +4,7 @@ namespace App\Models\Household;
 
 use App\Enums\HouseholdRelationship;
 use App\Models\Resident;
+use App\Utility\TextHelper;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -105,7 +106,7 @@ class HouseholdMember extends Model
             }
         }
 
-        return $relationship;
+        return TextHelper::upper($relationship);
     }
 
     // ===== Placements =====

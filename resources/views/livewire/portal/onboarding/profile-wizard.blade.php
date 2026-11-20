@@ -89,7 +89,7 @@
 
                         <div class="card-body">
 
-                            {{-- 1 — Personal information --}}
+                            {{-- 1: Personal information --}}
                             @if ($number === 1)
                                 @include('partials.personal-fields', [
                                     'prefix' => 'form',
@@ -97,7 +97,7 @@
                                 ])
                             @endif
 
-                            {{-- 2 — Address and household --}}
+                            {{-- 2: Address and household --}}
                             @if ($number === 2)
                                 @php
                                     $unitNamed = (int) ($property['block'] ?? 0) > 0 && (int) ($property['lot'] ?? 0) > 0;
@@ -117,7 +117,7 @@
                                 ])
                             @endif
 
-                            {{-- 3 — Valid ID --}}
+                            {{-- 3: Valid ID --}}
                             @if ($number === 3)
                                 <div class="custom-file">
                                     <input type="file" accept="image/jpeg,image/png"

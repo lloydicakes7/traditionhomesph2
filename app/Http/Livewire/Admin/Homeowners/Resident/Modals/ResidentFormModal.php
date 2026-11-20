@@ -11,7 +11,9 @@ use App\Enums\CivilStatus;
 use App\Enums\HouseholdType;
 use App\Enums\PropertyType;
 use App\Http\Livewire\AdminModalComponent;
+use App\Http\Livewire\Concerns\ValidatesSectoralTags;
 use App\Http\Requests\Homeowners\ResidentRequest;
+use App\Rules\HouseholdHeadAge;
 use App\Models\Admin;
 use App\Models\Resident;
 use App\Queries\Homeowners\Households\HouseholdUnitQuery;
@@ -31,7 +33,7 @@ use Livewire\WithFileUploads;
  */
 class ResidentFormModal extends AdminModalComponent
 {
-    use WithFileUploads;
+    use ValidatesSectoralTags, WithFileUploads;
 
     const MODAL_ID = 'residentFormModal';
 
@@ -128,13 +130,17 @@ class ResidentFormModal extends AdminModalComponent
 
     protected function rules(): array
     {
-        $rules = array_merge((new ResidentRequest)->rules(), [
+        $rules = array_merge((new ResidentRequest)->rules(), $this->sectoralTagRules('form'), [
             'form.birth_place' => ['nullable', 'string', 'max:255'],
             'profilePhoto'     => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
         ]);
 
         if ($this->isEditing) {
             return $rules;
+        }
+
+        if ($this->residentBecomesHead()) {
+            $rules['form.birth_date'] = array_merge($rules['form.birth_date'], [new HouseholdHeadAge]);
         }
 
         return array_merge($rules, [
@@ -227,6 +233,12 @@ class ResidentFormModal extends AdminModalComponent
      */
     public function updated($name): void
     {
+        if ($name === 'form.sectors') {
+            $this->syncSectoralTags('form');
+
+            return;
+        }
+
         if ($name !== 'property.block' && $name !== 'property.lot') {
             return;
         }
@@ -251,6 +263,17 @@ class ResidentFormModal extends AdminModalComponent
     private function householdIsNewUnit(): bool
     {
         return $this->unitIsNamed() && $this->unit === null;
+    }
+
+    private function residentBecomesHead(): bool
+    {
+        if ($this->isEditing) {
+            return false;
+        }
+
+        return (bool) ($this->household['be_head'] ?? false)
+            || $this->unit === null
+            || ! ($this->unit['is_occupied'] ?? false);
     }
 
     private function unitNote(): string
