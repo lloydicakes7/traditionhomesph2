@@ -37,7 +37,6 @@ class PropertyFormQuery
             'residents'      => collect(),
             'types'          => [],
             'householdTypes' => [],
-            'relationships'  => [],
         ];
     }
 }

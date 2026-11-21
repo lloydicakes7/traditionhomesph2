@@ -69,7 +69,8 @@
 
                 <div class="row">
                     <div class="col-sm-6">
-                        <x-adminlte-input name="form.sqm" label="SQM" type="number" step="0.01" placeholder="e.g., 120.50"
+                        <x-adminlte-input name="form.sqm" label="Floor area (sqm)" type="number" step="0.01"
+                            min="0" max="99999" placeholder="e.g., 120.50"
                             wire:model.defer="form.sqm" igroup-size="sm" enable-old-support>
                             <x-slot name="prependSlot"><div class="input-group-text"><i class="fas fa-fw fa-ruler-combined"></i></div></x-slot>
                         </x-adminlte-input>

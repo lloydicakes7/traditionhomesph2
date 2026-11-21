@@ -57,15 +57,6 @@ class Property extends Model
     }
 
     /**
-     * The resident who holds this unit's account.
-     *
-     */
-    public function getHeadResidentIdAttribute(): ?int
-    {
-        return $this->currentHousehold?->head_resident?->id;
-    }
-
-    /**
      * The unit as the association writes it: "Blk 7 Lot 12".
      */
     public function getBlockLotLabelAttribute(): string
@@ -184,28 +175,5 @@ class Property extends Model
         }
 
         return $data;
-    }
-
-    /**
-     * The occupied units as a select's options, with who holds each —
-     * "Blk 7 Lot 12 · Juana Dela Cruz".
-     *
-     * @return array<int, string>
-     */
-    public static function selectOptions(): array
-    {
-        return static::query()
-            ->withHousehold()
-            ->with('currentHousehold.user.resident')
-            ->orderBy('block')
-            ->orderBy('lot')
-            ->get()
-            ->mapWithKeys(function (Property $property) {
-                return [
-                    $property->id => $property->block_lot_label
-                        . ' · ' . ($property->owner?->name ?: 'No household on file'),
-                ];
-            })
-            ->all();
     }
 }

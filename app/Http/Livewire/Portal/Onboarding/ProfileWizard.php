@@ -131,7 +131,7 @@ class ProfileWizard extends PortalComponent
 
         if ($this->unit === null) {
             $rules = array_merge($rules, [
-                'property.sqm'  => ['required', 'numeric', 'min:1', 'max:99999'],
+                'property.sqm'  => ['required', 'numeric', 'min:0', 'max:99999'],
                 'property.type' => ['required', Rule::in(PropertyType::values())],
             ]);
         }

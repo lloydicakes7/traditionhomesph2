@@ -90,7 +90,7 @@ class PropertyFormModal extends AdminModalComponent
                     ->ignore($this->editingPropertyId),
             ],
             'form.address_id' => ['required', 'exists:addresses,id'],
-            'form.sqm'        => ['nullable', 'numeric', 'min:0'],
+            'form.sqm'        => ['nullable', 'numeric', 'min:0', 'max:99999'],
             'form.type'       => ['nullable', 'string', Rule::in(\App\Enums\PropertyType::values())],
             'propertyPicture' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
         ];

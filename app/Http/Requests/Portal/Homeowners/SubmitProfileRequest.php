@@ -43,7 +43,7 @@ class SubmitProfileRequest extends FormRequest
         return $rules + [
             'property.block' => ['required', 'integer', 'min:1', 'max:9999'],
             'property.lot'   => ['required', 'integer', 'min:1', 'max:9999'],
-            'property.sqm'   => ['nullable', 'numeric', 'min:1', 'max:99999'],
+            'property.sqm'   => ['nullable', 'numeric', 'min:0', 'max:99999'],
             'property.type'  => ['nullable', Rule::in(PropertyType::values())],
 
             'household.type'         => ['required', Rule::in(HouseholdType::values())],

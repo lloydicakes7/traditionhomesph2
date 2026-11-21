@@ -42,9 +42,6 @@
                             <x-slot name="prependSlot"><div class="input-group-text"><i class="fas fa-fw fa-link"></i></div></x-slot>
                         </x-adminlte-input>
                     </div>
-
-                    <div class="col-12 col-md-6">
-                    </div>
                 </div>
 
                 <x-adminlte-textarea name="assignForm.prev_address" label="Previous Address"

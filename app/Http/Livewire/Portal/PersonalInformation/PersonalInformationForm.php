@@ -27,7 +27,7 @@ class PersonalInformationForm extends PortalComponent
         $this->query = $query;
     }
 
-    // ===== Validation =====
+    // ===== Lifecycle =====
 
     public function mount(): void
     {

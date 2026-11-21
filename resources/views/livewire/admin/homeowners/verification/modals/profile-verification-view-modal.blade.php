@@ -161,7 +161,7 @@
                                     <dd class="col-sm-7 text-break">{!! $v($property?->full_address_label) !!}</dd>
 
                                     <dt class="col-sm-5 text-muted font-weight-normal">Floor Area</dt>
-                                    <dd class="col-sm-7">{!! $v($property ? number_format((float) $property->sqm, 2) . ' sqm' : null) !!}</dd>
+                                    <dd class="col-sm-7">{!! $v($property && $property->sqm !== null ? number_format((float) $property->sqm, 2) . ' sqm' : null) !!}</dd>
 
                                     <dt class="col-sm-5 text-muted font-weight-normal">Unit Type</dt>
                                     <dd class="col-sm-7">{!! $v($property?->type_enum?->label() ?? $property?->type) !!}</dd>

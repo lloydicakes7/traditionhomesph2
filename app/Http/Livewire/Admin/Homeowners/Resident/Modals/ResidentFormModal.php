@@ -150,7 +150,7 @@ class ResidentFormModal extends AdminModalComponent
                 Rule::requiredIf(function () {
                     return $this->householdIsNewUnit();
                 }),
-                'nullable', 'numeric', 'min:1', 'max:99999',
+                'nullable', 'numeric', 'min:0', 'max:99999',
             ],
             'property.type'          => [
                 Rule::requiredIf(function () {
