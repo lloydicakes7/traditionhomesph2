@@ -33,9 +33,9 @@ return [
     ],
 
     'note' => [
-        'name_unit'     => 'Enter the block and lot so the association can find the unit.',
-        'new_unit'      => 'No unit is on file at this block and lot yet. It will be recorded with the floor area and type above.',
-        'vacant'        => 'No household is registered at this unit yet. The person placed here is recorded as its household head.',
+        'name_unit'     => 'Enter the block and lot so the association can find the unit. A household head must be at least 18 years old.',
+        'new_unit'      => 'No unit is on file at this block and lot yet. It will be recorded with the floor area and type above. A household head must be at least 18 years old.',
+        'vacant'        => 'No household is registered at this unit yet. The person placed here becomes its household head, so they must be at least 18 years old.',
         'occupied'      => 'This unit already has a household. The household head on file confirms whether the person placed here joins it, and as whom.',
         'own_head'      => 'You are the household head of this property. Your household and its members are already on file.',
         'own_household' => 'This is the address on file for this household. Change the block and lot to move it to another unit.',

@@ -21,4 +21,16 @@ class TextHelper
 
         return mb_strtoupper($normalized, 'UTF-8');
     }
+
+    /**
+     * The words of a search, so each one can be matched on its own.
+     *
+     * @return array<int, string>
+     */
+    public static function searchTerms(string $search): array
+    {
+        $terms = preg_split('/\s+/', trim($search), -1, PREG_SPLIT_NO_EMPTY);
+
+        return $terms === false ? [] : $terms;
+    }
 }

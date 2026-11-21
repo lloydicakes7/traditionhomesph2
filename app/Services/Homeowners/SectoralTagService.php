@@ -52,8 +52,14 @@ class SectoralTagService
             $errors[] = 'Overseas Filipino Worker requires Labor Force / Employed.';
         }
 
-        if ($this->has($sectors, SectorType::LABOR_FORCE_EMPLOYED) && trim((string) ($facts['occupation'] ?? '')) === '') {
+        $hasOccupation = trim((string) ($facts['occupation'] ?? '')) !== '';
+
+        if ($this->has($sectors, SectorType::LABOR_FORCE_EMPLOYED) && ! $hasOccupation) {
             $errors[] = 'Occupation is required for Labor Force / Employed.';
+        }
+
+        if ($hasOccupation && ! $this->has($sectors, SectorType::LABOR_FORCE_EMPLOYED)) {
+            $errors[] = 'Labor Force / Employed must be checked when an occupation is given.';
         }
 
         if ($this->has($sectors, SectorType::SOLO_PARENT)

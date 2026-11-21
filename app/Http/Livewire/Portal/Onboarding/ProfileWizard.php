@@ -10,7 +10,6 @@ use App\Http\Livewire\Concerns\ValidatesSectoralTags;
 use App\Http\Livewire\PortalComponent;
 use App\Rules\HouseholdHeadAge;
 use App\Http\Requests\Portal\Homeowners\SubmitProfileRequest;
-use App\Models\Resident;
 use App\Queries\Homeowners\Households\HouseholdUnitQuery;
 use App\Queries\Homeowners\Profiles\OnboardingFormQuery;
 use Illuminate\Support\Facades\Log;
@@ -138,27 +137,10 @@ class ProfileWizard extends PortalComponent
         }
 
         if ($withHeadAge && $this->residentBecomesHead()) {
-            $rules['form.birth_date'] = array_merge(
-                $rules['form.birth_date'],
-                [new HouseholdHeadAge($this->headAgeMessage())]
-            );
+            $rules['form.birth_date'] = array_merge($rules['form.birth_date'], [new HouseholdHeadAge]);
         }
 
         return $rules;
-    }
-
-    /**
-     * The sentence shown when the resident is too young to head the household.
-     */
-    private function headAgeMessage(): ?string
-    {
-        if ($this->unit === null) {
-            return 'This household has no registered head yet. A household head must be at least '
-                .Resident::MINIMUM_HEAD_AGE
-                .' years old. Please ask an 18+ member of your household to register first.';
-        }
-
-        return null;
     }
 
     private function residentBecomesHead(): bool
@@ -256,7 +238,7 @@ class ProfileWizard extends PortalComponent
             return;
         }
 
-        $rule = new HouseholdHeadAge($this->headAgeMessage());
+        $rule = new HouseholdHeadAge;
 
         if (! $rule->passes('form.birth_date', $this->form['birth_date'] ?? null)) {
             $this->addError('form.birth_date', $rule->message());

@@ -41,6 +41,45 @@ class HomeownersQueryTest extends TestCase
         $this->assertSame('Dela Cruz', $query->paginate('Dela')->items()[0]->surname);
     }
 
+    public function test_the_lists_find_a_name_split_across_columns_in_any_order(): void
+    {
+        $address = $this->address();
+
+        $resident = factory(Resident::class)->create([
+            'surname'     => 'Dela Cruz',
+            'first_name'  => 'Juan',
+            'middle_name' => 'Santos',
+            'suffix'      => 'Jr.',
+            'occupation'  => '',
+        ]);
+        $this->account($resident);
+
+        $other = factory(Resident::class)->create([
+            'surname'     => 'Santos',
+            'first_name'  => 'Ana',
+            'middle_name' => null,
+            'suffix'      => null,
+            'occupation'  => '',
+        ]);
+        $this->account($other);
+
+        $household = Household::create([
+            'property_id' => $this->property($address, 5, 6)->id,
+            'type'        => 'owner',
+        ]);
+        $household->placeHead($resident->id, 'father');
+
+        $residents = app(ResidentListQuery::class);
+        $homeowners = app(HomeownerListQuery::class);
+        $households = app(HouseholdListQuery::class);
+
+        foreach (['Juan Santos Dela Cruz Jr.', 'Cruz Juan', 'Jr Dela Santos Juan', 'Santos Cruz'] as $search) {
+            $this->assertSame(1, $residents->paginate($search)->total(), $search);
+            $this->assertSame(1, $homeowners->paginate($search)->total(), $search);
+            $this->assertSame(1, $households->paginate($search)->total(), $search);
+        }
+    }
+
     public function test_the_resident_summary_counts_who_has_an_account(): void
     {
         $this->account($this->resident('Santos', 'Ana'));

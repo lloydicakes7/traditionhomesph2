@@ -29,18 +29,12 @@ class ResidentListQuery
             }, 'member_count')
             ->with(['user', 'household.property']);
 
-        $this->search($query, $search);
-
-        return $query->orderBy($sortField, $sortDirection)->paginate($perPage);
+        return $query->search($search)->orderBy($sortField, $sortDirection)->paginate($perPage);
     }
 
     public function ids(string $search = ''): array
     {
-        $query = Resident::query();
-
-        $this->search($query, $search);
-
-        return $query->pluck('id')
+        return Resident::query()->search($search)->pluck('id')
             ->map(function ($id) {
                 return (string) $id;
             })
@@ -50,23 +44,5 @@ class ResidentListQuery
     public function find(int $id): Resident
     {
         return Resident::with('user')->findOrFail($id);
-    }
-
-    // ===== Helpers =====
-
-    private function search($query, string $search): void
-    {
-        if ($search === '') {
-            return;
-        }
-
-        $query->where(function ($q) use ($search) {
-            $q->where('surname', 'like', "%{$search}%")
-                ->orWhere('first_name', 'like', "%{$search}%")
-                ->orWhere('mobile_no', 'like', "%{$search}%")
-                ->orWhereHas('user', function ($uq) use ($search) {
-                    $uq->where('email', 'like', "%{$search}%");
-                });
-        });
     }
 }

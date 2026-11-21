@@ -9,6 +9,7 @@ use App\Models\Amenity\AmenityBooking;
 use App\Models\Bill\Bill;
 use App\Models\Household\Household;
 use App\Models\Household\HouseholdMember;
+use App\Utility\TextHelper;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -224,6 +225,34 @@ class User extends Authenticatable implements MustVerifyEmail
 
             if ($userId) {
                 $q->orWhere('id', $userId);
+            }
+        });
+    }
+
+    /**
+     * Match every word of the search against the email, or any part of the
+     * resident's name and mobile number.
+     */
+    public function scopeSearch(Builder $query, string $search): Builder
+    {
+        $terms = TextHelper::searchTerms($search);
+
+        if ($terms === []) {
+            return $query;
+        }
+
+        return $query->where(function ($query) use ($terms) {
+            foreach ($terms as $term) {
+                $query->where(function ($query) use ($term) {
+                    $query->where('email', 'like', "%{$term}%")
+                        ->orWhereHas('resident', function ($resident) use ($term) {
+                            $resident->where('first_name', 'like', "%{$term}%")
+                                ->orWhere('middle_name', 'like', "%{$term}%")
+                                ->orWhere('surname', 'like', "%{$term}%")
+                                ->orWhere('suffix', 'like', "%{$term}%")
+                                ->orWhere('mobile_no', 'like', "%{$term}%");
+                        });
+                });
             }
         });
     }

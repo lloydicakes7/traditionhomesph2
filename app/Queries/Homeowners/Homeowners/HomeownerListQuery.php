@@ -77,15 +77,6 @@ class HomeownerListQuery
             ->when($accountStatus === 'inactive', function ($q) {
                 $q->where('is_active', false);
             })
-            ->when($search, function ($q) use ($search) {
-                $q->where(function ($wq) use ($search) {
-                    $wq->where('email', 'like', "%{$search}%")
-                        ->orWhereHas('resident', function ($rq) use ($search) {
-                            $rq->where('surname', 'like', "%{$search}%")
-                                ->orWhere('first_name', 'like', "%{$search}%")
-                                ->orWhere('mobile_no', 'like', "%{$search}%");
-                        });
-                });
-            });
+            ->search($search);
     }
 }

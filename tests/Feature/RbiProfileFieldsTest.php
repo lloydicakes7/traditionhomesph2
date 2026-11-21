@@ -185,6 +185,29 @@ class RbiProfileFieldsTest extends TestCase
         );
     }
 
+    public function test_an_occupation_without_labor_force_employed_is_refused(): void
+    {
+        Livewire::test(ResidentFormModal::class)
+            ->call('openCreate')
+            ->set('form.surname', 'Dela Cruz')
+            ->set('form.first_name', 'Juan')
+            ->set('form.sex', 'male')
+            ->set('form.birth_date', '1985-06-14')
+            ->set('form.citizenship', 'Filipino')
+            ->set('form.civil_status', 'single')
+            ->set('form.educational_attainment', 'college_graduate')
+            ->set('form.occupation', 'Teacher')
+            ->set('property.block', '11')
+            ->set('property.lot', '4')
+            ->set('property.sqm', '88.50')
+            ->set('property.type', 'duplex')
+            ->call('save')
+            ->assertHasErrors(['form.sectors'])
+            ->assertSee('Labor Force / Employed must be checked when an occupation is given.');
+
+        $this->assertSame(0, Resident::where('first_name', 'JUAN')->count());
+    }
+
     public function test_a_sectoral_tag_must_agree_with_the_residents_age(): void
     {
         Livewire::test(ResidentFormModal::class)

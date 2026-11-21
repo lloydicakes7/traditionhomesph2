@@ -202,7 +202,27 @@ class ProfileVerificationTest extends TestCase
             ->call('next')
             ->assertHasErrors(['form.birth_date'])
             ->assertSet('step', 1)
-            ->assertSee('This household has no registered head yet.');
+            ->assertSee('A household head must be 18+ years old.');
+    }
+
+    public function test_a_unit_without_a_household_tells_the_resident_the_head_requirement(): void
+    {
+        $user = $this->registered();
+        $address = $this->primaryAddress();
+
+        Property::create([
+            'block'      => 9,
+            'lot'        => 3,
+            'address_id' => $address->id,
+            'sqm'        => 90,
+            'type'       => 'townhouse',
+        ]);
+
+        Livewire::actingAs($user, 'homeowner')
+            ->test(ProfileWizard::class)
+            ->set('property.block', '9')
+            ->set('property.lot', '3')
+            ->assertSee(__('households.note.vacant'));
     }
 
     public function test_going_back_to_personal_information_flags_an_underage_head_of_an_existing_household(): void
@@ -237,8 +257,8 @@ class ProfileVerificationTest extends TestCase
             ->call('back')
             ->assertSet('step', 1)
             ->assertHasErrors(['form.birth_date'])
-            ->assertSee('A household head must be at least 18 years old.')
-            ->assertDontSee('This household has no registered head yet.');
+            ->assertSee('A household head must be 18+ years old.')
+            ->assertDontSee(__('households.note.vacant'));
     }
 
     // ===== Submission =====
@@ -776,6 +796,7 @@ class ProfileVerificationTest extends TestCase
             'sex'          => 'male',
             'civil_status' => 'single',
             'citizenship'  => null,
+            'occupation'   => '',
             'mobile_no'    => '09171234567',
         ]);
 

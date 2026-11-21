@@ -139,6 +139,34 @@ class Resident extends Model
     }
 
     /**
+     * Match every word of the search against any part of the name, the mobile
+     * number, or the linked account's email.
+     */
+    public function scopeSearch(Builder $query, string $search): Builder
+    {
+        $terms = TextHelper::searchTerms($search);
+
+        if ($terms === []) {
+            return $query;
+        }
+
+        return $query->where(function ($query) use ($terms) {
+            foreach ($terms as $term) {
+                $query->where(function ($query) use ($term) {
+                    $query->where('first_name', 'like', "%{$term}%")
+                        ->orWhere('middle_name', 'like', "%{$term}%")
+                        ->orWhere('surname', 'like', "%{$term}%")
+                        ->orWhere('suffix', 'like', "%{$term}%")
+                        ->orWhere('mobile_no', 'like', "%{$term}%")
+                        ->orWhereHas('user', function ($user) use ($term) {
+                            $user->where('email', 'like', "%{$term}%");
+                        });
+                });
+            }
+        });
+    }
+
+    /**
      * The unit this resident lives in, or null while none is on file.
      */
     public function unit(): ?Property

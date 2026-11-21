@@ -24,17 +24,7 @@ class HouseholdListQuery
             'headMember.resident.user',
             'memberRecords.resident.user',
         ])
-            ->when($search, function ($q) use ($search) {
-                $q->where(function ($wq) use ($search) {
-                    $wq->whereHas('memberRecords.resident', function ($pq) use ($search) {
-                        $pq->where('surname', 'like', "%{$search}%")
-                            ->orWhere('first_name', 'like', "%{$search}%");
-                    })->orWhereHas('property', function ($prq) use ($search) {
-                        $prq->where('block', 'like', "%{$search}%")
-                            ->orWhere('lot', 'like', "%{$search}%");
-                    });
-                });
-            })
+            ->search($search)
             ->orderBy($sortField, $sortDirection)
             ->paginate($perPage);
     }

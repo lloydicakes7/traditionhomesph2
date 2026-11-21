@@ -7,6 +7,7 @@ use App\Models\Property;
 use App\Models\Resident;
 use App\Models\User;
 use App\Utility\TextHelper;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
@@ -76,6 +77,35 @@ class Household extends Model
             'id',
             'resident_id'
         )->where('household_members.is_head', true);
+    }
+
+    /**
+     * Match every word of the search against any member's name, or the unit's
+     * block and lot.
+     */
+    public function scopeSearch(Builder $query, string $search): Builder
+    {
+        $terms = TextHelper::searchTerms($search);
+
+        if ($terms === []) {
+            return $query;
+        }
+
+        return $query->where(function ($query) use ($terms) {
+            foreach ($terms as $term) {
+                $query->where(function ($query) use ($term) {
+                    $query->whereHas('memberRecords.resident', function ($resident) use ($term) {
+                        $resident->where('first_name', 'like', "%{$term}%")
+                            ->orWhere('middle_name', 'like', "%{$term}%")
+                            ->orWhere('surname', 'like', "%{$term}%")
+                            ->orWhere('suffix', 'like', "%{$term}%");
+                    })->orWhereHas('property', function ($property) use ($term) {
+                        $property->where('block', 'like', "%{$term}%")
+                            ->orWhere('lot', 'like', "%{$term}%");
+                    });
+                });
+            }
+        });
     }
 
     // ===== Display =====
