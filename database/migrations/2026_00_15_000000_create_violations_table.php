@@ -44,7 +44,6 @@ class CreateViolationsTable extends Migration
 
             $table->foreignId('issued_by_admin_id')->nullable()->constrained('admins')->nullOnDelete();
             $table->timestamp('issued_at')->nullable();
-            $table->timestamp('acknowledged_at')->nullable();
 
             $table->text('resolution_notes')->nullable();
             $table->foreignId('resolved_by_admin_id')->nullable()->constrained('admins')->nullOnDelete();

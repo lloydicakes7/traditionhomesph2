@@ -36,6 +36,10 @@ class CreateRequestsTable extends Migration
      * stops being valid (`document_expires_at`, three months), never a download
      * count — the portal issues a transaction slip, not the document.
      *
+     * The officer who approves names the moment the homeowner may claim the
+     * document at the counter (`claiming_at`); a request that was never approved
+     * leaves it empty.
+     *
      * `reference` is the number the slip and the office's search use,
      * `REQ-2026-000045`; it is written once when the request is filed.
      *
@@ -75,6 +79,7 @@ class CreateRequestsTable extends Migration
 
             $table->foreignId('bill_id')->nullable()->constrained('bills')->nullOnDelete();
             $table->timestamp('document_expires_at')->nullable()->comment('When a printed certification stops being valid; three months');
+            $table->timestamp('claiming_at')->nullable()->comment('When the homeowner may claim the document at the counter');
 
             $table->timestamps();
 

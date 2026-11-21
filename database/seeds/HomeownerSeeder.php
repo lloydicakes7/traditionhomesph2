@@ -1,17 +1,14 @@
 <?php
 
-use App\Enums\CivilStatus;
-use App\Enums\EducationalAttainment;
-use App\Enums\Sex;
 use App\Models\Resident;
 use App\Models\User;
+use App\Utility\TextHelper;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
 class HomeownerSeeder extends Seeder
 {
-    const COUNT = 99;
-    const PASSWORD = "dontshare123!@";
+    const COUNT = 100;
 
     /**
      * Run the database seeds.
@@ -20,27 +17,34 @@ class HomeownerSeeder extends Seeder
      */
     public function run()
     {
-        $this->createExampleHomeowner();
+        $password = config('account.homeowner.password');
 
-        $residentIds = Resident::query()
+        if (empty($password)) {
+            $this->command->error('HOMEOWNER_PASSWORD must be set in .env');
+            return;
+        }
+
+        $residents = Resident::query()
             ->whereDoesntHave('user')
             ->inRandomOrder()
             ->limit(self::COUNT)
-            ->pluck('id');
+            ->get();
 
-        if ($residentIds->isEmpty()) {
+        if ($residents->isEmpty()) {
             $this->command->info('Every resident already holds a portal account.');
             return;
         }
 
-        $bar = $this->command->getOutput()->createProgressBar($residentIds->count());
+        $bar = $this->command->getOutput()->createProgressBar($residents->count());
         $bar->start();
 
-        foreach ($residentIds as $residentId) {
+        foreach ($residents as $resident) {
+            $resident->update(self::upperCaseProfile($resident));
+
             factory(User::class)->create([
-                'resident_id' => $residentId,
-                'email'       => self::emailFor($residentId),
-                'password'    => Hash::make(self::PASSWORD),
+                'resident_id' => $resident->id,
+                'email'       => self::emailFor($resident->id),
+                'password'    => Hash::make($password),
             ]);
 
             $bar->advance();
@@ -48,7 +52,28 @@ class HomeownerSeeder extends Seeder
 
         $bar->finish();
         $this->command->line('');
-        $this->command->info($residentIds->count() . ' homeowner accounts seeded successfully.');
+        $this->command->info($residents->count() . ' homeowner accounts seeded successfully.');
+    }
+
+    /**
+     * The profile text as the association stores it.
+     *
+     * @return array<string, string|null>
+     */
+    private static function upperCaseProfile(Resident $resident): array
+    {
+        $fields = [
+            'surname', 'first_name', 'middle_name', 'birth_place',
+            'religion', 'citizenship', 'occupation', 'spouse_name',
+        ];
+
+        $values = [];
+
+        foreach ($fields as $field) {
+            $values[$field] = TextHelper::upper($resident->{$field});
+        }
+
+        return $values;
     }
 
     /**
@@ -57,49 +82,6 @@ class HomeownerSeeder extends Seeder
      */
     private static function emailFor(int $residentId): string
     {
-        return 'homeowner' . $residentId . '@example.com';
-    }
-
-    /**
-     * The fixed example homeowner: John Doe, with the person to match.
-     */
-    private function createExampleHomeowner(): void
-    {
-        $resident = Resident::firstOrCreate(['mobile_no' => '09170000001'], [
-            'surname'                => 'Doe',
-            'first_name'             => 'John',
-            'middle_name'            => null,
-            'suffix'                 => null,
-            'birth_date'             => '1990-01-01',
-            'birth_place'            => 'Manila',
-            'sex'                    => Sex::MALE,
-            'civil_status'           => CivilStatus::SINGLE,
-            'citizenship'            => 'Filipino',
-            'religion'               => 'Roman Catholic',
-            'occupation'             => 'Homeowner',
-            'mobile_no'              => '09170000001',
-            'educational_attainment' => EducationalAttainment::COLLEGE_GRADUATE,
-            'profile_photo_path'     => null,
-        ]);
-
-        // -----------------------------------------------------------------------
-        // Create user account
-        // -----------------------------------------------------------------------
-        $email    = config('account.homeowner.email');
-        $password = config('account.homeowner.password');
-
-        if (empty($email) || empty($password)) {
-            $this->command->error('HOMEOWNER_EMAIL and HOMEOWNER_PASSWORD must be set in .env');
-            return;
-        }
-
-        User::firstOrCreate(
-            ['email' => $email],
-            [
-                'resident_id' => $resident->id,
-                'password'    => Hash::make($password),
-                'is_active'   => true,
-            ]
-        );
+        return 'homeowner' . $residentId . '@gmail.com';
     }
 }

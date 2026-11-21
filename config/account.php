@@ -9,7 +9,6 @@ return [
     ],
 
     'homeowner' => [
-        'email'    => env('HOMEOWNER_EMAIL'),
         'password' => env('HOMEOWNER_PASSWORD'),
     ]
 ];
