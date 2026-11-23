@@ -71,7 +71,7 @@
 
     {{-- ===== Message ===== --}}
 
-    <section class="pb-5 bg-light" id="contact-message">
+    {{-- <section class="pb-5 bg-light" id="contact-message">
         <div class="container py-4">
             <div class="row justify-content-center">
                 <div class="col-12 col-lg-9">
@@ -86,5 +86,5 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section> --}}
 @endsection
