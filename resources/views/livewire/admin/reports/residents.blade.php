@@ -1,5 +1,5 @@
 <div>
-    <x-reports.toolbar subtitle="The association read as a population — age, household mix, background, and the units on file" :exportable="false" />
+    <x-reports.toolbar subtitle="The association read as a population: age, household mix, background, and the units on file" :exportable="false" />
 
     {{-- =================================================================== --}}
     {{-- WHO IS ON FILE                                                       --}}

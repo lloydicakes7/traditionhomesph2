@@ -15,8 +15,8 @@ return [
         'title'  => 'RBI Forms',
         'my_rbi' => 'My RBI',
         'intro'  => 'The Records of Barangay Inhabitants forms revised in 2024: Form A by household, Form B by individual and Form C for the semestral report.',
-        'select_household' => '— Select a household —',
-        'select_resident'  => '— Select a resident —',
+        'select_household' => 'Select a household',
+        'select_resident'  => 'Select a resident',
         'columns' => [
             'household' => 'Household',
             'unit'      => 'Unit',

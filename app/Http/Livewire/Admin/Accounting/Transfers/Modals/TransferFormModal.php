@@ -180,7 +180,7 @@ class TransferFormModal extends AdminModalComponent
      *
      * @return array<string, mixed>
      */
-    private function rules(): array
+    protected function rules(): array
     {
         return [
             'transfer_date'   => 'required|date',

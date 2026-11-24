@@ -164,7 +164,7 @@ class ComplaintFormModal extends AdminModalComponent
         $this->emit('notify', 'success',
             $this->isEditing
                 ? 'Complaint updated successfully.'
-                : 'Complaint filed — it is now on the complaints queue.');
+                : 'Complaint filed: it is now on the complaints queue.');
 
         $this->emit('complaint-saved');
 

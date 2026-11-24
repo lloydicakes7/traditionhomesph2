@@ -189,7 +189,7 @@ class ViolationFormModal extends AdminModalComponent
         $this->emit('notify', 'success',
             $this->isEditing
                 ? 'Violation updated successfully.'
-                : 'Violation issued — it is now on the homeowner\'s record.');
+                : 'Violation issued: it is now on the homeowner\'s record.');
 
         $this->emit('violation-saved');
 

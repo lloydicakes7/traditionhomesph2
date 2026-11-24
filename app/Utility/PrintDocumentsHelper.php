@@ -104,7 +104,7 @@ final class PrintDocumentsHelper
 
         $name = trim((string) $resident->full_name);
 
-        return $name === '—' ? '' : $name;
+        return $name;
     }
 
     /**
@@ -718,12 +718,12 @@ final class PrintDocumentsHelper
     /**
      * An amount as the paper forms write it: "PHP 1,500.00".
      */
-    public static function money($amount, bool $dashWhenZero = false): string
+    public static function money($amount, bool $blankWhenZero = false): string
     {
         $amount = (float) $amount;
 
-        if ($dashWhenZero && $amount === 0.0) {
-            return '—';
+        if ($blankWhenZero && $amount === 0.0) {
+            return '';
         }
 
         return self::MONEY_PREFIX . ' ' . number_format($amount, 2);

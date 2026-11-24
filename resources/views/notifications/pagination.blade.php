@@ -3,7 +3,7 @@
 
     Laravel's pagination views open with `@if ($paginator->hasPages())`, and both
     panels list an account that may have a single line, so this one draws the
-    control whatever the length — its arrows say whether there is anywhere to go.
+    control whatever the length: its arrows say whether there is anywhere to go.
     Navigation is Livewire (`wire:click`), because the list that renders it is a
     component; a plain `?page=` link would leave the component behind.
 --}}

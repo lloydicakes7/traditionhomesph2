@@ -138,7 +138,7 @@ class BookingRequestModal extends PortalModalComponent
 
         $this->requestBooking->handle($amenity, $this->form, $this->account());
 
-        $this->emit('notify', 'success', 'Booking requested — the office will review it and get back to you.');
+        $this->emit('notify', 'success', 'Booking requested: the office will review it and get back to you.');
 
         $this->emit('booking-requested');
 

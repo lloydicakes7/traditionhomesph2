@@ -19,7 +19,7 @@
 
                 {{-- The optional note on how it was settled --}}
                 <x-adminlte-textarea name="resolutionNotes" label="Resolution Notes (optional)" rows="3"
-                    placeholder="How it was settled — what the homeowner did, what was agreed, anything worth keeping on record."
+                    placeholder="How it was settled: what the homeowner did, what was agreed, anything worth keeping on record."
                     wire:model.defer="resolutionNotes" igroup-size="sm" />
                 @error('resolutionNotes') <span class="text-danger small">{{ $message }}</span> @enderror
 

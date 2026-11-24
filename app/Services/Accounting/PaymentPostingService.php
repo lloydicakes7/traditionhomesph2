@@ -62,7 +62,7 @@ class PaymentPostingService
     {
         if (! $money->is_cash) {
             throw ValidationException::withMessages([
-                'account_id' => 'Choose a cash account — cash on hand or a bank account.',
+                'account_id' => 'Choose a cash account: cash on hand or a bank account.',
             ]);
         }
 
@@ -92,7 +92,7 @@ class PaymentPostingService
 
         if (! Account::query()->cash()->whereIn('id', $ids)->exists()) {
             throw ValidationException::withMessages([
-                'lines' => 'Choose a cash account — cash on hand or a bank account.',
+                'lines' => 'Choose a cash account: cash on hand or a bank account.',
             ]);
         }
     }

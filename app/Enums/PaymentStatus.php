@@ -41,7 +41,7 @@ class PaymentStatus extends Enum
     public static function descriptions(): array
     {
         return [
-            self::PENDING  => 'Submitted and waiting — the office records it once the money is verified.',
+            self::PENDING  => 'Submitted and waiting: the office records it once the money is verified.',
             self::RECORDED => 'Recorded by the office against the bill.',
         ];
     }

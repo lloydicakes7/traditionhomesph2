@@ -110,7 +110,7 @@ final class OccupancyListBuilder extends AbstractPrintDocumentBuilder
      */
     private function typeLabel($household): string
     {
-        return $household && $household->type_enum ? $household->type_enum->label() : '—';
+        return $household && $household->type_enum ? $household->type_enum->label() : '';
     }
 
     /**

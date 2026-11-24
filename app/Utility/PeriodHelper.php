@@ -141,7 +141,7 @@ class PeriodHelper
     public static function shortLabel(?string $period): string
     {
         if (! $period) {
-            return '—';
+            return '';
         }
 
         return Carbon::createFromFormat(self::FORMAT, $period)->format('M Y');

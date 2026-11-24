@@ -41,7 +41,7 @@
                 <div class="callout callout-info mb-0">
                     <h6 class="mb-1"><i class="fas fa-fw fa-shield-alt mr-1"></i> Full access</h6>
                     <p class="mb-0 small">
-                        The Administrator holds every permission the panel declares, and always will —
+                        The Administrator holds every permission the panel declares, and always will :
                         the catalogue in code decides what that is, so there is nothing to switch here.
                         Create or edit another role to grant a narrower set.
                     </p>
@@ -121,7 +121,7 @@
                                         <div>
                                             <h6 class="mb-0">{{ $activeModule }}</h6>
                                             <small class="text-muted">
-                                                {{ $activeGroup }} — {{ $activeGranted }} of {{ count($activePermissions) }} granted
+                                                {{ $activeGroup }}: {{ $activeGranted }} of {{ count($activePermissions) }} granted
                                             </small>
                                         </div>
                                         <x-adminlte-button label="{{ $activeToggle['label'] }}"

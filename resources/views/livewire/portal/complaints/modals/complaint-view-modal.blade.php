@@ -63,7 +63,7 @@
                         <div class="font-weight-bold small mb-1">
                             <i class="fas fa-fw fa-reply mr-1"></i>Office Response
                             @if ($complaint->respondedByAdmin)
-                                — {{ $complaint->respondedByAdmin->name }},
+                               : {{ $complaint->respondedByAdmin->name }},
                                 {{ $complaint->responded_at->format('M j, Y g:i A') }}
                             @endif
                         </div>

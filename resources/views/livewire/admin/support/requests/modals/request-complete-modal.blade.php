@@ -19,7 +19,7 @@
 
                 <p class="mb-0">
                     Completing closes this request as done. Confirm once the issued document has been
-                    handed over — nothing else is left to do on it.
+                    handed over: nothing else is left to do on it.
                 </p>
             @endif
         </div>

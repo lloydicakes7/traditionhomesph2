@@ -71,7 +71,7 @@
                 <div class="row">
                     <div class="col-12">
                         <x-adminlte-textarea name="form.description" label="Description" rows="5"
-                            placeholder="What was reported — what happened, when and where, and anything else the office needs."
+                            placeholder="What was reported: what happened, when and where, and anything else the office needs."
                             wire:model.defer="form.description" igroup-size="sm" />
                     </div>
                 </div>

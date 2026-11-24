@@ -1,11 +1,11 @@
 {{--
-    A report's header and its filters — two cards, on purpose.
+    A report's header and its filters: two cards, on purpose.
 
     The first card is the report's name: what it covers on the left, and the
     controls that send it out of the system on the right. It prints, because it
     says what the page is.
 
-    The filters are their own card, and are never printed — a date range is how
+    The filters are their own card, and are never printed: a date range is how
     you read a report, not part of it. A report with no filters of its own
     passes no slot and gets no card.
 

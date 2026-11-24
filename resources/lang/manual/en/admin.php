@@ -2,7 +2,7 @@
 
 /*
 |--------------------------------------------------------------------------
-| User Manual — Admin Panel
+| User Manual: Admin Panel
 |--------------------------------------------------------------------------
 |
 | The admin panel's copy, keyed by the topics the catalogue in
@@ -42,7 +42,7 @@ return [
                 ],
                 [
                     'title' => 'Who it is for',
-                    'body'  => 'Officers and staff of the association work in the admin panel, at /admin. Homeowners sign in to the portal, at /portal. They are two separate account types — an officer\'s login is not a homeowner\'s login, and neither can open the other\'s pages.',
+                    'body'  => 'Officers and staff of the association work in the admin panel, at /admin. Homeowners sign in to the portal, at /portal. They are two separate account types: an officer\'s login is not a homeowner\'s login, and neither can open the other\'s pages.',
                 ],
                 [
                     'title'  => 'How the system is organised',
@@ -50,7 +50,7 @@ return [
                     'fields' => [
                         'Sidebar'      => 'The tools the system offers you, grouped under headers. The search box at its top finds one by name.',
                         'Navbar'       => 'The bar across the top. The hamburger toggles the sidebar, the bell counts your notifications, and your name opens your profile and the sign-out.',
-                        'Content area' => 'The page you opened, headed by its title and — on a list — a toolbar of that page\'s own actions.',
+                        'Content area' => 'The page you opened, headed by its title and (on a list) a toolbar of that page\'s own actions.',
                         'Footer'       => 'The association\'s own name and the copyright line.',
                         'Dashboard'    => 'Where signing in lands you: the figures that matter today, the year in charts, and everything still open.',
                     ],
@@ -64,7 +64,7 @@ return [
                         'Bill'              => 'One charge. Monthly dues, an invoice and a paid booking all land on the same ledger as a bill.',
                         'Payment'           => 'Money received against a bill. A bill settles only from the receipts recorded against it.',
                         'Journal entry'     => 'The double-entry record behind money moving in or out. The books are the whole of these.',
-                        'Permission'        => 'One switch on a role — "may add a resident", "may approve a request". Your role decides your menus.',
+                        'Permission'        => 'One switch on a role: "may add a resident", "may approve a request". Your role decides your menus.',
                     ],
                 ],
             ],
@@ -84,7 +84,7 @@ return [
                         'The sign-in page appears, asking for your email address and your password.',
                     ],
                     'notes'  => [
-                        'Bookmark the address — the office\'s exact address is set by the association, not by this manual.',
+                        'Bookmark the address: the office\'s exact address is set by the association, not by this manual.',
                     ],
                 ],
                 [
@@ -133,12 +133,12 @@ return [
                     'fields' => [
                         'Sidebar headers'   => 'The areas of the association: operations, finance, reports and support, administration.',
                         'Sidebar search'    => 'Type a page name and pick the result. It searches the menu you can see, so it never offers a page you cannot open.',
-                        'Navbar toggler'    => 'Collapses the sidebar to icons and back — useful on a small screen.',
+                        'Navbar toggler'    => 'Collapses the sidebar to icons and back: useful on a small screen.',
                         'Navbar bell'       => 'Your own notifications: what was filed, approved, paid or issued, newest first.',
                         'Your name'         => 'Your menu: profile, and sign out.',
                         'Page header'       => 'The page title, and beside it the actions that apply to the whole page.',
                         'List toolbar'      => 'Search, filters, Add, Import and Export on the pages that carry a list.',
-                        'Actions (per row)' => 'One menu per row — View, Edit, Delete, and the record\'s own moves such as Print or Approve.',
+                        'Actions (per row)' => 'One menu per row: View, Edit, Delete, and the record\'s own moves such as Print or Approve.',
                         'Footer'            => 'The association\'s name, taken from Settings → General.',
                     ],
                     'steps'  => [
@@ -146,7 +146,7 @@ return [
                         'Open a row\'s Actions menu to see what that record allows.',
                     ],
                     'notes'  => [
-                        'Almost every dialog opens at once and pulls its own record from the server as it opens — that is why a dialog shows a brief loading state.',
+                        'Almost every dialog opens at once and pulls its own record from the server as it opens: that is why a dialog shows a brief loading state.',
                     ],
                 ],
                 [
@@ -196,7 +196,7 @@ return [
             'sections' => [
                 [
                     'title'  => 'What HOA Center holds',
-                    'body'   => 'The association\'s own front matter — who serves, what is announced, and what the public directory shows. Everything here is published to the public site, so write it for a reader outside the office.',
+                    'body'   => 'The association\'s own front matter: who serves, what is announced, and what the public directory shows. Everything here is published to the public site, so write it for a reader outside the office.',
                     'fields' => [
                         'HOA Members'   => 'The roster of officers and committee members, shown on the public Members page.',
                         'Announcements' => 'Posts the association publishes, reaching the public site and the homeowner portal once live.',
@@ -214,7 +214,7 @@ return [
                         'Save it, then publish it.',
                     ],
                     'result' => [
-                        'The announcement appears in the list, and — once published — on the public site and in the portal.',
+                        'The announcement appears in the list, and (once published) on the public site and in the portal.',
                     ],
                     'notes'  => [
                         'An unpublished announcement stays a draft: it is visible to the office and to nobody else.',
@@ -229,7 +229,7 @@ return [
                         'Edit or delete a member whose term has ended.',
                     ],
                     'result' => [
-                        'The public Members page reads the roster as saved — the office and the public can never disagree, because both read the same record.',
+                        'The public Members page reads the roster as saved: the office and the public can never disagree, because both read the same record.',
                     ],
                 ],
                 [
@@ -240,7 +240,7 @@ return [
                         'Edit or remove an entry that has closed.',
                     ],
                     'notes'  => [
-                        'The directory is public. Do not put a homeowner\'s private number in it — that belongs on their resident record.',
+                        'The directory is public. Do not put a homeowner\'s private number in it: that belongs on their resident record.',
                     ],
                 ],
             ],
@@ -263,7 +263,7 @@ return [
                 [
                     'title'         => 'How to add a resident',
                     'prerequisites' => [
-                        'The address (and property) the person belongs to — create those first if they are new.',
+                        'The address (and property) the person belongs to: create those first if they are new.',
                         'The Create permission on residents.',
                     ],
                     'steps'  => [
@@ -273,7 +273,7 @@ return [
                     ],
                     'result' => [
                         'The resident appears in the Residents list.',
-                        'The record is now selectable wherever the office names a resident — a household member, a request, a violation.',
+                        'The record is now selectable wherever the office names a resident: a household member, a request, a violation.',
                     ],
                     'notes'  => [
                         'A blank field prints blank: the RBI form takes its values from the resident profile, so a missing middle name or birth date shows up in the printout.',
@@ -297,7 +297,7 @@ return [
                     ],
                     'notes'  => [
                         'A resident can exist without an account; an account can never exist without a resident.',
-                        'Deactivating an account blocks sign-in and keeps its history — the record is not deleted.',
+                        'Deactivating an account blocks sign-in and keeps its history: the record is not deleted.',
                         'The association does not offer self-registration on the portal: every account is issued here.',
                     ],
                 ],
@@ -321,15 +321,15 @@ return [
                 ],
                 [
                     'title'  => 'Reading a list',
-                    'body'   => 'Every list in the panel — here and in the modules that follow — wears the same three parts, so one explanation serves them all.',
+                    'body'   => 'Every list in the panel (here and in the modules that follow) wears the same three parts, so one explanation serves them all.',
                     'fields' => [
                         'Toolbar'           => 'Search, filters and the page actions (Add, Import, Export).',
-                        'Ticks'             => 'Tick the rows you mean, then use the selection bar that appears — for example Delete Selected.',
+                        'Ticks'             => 'Tick the rows you mean, then use the selection bar that appears: for example Delete Selected.',
                         'Actions (per row)' => 'One menu per row: View, Edit, Delete, and the moves that record allows, such as Print.',
                         'Chevrons / pager'  => 'Long lists page; the pager sits under the table.',
                     ],
                     'notes'  => [
-                        'Import is CSV and expects the template the page offers — download it first, and keep the header row.',
+                        'Import is CSV and expects the template the page offers: download it first, and keep the header row.',
                         'Export writes exactly the rows the current filters select.',
                     ],
                 ],
@@ -361,7 +361,7 @@ return [
                 [
                     'title'         => 'How to print a document',
                     'prerequisites' => [
-                        'The records the document is built from — the resident, the address or the journal entry — already on file.',
+                        'The records the document is built from (the resident, the address or the journal entry) already on file.',
                     ],
                     'steps'  => [
                         'Open the document from the Print Documents menu.',
@@ -387,7 +387,7 @@ return [
             'sections' => [
                 [
                     'title'  => 'What the booking module holds',
-                    'body'   => 'The common facilities of the subdivision and the reservations against them — whether the homeowner filed the booking from the portal or the office took it by phone.',
+                    'body'   => 'The common facilities of the subdivision and the reservations against them: whether the homeowner filed the booking from the portal or the office took it by phone.',
                     'fields' => [
                         'Bookings'      => 'Every reservation, with the date and hours, the resident, the fee and the deposit it carries.',
                         'Calendar View' => 'The same reservations laid out by date, so a double booking is visible at a glance.',
@@ -402,7 +402,7 @@ return [
                     'steps'  => [
                         'Open Amenities Booking → Amenities and select Add Amenity.',
                         'Name it, and set how it is charged: a flat rate, or an hourly rate that multiplies the booked hours.',
-                        'Set the weekly schedule. Switch a weekday off to close it — a closed day keeps no hours.',
+                        'Set the weekly schedule. Switch a weekday off to close it: a closed day keeps no hours.',
                         'Set the deposit rule, and whether homeowners may book it from the portal.',
                         'Save.',
                     ],
@@ -411,7 +411,7 @@ return [
                     ],
                     'notes'  => [
                         'An amenity whose rate is zero or blank is free: a free booking never reaches a payment step.',
-                        'A booking that already exists keeps the rate it was priced at — changing the amenity never re-prices it.',
+                        'A booking that already exists keeps the rate it was priced at: changing the amenity never re-prices it.',
                     ],
                 ],
                 [
@@ -433,7 +433,7 @@ return [
                     ],
                     'notes'  => [
                         'Editing an unpaid booking re-prices its invoice; once a payment is recorded, the invoice is the historical bill of record.',
-                        'A free booking is closed as used straight from being approved — there is nothing to collect.',
+                        'A free booking is closed as used straight from being approved: there is nothing to collect.',
                         'A homeowner may withdraw a booking only while it is still pending approval; after that the office controls it.',
                         'Each move re-checks the booking as it opens, so a page left open overnight cannot fire a move that no longer applies.',
                     ],
@@ -446,7 +446,7 @@ return [
             'sections' => [
                 [
                     'title'  => 'What billing and receipts cover',
-                    'body'   => 'The association\'s income side. Monthly dues, one-off invoices and paid bookings are all bills; every receipt — taken at the counter or filed from the portal — is a payment against one of them.',
+                    'body'   => 'The association\'s income side. Monthly dues, one-off invoices and paid bookings are all bills; every receipt (taken at the counter or filed from the portal) is a payment against one of them.',
                     'fields' => [
                         'Invoices'               => 'Charges the office raises by hand, for a resident, a unit or a booking.',
                         'Monthly Dues'           => 'The recurring dues, generated for a month, with the dues table and the generator behind them.',
@@ -486,7 +486,7 @@ return [
                         'Open Collections → Monthly Dues and check the month you are about to bill.',
                         'Review the generator: it lists the units due to be billed and the rate each one is priced at.',
                         'Run it to raise the dues.',
-                        'Read the dues table for the month and correct anything that stands wrongly — adjust the invoice or void it — then generate again.',
+                        'Read the dues table for the month and correct anything that stands wrongly (adjust the invoice or void it) then generate again.',
                     ],
                     'result' => [
                         'One dues bill per unit for that month, each carrying the rate it was priced from.',
@@ -629,7 +629,7 @@ return [
                     'body'   => 'The chart is grouped into Income, Expenses and Cash.',
                     'steps'  => [
                         'Open Accounting → Chart of Accounts to read the accounts, this year\'s income and expenses, and what each cash account holds.',
-                        'Add an account by name and kind — a code is suggested and you can change it. Codes are 3 to 6 digits and must be unique.',
+                        'Add an account by name and kind: a code is suggested and you can change it. Codes are 3 to 6 digits and must be unique.',
                         'A cash account also asks what it already holds on its start date.',
                         'Rename or change an account while nothing has been posted to it; a category-owned account is renamed on its category page.',
                     ],
@@ -660,7 +660,7 @@ return [
                 ],
                 [
                     'title' => 'Transfers and the register',
-                    'body'  => 'A transfer moves money between two accounts without a bill or an expense behind it — a bank deposit, for instance. The transaction register lists every line, read-only, for tracing.',
+                    'body'  => 'A transfer moves money between two accounts without a bill or an expense behind it: a bank deposit, for instance. The transaction register lists every line, read-only, for tracing.',
                 ],
                 [
                     'title'  => 'How to close a period',
@@ -699,7 +699,7 @@ return [
                     'steps'  => [
                         'Open Support → Requests and find the filing.',
                         'View it to read what was asked for and by whom.',
-                        'Approve it to issue the document, or decline it — a decline must say why.',
+                        'Approve it to issue the document, or decline it: a decline must say why.',
                         'Raise the invoice with Create Invoice when the document is to be paid for.',
                         'Open Payments on the row to see whether the household has paid, and to approve a receipt the portal filed.',
                         'Print the document once the request is approved.',
@@ -718,7 +718,7 @@ return [
                     'title' => 'How a request document reaches the homeowner',
                     'body'  => 'Approving a request issues its document and opens the window in which it may be downloaded. The release rule is stated, not guessed: the request must be approved, the invoice raised for it must be paid, the window must still be open, and the download budget must not be spent.',
                     'notes' => [
-                        'The portal card explains each withholding — invoice unpaid, window closed, budget spent.',
+                        'The portal card explains each withholding: invoice unpaid, window closed, budget spent.',
                         'A document that needs values the request never collected is refused rather than printed half blank.',
                     ],
                 ],
@@ -766,7 +766,7 @@ return [
                         'Monthly Income / Expenses' => 'The two movements month by month.',
                         'Daily Collection, Daily Income, Daily Expenses' => 'The day registers: what was collected, earned and spent.',
                         'Statement of Account' => 'One household\'s open bills, ready to hand over or mail.',
-                        'Community'            => 'The subdivision in numbers — population, households, bookings and their earnings.',
+                        'Community'            => 'The subdivision in numbers: population, households, bookings and their earnings.',
                         'Residents'            => 'The resident population and its mix.',
                     ],
                 ],
@@ -805,7 +805,7 @@ return [
                 [
                     'title'         => 'How to add an officer',
                     'prerequisites' => [
-                        'The role the officer will hold — create it first if it is new.',
+                        'The role the officer will hold: create it first if it is new.',
                     ],
                     'steps'  => [
                         'Open Administration → Users and select Add User.',
@@ -833,7 +833,7 @@ return [
                     ],
                     'notes'  => [
                         'The Administrator role is the catalogue itself: it holds everything whether or not a switch is written on its row, and the office is never offered a switch for it.',
-                        'A role still held by an officer cannot be deleted — move the officers to another role first.',
+                        'A role still held by an officer cannot be deleted: move the officers to another role first.',
                         'Switching a permission off does not hide history. The records stay; only the page is closed.',
                     ],
                 ],
@@ -859,7 +859,7 @@ return [
             'sections' => [
                 [
                     'title'  => 'What Settings covers',
-                    'body'   => 'Everything the application reads as configuration rather than stores as a record. Saved settings are cached and served fresh everywhere — the public site, the portal, every printed document and every screen that shows the association\'s own name.',
+                    'body'   => 'Everything the application reads as configuration rather than stores as a record. Saved settings are cached and served fresh everywhere: the public site, the portal, every printed document and every screen that shows the association\'s own name.',
                     'fields' => [
                         'General'     => 'The association\'s name, logo, contact details and other public-facing information.',
                         'Collections' => 'The billing defaults: dues rates, the day dues fall due, grace, reminders and penalties.',
@@ -876,7 +876,7 @@ return [
                         'Save.',
                     ],
                     'result' => [
-                        'A confirmation appears, and the change is already in force on the next page you load — a new letterhead reaches the very next document, a new name the next page render.',
+                        'A confirmation appears, and the change is already in force on the next page you load: a new letterhead reaches the very next document, a new name the next page render.',
                     ],
                     'notes'  => [
                         'The letterhead is rich text, sanitized on the way in: allowed formatting survives, scripts do not.',
@@ -890,7 +890,7 @@ return [
             'sections' => [
                 [
                     'title'  => 'How access is granted',
-                    'body'   => 'Every page and every action in the panel is a named permission. A role is a bundle of those permissions, and an officer\'s account holds exactly one role. That is the whole authorisation model — there is no hidden second list of who may do what.',
+                    'body'   => 'Every page and every action in the panel is a named permission. A role is a bundle of those permissions, and an officer\'s account holds exactly one role. That is the whole authorisation model: there is no hidden second list of who may do what.',
                     'fields' => [
                         'Permission'    => 'One switch: "may add a resident", "may approve an expense". Permissions are grouped by the module they belong to.',
                         'Role'          => 'A named bundle of permissions, granted to officers who do that work.',
@@ -906,7 +906,7 @@ return [
                         'Administrator'              => 'Everything: officer accounts and roles, every setting, every page, every report.',
                         'Finance officer'            => 'The billing and receipt pages, the spending pages, the books, and the finance reports.',
                         'Collection officer'         => 'Billing and receipts alone: raise invoices, run the dues, take payments, issue statements.',
-                        'Records / front-desk officer' => 'The homeowners records and the support pages — profiling residents, issuing accounts, filing and deciding requests, recording violations.',
+                        'Records / front-desk officer' => 'The homeowners records and the support pages: profiling residents, issuing accounts, filing and deciding requests, recording violations.',
                         'Bookings officer'           => 'Amenities, the bookings and their calendar, and the requests that relate to them.',
                         'Reporting officer'          => 'Reports only, read and export. Useful for a board member who needs the figures and nothing else.',
                         'Auditor / guest'            => 'The Visitor role at its starting point: read-only, and granted more only where the association wants it.',
@@ -922,7 +922,7 @@ return [
                     'steps'  => [
                         'Sign in as the officer, or read the role on Administration → Users.',
                         'Compare the sidebar with what the officer says they cannot find.',
-                        'If a page is missing, open the role and switch the permission on — that is the fix, not a second account.',
+                        'If a page is missing, open the role and switch the permission on: that is the fix, not a second account.',
                     ],
                     'result' => [
                         'The officer\'s sidebar lists exactly the pages their role opens, and this manual lists exactly the tools they may read.',
@@ -930,7 +930,7 @@ return [
                 ],
                 [
                     'title' => 'The homeowner side is different',
-                    'body'  => 'The portal has no roles at all. A homeowner sees their own household and nothing else — their own bills, receipts, bookings, requests and members — because ownership, not permission, decides what they may open. Never look for a role setting to change what a homeowner can see; the answer is always the record\'s own account.',
+                    'body'  => 'The portal has no roles at all. A homeowner sees their own household and nothing else (their own bills, receipts, bookings, requests and members) because ownership, not permission, decides what they may open. Never look for a role setting to change what a homeowner can see; the answer is always the record\'s own account.',
                 ],
             ],
         ],
@@ -941,7 +941,7 @@ return [
                 [
                     'title'  => 'Sign-in problems',
                     'fields' => [
-                        '"These credentials do not match our records."' => 'Check the email address first — it is the one on the account, not necessarily the one the officer prefers. If the password is lost, use Forgot your password rather than trying another guess.',
+                        '"These credentials do not match our records."' => 'Check the email address first: it is the one on the account, not necessarily the one the officer prefers. If the password is lost, use Forgot your password rather than trying another guess.',
                         'The sign-in is refused after several attempts' => 'The device is blocked for three minutes after ten failed attempts. Wait for the block to pass.',
                         'The emailed code never arrives' => 'Ask for a new code, then check the email address on the account. Codes are also delayed by the cooldown after repeated asks.',
                         '"Your account has been deactivated"' => 'An account switched off cannot sign in however correct the password is. Ask the Administrator to reactivate it.',
@@ -959,12 +959,12 @@ return [
                         'The menu entry appears at the officer\'s next page load.',
                     ],
                     'notes'  => [
-                        'A button inside a page can be missing for the same reason: the action has its own permission — approving is separate from viewing.',
+                        'A button inside a page can be missing for the same reason: the action has its own permission. Approving is separate from viewing.',
                     ],
                 ],
                 [
                     'title'  => 'A dialog will not load',
-                    'body'   => 'Dialogs pull their record from the server as they open, so a spinner that never finishes means the server refused or could not find the record — usually because the page was left open while the record changed underneath it.',
+                    'body'   => 'Dialogs pull their record from the server as they open, so a spinner that never finishes means the server refused or could not find the record: usually because the page was left open while the record changed underneath it.',
                     'steps'  => [
                         'Close the dialog and reload the page.',
                         'Open the record again and repeat the action.',
@@ -973,7 +973,7 @@ return [
                         'The dialog opens with the record and the moves that still apply to it.',
                     ],
                     'notes'  => [
-                        'A refusal is deliberate: a move offered by a stale page — approving something already approved, paying something already paid — is refused rather than repeated.',
+                        'A refusal is deliberate: a move offered by a stale page (approving something already approved, paying something already paid) is refused rather than repeated.',
                     ],
                 ],
                 [
@@ -981,7 +981,7 @@ return [
                     'body'   => 'A receipt filed from the portal waits as pending: it settles nothing and does not reach the books until the office approves it on the Payments page. That is why a household can show a filed payment while the bill still stands.',
                     'steps'  => [
                         'Open the payments list and filter for the pending receipt.',
-                        'Check its proof and reference, then approve it — or delete it so the household can file again.',
+                        'Check its proof and reference, then approve it: or delete it so the household can file again.',
                     ],
                 ],
                 [
@@ -989,7 +989,7 @@ return [
                     'body'   => 'No balance is stored, so there is nothing to fall out of step. Every figure is recomputed from the receipts and postings behind it, which narrows the question to what was actually recorded.',
                     'fields' => [
                         'A bill still shows a balance though money was handed over' => 'The receipt is either still pending, or was recorded against another bill.',
-                        'Income looks lower than the collections' => 'Income is recognised when accounting posts a payment, not when a bill is raised — check the journal for posted payments.',
+                        'Income looks lower than the collections' => 'Income is recognised when accounting posts a payment, not when a bill is raised: check the journal for posted payments.',
                         'An expense does not show on the books' => 'An expense does not post itself: it posts when accounting posts it. An unposted expense has no journal entry yet.',
                         'A month looks short on the report' => 'Check whether the month is still open, and whether anything was voided or reversed after the fact.',
                     ],
@@ -1007,7 +1007,7 @@ return [
                     'title'  => 'Where to get help',
                     'body'   => 'Start with the office: the association\'s Administrator holds the account and role settings and can restore access, and the association\'s own contact details are published on the public site. If a record looks wrong rather than missing, the chapter for that module states the rule it follows, and the Glossary defines its terms.',
                     'notes'  => [
-                        'Quote the record\'s reference — an invoice number, a booking, a request — when asking for help: it can be searched directly.',
+                        'Quote the record\'s reference (an invoice number, a booking, a request) when asking for help: it can be searched directly.',
                     ],
                 ],
             ],
@@ -1019,15 +1019,15 @@ return [
                 [
                     'title'  => 'Common questions',
                     'fields' => [
-                        'Can one person hold two roles?' => 'No — an account holds exactly one. Build a role that carries both sets of permissions instead.',
+                        'Can one person hold two roles?' => 'No: an account holds exactly one. Build a role that carries both sets of permissions instead.',
                         'Can I undo a deleted record?' => 'Not by restoring it. Records that may be reversed are cancelled or voided rather than deleted for exactly this reason; anything already collected is reversed by a correcting entry.',
-                        'Why can I see a bill but not record a payment against it?' => 'The bill already has a receipt waiting for approval. Approve or reject that one first — the same money is never taken twice.',
+                        'Why can I see a bill but not record a payment against it?' => 'The bill already has a receipt waiting for approval. Approve or reject that one first: the same money is never taken twice.',
                         'Why do I have to approve a payment that a homeowner filed?' => 'The portal is the household\'s own word; the books are the office\'s. Approval is where the office takes responsibility for the money.',
                         'Why is a homeowner\'s document not available to them?' => 'The request must be approved and the invoice raised for it paid, within the window and the download budget the approval set.',
                         'What is the difference between a bill and an invoice?' => 'An invoice is one kind of bill. Monthly dues and paid bookings are bills of other kinds, and all of them live in one ledger.',
                         'Why does closing the browser not sign me out?' => 'The session outlives the tab until the configured lifetime ends. Sign out properly on a shared computer.',
                         'Can the same property have two households?' => 'No. One household per unit, and one unit per household.',
-                        'Why is a menu I can see empty?' => 'The list is filtered, or the records have been cleared — check the toolbar before concluding something is missing.',
+                        'Why is a menu I can see empty?' => 'The list is filtered, or the records have been cleared: check the toolbar before concluding something is missing.',
                         'How do I know what an officer did?' => 'The activity log records the actions taken on the system, and the books record the money movements themselves.',
                     ],
                 ],
@@ -1036,10 +1036,10 @@ return [
                     'body'   => 'A short list, worth reading once.',
                     'notes'  => [
                         'Search the sidebar before hunting through menus: it finds any page you can open.',
-                        'Tick rows before reaching for a bulk action — the selection bar only appears when something is selected.',
+                        'Tick rows before reaching for a bulk action: the selection bar only appears when something is selected.',
                         'Read the row\'s Actions menu rather than guessing: it lists exactly the moves that record still allows.',
                         'Export the view you have filtered to; the file is exactly the rows on screen.',
-                        'Check the report before closing a period — a closed month takes no more postings.',
+                        'Check the report before closing a period: a closed month takes no more postings.',
                         'Print the voucher alongside a posting: it is the record you can hand to an auditor.',
                         'Use the manual\'s own search box (in its sidebar) to jump to the chapter for the page you are on.',
                     ],
@@ -1056,7 +1056,7 @@ return [
                         'Account'            => 'An officer\'s sign-in on the panel, or a homeowner\'s login on the portal. The two are separate kinds of account and never mix.',
                         'Advance deposit'    => 'Credit the association holds for a household account and draws down against later charges.',
                         'Amenity'            => 'A shared facility that can be reserved, with a rate, a weekly schedule and an optional deposit.',
-                        'Bill'               => 'One charge on the ledger — dues, an invoice or a paid booking. It carries a balance until its receipts cover it.',
+                        'Bill'               => 'One charge on the ledger: dues, an invoice or a paid booking. It carries a balance until its receipts cover it.',
                         'Booking'            => 'A reservation of an amenity for a date and a window of hours.',
                         'Chart of accounts'  => 'The list of accounts the books are kept on, each with a type and a code.',
                         'Complaint'          => 'A concern filed by a homeowner, answered by the office.',
@@ -1064,7 +1064,7 @@ return [
                         'Dues table'         => 'The month\'s monthly-dues bills, laid out for checking.',
                         'Household'          => 'The people living in one unit: the account\'s household and its members.',
                         'Invoice'            => 'A bill the office raises by hand, as opposed to dues or a booking.',
-                        'Journal entry'      => 'One balanced posting on the books — the record of money moving.',
+                        'Journal entry'      => 'One balanced posting on the books: the record of money moving.',
                         'Ledger'             => 'The whole of the journal entries; the books.',
                         'Letterhead'         => 'The heading, footer and signatories every printed document carries. Kept in Settings → Print.',
                         'Monthly dues'       => 'The recurring charge raised per unit for a month.',

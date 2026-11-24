@@ -30,7 +30,7 @@ class DeleteExpenseCategories
         if ($used->isNotEmpty()) {
             throw ValidationException::withMessages([
                 'delete' => 'Cannot delete ' . $used->pluck('name')->implode(', ')
-                    . ' — expenses are already filed under it.',
+                    . ': expenses are already filed under it.',
             ]);
         }
 
@@ -47,7 +47,7 @@ class DeleteExpenseCategories
                 $by,
                 'deleted',
                 'expense_category',
-                "Deleted expense category {$category->name} — its lines keep their snapshot",
+                "Deleted expense category {$category->name}: its lines keep their snapshot",
                 ['expense_category_id' => $category->id]
             );
         }

@@ -50,7 +50,7 @@ class CreateAccount
                     'classification' => JournalClassification::STANDARD,
                     'source_type'    => JournalSource::MANUAL,
                     'source_id'      => $account->id,
-                    'memo'           => 'Starting balance — ' . $account->name,
+                    'memo'           => 'Starting balance: ' . $account->name,
                     'lines'          => [
                         [
                             'account_id' => $account->id,

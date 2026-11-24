@@ -215,7 +215,7 @@ class JournalEntry extends Model
         if ($this->source_enum && $this->source_enum->isAutomatic()) {
             throw ValidationException::withMessages([
                 'entry' => 'This entry came from a ' . strtolower($this->source_label)
-                    . '. Remove it from that record instead — the books must keep the trail.',
+                    . '. Remove it from that record instead: the books must keep the trail.',
             ]);
         }
 
@@ -546,7 +546,7 @@ class JournalEntry extends Model
     {
         if (count($lines) < 2) {
             throw ValidationException::withMessages([
-                'lines' => 'A journal entry needs at least two lines — one receiving account and one paying account.',
+                'lines' => 'A journal entry needs at least two lines: one receiving account and one paying account.',
             ]);
         }
 

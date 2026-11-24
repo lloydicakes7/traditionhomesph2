@@ -169,11 +169,12 @@ body {
 
 .rbi-a-sign .head {
     height: 14pt;
+    padding-bottom: 2pt;
     text-align: left;
 }
 
 .rbi-a-sign .line {
-    height: 16pt;
+    height: 48pt;
     border-bottom: 1px solid #000000;
 }
 
@@ -197,179 +198,123 @@ body {
 
 /* ===== Form B: individual ===== */
 
+/*
+ * Form B is laid out on fixed coordinates (points from the top-left corner of
+ * the A4 sheet), measured from the original form, so every box sits where it
+ * does on paper. Each element is absolutely positioned and its left, top, width
+ * and height are set in rbi-form-b.blade.php. The font is Helvetica (Arial),
+ * like the original; only the tick mark falls back to DejaVu Sans, which has
+ * the glyph. Sizes are written as content-box because DomPDF ignores
+ * box-sizing, which keeps the preview and the PDF identical.
+ */
+
+.rbi-b,
+.rbi-b * {
+    box-sizing: content-box;
+}
+
 .rbi-b {
-    padding: 16pt 20pt;
+    position: relative;
+    width: 595pt;
+    height: 840pt;
+    padding: 0;
+    font-family: Helvetica, Arial, sans-serif;
     font-size: 8pt;
+    line-height: 10pt;
+}
+
+.rbi-b div {
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    white-space: nowrap;
 }
 
 .rbi-b-heading {
-    margin: 0;
-    text-align: center;
     font-size: 11pt;
-    font-weight: bold;
-}
-
-.rbi-b-title {
-    margin: 0;
-    padding-bottom: 4pt;
-    border-bottom: 2px solid #000000;
-    text-align: center;
-    font-size: 12pt;
-    font-weight: bold;
-    letter-spacing: 0.3pt;
-}
-
-.rbi-b-loc {
-    width: 100%;
-    margin-top: 5pt;
-    border-collapse: collapse;
-    table-layout: fixed;
-}
-
-.rbi-b-loc td {
-    width: 50%;
-    padding: 2pt 3pt;
-    font-size: 8pt;
-    font-weight: bold;
+    line-height: 12pt;
     text-align: left;
 }
 
-.rbi-b-line {
-    display: inline-block;
-    width: 58%;
-    border-bottom: 1px solid #000000;
-    font-weight: bold;
-    text-align: center;
-}
-
-.rbi-b-rule {
-    height: 6pt;
-    border-bottom: 2px solid #000000;
-}
-
+.rbi-b-title,
 .rbi-b-section {
-    margin: 0;
-    padding: 3pt 0;
-    background-color: #d9eaf7;
-    border-bottom: 2px solid #000000;
-    text-align: center;
-    font-size: 9.5pt;
+    font-size: 10pt;
     font-weight: bold;
-}
-
-.rbi-b-table {
-    width: 100%;
-    margin-top: 4pt;
-    table-layout: fixed;
-    border-collapse: collapse;
-}
-
-.rbi-b-table td {
-    padding: 1pt 4pt;
-    font-size: 8pt;
-    vertical-align: middle;
-}
-
-.rbi-b-table tr {
-    page-break-inside: avoid;
-}
-
-.rbi-b-table .lbl {
-    height: 14pt;
-    border-bottom: 1px solid #000000;
-    font-size: 7pt;
+    line-height: 12pt;
     text-align: center;
 }
 
-.rbi-b-table .val {
-    height: 20pt;
-    border-bottom: 1px solid #000000;
-    border-right: 1px solid #000000;
-    font-size: 8pt;
-    font-weight: bold;
-    text-align: center;
-}
-
-.rbi-b-philsys {
-    padding: 3pt 4pt;
+.rbi-b-label {
     font-size: 8pt;
     text-align: left;
 }
 
-.rbi-b-philsys .rbi-b-line {
-    width: 62%;
-}
-
-.rbi-b-gap {
-    height: 14pt;
-    border-bottom: 1px solid #000000;
-}
-
-.rbi-b-education {
-    padding-top: 4pt;
-    font-size: 8pt;
-    font-weight: bold;
-    text-align: left;
-}
-
-.rbi-b-checks {
-    padding: 2pt 4pt;
-    font-size: 7.5pt;
-    text-align: left;
-}
-
-.rbi-b-specify {
-    padding-left: 18pt;
+.rbi-b-italic {
     font-style: italic;
 }
 
-.rbi-b-edu-rule {
-    height: 4pt;
-    border-bottom: 1px solid #000000;
+.rbi-b-bold {
+    font-weight: bold;
 }
 
-.rbi-b-privacy {
-    padding: 4pt 6pt;
-    border: 1px solid #000000;
-    font-size: 7.5pt;
-    line-height: 1.2;
-    text-align: justify;
+.rbi-b-frame {
+    border: 2px solid #000000;
 }
 
-.rbi-b-signline {
-    height: 18pt;
+/* A value on a ruled line (region, province, date accomplished). */
+.rbi-b-fill {
     border-bottom: 1px solid #000000;
     font-size: 8pt;
-    font-weight: bold;
-    text-align: center;
-    vertical-align: bottom;
+    line-height: 10pt;
+}
+
+/* An input box: the value is bold and centred in it. */
+.rbi-b-box {
+    border: 1px solid #000000;
+    font-size: 8pt;
 }
 
 .rbi-b-caption {
-    padding-top: 2pt;
-    font-size: 7pt;
+    font-size: 8pt;
     text-align: center;
 }
 
-.rbi-b-attested {
-    padding-top: 8pt;
-    font-size: 8pt;
-    font-weight: bold;
+/* The tick box of the educational attainment. */
+.rbi-b-check {
+    border: 1px solid #000000;
+    font-family: 'DejaVu Sans', Helvetica, Arial, sans-serif;
+    font-size: 9pt;
+    text-align: center;
+}
+
+.rbi-b .rbi-b-privacy {
+    font-size: 9pt;
+    line-height: 10.3pt;
+    text-align: justify;
+    white-space: normal;
+}
+
+/* Captions under the signature lines and thumbmark boxes. */
+.rbi-b-sign {
+    font-size: 9pt;
+    line-height: 11pt;
+    text-align: center;
+}
+
+.rbi-b-sign.rbi-b-left {
     text-align: left;
 }
 
-.rbi-b-household-label {
-    padding-top: 6pt;
-    font-size: 8pt;
-    font-weight: bold;
-    text-align: left;
+.rbi-b-rule {
+    border-bottom: 1px solid #000000;
 }
 
-.rbi-b-note {
-    padding-top: 4pt;
-    font-size: 7pt;
-    font-style: italic;
-    text-align: left;
+.rbi-b-dash {
+    border-bottom: 1px dashed #000000;
+}
+
+.rbi-b-thumb {
+    border: 1px solid #000000;
 }
 
 /* ===== Form C: monitoring report ===== */

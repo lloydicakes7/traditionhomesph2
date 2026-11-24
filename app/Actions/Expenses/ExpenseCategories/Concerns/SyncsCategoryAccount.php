@@ -36,7 +36,7 @@ trait SyncsCategoryAccount
                 $adminId,
                 'created',
                 'Chart of Accounts',
-                "Added account {$account->code} — {$account->name}",
+                "Added account {$account->code}: {$account->name}",
                 ['account_id' => $account->id]
             );
         }
@@ -46,7 +46,7 @@ trait SyncsCategoryAccount
                 $adminId,
                 'updated',
                 'Chart of Accounts',
-                "Updated account {$account->code} — {$account->name}",
+                "Updated account {$account->code}: {$account->name}",
                 ['account_id' => $account->id]
             );
         }

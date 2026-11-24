@@ -18,7 +18,7 @@
                 </div>
 
                 <x-adminlte-textarea name="remarks" label="Reason for cancelling" rows="3"
-                    placeholder="Why the association cannot issue this — the homeowner reads this and it is kept on record."
+                    placeholder="Why the association cannot issue this: the homeowner reads this and it is kept on record."
                     wire:model.defer="remarks" igroup-size="sm" />
             @endif
         </div>

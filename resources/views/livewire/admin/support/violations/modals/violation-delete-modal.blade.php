@@ -24,7 +24,7 @@
 
             <p class="text-danger small mt-3 mb-0">
                 <i class="fas fa-fw fa-info-circle"></i>
-                Deleting is for a violation issued in error — it removes the record from the homeowner's history
+                Deleting is for a violation issued in error: it removes the record from the homeowner's history
                 entirely. To close a violation the office has acted on, <strong>resolve</strong> it instead: that keeps
                 the history. This action cannot be undone.
             </p>

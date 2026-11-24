@@ -139,7 +139,7 @@ class RequestApproveModal extends AdminModalComponent
             return;
         }
 
-        $this->emit('notify', 'success', 'Request approved — the document can now be printed, and its Print action is available.');
+        $this->emit('notify', 'success', 'Request approved: the document can now be printed, and its Print action is available.');
         $this->emit('request-saved');
 
         $this->dispatchBrowserEvent('modal-close', ['id' => self::MODAL_ID]);

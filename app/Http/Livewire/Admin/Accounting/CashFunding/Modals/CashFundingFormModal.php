@@ -102,7 +102,7 @@ class CashFundingFormModal extends AdminModalComponent
     /**
      * @return array<string, mixed>
      */
-    private function rules(): array
+    protected function rules(): array
     {
         return [
             'entry_date'    => 'required|date',
@@ -119,7 +119,7 @@ class CashFundingFormModal extends AdminModalComponent
     /**
      * @return array<string, string>
      */
-    private function messages(): array
+    protected function messages(): array
     {
         return [
             'entry_date.required'    => 'Give the funding a date.',

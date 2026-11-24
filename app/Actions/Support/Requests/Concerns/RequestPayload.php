@@ -104,7 +104,7 @@ trait RequestPayload
         }
 
         throw ValidationException::withMessages([
-            'form.type' => 'The Membership Form cannot be filed yet — it still needs: '
+            'form.type' => 'The Membership Form cannot be filed yet. It still needs: '
                 . implode(', ', array_values($missing))
                 . '. Fill these in on the form, or ask the HOA office to complete them on the records.',
         ]);

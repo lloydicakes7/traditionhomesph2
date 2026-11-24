@@ -2,7 +2,7 @@
 
 /*
 |--------------------------------------------------------------------------
-| Manwal ng Gumagamit — Admin Panel
+| Manwal ng Gumagamit: Admin Panel
 |--------------------------------------------------------------------------
 |
 | Ang kopya ng admin panel, naka-key sa mga paksang pinapangalanan ng
@@ -43,7 +43,7 @@ return [
                 ],
                 [
                     'title' => 'Para kanino ito',
-                    'body'  => 'Ang mga opisyal at kawani ng asosasyon ay nagtatrabaho sa admin panel, sa /admin. Ang mga homeowner ay pumapasok sa portal, sa /portal. Dalawang magkaibang uri ng account ito — ang login ng opisyal ay hindi login ng homeowner, at hindi mabubuksan ng isa ang mga pahina ng isa.',
+                    'body'  => 'Ang mga opisyal at kawani ng asosasyon ay nagtatrabaho sa admin panel, sa /admin. Ang mga homeowner ay pumapasok sa portal, sa /portal. Dalawang magkaibang uri ng account ito: ang login ng opisyal ay hindi login ng homeowner, at hindi mabubuksan ng isa ang mga pahina ng isa.',
                 ],
                 [
                     'title'  => 'Paano nakaayos ang system',
@@ -51,7 +51,7 @@ return [
                     'fields' => [
                         'Sidebar'            => 'Ang mga tool na iniaalok sa iyo ng system, pinangkat sa ilalim ng mga header. Ang search box sa tuktok nito ay nakakahanap ng isa sa pamamagitan ng pangalan.',
                         'Navbar'             => 'Ang bar sa itaas. Ang hamburger ay nag-toggle ng sidebar, ang bell ay bumibilang ng iyong mga notification, at ang iyong pangalan ay nagbubukas ng iyong profile at ng sign-out.',
-                        'Content area'       => 'Ang pahinang binuksan mo, may pamagat at — sa isang listahan — isang toolbar ng sariling aksyon ng pahina.',
+                        'Content area'       => 'Ang pahinang binuksan mo, may pamagat at (sa isang listahan) isang toolbar ng sariling aksyon ng pahina.',
                         'Footer'             => 'Ang sariling pangalan ng asosasyon at ang linya ng copyright.',
                         'Dashboard'          => 'Kung saan ka dumarating pagkatapos mag-sign in: ang mga pigurang mahalaga ngayon, ang taon sa mga chart, at lahat ng bukas pa.',
                     ],
@@ -65,7 +65,7 @@ return [
                         'Bill'                 => 'Isang singil. Ang buwanang dues, invoice at bayad na booking ay lahat nagiging bill sa parehong ledger.',
                         'Bayad (Payment)'      => 'Perang natanggap laban sa isang bill. Ang bill ay nababayaran lamang mula sa mga resibong naitala laban dito.',
                         'Journal entry'        => 'Ang double-entry na rekord sa likod ng pagpasok o paglabas ng pera. Ang mga libro ang kabuuan ng mga ito.',
-                        'Pahintulot (Permission)' => 'Isang switch sa isang role — "maaaring magdagdag ng resident", "maaaring mag-apruba ng request". Ang iyong role ang nagtatakda ng iyong mga menu.',
+                        'Pahintulot (Permission)' => 'Isang switch sa isang role: "maaaring magdagdag ng resident", "maaaring mag-apruba ng request". Ang iyong role ang nagtatakda ng iyong mga menu.',
                     ],
                 ],
             ],
@@ -85,7 +85,7 @@ return [
                         'Lalabas ang pahina ng sign-in, na humihingi ng iyong email address at password.',
                     ],
                     'notes'  => [
-                        'I-bookmark ang address — ang eksaktong address ng opisina ay itinatakda ng asosasyon, hindi ng manwal na ito.',
+                        'I-bookmark ang address: ang eksaktong address ng opisina ay itinatakda ng asosasyon, hindi ng manwal na ito.',
                     ],
                 ],
                 [
@@ -134,12 +134,12 @@ return [
                     'fields' => [
                         'Mga header ng sidebar' => 'Ang mga lugar ng asosasyon: operasyon, pananalapi, mga ulat at suporta, pangangasiwa.',
                         'Search sa sidebar'     => 'I-type ang pangalan ng pahina at piliin ang resulta. Hinahanap nito ang menu na nakikita mo, kaya hindi ito nag-aalok ng pahinang hindi mo mabubuksan.',
-                        'Navbar toggler'        => 'Kinokono ang sidebar pabalik sa mga icon at pabalik — kapaki-pakinabang sa maliit na screen.',
+                        'Navbar toggler'        => 'Kinokono ang sidebar pabalik sa mga icon at pabalik: kapaki-pakinabang sa maliit na screen.',
                         'Navbar bell'           => 'Ang iyong sariling mga notification: kung ano ang inihain, inaprubahan, binayaran o inisyu, pinakabago muna.',
                         'Iyong pangalan'        => 'Ang iyong menu: profile, at sign out.',
                         'Header ng pahina'      => 'Ang pamagat ng pahina, at sa tabi nito ang mga aksyon na naaangkop sa buong pahina.',
                         'Toolbar ng listahan'   => 'Search, mga filter, Add, Import at Export sa mga pahinang may listahan.',
-                        'Mga aksyon (bawat row)' => 'Isang menu kada row — View, Edit, Delete, at ang sariling galaw ng rekord tulad ng Print o Approve.',
+                        'Mga aksyon (bawat row)' => 'Isang menu kada row: View, Edit, Delete, at ang sariling galaw ng rekord tulad ng Print o Approve.',
                         'Footer'                => 'Ang pangalan ng asosasyon, mula sa Mga Setting → General.',
                     ],
                     'steps'  => [
@@ -147,7 +147,7 @@ return [
                         'Buksan ang menu ng Aksyon ng isang row upang makita ang pinapayagan ng rekord na iyon.',
                     ],
                     'notes'  => [
-                        'Halos lahat ng dialog ay agad na bubukas at kinukuha ang sariling rekord mula sa server habang bumubukas ito — kaya nagpapakita ang dialog ng maikling loading state.',
+                        'Halos lahat ng dialog ay agad na bubukas at kinukuha ang sariling rekord mula sa server habang bumubukas ito: kaya nagpapakita ang dialog ng maikling loading state.',
                     ],
                 ],
                 [
@@ -197,7 +197,7 @@ return [
             'sections' => [
                 [
                     'title'  => 'Ano ang nilalaman ng HOA Center',
-                    'body'   => 'Ang sariling front matter ng asosasyon — kung sino ang naglilingkod, ano ang inaanunsyo, at ano ang ipinapakita ng pampublikong direktoryo. Lahat ng nasa loob nito ay ipinapalathala sa pampublikong site, kaya isulat ito para sa mambabasang nasa labas ng opisina.',
+                    'body'   => 'Ang sariling front matter ng asosasyon: kung sino ang naglilingkod, ano ang inaanunsyo, at ano ang ipinapakita ng pampublikong direktoryo. Lahat ng nasa loob nito ay ipinapalathala sa pampublikong site, kaya isulat ito para sa mambabasang nasa labas ng opisina.',
                     'fields' => [
                         'Mga HOA Member' => 'Ang listahan ng mga opisyal at miyembro ng komite, ipinapakita sa pampublikong pahina ng mga Miyembro.',
                         'Mga Anunsyo'    => 'Mga post na ipinapalathala ng asosasyon, na umaabot sa pampublikong site at sa portal ng homeowner kapag live na.',
@@ -215,7 +215,7 @@ return [
                         'I-save ito, pagkatapos ay i-publish.',
                     ],
                     'result' => [
-                        'Lalabas ang anunsyo sa listahan, at — kapag na-publish — sa pampublikong site at sa portal.',
+                        'Lalabas ang anunsyo sa listahan, at (kapag na-publish) sa pampublikong site at sa portal.',
                     ],
                     'notes'  => [
                         'Ang hindi pa na-publish na anunsyo ay nananatiling draft: nakikita ito ng opisina at ng walang iba.',
@@ -230,7 +230,7 @@ return [
                         'I-edit o tanggalin ang miyembrong natapos na ang termino.',
                     ],
                     'result' => [
-                        'Binabasa ng pampublikong pahina ng mga Miyembro ang listahan kung paano ito naka-save — hindi maaaring magkasalungat ang opisina at ang publiko, dahil parehong rekord ang binabasa nila.',
+                        'Binabasa ng pampublikong pahina ng mga Miyembro ang listahan kung paano ito naka-save: hindi maaaring magkasalungat ang opisina at ang publiko, dahil parehong rekord ang binabasa nila.',
                     ],
                 ],
                 [
@@ -241,7 +241,7 @@ return [
                         'I-edit o tanggalin ang entry na nagsara na.',
                     ],
                     'notes'  => [
-                        'Pampubliko ang direktoryo. Huwag ilagay dito ang pribadong numero ng homeowner — nasa rekord ng resident iyon.',
+                        'Pampubliko ang direktoryo. Huwag ilagay dito ang pribadong numero ng homeowner: nasa rekord ng resident iyon.',
                     ],
                 ],
             ],
@@ -264,7 +264,7 @@ return [
                 [
                     'title'         => 'Paano magdagdag ng resident',
                     'prerequisites' => [
-                        'Ang address (at property) na kinabibilangan ng tao — gawin muna ang mga iyon kung bago pa.',
+                        'Ang address (at property) na kinabibilangan ng tao: gawin muna ang mga iyon kung bago pa.',
                         'Ang Create permission sa mga resident.',
                     ],
                     'steps'  => [
@@ -274,7 +274,7 @@ return [
                     ],
                     'result' => [
                         'Lalabas ang resident sa listahan ng mga Resident.',
-                        'Maaari nang mapili ang rekord saanman pangalanan ng opisina ang isang resident — isang miyembro ng sambahayan, isang request, isang paglabag.',
+                        'Maaari nang mapili ang rekord saanman pangalanan ng opisina ang isang resident: isang miyembro ng sambahayan, isang request, isang paglabag.',
                     ],
                     'notes'  => [
                         'Ang blangkong field ay blangko ang print: kinukuha ng RBI form ang mga halaga mula sa profile ng resident, kaya ang kulang na middle name o birth date ay lalabas sa printout.',
@@ -298,7 +298,7 @@ return [
                     ],
                     'notes'  => [
                         'Maaaring may resident na walang account; ang account ay hindi maaaring magkaroon nang walang resident.',
-                        'Ang pag-deactivate ng account ay humaharang sa sign-in at pinapanatili ang kasaysayan nito — hindi tinatanggal ang rekord.',
+                        'Ang pag-deactivate ng account ay humaharang sa sign-in at pinapanatili ang kasaysayan nito: hindi tinatanggal ang rekord.',
                         'Hindi nag-aalok ang asosasyon ng self-registration sa portal: dito iniisyu ang bawat account.',
                     ],
                 ],
@@ -322,15 +322,15 @@ return [
                 ],
                 [
                     'title'  => 'Pagbasa ng listahan',
-                    'body'   => 'Ang bawat listahan sa panel — dito at sa mga module na susunod — ay may parehong tatlong bahagi, kaya isang paliwanag lang ang sapat para sa lahat.',
+                    'body'   => 'Ang bawat listahan sa panel (dito at sa mga module na susunod) ay may parehong tatlong bahagi, kaya isang paliwanag lang ang sapat para sa lahat.',
                     'fields' => [
                         'Toolbar'                => 'Search, mga filter at ang mga aksyon ng pahina (Add, Import, Export).',
-                        'Mga tsek'               => 'Tsekan ang mga row na tinutukoy mo, pagkatapos gamitin ang selection bar na lalabas — halimbawa Delete Selected.',
+                        'Mga tsek'               => 'Tsekan ang mga row na tinutukoy mo, pagkatapos gamitin ang selection bar na lalabas: halimbawa Delete Selected.',
                         'Mga aksyon (bawat row)' => 'Isang menu kada row: View, Edit, Delete, at ang mga galaw na pinapayagan ng rekord, tulad ng Print.',
                         'Chevrons / pager'       => 'Ang mahahabang listahan ay pumapahina; nasa ilalim ng talahanayan ang pager.',
                     ],
                     'notes'  => [
-                        'Ang Import ay CSV at inaasahan ang template na iniaalok ng pahina — i-download muna ito, at panatilihin ang header row.',
+                        'Ang Import ay CSV at inaasahan ang template na iniaalok ng pahina: i-download muna ito, at panatilihin ang header row.',
                         'Ang Export ay nagsusulat ng eksaktong mga row na pinipili ng kasalukuyang mga filter.',
                     ],
                 ],
@@ -362,7 +362,7 @@ return [
                 [
                     'title'         => 'Paano mag-print ng dokumento',
                     'prerequisites' => [
-                        'Ang mga rekord na pinagbubuhatan ng dokumento — ang resident, ang address o ang journal entry — na nakatala na.',
+                        'Ang mga rekord na pinagbubuhatan ng dokumento (ang resident, ang address o ang journal entry) na nakatala na.',
                     ],
                     'steps'  => [
                         'Buksan ang dokumento mula sa menu ng Mga Dokumentong Ipi-print.',
@@ -388,7 +388,7 @@ return [
             'sections' => [
                 [
                     'title'  => 'Ano ang nilalaman ng booking module',
-                    'body'   => 'Ang mga karaniwang pasilidad ng subdivision at ang mga reserbasyon laban sa mga ito — nasa homeowner man ang pag-book mula sa portal o tinanggap ng opisina sa telepono.',
+                    'body'   => 'Ang mga karaniwang pasilidad ng subdivision at ang mga reserbasyon laban sa mga ito: nasa homeowner man ang pag-book mula sa portal o tinanggap ng opisina sa telepono.',
                     'fields' => [
                         'Mga Booking'    => 'Bawat reserbasyon, kasama ang petsa at oras, ang resident, ang bayad at ang depositong dala nito.',
                         'Calendar View'  => 'Ang parehong mga reserbasyon na inayos ayon sa petsa, kaya kitang-kita agad ang dobleng booking.',
@@ -403,7 +403,7 @@ return [
                     'steps'  => [
                         'Buksan ang Pag-book ng Amenities → Mga Amenity at piliin ang Magdagdag ng Amenity.',
                         'Pangalanan ito, at itakda kung paano ito sisingilin: flat rate, o hourly rate na pinaparami sa mga oras na ni-book.',
-                        'Itakda ang lingguhang iskedyul. I-off ang isang araw ng linggo upang isara ito — ang saradong araw ay walang oras.',
+                        'Itakda ang lingguhang iskedyul. I-off ang isang araw ng linggo upang isara ito: ang saradong araw ay walang oras.',
                         'Itakda ang tuntunin ng deposit, at kung maaaring i-book ito ng mga homeowner mula sa portal.',
                         'I-save.',
                     ],
@@ -412,7 +412,7 @@ return [
                     ],
                     'notes'  => [
                         'Ang amenity na zero o blangko ang rate ay libre: ang libreng booking ay hindi umaabot sa payment step.',
-                        'Ang booking na mayroon na ay pinapanatili ang rate na ipinresyo dito — ang pagbabago ng amenity ay hindi muling nagpepresyo nito.',
+                        'Ang booking na mayroon na ay pinapanatili ang rate na ipinresyo dito: ang pagbabago ng amenity ay hindi muling nagpepresyo nito.',
                     ],
                 ],
                 [
@@ -434,7 +434,7 @@ return [
                     ],
                     'notes'  => [
                         'Ang pag-edit ng hindi pa bayad na booking ay muling nagpepresyo ng invoice nito; kapag may naitalang bayad, ang invoice na ang makasaysayang bill of record.',
-                        'Ang libreng booking ay isinasara bilang nagamit kaagad mula sa pag-apruba — wala nang kokolektahin.',
+                        'Ang libreng booking ay isinasara bilang nagamit kaagad mula sa pag-apruba: wala nang kokolektahin.',
                         'Ang homeowner ay maaaring mag-withdraw ng booking habang pending pa; pagkatapos nito, ang opisina ang may kontrol.',
                         'Ang bawat galaw ay muling sinusuri ang booking habang bumubukas ito, kaya ang pahinang iniwan bukas magdamag ay hindi makakapag-trigger ng galaw na hindi na naaangkop.',
                     ],
@@ -447,7 +447,7 @@ return [
             'sections' => [
                 [
                     'title'  => 'Ano ang saklaw ng pagsingil at mga resibo',
-                    'body'   => 'Ang panig ng kita ng asosasyon. Ang buwanang dues, isahang invoice at bayad na booking ay lahat bill; ang bawat resibo — kinuha sa counter o inihain mula sa portal — ay bayad laban sa isa sa mga ito.',
+                    'body'   => 'Ang panig ng kita ng asosasyon. Ang buwanang dues, isahang invoice at bayad na booking ay lahat bill; ang bawat resibo (kinuha sa counter o inihain mula sa portal) ay bayad laban sa isa sa mga ito.',
                     'fields' => [
                         'Mga Invoice'               => 'Mga singil na itinataas ng opisina nang manu-mano, para sa isang resident, unit o booking.',
                         'Buwanang Dues'             => 'Ang paulit-ulit na dues, na ginawa para sa isang buwan, kasama ang talahanayan ng dues at ang generator sa likod nito.',
@@ -487,7 +487,7 @@ return [
                         'Buksan ang Koleksyon → Buwanang Dues at tingnan ang buwan na sisingilin mo palang.',
                         'Suriin ang generator: inililista nito ang mga unit na dapat singilin at ang rate ng bawat isa.',
                         'Patakbuhin ito upang itaas ang mga dues.',
-                        'Basahin ang talahanayan ng dues para sa buwan at iwasto ang anumang mali — i-adjust ang invoice o i-void ito — pagkatapos ay i-generate muli.',
+                        'Basahin ang talahanayan ng dues para sa buwan at iwasto ang anumang mali (i-adjust ang invoice o i-void ito) pagkatapos ay i-generate muli.',
                     ],
                     'result' => [
                         'Isang dues bill kada unit para sa buwang iyon, bawat isa may dalang rate na ipinresyo nito.',
@@ -575,7 +575,7 @@ return [
                     'title'  => 'Ano ang saklaw ng mga pahina ng gastos',
                     'body'   => 'Ang mga gastusin ng asosasyon at ang mga catalogue sa likod ng mga ito.',
                     'fields' => [
-                        'Mga Gastos'             => 'Perang ginastos. Ang gastos ay ginagawang draft, pagkatapos ay inaprubahan — at hiwalay na ipinopost ito ng accounting sa mga libro.',
+                        'Mga Gastos'             => 'Perang ginastos. Ang gastos ay ginagawang draft, pagkatapos ay inaprubahan: at hiwalay na ipinopost ito ng accounting sa mga libro.',
                         'Mga Kategorya ng Gastos' => 'Ang mga heading na pinapangkatan ng mga gastos. Ang kategorya ay nagtatakda kung aling account nagpo-post ang gastos.',
                         'Mga Supplier'           => 'Ang mga pagtanggap na maaaring pangalanan ng isang gastos.',
                     ],
@@ -597,7 +597,7 @@ return [
                         'Pagkatapos, ipinopost ito ng accounting mula sa row ng gastos gamit ang Post to Journal, at pinipili ang account na pinagmulan ng pera.',
                     ],
                     'notes'  => [
-                        'Ang draft ang pending na estado — walang kailangang ipadala kahit saan para maghintay ng apruba ang isang gastos.',
+                        'Ang draft ang pending na estado: walang kailangang ipadala kahit saan para maghintay ng apruba ang isang gastos.',
                         'Ang linya ay pinapanatili ang pangalan ng kategorya na pinagpilian nito, kaya ang pagtanggal ng kategorya ay hindi muling nagsusulat ng lumang gastos.',
                         'Draft lang ang maaaring i-edit. Ang pagtanggal ng naka-post na gastos ay nagpo-post muna ng reversal nito, kaya pareho itong nananatili sa mga libro; ang aprubadong gastos na walang entry ay basta tinatanggal.',
                     ],
@@ -632,7 +632,7 @@ return [
                     'body'   => 'Ang chart ay pinangkat sa Income, Expenses at Cash.',
                     'steps'  => [
                         'Buksan ang Accounting → Chart of Accounts upang basahin ang mga account, ang kita at gastos ngayong taon, at ang laman ng bawat cash account.',
-                        'Magdagdag ng account sa pamamagitan ng pangalan at kind — may iminumungkahing code at maaari mo itong palitan. Ang code ay 3 hanggang 6 na digit at kailangang hindi pa ginagamit.',
+                        'Magdagdag ng account sa pamamagitan ng pangalan at kind: may iminumungkahing code at maaari mo itong palitan. Ang code ay 3 hanggang 6 na digit at kailangang hindi pa ginagamit.',
                         'Ang cash account ay nagtatanong kung cash o nasa bangko ang pera, at kung magkano ang hawak nito sa petsa ng simula.',
                         'Palitan ang pangalan o kind ng account habang wala pang naka-post dito; ang account na pagmamay-ari ng kategorya ay pinapalitan ng pangalan sa pahina ng kategorya.',
                     ],
@@ -663,7 +663,7 @@ return [
                 ],
                 [
                     'title' => 'Mga transfer at ang rehistro',
-                    'body'  => 'Ang transfer ay naglilipat ng pera sa pagitan ng dalawang account na walang bill o gastos sa likod nito — halimbawa isang bank deposit. Ang rehistro ng transaksyon ay naglilista ng bawat linya, read-only, para sa pagsubaybay.',
+                    'body'  => 'Ang transfer ay naglilipat ng pera sa pagitan ng dalawang account na walang bill o gastos sa likod nito: halimbawa isang bank deposit. Ang rehistro ng transaksyon ay naglilista ng bawat linya, read-only, para sa pagsubaybay.',
                 ],
                 [
                     'title'  => 'Paano magsara ng panahon',
@@ -702,7 +702,7 @@ return [
                     'steps'  => [
                         'Buksan ang Suporta → Mga Request at hanapin ang paghahain.',
                         'Tingnan ito upang basahin kung ano ang hiniling at kanino.',
-                        'Aprubahan ito upang isyu ang dokumento, o tanggihan ito — dapat sabihin ng pagtanggi kung bakit.',
+                        'Aprubahan ito upang isyu ang dokumento, o tanggihan ito: dapat sabihin ng pagtanggi kung bakit.',
                         'Itaas ang invoice gamit ang Create Invoice kapag babayaran ang dokumento.',
                         'Buksan ang Mga Bayad sa row upang makita kung nagbayad na ang sambahayan, at upang aprubahan ang resibong inihain ng portal.',
                         'I-print ang dokumento kapag naaprubahan na ang request.',
@@ -721,7 +721,7 @@ return [
                     'title' => 'Paano nakakarating sa homeowner ang dokumento ng request',
                     'body'  => 'Ang pag-apruba ng request ay nag-isyu ng dokumento nito at nagbubukas ng window kung saan maaari itong i-download. Ang tuntunin ng paglabas ay nakasaad, hindi hinuhulaan: dapat aprubahan ang request, dapat bayaran ang invoice na itinaas para dito, dapat bukas pa ang window, at hindi dapat naubos ang badyet ng download.',
                     'notes' => [
-                        'Ipinapaliwanag ng kard ng portal ang bawat pagpigil — hindi pa bayad ang invoice, sarado ang window, naubos ang badyet.',
+                        'Ipinapaliwanag ng kard ng portal ang bawat pagpigil: hindi pa bayad ang invoice, sarado ang window, naubos ang badyet.',
                         'Ang dokumentong nangangailangan ng mga halagang hindi nakolekta ng request ay tinatanggihan sa halip na i-print na kalahating blangko.',
                     ],
                 ],
@@ -769,7 +769,7 @@ return [
                         'Buwanang Kita / Gastos' => 'Ang dalawang paggalaw buwan-buwan.',
                         'Daily Collection, Daily Income, Daily Expenses' => 'Ang mga rehistro ng araw: ang nakolekta, kinita at ginastos.',
                         'Statement of Account' => 'Ang mga bukas na bill ng isang sambahayan, handang ibigay o ipadala.',
-                        'Komunidad'            => 'Ang subdivision sa mga numero — populasyon, sambahayan, booking at ang kinita ng mga ito.',
+                        'Komunidad'            => 'Ang subdivision sa mga numero: populasyon, sambahayan, booking at ang kinita ng mga ito.',
                         'Mga Resident'         => 'Ang populasyon ng resident at ang halo nito.',
                     ],
                 ],
@@ -808,7 +808,7 @@ return [
                 [
                     'title'         => 'Paano magdagdag ng opisyal',
                     'prerequisites' => [
-                        'Ang role na hahawakan ng opisyal — gawin muna ito kung bago.',
+                        'Ang role na hahawakan ng opisyal: gawin muna ito kung bago.',
                     ],
                     'steps'  => [
                         'Buksan ang Pangangasiwa → Mga User at piliin ang Magdagdag ng User.',
@@ -836,7 +836,7 @@ return [
                     ],
                     'notes'  => [
                         'Ang role na Administrator ay ang catalogue mismo: hawak nito ang lahat kahit walang switch na nakasulat sa row nito, at hindi kailanman iniaalok sa opisina ang switch para dito.',
-                        'Ang role na hawak pa ng isang opisyal ay hindi maaaring tanggalin — ilipat muna ang mga opisyal sa ibang role.',
+                        'Ang role na hawak pa ng isang opisyal ay hindi maaaring tanggalin: ilipat muna ang mga opisyal sa ibang role.',
                         'Ang pag-off ng permission ay hindi nagtatago ng kasaysayan. Nananatili ang mga rekord; ang pahina lang ang isinasara.',
                     ],
                 ],
@@ -862,7 +862,7 @@ return [
             'sections' => [
                 [
                     'title'  => 'Ano ang saklaw ng Mga Setting',
-                    'body'   => 'Lahat ng binabasa ng application bilang configuration sa halip na iniimbak bilang rekord. Ang mga naka-save na setting ay naka-cache at inihahatid nang sariwa saanman — ang pampublikong site, ang portal, bawat napi-print na dokumento at bawat screen na nagpapakita ng sariling pangalan ng asosasyon.',
+                    'body'   => 'Lahat ng binabasa ng application bilang configuration sa halip na iniimbak bilang rekord. Ang mga naka-save na setting ay naka-cache at inihahatid nang sariwa saanman: ang pampublikong site, ang portal, bawat napi-print na dokumento at bawat screen na nagpapakita ng sariling pangalan ng asosasyon.',
                     'fields' => [
                         'General'     => 'Ang pangalan, logo, detalye ng kontak at iba pang impormasyong pangpubliko ng asosasyon.',
                         'Collections' => 'Ang mga default ng pagsingil: mga rate ng dues, araw ng pagbabayad, grace, paalala at multa.',
@@ -879,7 +879,7 @@ return [
                         'I-save.',
                     ],
                     'result' => [
-                        'Lalabas ang kumpirmasyon, at nakapasok na ang pagbabago sa susunod na pahinang i-load mo — ang bagong letterhead ay umaabot sa pinakasusunod na dokumento, ang bagong pangalan sa susunod na pag-render ng pahina.',
+                        'Lalabas ang kumpirmasyon, at nakapasok na ang pagbabago sa susunod na pahinang i-load mo: ang bagong letterhead ay umaabot sa pinakasusunod na dokumento, ang bagong pangalan sa susunod na pag-render ng pahina.',
                     ],
                     'notes'  => [
                         'Ang letterhead ay rich text, pinapalinis sa pagpasok: nananatili ang pinapayagang formatting, hindi ang mga script.',
@@ -893,7 +893,7 @@ return [
             'sections' => [
                 [
                     'title'  => 'Paano ipinagkakaloob ang access',
-                    'body'   => 'Ang bawat pahina at bawat aksyon sa panel ay isang pinangalanang permission. Ang role ay isang bungkos ng mga permission, at ang account ng opisyal ay may eksaktong isang role. Iyon ang buong modelo ng awtorisasyon — walang nakatagong ikalawang listahan kung sino ang maaaring gumawa ng ano.',
+                    'body'   => 'Ang bawat pahina at bawat aksyon sa panel ay isang pinangalanang permission. Ang role ay isang bungkos ng mga permission, at ang account ng opisyal ay may eksaktong isang role. Iyon ang buong modelo ng awtorisasyon: walang nakatagong ikalawang listahan kung sino ang maaaring gumawa ng ano.',
                     'fields' => [
                         'Permission'    => 'Isang switch: "maaaring magdagdag ng resident", "maaaring mag-apruba ng gastos". Ang mga permission ay pinangkat ayon sa module na kinabibilangan.',
                         'Role'          => 'Isang pinangalanang bungkos ng mga permission, ipinagkakaloob sa mga opisyales na gumagawa ng gawaing iyon.',
@@ -909,7 +909,7 @@ return [
                         'Administrator'              => 'Lahat: mga account at role ng opisyal, bawat setting, bawat pahina, bawat ulat.',
                         'Finance officer'            => 'Ang mga pahina ng pagsingil at resibo, ang mga pahina ng gastos, ang mga libro, at ang mga ulat ng pananalapi.',
                         'Collection officer'         => 'Pagsingil at resibo lamang: magtaas ng invoice, patakbuhin ang dues, tumanggap ng bayad, mag-isyu ng statement.',
-                        'Records / front-desk officer' => 'Ang mga rekord ng homeowner at ang mga pahina ng suporta — pag-profile ng resident, pag-isyu ng account, paghahain at pagpapasya ng request, pagrekord ng paglabag.',
+                        'Records / front-desk officer' => 'Ang mga rekord ng homeowner at ang mga pahina ng suporta: pag-profile ng resident, pag-isyu ng account, paghahain at pagpapasya ng request, pagrekord ng paglabag.',
                         'Bookings officer'           => 'Mga amenities, ang mga booking at ang kalendaryo nito, at ang mga request na may kaugnayan sa mga ito.',
                         'Reporting officer'          => 'Mga ulat lamang, basahin at i-export. Kapaki-pakinabang para sa miyembro ng board na kailangan ang mga pigura at wala nang iba.',
                         'Auditor / guest'            => 'Ang role na Visitor sa panimulang punto nito: read-only, at binibigyan ng dagdag lamang kung saan gusto ng asosasyon.',
@@ -925,7 +925,7 @@ return [
                     'steps'  => [
                         'Mag-sign in bilang ang opisyal, o basahin ang role sa Pangangasiwa → Mga User.',
                         'Ihambing ang sidebar sa sinasabing hindi mahanap ng opisyal.',
-                        'Kung may nawawalang pahina, buksan ang role at i-on ang permission — iyon ang solusyon, hindi ang pangalawang account.',
+                        'Kung may nawawalang pahina, buksan ang role at i-on ang permission: iyon ang solusyon, hindi ang pangalawang account.',
                     ],
                     'result' => [
                         'Inililista ng sidebar ng opisyal ang eksaktong mga pahinang binubukas ng kanilang role, at ang manwal na ito ay naglilista ng eksaktong mga tool na maaari nilang basahin.',
@@ -933,7 +933,7 @@ return [
                 ],
                 [
                     'title' => 'Iba ang panig ng homeowner',
-                    'body'  => 'Ang portal ay walang role. Ang homeowner ay nakikita ang sariling sambahayan at wala nang iba — ang sarili nilang bill, resibo, booking, request at miyembro — dahil pagmamay-ari, hindi permission, ang nagtatakda ng maaari nilang buksan. Huwag hanapin ang setting ng role upang baguhin ang nakikita ng homeowner; ang sagot ay laging ang sariling account ng rekord.',
+                    'body'  => 'Ang portal ay walang role. Ang homeowner ay nakikita ang sariling sambahayan at wala nang iba (ang sarili nilang bill, resibo, booking, request at miyembro) dahil pagmamay-ari, hindi permission, ang nagtatakda ng maaari nilang buksan. Huwag hanapin ang setting ng role upang baguhin ang nakikita ng homeowner; ang sagot ay laging ang sariling account ng rekord.',
                 ],
             ],
         ],
@@ -944,7 +944,7 @@ return [
                 [
                     'title'  => 'Mga problema sa sign-in',
                     'fields' => [
-                        '"Hindi tugma sa aming mga rekord ang mga kredensyal na ito."' => 'Tingnan muna ang email address — ito ang nasa account, hindi laging ang gusto ng opisyal. Kung nawala ang password, gamitin ang Nakalimutan ang password sa halip na maghula.',
+                        '"Hindi tugma sa aming mga rekord ang mga kredensyal na ito."' => 'Tingnan muna ang email address: ito ang nasa account, hindi laging ang gusto ng opisyal. Kung nawala ang password, gamitin ang Nakalimutan ang password sa halip na maghula.',
                         'Tinatanggihan ang sign-in pagkatapos ng ilang pagtatangka' => 'Naka-block ang device nang tatlong minuto pagkatapos ng sampung pagkabigo. Hintayin na matapos ang block.',
                         'Hindi dumarating ang code sa email' => 'Humiling ng bagong code, pagkatapos ay tingnan ang email address sa account. Nadedelay rin ang mga code ng cooldown pagkatapos ng paulit-ulit na hiling.',
                         '"Na-deactivate ang iyong account"' => 'Ang naka-off na account ay hindi makakapag-sign in kahit tama ang password. Hilingin sa Administrator na i-reactivate ito.',
@@ -962,12 +962,12 @@ return [
                         'Lalabas ang entry sa menu sa susunod na pag-load ng pahina ng opisyal.',
                     ],
                     'notes'  => [
-                        'Ang button sa loob ng pahina ay maaaring nawawala sa parehong dahilan: ang aksyon ay may sariling permission — iba ang pag-apruba sa pagtingin.',
+                        'Ang button sa loob ng pahina ay maaaring nawawala sa parehong dahilan: ang aksyon ay may sariling permission. Iba ang pag-apruba sa pagtingin.',
                     ],
                 ],
                 [
                     'title'  => 'Hindi naglo-load ang dialog',
-                    'body'   => 'Kinukuha ng mga dialog ang kanilang rekord mula sa server habang bumubukas, kaya ang spinner na hindi natatapos ay nangangahulugang tinanggihan o hindi mahanap ng server ang rekord — kadalasan dahil iniwan bukas ang pahina habang nagbago ang rekord sa ilalim nito.',
+                    'body'   => 'Kinukuha ng mga dialog ang kanilang rekord mula sa server habang bumubukas, kaya ang spinner na hindi natatapos ay nangangahulugang tinanggihan o hindi mahanap ng server ang rekord: kadalasan dahil iniwan bukas ang pahina habang nagbago ang rekord sa ilalim nito.',
                     'steps'  => [
                         'Isara ang dialog at i-reload ang pahina.',
                         'Buksan muli ang rekord at ulitin ang aksyon.',
@@ -976,7 +976,7 @@ return [
                         'Bubukas ang dialog kasama ang rekord at ang mga galaw na naaangkop pa rito.',
                     ],
                     'notes'  => [
-                        'Sinasadya ang pagtanggi: ang galaw na iniaalok ng lipas nang pahina — pag-apruba ng naaprubahan na, pagbabayad ng nabayaran na — ay tinatanggihan sa halip na ulitin.',
+                        'Sinasadya ang pagtanggi: ang galaw na iniaalok ng lipas nang pahina (pag-apruba ng naaprubahan na, pagbabayad ng nabayaran na) ay tinatanggihan sa halip na ulitin.',
                     ],
                 ],
                 [
@@ -984,7 +984,7 @@ return [
                     'body'   => 'Ang resibong inihain mula sa portal ay naghihintay bilang pending: wala itong binabayaran at hindi umaabot sa mga libro hanggang aprubahan ito ng opisina sa pahina ng Mga Bayad. Kaya ang isang sambahayan ay maaaring magpakita ng inihain na bayad habang nakatayo pa ang bill.',
                     'steps'  => [
                         'Buksan ang listahan ng mga bayad at i-filter ang pending na resibo.',
-                        'Tingnan ang patunay at reference nito, pagkatapos ay aprubahan ito — o tanggalin upang makapaghain muli ang sambahayan.',
+                        'Tingnan ang patunay at reference nito, pagkatapos ay aprubahan ito: o tanggalin upang makapaghain muli ang sambahayan.',
                     ],
                 ],
                 [
@@ -992,7 +992,7 @@ return [
                     'body'   => 'Walang naka-imbak na balanse, kaya walang matitinag sa hakbang. Ang bawat pigura ay muling kinukwenta mula sa mga resibo at posting sa likod nito, na nagpapaliit sa tanong sa kung ano ang aktwal na naitala.',
                     'fields' => [
                         'Nagpapakita pa rin ng balanse ang bill kahit may ibinigay na pera' => 'Ang resibo ay pending pa, o naitala laban sa ibang bill.',
-                        'Mukhang mas mababa ang kita kaysa sa koleksyon' => 'Nakikilala ang kita kapag ipinost ng accounting ang isang bayad, hindi kapag itinaas ang bill — tingnan ang journal para sa mga naka-post na bayad.',
+                        'Mukhang mas mababa ang kita kaysa sa koleksyon' => 'Nakikilala ang kita kapag ipinost ng accounting ang isang bayad, hindi kapag itinaas ang bill: tingnan ang journal para sa mga naka-post na bayad.',
                         'Hindi lumalabas ang gastos sa mga libro' => 'Ipinopost ang gastos kapag ipinost ito ng accounting, hindi kapag inaprubahan. Ang hindi pa naka-post na gastos ay wala pang journal entry.',
                         'Mukhang kulang ang isang buwan sa ulat' => 'Tingnan kung bukas pa ang buwan, at kung may na-void o na-reverse pagkatapos.',
                     ],
@@ -1010,7 +1010,7 @@ return [
                     'title'  => 'Saan makakakuha ng tulong',
                     'body'   => 'Magsimula sa opisina: ang Administrator ng asosasyon ang may hawak ng mga setting ng account at role at makakapagbalik ng access, at ang sariling detalye ng kontak ng asosasyon ay nakalathala sa pampublikong site. Kung ang isang rekord ay mukhang mali sa halip na nawawala, ang kabanata para sa module na iyon ay nagsasaad ng tuntuning sinusunod nito, at tinutukoy ng Talasalitaan ang mga termino nito.',
                     'notes'  => [
-                        'Banggitin ang reference ng rekord — numero ng invoice, booking, request — kapag humihingi ng tulong: maaari itong direktang hanapin.',
+                        'Banggitin ang reference ng rekord (numero ng invoice, booking, request) kapag humihingi ng tulong: maaari itong direktang hanapin.',
                     ],
                 ],
             ],
@@ -1022,15 +1022,15 @@ return [
                 [
                     'title'  => 'Mga karaniwang tanong',
                     'fields' => [
-                        'Maaari bang mamahala ang isang tao ng dalawang role?' => 'Hindi — ang account ay may eksaktong isa. Gumawa ng role na nagdadala ng dalawang hanay ng permission sa halip.',
+                        'Maaari bang mamahala ang isang tao ng dalawang role?' => 'Hindi: ang account ay may eksaktong isa. Gumawa ng role na nagdadala ng dalawang hanay ng permission sa halip.',
                         'Maaari ko bang i-undo ang tinanggal na rekord?' => 'Hindi sa pamamagitan ng pagbabalik nito. Ang mga rekord na maaaring ibalik ay kinakansela o vine-void sa halip na tinatanggal para sa eksaktong dahilang ito; ang anumang nakolekta na ay ibinabalik ng correcting entry.',
-                        'Bakit nakikita ko ang bill ngunit hindi makapag-post ng bayad dito?' => 'Ang bill ay may resibo nang naghihintay ng apruba. Aprubahan o tanggihan muna ang isang iyon — hindi kailanman kinukuha nang dalawang beses ang parehong pera.',
+                        'Bakit nakikita ko ang bill ngunit hindi makapag-post ng bayad dito?' => 'Ang bill ay may resibo nang naghihintay ng apruba. Aprubahan o tanggihan muna ang isang iyon: hindi kailanman kinukuha nang dalawang beses ang parehong pera.',
                         'Bakit kailangan kong aprubahan ang bayad na inihain ng homeowner?' => 'Ang portal ay salita ng sambahayan; ang mga libro ay sa opisina. Ang pag-apruba ang lugar kung saan inaako ng opisina ang responsibilidad sa pera.',
                         'Bakit hindi available sa kanila ang dokumento ng homeowner?' => 'Dapat aprubahan ang request at bayaran ang invoice na itinaas para dito, sa loob ng window at badyet ng download na itinakda ng apruba.',
                         'Ano ang pagkakaiba ng bill at invoice?' => 'Ang invoice ay isang uri ng bill. Ang buwanang dues at bayad na booking ay mga bill ng ibang uri, at lahat ng ito ay nasa isang ledger.',
                         'Bakit hindi ako na-sign out kapag isinara ang browser?' => 'Ang session ay humihigit sa tab hanggang matapos ang itinakdang lifetime. Mag-sign out nang maayos sa shared computer.',
                         'Maaari bang magkaroon ng dalawang sambahayan ang isang property?' => 'Hindi. Isang sambahayan kada unit, at isang unit kada sambahayan.',
-                        'Bakit walang laman ang menu na nakikita ko?' => 'Ang listahan ay na-filter, o na-clear ang mga rekord — tingnan ang toolbar bago magpasya na may nawawala.',
+                        'Bakit walang laman ang menu na nakikita ko?' => 'Ang listahan ay na-filter, o na-clear ang mga rekord: tingnan ang toolbar bago magpasya na may nawawala.',
                         'Paano ko malalaman ang ginawa ng isang opisyal?' => 'Itinatala ng activity log ang mga aksyong ginawa sa system, at itinatala ng mga libro ang mismong mga paggalaw ng pera.',
                     ],
                 ],
@@ -1039,10 +1039,10 @@ return [
                     'body'   => 'Isang maikling listahan, sulit basahin nang isang beses.',
                     'notes'  => [
                         'Maghanap sa sidebar bago maghanap sa mga menu: nahahanap nito ang anumang pahinang mabubuksan mo.',
-                        'Tsekan ang mga row bago sumapit sa bulk action — lalabas lamang ang selection bar kapag may napili.',
+                        'Tsekan ang mga row bago sumapit sa bulk action: lalabas lamang ang selection bar kapag may napili.',
                         'Basahin ang menu ng Aksyon ng row sa halip na maghula: inililista nito ang eksaktong mga galaw na pinapayagan pa ng rekord.',
                         'I-export ang view na na-filter mo; ang file ay eksaktong ang mga row sa screen.',
-                        'Tingnan ang ulat bago magsara ng panahon — ang saradong buwan ay hindi na tumatanggap ng posting.',
+                        'Tingnan ang ulat bago magsara ng panahon: ang saradong buwan ay hindi na tumatanggap ng posting.',
                         'I-print ang voucher kasama ang posting: ito ang rekord na maaari mong ibigay sa auditor.',
                         'Gamitin ang sariling search box ng manwal (sa sidebar nito) upang tumalon sa kabanata para sa pahinang kinalalagyan mo.',
                     ],
@@ -1059,7 +1059,7 @@ return [
                         'Account'            => 'Ang sign-in ng opisyal sa panel, o ang login ng homeowner sa portal. Dalawang magkaibang uri ng account at hindi kailanman naghahalo.',
                         'Advance deposit'    => 'Kredito na hawak ng asosasyon para sa account ng sambahayan at ibinabawas laban sa mga susunod na singil.',
                         'Amenity'            => 'Isang pinagsasaluhang pasilidad na maaaring ireserba, may rate, lingguhang iskedyul at opsyonal na deposit.',
-                        'Bill'               => 'Isang singil sa ledger — dues, invoice o bayad na booking. May balanse ito hanggang mabayaran ng mga resibo nito.',
+                        'Bill'               => 'Isang singil sa ledger: dues, invoice o bayad na booking. May balanse ito hanggang mabayaran ng mga resibo nito.',
                         'Booking'            => 'Isang reserbasyon ng amenity para sa isang petsa at hanay ng oras.',
                         'Chart of accounts'  => 'Ang listahan ng mga account na pinagpapatungan ng mga libro, bawat isa may uri at code.',
                         'Reklamo (Complaint)' => 'Isang alalahanin na inihain ng homeowner, sinasagot ng opisina.',
@@ -1067,7 +1067,7 @@ return [
                         'Talahanayan ng dues' => 'Ang mga bill ng buwanang dues, inayos para sa pagsusuri.',
                         'Sambahayan'         => 'Ang mga taong nakatira sa isang unit: ang sambahayan ng account at ang mga miyembro nito.',
                         'Invoice'            => 'Isang bill na itinataas ng opisina nang manu-mano, kumpara sa dues o booking.',
-                        'Journal entry'      => 'Isang balanseng posting sa mga libro — ang rekord ng paggalaw ng pera.',
+                        'Journal entry'      => 'Isang balanseng posting sa mga libro: ang rekord ng paggalaw ng pera.',
                         'Ledger'             => 'Ang kabuuan ng mga journal entry; ang mga libro.',
                         'Letterhead'         => 'Ang heading, footer at mga pinipirmahan na dala ng bawat napi-print na dokumento. Nasa Mga Setting → Print.',
                         'Buwanang dues'      => 'Ang paulit-ulit na singil na itinataas kada unit para sa isang buwan.',

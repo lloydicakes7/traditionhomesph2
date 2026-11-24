@@ -5,5 +5,5 @@
     @var string|null    $note
 --}}
 <div class="printed-note">
-    Printed {{ $printedAt->format('M j, Y g:i A') }}@if (! empty($note)) — {{ $note }}@endif
+    Printed {{ $printedAt->format('M j, Y g:i A') }}@if (! empty($note)): {{ $note }}@endif
 </div>

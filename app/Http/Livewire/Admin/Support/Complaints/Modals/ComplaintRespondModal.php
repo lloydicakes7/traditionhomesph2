@@ -130,7 +130,7 @@ class ComplaintRespondModal extends AdminModalComponent
             auth('web')->user()
         );
 
-        $this->emit('notify', 'success', 'Response saved — the submitter sees the update on their own complaints page.');
+        $this->emit('notify', 'success', 'Response saved: the submitter sees the update on their own complaints page.');
         $this->emit('complaint-saved');
 
         $this->dispatchBrowserEvent('modal-close', ['id' => 'complaintRespondModal']);

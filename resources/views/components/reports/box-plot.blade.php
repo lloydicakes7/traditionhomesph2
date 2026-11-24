@@ -1,5 +1,5 @@
 {{--
-    A box plot — the spread of a set of figures, not just its average.
+    A box plot: the spread of a set of figures, not just its average.
 
     Age is the figure this exists for: "the average resident is 41" hides
     whether the association is one age or every age, while the box says where

@@ -69,7 +69,7 @@ class PastMonthlyDueQuery
             }
 
             $unit = $property->block_lot_label;
-            $options[$owner->id] = $owner->name . (in_array($unit, ['', '—', 'None'], true) ? '' : ' · ' . $unit);
+            $options[$owner->id] = $owner->name . (in_array($unit, ['', 'None'], true) ? '' : ' · ' . $unit);
         }
 
         return $options;

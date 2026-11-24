@@ -12,7 +12,7 @@
     household, the block and lot from the unit, and the household members from
     the household's own records. This fragment shows exactly what the printed
     sheet will say, and names the blanks the office still has to complete on those
-    records — nothing here is submitted, so nothing here can disagree with them.
+    records: nothing here is submitted, so nothing here can disagree with them.
 
     The office's own dialogs may also supply, for one form only, a detail the
     record leaves blank (`supply`). The homeowner's form never asks: the office
@@ -87,7 +87,7 @@
     @if ($supply && ! empty($profile['missing_fields']))
         <div class="border rounded p-2 mb-3">
             <div class="text-uppercase text-muted font-weight-bold small border-bottom pb-1 mb-2">
-                <i class="fas fa-fw fa-pen mr-1"></i> Missing on the record — optional
+                <i class="fas fa-fw fa-pen mr-1"></i> Missing on the record: optional
             </div>
 
             <p class="small text-muted mb-2">
@@ -100,7 +100,7 @@
                 @foreach ($profile['missing_fields'] as $key => $label)
                     <div class="col-12 col-md-6">
                         <x-adminlte-input name="membership_{{ $key }}" label="{{ $label }}"
-                            wire:model.defer="form.membership.{{ $key }}" igroup-size="sm" />
+                            wire:model="form.membership.{{ $key }}" igroup-size="sm" />
                         @error('form.membership.' . $key)
                             <span class="text-danger small">{{ $message }}</span>
                         @enderror

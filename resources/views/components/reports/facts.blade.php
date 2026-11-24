@@ -1,9 +1,9 @@
 {{--
-    A report's figures as one list of labels and values — the shape a report
+    A report's figures as one list of labels and values: the shape a report
     table of two columns takes on a screen too small for it.
 
-    A record list needs a card each (x-reports.cards); a two-column list — the
-    association's records, the residents report in numbers — is one column of
+    A record list needs a card each (x-reports.cards); a two-column list: the
+    association's records, the residents report in numbers: is one column of
     labels beside one column of figures, which is a list rather than a stack of
     records. It reads the same as the table it replaces, without the table.
 

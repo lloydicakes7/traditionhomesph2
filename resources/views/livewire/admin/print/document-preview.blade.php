@@ -306,7 +306,7 @@
                     </div>
 
                     <x-adminlte-input name="eventTitle" label="The meeting is called" igroup-size="sm"
-                        placeholder="meeting — printed &quot;a meeting&quot;" />
+                        placeholder="meeting: printed &quot;a meeting&quot;" />
 
                     <x-adminlte-textarea name="concern" label="With regards to" rows="2" igroup-size="sm"
                         placeholder="a concern that needs to fix" />
@@ -378,7 +378,7 @@
                         </div>
                     </div>
 
-                    <x-adminlte-textarea name="narrative" label="Ang pangyayari — one paragraph per line" rows="6"
+                    <x-adminlte-textarea name="narrative" label="Ang pangyayari: one paragraph per line" rows="6"
                         igroup-size="sm" />
 
                     <x-adminlte-input name="executionDate" type="date" label="Nilagdaan noong" value="{{ $today }}"

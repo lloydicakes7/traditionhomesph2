@@ -36,6 +36,10 @@
     </form>
 @stop
 
+@section('js')
+    <script src="{{ asset('js/required-field.js') }}"></script>
+@stop
+
 @section('auth_footer')
     <p class="my-0">
         <a href="{{ route('login') }}">{{ __('auth.return_to_login') }}</a>

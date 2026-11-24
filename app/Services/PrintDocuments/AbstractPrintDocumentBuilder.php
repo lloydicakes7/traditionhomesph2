@@ -210,7 +210,7 @@ abstract class AbstractPrintDocumentBuilder implements PrintDocumentBuilder
     {
         $relationship = trim((string) $relationship);
 
-        return $relationship === '' ? '—' : ucfirst($relationship);
+        return $relationship === '' ? '' : ucfirst($relationship);
     }
 
     /**

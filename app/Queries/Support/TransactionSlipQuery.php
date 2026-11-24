@@ -130,6 +130,6 @@ class TransactionSlipQuery
      */
     private function stamp($createdAt): string
     {
-        return $createdAt ? $createdAt->format('M j, Y g:i A') : '—';
+        return $createdAt ? $createdAt->format('M j, Y g:i A') : 'Not recorded';
     }
 }

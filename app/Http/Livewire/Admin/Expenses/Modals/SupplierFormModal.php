@@ -52,7 +52,7 @@ class SupplierFormModal extends AdminModalComponent
     // Validation
     // =====================================================================
 
-    private function rules(): array
+    protected function rules(): array
     {
         return [
             'form.name'        => ['required', 'string', 'max:150'],

@@ -80,7 +80,7 @@
                     </div>
                     <div class="col-12">
                         <x-adminlte-textarea name="form.description" label="Description" rows="4"
-                            placeholder="What the officer observed — what happened, who was there, anything the homeowner should know."
+                            placeholder="What the officer observed: what happened, who was there, anything the homeowner should know."
                             wire:model.defer="form.description" igroup-size="sm" />
                     </div>
                 </div>

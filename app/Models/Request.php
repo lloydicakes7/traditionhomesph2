@@ -255,7 +255,7 @@ class Request extends Model
      */
     public function getSlipLabelAttribute(): string
     {
-        return ($this->reference ?: 'Not recorded') . ' — ' . $this->type_label;
+        return ($this->reference ?: 'Not recorded') . ': ' . $this->type_label;
     }
 
     /**
@@ -492,7 +492,7 @@ class Request extends Model
 
         $status = BillStatus::tryFrom($this->bill->status);
 
-        return $this->bill->reference . ' — ' . ($status ? $status->label() : $this->bill->status);
+        return $this->bill->reference . ': ' . ($status ? $status->label() : $this->bill->status);
     }
 
     /**

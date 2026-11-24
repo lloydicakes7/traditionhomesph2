@@ -49,8 +49,8 @@ class ComplaintStatus extends Enum
         return [
             self::PENDING     => 'Submitted and waiting for the office to pick it up.',
             self::IN_PROGRESS => 'The office is looking into it.',
-            self::RESOLVED    => 'Addressed by the office — see the response.',
-            self::CLOSED      => 'Closed — no further action will be taken.',
+            self::RESOLVED    => 'Addressed by the office: see the response.',
+            self::CLOSED      => 'Closed: no further action will be taken.',
         ];
     }
 

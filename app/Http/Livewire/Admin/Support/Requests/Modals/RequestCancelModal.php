@@ -67,7 +67,7 @@ class RequestCancelModal extends AdminModalComponent
     protected function messages(): array
     {
         return [
-            'remarks.required' => 'Say why the request is being cancelled — the homeowner reads this.',
+            'remarks.required' => 'Say why the request is being cancelled: the homeowner reads this.',
         ];
     }
 
@@ -136,7 +136,7 @@ class RequestCancelModal extends AdminModalComponent
             return;
         }
 
-        $this->emit('notify', 'success', 'Request cancelled — the reason is on the homeowner\'s own requests page.');
+        $this->emit('notify', 'success', 'Request cancelled: the reason is on the homeowner\'s own requests page.');
         $this->emit('request-saved');
 
         $this->dispatchBrowserEvent('modal-close', ['id' => self::MODAL_ID]);

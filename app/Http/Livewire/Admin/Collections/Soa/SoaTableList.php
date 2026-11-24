@@ -153,7 +153,7 @@ class SoaTableList extends AdminComponent
             $prepared > 0 ? 'success' : 'warning',
             $prepared > 0
                 ? $prepared . ' statement(s) prepared for ' . PeriodHelper::label($this->preparePeriod) . '.'
-                : 'Nothing to prepare — every homeowner account with an email on file has either settled or already been prepared for that period.'
+                : 'Nothing to prepare: every homeowner account with an email on file has either settled or already been prepared for that period.'
         );
     }
 
@@ -174,7 +174,7 @@ class SoaTableList extends AdminComponent
         $result = $this->sendStatements->handle($this->selectedIds, auth('web')->user());
 
         if ($result['sent'] === 0 && $result['failed'] === 0) {
-            $this->emit('notify', 'warning', 'Nothing to send — the selected statements have already gone out.');
+            $this->emit('notify', 'warning', 'Nothing to send: the selected statements have already gone out.');
 
             return;
         }
@@ -183,7 +183,7 @@ class SoaTableList extends AdminComponent
             'notify',
             $result['failed'] > 0 ? 'warning' : 'success',
             $result['sent'] . ' statement(s) sent'
-                . ($result['failed'] > 0 ? ', ' . $result['failed'] . ' failed — see the error column and retry.' : '.')
+                . ($result['failed'] > 0 ? ', ' . $result['failed'] . ' failed: see the error column and retry.' : '.')
         );
 
         $this->selectedIds = [];
@@ -201,7 +201,7 @@ class SoaTableList extends AdminComponent
         $statement = $this->query->find($id);
 
         if (! $statement->email) {
-            $this->emit('notify', 'warning', 'This statement has no email address on file — record one before sending it.');
+            $this->emit('notify', 'warning', 'This statement has no email address on file: record one before sending it.');
 
             return;
         }
@@ -209,7 +209,7 @@ class SoaTableList extends AdminComponent
         $result = $this->sendStatements->handle([$id], auth('web')->user());
 
         if ($result['sent'] === 0 && $result['failed'] === 0) {
-            $this->emit('notify', 'warning', 'Nothing to send — this statement has already gone out.');
+            $this->emit('notify', 'warning', 'Nothing to send: this statement has already gone out.');
 
             return;
         }
@@ -218,7 +218,7 @@ class SoaTableList extends AdminComponent
             'notify',
             $result['failed'] > 0 ? 'warning' : 'success',
             $result['failed'] > 0
-                ? 'The statement could not be sent — see the error column and retry.'
+                ? 'The statement could not be sent: see the error column and retry.'
                 : 'Statement sent to ' . $statement->email . '.'
         );
 

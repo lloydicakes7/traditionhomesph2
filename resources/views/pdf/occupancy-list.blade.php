@@ -1,6 +1,6 @@
 @extends('pdf.layouts.report')
 {{--
-    OCCUPANCY LIST — the units on file and the household that holds each one.
+    OCCUPANCY LIST: the units on file and the household that holds each one.
     Builder: OccupancyListBuilder. Contract: §3.
 
     @var array          $filters     [address ("All addresses" | label), type ("All occupants" | label)]

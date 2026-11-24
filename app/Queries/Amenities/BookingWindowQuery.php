@@ -51,7 +51,7 @@ class BookingWindowQuery
 
         if (! $amenity->isOpenDuring($startsAt, $endsAt)) {
             return $amenity->has_schedule
-                ? 'Not open at that time — open ' . $amenity->schedule_summary . '.'
+                ? 'Not open at that time: open ' . $amenity->schedule_summary . '.'
                 : 'This facility has no opening hours set yet.';
         }
 

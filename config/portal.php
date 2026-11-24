@@ -4,7 +4,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Homeowner Portal — Portal Chrome Configuration
+    | Homeowner Portal: Portal Chrome Configuration
     |--------------------------------------------------------------------------
     */
 
@@ -19,13 +19,13 @@ return [
     | Navbar Notifications
     |--------------------------------------------------------------------------
     |
-    | The portal's notification bell — the same Laravel-AdminLTE notification
+    | The portal's notification bell: the same Laravel-AdminLTE notification
     | link the office panel carries in config/adminlte.php, pointed at the
     | portal's own feed. `update_cfg` is what makes it live: the package polls
     | that route and paints the badge and the dropdown from the JSON it answers.
     |
     | `route` is the page the bell's footer opens, and `guard` is the account the
-    | bell counts — the portal signs in on `homeowner`, never on `web`.
+    | bell counts: the portal signs in on `homeowner`, never on `web`.
     |
     */
 

@@ -65,7 +65,7 @@ class AdvanceDepositListQuery
                 $unit = $user->household?->property?->block_lot_label;
 
                 return [
-                    $user->id => $user->name . ($unit && $unit !== '—' ? ' · ' . $unit : ''),
+                    $user->id => $user->name . ($unit && $unit !== 'None' ? ' · ' . $unit : ''),
                 ];
             })
             ->all();

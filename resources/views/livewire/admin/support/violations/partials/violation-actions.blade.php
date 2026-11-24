@@ -5,12 +5,12 @@
      theirs out. Which of them shows is decided by the record, never by the
      reader:
 
-       • View    — always: the whole record, read-only.
-       • Print   — always: the notice the office hands the homeowner, built by
+       • View   : always, the whole record, read-only.
+       • Print  : always, the notice the office hands the homeowner, built by
                    the same document pipeline the Print Documents page uses.
-       • Edit    — while the office may still correct it.
-       • Resolve — once the violation can be closed out.
-       • Delete  — for one issued in error.
+       • Edit   : while the office may still correct it.
+       • Resolve: once the violation can be closed out.
+       • Delete : for one issued in error.
 
      `$actionKey` namespaces the dropdown's id: the desktop row and the mobile
      card are both on the page, and only one of them is ever visible. The same

@@ -78,7 +78,7 @@ class ExpenseWizardModal extends AdminModalComponent
      *
      * @return array<string, mixed>
      */
-    private function rules(): array
+    protected function rules(): array
     {
         return [
             'form.expense_date'       => ['required', 'date'],

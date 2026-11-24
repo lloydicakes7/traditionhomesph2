@@ -2,10 +2,10 @@
 
 /*
 |--------------------------------------------------------------------------
-| Manwal ng Gumagamit — Mga Karaniwang Label
+| Manwal ng Gumagamit: Mga Karaniwang Label
 |--------------------------------------------------------------------------
 |
-| Ang mga salitang ipinapakita ng sariling shell ng manwal — ang tagapili ng
+| Ang mga salitang ipinapakita ng sariling shell ng manwal: ang tagapili ng
 | wika sa navbar, ang search box sa sidebar, ang mga label ng seksyon sa
 | kard ng paksa at ang talahanayan ng nilalaman sa kanan. Pareho itong
 | binabasa ng dalawang panig (admin at portal), kaya isang beses lang nakalagay.

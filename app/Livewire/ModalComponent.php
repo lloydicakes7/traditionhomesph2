@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Livewire;
 
 use App\Http\Livewire\Concerns\WithFieldLabels;
+use App\Http\Livewire\Concerns\WithRequiredFields;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Component;
 
@@ -12,6 +13,7 @@ abstract class ModalComponent extends Component
 {
     use AuthorizesRequests;
     use WithFieldLabels;
+    use WithRequiredFields;
 
     protected $paginationTheme = 'bootstrap';
 

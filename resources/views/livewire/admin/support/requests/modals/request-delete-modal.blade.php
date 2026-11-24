@@ -1,7 +1,7 @@
 <div wire:ignore.self>
     {{-- The shell is always rendered: Livewire never adds or removes the modal
-         element, so Bootstrap's own show/hide lifecycle — and the backdrop that
-         goes with it — is never interrupted mid-flight. --}}
+         element, so Bootstrap's own show/hide lifecycle: and the backdrop that
+         goes with it: is never interrupted mid-flight. --}}
     <x-adminlte-modal id="requestDeleteModal" title="Delete Request"
         icon="fas fa-fw fa-exclamation-triangle" theme="danger" size="md" scrollable v-centered wire:ignore.self>
 
@@ -27,7 +27,7 @@
 
             <p class="text-danger small mt-3 mb-0">
                 <i class="fas fa-fw fa-info-circle"></i>
-                Deleting is for a request filed in error — it removes the record entirely. A request the office
+                Deleting is for a request filed in error: it removes the record entirely. A request the office
                 has already acted on is usually better left standing, so the outcome stays on the submitter's
                 record. This action cannot be undone.
             </p>

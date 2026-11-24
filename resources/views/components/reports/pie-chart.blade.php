@@ -1,5 +1,5 @@
 {{--
-    A pie — or, by default, a donut — for a distribution that has to be read as
+    A pie (or, by default, a donut) for a distribution that has to be read as
     shares of one whole.
 
     A gender split, a mix of civil statuses, a breakdown of where the bookings

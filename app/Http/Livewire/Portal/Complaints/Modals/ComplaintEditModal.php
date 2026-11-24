@@ -137,7 +137,7 @@ class ComplaintEditModal extends PortalModalComponent
         $complaint = $this->detail->find($this->editingComplaintId);
 
         if (! $this->account()->can('updateOwn', $complaint)) {
-            $this->addError('form.subject', 'This complaint can no longer be edited — the office has already acted on it.');
+            $this->addError('form.subject', 'This complaint can no longer be edited: the office has already acted on it.');
 
             return;
         }

@@ -129,7 +129,7 @@ class DirectorySeeder extends Seeder
                 [
                     'name'   => 'Board of Directors',
                     'role'   => 'Internal line',
-                    'note'   => 'Officers only — meeting schedules and board resolutions.',
+                    'note'   => 'Officers only: meeting schedules and board resolutions.',
                     'phones' => [
                         ['Mobile', '0920 456 7890'],
                     ],

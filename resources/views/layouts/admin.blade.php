@@ -31,6 +31,7 @@
     <script src="{{ asset('js/print-preview.js') }}"></script>
     <script src="{{ asset('js/contact-input.js') }}"></script>
     <script src="{{ asset('js/form-input.js') }}"></script>
+    <script src="{{ asset('js/required-field.js') }}?v={{ filemtime(public_path('js/required-field.js')) }}"></script>
     <script src="{{ asset('js/money-input.js') }}"></script>
     <script src="{{ asset('js/password-toggle.js') }}"></script>
     <script src="{{ asset('js/confirm.js') }}"></script>

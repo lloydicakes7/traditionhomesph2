@@ -1,5 +1,5 @@
 {{--
-    A bar chart, vertical or horizontal — the report suite's way of comparing a
+    A bar chart, vertical or horizontal: the report suite's way of comparing a
     figure across categories.
 
     It is plain markup rather than a charting library: each bar's length is its
@@ -11,7 +11,7 @@
     better as rows with the label beside its bar.
 
     Each row is ['label' => …, 'value' => …, 'theme' => …]; a row that names no
-    theme takes the chart's own, or — when `cycle` is set — the palette's next
+    theme takes the chart's own, or (when `cycle` is set) the palette's next
     colour, which is how a categorical series (aging buckets, methods) reads as
     one series of distinct parts. `money` decides whether the figure is written
     as the association writes an amount or as a plain count.

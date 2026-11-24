@@ -167,7 +167,7 @@ class RequestFileModal extends PortalModalComponent
 
         $this->fileRequest->handle($this->form, Auth::guard('homeowner')->user());
 
-        $this->emit('notify', 'success', 'Request submitted — the office will review it and post the outcome here.');
+        $this->emit('notify', 'success', 'Request submitted: the office will review it and post the outcome here.');
         $this->emit('request-filed');
 
         // Hide through Bootstrap first; the loader's hidden event then drops

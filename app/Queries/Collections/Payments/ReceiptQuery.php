@@ -34,7 +34,7 @@ class ReceiptQuery
             'payer'           => $bill ? $bill->issued_to_name : '',
             'unit'            => $bill?->property?->block_lot_label ?? 'Not recorded',
             'bill_reference'  => $bill->reference ?? '',
-            'bill_period'     => $bill && $bill->billing_period ? PeriodHelper::label($bill->billing_period) : '—',
+            'bill_period'     => $bill && $bill->billing_period ? PeriodHelper::label($bill->billing_period) : 'Not recorded',
             'bill_type'       => $bill->type_label ?? '',
             'items'           => $this->items($bill),
             'total'           => MoneyHelper::format($bill->total ?? 0),

@@ -48,10 +48,10 @@ class BillStatus extends Enum
     {
         return [
             self::UNPAID    => 'Raised and waiting for payment.',
-            self::PARTIAL   => 'Partly paid — a balance is still outstanding.',
+            self::PARTIAL   => 'Partly paid: a balance is still outstanding.',
             self::PAID      => 'Settled in full.',
             self::OVERDUE   => 'Past its due date with a balance still outstanding.',
-            self::CANCELLED => 'Withdrawn — nothing is collectible on it.',
+            self::CANCELLED => 'Withdrawn: nothing is collectible on it.',
         ];
     }
 

@@ -144,7 +144,7 @@ class AdvanceDepositApplyModal extends AdminModalComponent
         $payment = $this->applyDeposit->handle($deposit, $bill, $amount, auth('web')->user());
 
         if (! $payment) {
-            $this->emit('notify', 'warning', 'Nothing could be applied — the credit or the bill has already been settled.');
+            $this->emit('notify', 'warning', 'Nothing could be applied: the credit or the bill has already been settled.');
 
             return;
         }

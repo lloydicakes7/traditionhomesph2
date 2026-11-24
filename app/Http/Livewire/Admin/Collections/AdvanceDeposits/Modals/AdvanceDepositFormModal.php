@@ -114,7 +114,7 @@ class AdvanceDepositFormModal extends AdminModalComponent
             'notes'        => $this->form['notes'] ?: null,
         ], auth('web')->user());
 
-        $this->emit('notify', 'success', 'Advance deposit recorded — ' . $deposit->balance_display . ' of credit held.');
+        $this->emit('notify', 'success', 'Advance deposit recorded: ' . $deposit->balance_display . ' of credit held.');
         $this->emit('advance-deposit-saved');
 
         $this->resetModal();

@@ -1,5 +1,5 @@
 {{--
-    A year's movement, drawn and tabulated — the shape the Monthly Income and
+    A year's movement, drawn and tabulated: the shape the Monthly Income and
     the Monthly Expense Report both take: the trend beside a line of the same
     movement, the account-by-month breakdown below, and the twelve month totals
     under it.
@@ -11,19 +11,19 @@
     Two drawings of one series, because they answer different questions: the
     bars compare the months to each other, the line shows the shape of the year.
 
-    The breakdown is fifteen columns wide — a year of months beside a code, an
-    account and a total — so it takes the suite's smallest-screen shape (see
+    The breakdown is fifteen columns wide: a year of months beside a code, an
+    account and a total: so it takes the suite's smallest-screen shape (see
     `.report-table-view` / `.report-card-view` in reports.css): a fixed table on
     an extra-large screen, and one card per account below it. Nothing is put in
     a `.table-responsive`, so the report never scrolls sideways. Its card also
     carries `report-prints-cards`, because fifteen columns do not fit a sheet
-    either — on paper this report is its cards.
+    either: on paper this report is its cards.
 
     Variables:
-        $report       — the service's reading: rows, months, month_labels, year_total
-        $heading      — what the table is (e.g. "Income by Account")
-        $trendHeading — what the chart is (e.g. "Monthly Income Trend")
-        $theme        — the AdminLTE theme the bars are painted in
+        $report         The service's reading: rows, months, month_labels, year_total
+        $heading     : what the table is (e.g. "Income by Account")
+        $trendHeading: what the chart is (e.g. "Monthly Income Trend")
+        $theme       : the AdminLTE theme the bars are painted in
 --}}
 @php
     $columns = count($report['month_labels']);
@@ -56,7 +56,7 @@
         <div class="card h-100 mb-0">
             <div class="card-header">
                 <span class="font-weight-bold">
-                    <i class="fas fa-fw fa-chart-line mr-1"></i> {{ $trendHeading }} — Movement
+                    <i class="fas fa-fw fa-chart-line mr-1"></i> {{ $trendHeading }}: Movement
                 </span>
             </div>
             <div class="card-body">
@@ -105,7 +105,7 @@
                     <tr>
                         <td colspan="{{ $columns + 3 }}" class="text-center text-muted py-4">
                             <i class="fas fa-fw fa-folder-open fa-2x mb-2"></i>
-                            <p class="mb-0">Nothing was posted in this year — pick another one.</p>
+                            <p class="mb-0">Nothing was posted in this year: pick another one.</p>
                         </td>
                     </tr>
                 @endforelse
@@ -163,7 +163,7 @@
             <div class="card report-card">
                 <div class="report-card-empty">
                     <i class="fas fa-fw fa-folder-open fa-2x mb-2"></i>
-                    <p class="mb-0">Nothing was posted in this year — pick another one.</p>
+                    <p class="mb-0">Nothing was posted in this year: pick another one.</p>
                 </div>
             </div>
         @endforelse

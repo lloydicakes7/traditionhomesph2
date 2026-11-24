@@ -18,7 +18,7 @@ trait HandlesResidentUserLink
         $residentId = $mode === 'to-user' ? (int) $selectedId : (int) $sourceId;
 
         if (! app(LinkUserAccount::class)->handle($userId, $residentId, auth('web')->user())) {
-            $this->emit('notify', 'error', 'Link failed — one of the accounts is already linked to another record.');
+            $this->emit('notify', 'error', 'Link failed: one of the accounts is already linked to another record.');
             return;
         }
 

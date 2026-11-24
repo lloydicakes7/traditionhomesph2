@@ -2,7 +2,7 @@
 
 /*
 |--------------------------------------------------------------------------
-| User Manual — Structure
+| User Manual: Structure
 |--------------------------------------------------------------------------
 |
 | The manual's shape, not its words. This file names the groups and the
@@ -14,7 +14,7 @@
 |
 | A topic needs a `key` (which finds its copy and its icon) and an `icon`. An
 | admin topic may also declare `abilities`: it is offered when the officer
-| passes one of them — the same Policies the panel's own pages answer from —
+| passes one of them (the same Policies the panel's own pages answer from)
 | and a topic that declares none is offered to everyone. The portal is
 | ownership-based, so its topics declare none.
 |

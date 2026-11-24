@@ -119,7 +119,7 @@ class ComplaintRequestModal extends PortalModalComponent
 
         $this->attachments = [];
 
-        $this->emit('notify', 'success', 'Complaint submitted — the office will review it and post an update here.');
+        $this->emit('notify', 'success', 'Complaint submitted: the office will review it and post an update here.');
         $this->emit('complaint-filed');
 
         // Hide through Bootstrap first; the loader's hidden event then drops

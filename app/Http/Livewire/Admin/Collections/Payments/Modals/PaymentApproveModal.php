@@ -115,7 +115,7 @@ class PaymentApproveModal extends AdminModalComponent
             return;
         }
 
-        $this->emit('notify', 'success', 'Payment approved — recorded against the bill.');
+        $this->emit('notify', 'success', 'Payment approved: recorded against the bill.');
         $this->emit('payment-approved');
 
         $this->resetModal();

@@ -217,7 +217,7 @@ class AccountFormModal extends AdminModalComponent
      *
      * @return array<string, mixed>
      */
-    private function rules(): array
+    protected function rules(): array
     {
         $isNewMoney = ! $this->isEditing && $this->form['kind'] === AccountKind::MONEY;
 

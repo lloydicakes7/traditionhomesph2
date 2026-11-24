@@ -55,7 +55,7 @@ class CategoryFormModal extends AdminModalComponent
     /**
      * @return array<string, mixed>
      */
-    private function rules(): array
+    protected function rules(): array
     {
         return [
             'form.name'        => ['required', 'string', 'max:150'],

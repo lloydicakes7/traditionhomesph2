@@ -72,9 +72,9 @@ final class JournalVoucherBuilder extends AbstractPrintDocumentBuilder
             return [
                 'code'    => $line->account ? (string) $line->account->code : '',
                 'account' => (string) $line->account_name,
-                'memo'    => trim((string) $line->memo) !== '' ? (string) $line->memo : '—',
-                'debit'   => $debit ? Helper::money($amount, true) : '—',
-                'credit'  => $debit ? '—' : Helper::money($amount, true),
+                'memo'    => trim((string) $line->memo) !== '' ? (string) $line->memo : '',
+                'debit'   => $debit ? Helper::money($amount, true) : '',
+                'credit'  => $debit ? '' : Helper::money($amount, true),
             ];
         })->all();
 
@@ -83,8 +83,8 @@ final class JournalVoucherBuilder extends AbstractPrintDocumentBuilder
             'date'           => (string) $entry->entry_date_display,
             'classification' => (string) $entry->classification_label,
             'source'         => (string) $entry->source_label,
-            'reference'      => trim((string) $entry->reference_no) !== '' ? (string) $entry->reference_no : '—',
-            'description'    => trim((string) $entry->memo) !== '' ? (string) $entry->memo : '—',
+            'reference'      => trim((string) $entry->reference_no) !== '' ? (string) $entry->reference_no : '',
+            'description'    => trim((string) $entry->memo) !== '' ? (string) $entry->memo : '',
             'postedBy'       => $entry->postedByAdmin ? (string) $entry->postedByAdmin->name : 'System',
             'lines'          => $printed,
             'totalDebit'     => Helper::money($debits),

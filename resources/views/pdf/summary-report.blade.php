@@ -1,6 +1,6 @@
 @extends('pdf.layouts.report')
 {{--
-    SUMMARY REPORT — one side of the year's books, account by account and month
+    SUMMARY REPORT: one side of the year's books, account by account and month
     by month, on a single sheet held the wide way.
     Builder: SummaryReportBuilder.
 
@@ -8,7 +8,7 @@
     months and its total, and the closing row carries each month's total and the
     year's. An account with nothing posted all year is not printed.
 
-    The amounts are written bare — the subtitle names PHP once rather than
+    The amounts are written bare: the subtitle names PHP once rather than
     thirteen times, which is what lets thirteen money columns fit the sheet.
 
     @var string          $type          "Income" or "Expense"
@@ -23,7 +23,7 @@
     @var array           $letterhead    (signatories.treasurer, signatories.president)
     @var \Carbon\Carbon  $printedAt @var string $generatedBy
 --}}
-@section('title', 'Summary Report — ' . $heading . ' ' . $year)
+@section('title', 'Summary Report: ' . $heading . ' ' . $year)
 @section('running_header', 'Summary Report · ' . $heading . ' · ' . $year)
 
 @section('content')

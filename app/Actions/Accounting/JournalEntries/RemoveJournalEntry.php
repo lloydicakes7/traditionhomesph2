@@ -30,7 +30,7 @@ class RemoveJournalEntry
         if ($entry->source_enum && $entry->source_enum->isAutomatic()) {
             throw ValidationException::withMessages([
                 'entry' => 'This entry came from a ' . strtolower($entry->source_label)
-                    . '. Remove it from that record instead — the books must keep the trail.',
+                    . '. Remove it from that record instead: the books must keep the trail.',
             ]);
         }
 

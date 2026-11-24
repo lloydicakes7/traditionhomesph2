@@ -45,6 +45,13 @@
     transform: rotate(180deg);
 }
 
+/* ===== Required Fields ===== */
+
+label .thha-required {
+    color: #dc3545;
+    margin-left: 0.15rem;
+}
+
 /* ===== Public navbar ===== */
 
 .thha-public-navbar .dropdown-menu {

@@ -462,25 +462,25 @@ class Account extends Model
         $entries = $this->journalLines()->distinct()->count('journal_entry_id');
 
         if ($entries > 0) {
-            return $entries . ' journal entry(ies) are posted to this account — an account in the books cannot be removed.';
+            return $entries . ' journal entry(ies) are posted to this account: an account in the books cannot be removed.';
         }
 
         if ($this->productCategories()->exists()) {
-            return 'A product category is billed into this account — rename it on the product category page.';
+            return 'A product category is billed into this account: rename it on the product category page.';
         }
 
         if ($this->expenseCategories()->exists()) {
-            return 'An expense category is charged to this account — rename it on the expense category page.';
+            return 'An expense category is charged to this account: rename it on the expense category page.';
         }
 
         if ($this->paymentMethods()->exists()) {
-            return 'A payment method records money into this account — point it elsewhere first.';
+            return 'A payment method records money into this account: point it elsewhere first.';
         }
 
         $transfers = $this->transfersFrom()->count() + $this->transfersTo()->count();
 
         if ($transfers > 0) {
-            return $transfers . ' recorded transfer(s) name this account, and a transfer is part of the books — it cannot be removed.';
+            return $transfers . ' recorded transfer(s) name this account, and a transfer is part of the books: it cannot be removed.';
         }
 
         return null;

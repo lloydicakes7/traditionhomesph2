@@ -137,7 +137,7 @@ class PastMonthlyDueModal extends AdminModalComponent
 
         if ($result['created'] === 0) {
             $this->emit('notify', 'warning', $result['skipped'] > 0
-                ? 'Every selected month is already billed — nothing new was raised.'
+                ? 'Every selected month is already billed: nothing new was raised.'
                 : 'No homeowner in the selected scope has anything to bill.');
 
             return;

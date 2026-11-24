@@ -335,7 +335,7 @@ class PrintDocumentsHelperTest extends TestCase
         $this->assertSame('PHP 50,000.00', PrintDocumentsHelper::money(50000));
         $this->assertSame('PHP 1,500.00', PrintDocumentsHelper::money('1500'));
         $this->assertSame('PHP 0.00', PrintDocumentsHelper::money(null));
-        $this->assertSame('—', PrintDocumentsHelper::money(0, true));
+        $this->assertSame('', PrintDocumentsHelper::money(0, true));
     }
 
     public function test_a_record_column_is_read_by_its_first_name_that_exists(): void

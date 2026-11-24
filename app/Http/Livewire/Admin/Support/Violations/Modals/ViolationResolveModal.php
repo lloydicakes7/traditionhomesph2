@@ -128,7 +128,7 @@ class ViolationResolveModal extends AdminModalComponent
             return;
         }
 
-        $this->emit('notify', 'success', 'Violation resolved — it has moved to the homeowner\'s violation history.');
+        $this->emit('notify', 'success', 'Violation resolved: it has moved to the homeowner\'s violation history.');
         $this->emit('violation-saved');
 
         $this->dispatchBrowserEvent('modal-close', ['id' => 'violationResolveModal']);

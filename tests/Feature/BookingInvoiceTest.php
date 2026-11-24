@@ -87,8 +87,8 @@ class BookingInvoiceTest extends TestCase
             ->assertSet('bookingId', $booking->id)
             ->assertSet('isGuest', true)
             ->assertSet('form.billed_to_name', 'Walk-in guest')
-            ->assertSet('items.0.name', 'Amenity booking — Clubhouse')
-            ->assertSet('items.1.name', 'Deposit — Clubhouse')
+            ->assertSet('items.0.name', 'Amenity booking: Clubhouse')
+            ->assertSet('items.1.name', 'Deposit: Clubhouse')
             ->call('confirm')
             ->assertHasNoErrors()
             ->assertEmitted('invoice-saved');

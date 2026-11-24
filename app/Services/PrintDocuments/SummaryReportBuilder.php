@@ -155,6 +155,6 @@ final class SummaryReportBuilder extends AbstractPrintDocumentBuilder
     {
         $amount = (float) $amount;
 
-        return abs($amount) < 0.005 ? '—' : number_format($amount, 2);
+        return abs($amount) < 0.005 ? '' : number_format($amount, 2);
     }
 }

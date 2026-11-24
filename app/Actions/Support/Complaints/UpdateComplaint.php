@@ -23,13 +23,13 @@ class UpdateComplaint
     {
         if ($by === null && ! $complaint->can_be_changed_by_homeowner) {
             throw ValidationException::withMessages([
-                'form.subject' => 'This complaint can no longer be edited — the office has already acted on it.',
+                'form.subject' => 'This complaint can no longer be edited: the office has already acted on it.',
             ]);
         }
 
         if ($by !== null && $complaint->submitted_by_homeowner) {
             throw ValidationException::withMessages([
-                'form.subject' => 'A complaint a homeowner filed cannot be edited — respond to it instead.',
+                'form.subject' => 'A complaint a homeowner filed cannot be edited: respond to it instead.',
             ]);
         }
 

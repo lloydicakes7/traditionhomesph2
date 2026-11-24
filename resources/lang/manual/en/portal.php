@@ -2,7 +2,7 @@
 
 /*
 |--------------------------------------------------------------------------
-| User Manual — Homeowner Portal
+| User Manual: Homeowner Portal
 |--------------------------------------------------------------------------
 |
 | The portal's copy, keyed by the topics the catalogue in `config/manual.php`
@@ -32,7 +32,7 @@ return [
             'sections' => [
                 [
                     'title' => 'What the portal is for',
-                    'body'  => 'The portal is your household\'s side of the association\'s records. You read what the office has on file, settle your bills, reserve the amenities, and file and follow up on anything you ask the association for — without visiting or phoning the office.',
+                    'body'  => 'The portal is your household\'s side of the association\'s records. You read what the office has on file, settle your bills, reserve the amenities, and file and follow up on anything you ask the association for: without visiting or phoning the office.',
                 ],
                 [
                     'title' => 'Who it is for',
@@ -54,7 +54,7 @@ return [
                         'Payment'              => 'A receipt you filed against a bill. It counts once the office approves it.',
                         'Booking'              => 'A reservation you filed for an amenity on a date and a time.',
                         'Request'              => 'Your application for a document or a service from the office.',
-                        'Resident'             => 'The person the office has profiled — you. Your account is linked to that record.',
+                        'Resident'             => 'The person the office has profiled: you. Your account is linked to that record.',
                     ],
                     'notes'  => [
                         'The office\'s own manual defines more terms; ask the office if something on a page is unclear.',
@@ -127,7 +127,7 @@ return [
                 ],
                 [
                     'title' => 'What you change and what the office changes',
-                    'body'  => 'You own your own details: your photo, your password, your contact information and your household members. The office owns the records that decide money and rules — bills, receipts, bookings, requests and violations. You can file and follow up on all of those, but only the office approves, prices and settles them.',
+                    'body'  => 'You own your own details: your photo, your password, your contact information and your household members. The office owns the records that decide money and rules: bills, receipts, bookings, requests and violations. You can file and follow up on all of those, but only the office approves, prices and settles them.',
                     'notes' => [
                         'Nothing you file is money until the office approves it: a payment you submit waits, and the bill stays standing until it is approved.',
                     ],
@@ -173,7 +173,7 @@ return [
                 [
                     'title'         => 'How to book an amenity',
                     'prerequisites' => [
-                        'The amenity must be offered to homeowners — the office decides that.',
+                        'The amenity must be offered to homeowners: the office decides that.',
                     ],
                     'steps'  => [
                         'Open My Bookings and choose Request a booking.',
@@ -221,7 +221,7 @@ return [
                     'steps'  => [
                         'Open Requests and choose File a request.',
                         'Choose what you are asking for.',
-                        'Complete the fields that appear — some requests ask for nothing beyond the record the office already holds.',
+                        'Complete the fields that appear: some requests ask for nothing beyond the record the office already holds.',
                         'Submit it.',
                     ],
                     'result' => [
@@ -285,7 +285,7 @@ return [
             'sections' => [
                 [
                     'title'  => 'Your open bills',
-                    'body'   => 'The statement lists the bills your household still has to settle — dues and one-off charges together — with their amounts and due dates.',
+                    'body'   => 'The statement lists the bills your household still has to settle (dues and one-off charges together) with their amounts and due dates.',
                     'fields' => [
                         'Reference' => 'The bill\'s own number. Quote it when asking the office about it.',
                         'Type'      => 'Where the charge came from: monthly dues, an invoice, or a paid booking.',
@@ -297,7 +297,7 @@ return [
                 [
                     'title'         => 'How to pay a bill',
                     'prerequisites' => [
-                        'The proof of payment — the deposit slip, the transfer receipt or the counter slip.',
+                        'The proof of payment: the deposit slip, the transfer receipt or the counter slip.',
                     ],
                     'steps'  => [
                         'Open Statement of Account and find the bill you are settling.',
@@ -377,7 +377,7 @@ return [
             'sections' => [
                 [
                     'title'  => 'Keeping it current',
-                    'body'   => 'The office keeps your resident record — your name, your contact details and the rest of your profile. Review it here and correct anything that has changed.',
+                    'body'   => 'The office keeps your resident record: your name, your contact details and the rest of your profile. Review it here and correct anything that has changed.',
                     'steps'  => [
                         'Open Personal Information.',
                         'Update the fields that have changed.',
@@ -456,10 +456,10 @@ return [
                 [
                     'title'  => 'Pages and details',
                     'fields' => [
-                        'A page I expected is missing'     => 'Every page your account has is in the sidebar. If something is missing, ask the office — the portal has no settings to change.',
+                        'A page I expected is missing'     => 'Every page your account has is in the sidebar. If something is missing, ask the office: the portal has no settings to change.',
                         'My household members are wrong'   => 'Open Household and manage your members. The unit itself is the office\'s record.',
                         'My photo or email is out of date' => 'Change it on Profile.',
-                        'A figure looks wrong'             => 'Ask the office, quoting the reference on the record — a bill number, a booking or a request. The office reads the same record you do.',
+                        'A figure looks wrong'             => 'Ask the office, quoting the reference on the record: a bill number, a booking or a request. The office reads the same record you do.',
                     ],
                 ],
             ],
@@ -472,7 +472,7 @@ return [
                     'title'  => 'Common questions',
                     'fields' => [
                         'How do I know what I owe?' => 'The Statement of Account lists every bill your household still has to settle, dues and charges together.',
-                        'Can I pay in cash?' => 'Yes — hand it to the office and they record the receipt, which then appears on My Payments.',
+                        'Can I pay in cash?' => 'Yes: hand it to the office and they record the receipt, which then appears on My Payments.',
                         'Why does my payment need approval?' => 'The portal is your word; the books are the office\'s. Approval is where the office takes responsibility for the money.',
                         'Can I book for someone outside the household?' => 'Reservations belong to the household\'s account. Ask the office about anything out of the ordinary.',
                         'Can my household have more than one login?' => 'One account per household, linked to one resident. A second resident of the unit is added as a member instead.',
@@ -485,7 +485,7 @@ return [
                     'title'  => 'Habits that save time',
                     'notes'  => [
                         'Search the sidebar when you cannot remember where a page lives.',
-                        'Keep your email address on Profile current — that is where the office writes to you.',
+                        'Keep your email address on Profile current: that is where the office writes to you.',
                         'Attach a clear photo of your proof of payment and copy its reference exactly; it is approved faster.',
                         'Check My Payments after the office tells you the receipt was approved, to confirm it was recorded.',
                         'Keep your household members up to date, since the office reads them for its records.',
@@ -511,7 +511,7 @@ return [
                         'Member'               => 'A person living in your unit, recorded under Household.',
                         'Pending'              => 'Filed, and waiting on the office to act.',
                         'Personal information' => 'The resident details the office keeps for you, which documents are printed from.',
-                        'Portal'               => 'This site, at /portal — your household\'s side of the association\'s records.',
+                        'Portal'               => 'This site, at /portal: your household\'s side of the association\'s records.',
                         'Receipt'              => 'The recorded money a payment represents.',
                         'Request'              => 'Your application for a document or a service from the office.',
                         'Resident'             => 'The person the office has profiled; your account is linked to that record.',

@@ -36,7 +36,7 @@
 
                     <div class="col-12">
                         <x-adminlte-textarea name="response" label="Response" rows="5"
-                            placeholder="What the office found or did — the submitter reads this on their own complaints page."
+                            placeholder="What the office found or did: the submitter reads this on their own complaints page."
                             wire:model.defer="response" igroup-size="sm" />
                     </div>
                 </div>

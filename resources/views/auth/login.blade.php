@@ -23,7 +23,7 @@
 
         <x-adminlte-input name="email" type="email" label="{{ __('adminlte::adminlte.email') }}"
             placeholder="{{ __('adminlte::adminlte.email') }}"
-            autocomplete="email" autofocus enable-old-support disable-feedback>
+            autocomplete="email" autofocus enable-old-support disable-feedback data-thha-required>
             <x-slot name="prependSlot">
                 <div class="input-group-text"><i class="fas fa-fw fa-envelope"></i></div>
             </x-slot>
@@ -31,7 +31,7 @@
 
         <x-adminlte-input-password name="password" label="{{ __('adminlte::adminlte.password') }}"
             placeholder="{{ __('adminlte::adminlte.password') }}"
-            autocomplete="current-password" disable-feedback>
+            autocomplete="current-password" disable-feedback data-thha-required>
             <x-slot name="prependSlot">
                 <div class="input-group-text"><i class="fas fa-fw fa-lock"></i></div>
             </x-slot>
@@ -54,4 +54,8 @@
         <x-adminlte-button type="submit" theme="primary" icon="fas fa-fw fa-sign-in-alt"
             label="{{ __('adminlte::adminlte.sign_in') }}" class="btn-block" />
     </form>
+@stop
+
+@section('js')
+    <script src="{{ asset('js/required-field.js') }}"></script>
 @stop

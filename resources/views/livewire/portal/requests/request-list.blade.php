@@ -7,7 +7,7 @@
             <div class="col-12 col-sm-8 mb-2 mb-sm-0">
                 <h5 class="mb-0 font-weight-bold">Requests</h5>
                 <small class="text-muted">
-                    Documents you ask the association's office to issue — certifications, permits and endorsement
+                    Documents you ask the association's office to issue: certifications, permits and endorsement
                     letters.
                 </small>
             </div>

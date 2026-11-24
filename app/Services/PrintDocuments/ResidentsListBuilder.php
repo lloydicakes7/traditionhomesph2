@@ -237,7 +237,7 @@ final class ResidentsListBuilder extends AbstractPrintDocumentBuilder
         if ($head) {
             $record = $household->memberRecords->firstWhere('resident_id', $head->id);
 
-            $members[] = $this->person($head, $record ? $record->relationship_label : '—');
+            $members[] = $this->person($head, $record ? $record->relationship_label : '');
         }
 
         foreach ($household->memberRecords as $record) {
@@ -267,7 +267,7 @@ final class ResidentsListBuilder extends AbstractPrintDocumentBuilder
             'relationship' => $relationship,
             'sex'          => strtolower((string) $resident->sex) === 'female' ? 'F' : 'M',
             'age'          => $resident->age !== null ? (string) $resident->age : '',
-            'contact'      => $mobile !== '' ? $mobile : '—',
+            'contact'      => $mobile !== '' ? $mobile : '',
         ];
     }
 

@@ -5,17 +5,17 @@
      theirs out. Which of them shows is decided by where the request stands,
      never by the reader:
 
-       • View          — always: the whole record, whatever its outcome.
-       • Create Invoice— always: the office may bill for what it is asked. It
+       • View         : always, the whole record, whatever its outcome.
+       • Create Invoice: always, the office may bill for what it is asked. It
                          needs the homeowner's own account, so the page decides
                          it (see RequestTableList::createInvoice).
-       • Print         — approved only: the document is issued once the request
+       • Print        : approved only, the document is issued once the request
                          has been accepted, which is the point of approving it.
-       • Edit          — pending only: a request already decided is not rewritten.
-       • Approve       — pending only: accept it and unlock the slip and document.
-       • Complete      — approved only: the document has been handed over.
-       • Cancel        — pending only: refuse it, and say why.
-       • Delete        — always: for one filed in error.
+       • Edit         : pending only, a request already decided is not rewritten.
+       • Approve      : pending only, accept it and unlock the slip and document.
+       • Complete     : approved only, the document has been handed over.
+       • Cancel       : pending only, refuse it, and say why.
+       • Delete       : always, for one filed in error.
 
      `$actionKey` namespaces the dropdown's id: the desktop row and the mobile
      card are both on the page, and only one of them is ever visible. The same

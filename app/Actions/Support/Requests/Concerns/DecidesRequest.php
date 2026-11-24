@@ -78,7 +78,7 @@ trait DecidesRequest
 
         throw ValidationException::withMessages([
             'remarks' => 'This request has already been ' . ($request->status ? $request->status->label() : 'decided')
-                . ' — it can no longer be decided.',
+                . ': it can no longer be decided.',
         ]);
     }
 }

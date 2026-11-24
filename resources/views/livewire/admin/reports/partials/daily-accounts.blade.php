@@ -1,5 +1,5 @@
 {{--
-    What a single day moved, account by account — the chart and the table the
+    What a single day moved, account by account: the chart and the table the
     Daily Income and the Daily Expense Report both put under their own total.
 
     The two reports read the same day's movement and differ only in which side
@@ -7,9 +7,9 @@
     drawing, the table and its cards live once.
 
     Variables:
-        $report   — the service's reading: rows (account, amount) and total
-        $heading  — what the chart and the table are (e.g. "Income by Account")
-        $theme    — the AdminLTE theme the bars and the total are painted in
+        $report     The service's reading: rows (account, amount) and total
+        $heading : what the chart and the table are (e.g. "Income by Account")
+        $theme   : the AdminLTE theme the bars and the total are painted in
 --}}
 @php
     $bars = collect($report['rows'])->map(function ($row) {
@@ -69,7 +69,7 @@
                     <tr>
                         <td colspan="3" class="text-center text-muted py-4">
                             <i class="fas fa-fw fa-calendar-day fa-2x mb-2"></i>
-                            <p class="mb-0">Nothing was posted on this date — pick another day.</p>
+                            <p class="mb-0">Nothing was posted on this date: pick another day.</p>
                         </td>
                     </tr>
                 @endforelse
@@ -89,5 +89,5 @@
     </div>
 
     <x-reports.cards class="card-body" :rows="$cards"
-        empty="Nothing was posted on this date — pick another day." />
+        empty="Nothing was posted on this date: pick another day." />
 </div>

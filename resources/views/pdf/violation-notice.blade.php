@@ -1,6 +1,6 @@
 @extends('pdf.layouts.report')
 {{--
-    NOTICE OF VIOLATION — what was recorded, where and when, and what the office found.
+    NOTICE OF VIOLATION: what was recorded, where and when, and what the office found.
     Builder: ViolationNoticeBuilder.
 
     @var array|null     $violation  null when none was chosen, else:

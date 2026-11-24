@@ -99,7 +99,7 @@ class ComplaintDeleteModal extends PortalModalComponent
         $complaint = $this->detail->find($this->deletingComplaintId);
 
         if (! $this->account()->can('deleteOwn', $complaint)) {
-            $this->addError('delete', 'This complaint can no longer be deleted — the office has already acted on it.');
+            $this->addError('delete', 'This complaint can no longer be deleted: the office has already acted on it.');
 
             return;
         }

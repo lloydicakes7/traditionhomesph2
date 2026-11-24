@@ -152,7 +152,7 @@ class Role extends Model
     public function deletionBlocker(): ?string
     {
         if ($this->is_protected) {
-            return 'This is one of the association\'s own roles — change what it may do instead of deleting it.';
+            return 'This is one of the association\'s own roles: change what it may do instead of deleting it.';
         }
 
         if ($this->admins()->exists()) {

@@ -121,7 +121,7 @@ class RequestPaymentsModal extends AdminModalComponent
 
         app(ApprovePayment::class)->handle($payment, auth('web')->user());
 
-        $this->emit('notify', 'success', 'Payment approved — recorded against the invoice.');
+        $this->emit('notify', 'success', 'Payment approved: recorded against the invoice.');
         $this->emit('request-saved');
 
         // Re-read the record so the dialog shows the invoice and its receipts

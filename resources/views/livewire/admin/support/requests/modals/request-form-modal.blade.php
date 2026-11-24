@@ -11,7 +11,7 @@
             <form>
                 <div class="row">
                     <div class="col-12">
-                        <x-adminlte-select2 id="requestFormResident" name="form.resident_id" label="Homeowner"
+                        <x-adminlte-select2 id="requestFormResident" name="form.resident_id" label="Homeowner{{ in_array('form.resident_id', $_instance->requiredFieldNames(), true) ? ' *' : '' }}"
                             wire:model="form.resident_id" igroup-size="sm"
                             :config="['placeholder' => 'Select a homeowner...', 'width' => '100%']">
                             <option value=""></option>
@@ -26,7 +26,8 @@
                 <x-customs.request-type-fields :form="$form" :selected-type="$selectedType"
                     :purpose-options="$purposeOptions" prefix="requestFormType"
                     :membership-profile="$membershipProfile" :respondent-unit="$respondentUnit"
-                    :details-information="$detailsInformation" :supply-missing="true" />
+                    :details-information="$detailsInformation" :supply-missing="true"
+                    :required-fields="$requiredFields" />
             </form>
         </div>
 

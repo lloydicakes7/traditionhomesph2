@@ -1,6 +1,6 @@
 {{--
     The officers and Board of Directors, down the left edge of the paper
-    forms. Read from config/thha.php through the letterhead — a document never
+    forms. Read from config/thha.php through the letterhead: a document never
     names an officer of its own.
 
     @var array $letterhead  (officers, board: each [name, position])

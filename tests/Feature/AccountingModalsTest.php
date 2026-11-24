@@ -850,7 +850,7 @@ class AccountingModalsTest extends TestCase
         Livewire::test(AccountDeleteModal::class)
             ->call('load', $cash->id)
             ->assertSet('loaded', true)
-            ->assertSet('deleteBlocker', '1 recorded transfer(s) name this account, and a transfer is part of the books — it cannot be removed.')
+            ->assertSet('deleteBlocker', '1 recorded transfer(s) name this account, and a transfer is part of the books: it cannot be removed.')
             ->call('delete');
 
         $this->assertDatabaseHas('accounts', ['id' => $cash->id]);

@@ -2,10 +2,10 @@
 
 /*
 |--------------------------------------------------------------------------
-| User Manual — Shared Labels
+| User Manual: Shared Labels
 |--------------------------------------------------------------------------
 |
-| The words the manual's own shell prints — the navbar's language selector,
+| The words the manual's own shell prints: the navbar's language selector,
 | the sidebar's search box, the section labels a topic card uses and the
 | right-hand table of contents. Both sides (admin and portal) read these, so
 | they live once rather than in each side's topic copy.

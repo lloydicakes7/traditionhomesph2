@@ -16,7 +16,7 @@
 
                 <p class="mb-0">
                     Deleting removes this filing from your requests. Do this only while the office
-                    has not acted on it yet — an approved request cannot be deleted.
+                    has not acted on it yet: an approved request cannot be deleted.
                 </p>
             @endif
         </div>

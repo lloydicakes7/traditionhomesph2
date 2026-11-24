@@ -49,7 +49,7 @@
 
                 <div class="col-12">
                     <x-adminlte-textarea name="form.description" label="Description" rows="5"
-                        placeholder="What happened — when and where, what you saw, and anything else the office needs to look into it."
+                        placeholder="What happened: when and where, what you saw, and anything else the office needs to look into it."
                         wire:model.defer="form.description" igroup-size="sm" />
                 </div>
             </div>

@@ -52,9 +52,9 @@ class BookingStatus extends Enum
     {
         return [
             self::PENDING   => 'Submitted and waiting for the office to approve it.',
-            self::APPROVED  => 'Approved — download the transaction slip and bring it to the HOA office to pay and use the facility.',
-            self::COMPLETED => 'Completed — the amenity has been used and the booking closed.',
-            self::CANCELLED => 'Cancelled — the reservation was withdrawn or refused.',
+            self::APPROVED  => 'Approved: download the transaction slip and bring it to the HOA office to pay and use the facility.',
+            self::COMPLETED => 'Completed: the amenity has been used and the booking closed.',
+            self::CANCELLED => 'Cancelled: the reservation was withdrawn or refused.',
         ];
     }
 

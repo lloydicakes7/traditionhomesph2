@@ -117,7 +117,7 @@ class ChartOfAccountsQuery
             if (bccomp($external, '0.00', 2) !== 0) {
                 $rows[] = [
                     'account' => new Account([
-                        'code'    => '—',
+                        'code'    => 'None',
                         'name'    => JournalEntry::EXTERNAL_ACCOUNT_NAME,
                         'type'    => AccountType::EQUITY(),
                         'is_cash' => false,

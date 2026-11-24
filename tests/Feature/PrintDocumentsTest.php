@@ -347,20 +347,20 @@ class PrintDocumentsTest extends TestCase
 
         $this->assertSame('4000', $dues['code']);
         $this->assertSame('1,000.00', $dues['months'][0]);
-        $this->assertSame('—', $dues['months'][1]);
-        $this->assertSame('—', $dues['months'][2]);
+        $this->assertSame('', $dues['months'][1]);
+        $this->assertSame('', $dues['months'][2]);
         $this->assertSame('1,000.00', $dues['total']);
 
         $fees = $data['rows'][1];
 
         $this->assertSame('4100', $fees['code']);
-        $this->assertSame('—', $fees['months'][0]);
+        $this->assertSame('', $fees['months'][0]);
         $this->assertSame('250.00', $fees['months'][2]);
         $this->assertSame('250.00', $fees['total']);
 
         // The closing row: what each month came to, and what the year did.
         $this->assertSame('1,000.00', $data['months'][0]);
-        $this->assertSame('—', $data['months'][1]);
+        $this->assertSame('', $data['months'][1]);
         $this->assertSame('250.00', $data['months'][2]);
         $this->assertSame('1,250.00', $data['year_total']);
 
@@ -372,7 +372,7 @@ class PrintDocumentsTest extends TestCase
 
         $this->assertSame('Expense', $expenses['type']);
         $this->assertSame([], $expenses['rows']);
-        $this->assertSame('—', $expenses['year_total']);
+        $this->assertSame('', $expenses['year_total']);
     }
 
     /**

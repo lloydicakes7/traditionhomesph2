@@ -75,7 +75,7 @@ class PeriodReopenModal extends AdminModalComponent
 
         app(ReopenPeriod::class)->handle($this->reopeningPeriod, auth('web')->user());
 
-        $this->emit('notify', 'success', $this->reopeningPeriodLabel . ' reopened — postings may be made into it again.');
+        $this->emit('notify', 'success', $this->reopeningPeriodLabel . ' reopened: postings may be made into it again.');
         $this->emit('period-updated');
 
         $this->resetModal();

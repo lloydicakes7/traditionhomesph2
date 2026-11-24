@@ -25,7 +25,7 @@ class UpdateRequest
     {
         if (! $request->is_open) {
             throw ValidationException::withMessages([
-                'form.type' => 'This request has already been decided — it can no longer be edited.',
+                'form.type' => 'This request has already been decided: it can no longer be edited.',
             ]);
         }
 

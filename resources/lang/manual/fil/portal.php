@@ -2,7 +2,7 @@
 
 /*
 |--------------------------------------------------------------------------
-| Manwal ng Gumagamit — Portal ng Homeowner
+| Manwal ng Gumagamit: Portal ng Homeowner
 |--------------------------------------------------------------------------
 |
 | Ang kopya ng portal, naka-key sa mga paksang pinapangalanan ng catalogue sa
@@ -33,7 +33,7 @@ return [
             'sections' => [
                 [
                     'title' => 'Para saan ang portal',
-                    'body'  => 'Ang portal ay ang panig ng iyong sambahayan sa mga rekord ng asosasyon. Binabasa mo ang nasa file ng opisina, binabayaran ang iyong mga bill, nagrereserba ng mga amenities, at naghahain at sumusubaybay sa anumang hinihiling mo sa asosasyon — nang hindi bumibisita o tumatawag sa opisina.',
+                    'body'  => 'Ang portal ay ang panig ng iyong sambahayan sa mga rekord ng asosasyon. Binabasa mo ang nasa file ng opisina, binabayaran ang iyong mga bill, nagrereserba ng mga amenities, at naghahain at sumusubaybay sa anumang hinihiling mo sa asosasyon: nang hindi bumibisita o tumatawag sa opisina.',
                 ],
                 [
                     'title' => 'Para kanino ito',
@@ -55,7 +55,7 @@ return [
                         'Bayad (Payment)'      => 'Isang resibong inihain mo laban sa isang bill. Binibilang ito kapag inaprubahan ng opisina.',
                         'Booking'              => 'Isang reserbasyong inihain mo para sa isang amenity sa isang petsa at oras.',
                         'Request'              => 'Ang aplikasyon mo para sa isang dokumento o serbisyo mula sa opisina.',
-                        'Resident'             => 'Ang taong na-profile ng opisina — ikaw. Ang iyong account ay naka-link sa rekord na iyon.',
+                        'Resident'             => 'Ang taong na-profile ng opisina: ikaw. Ang iyong account ay naka-link sa rekord na iyon.',
                     ],
                     'notes'  => [
                         'Mas maraming termino ang tinutukoy ng sariling manwal ng opisina; magtanong sa opisina kung may hindi malinaw sa isang pahina.',
@@ -128,7 +128,7 @@ return [
                 ],
                 [
                     'title' => 'Ano ang binabago mo at ano ang binabago ng opisina',
-                    'body'  => 'Sa iyo ang sarili mong detalye: ang iyong larawan, password, impormasyon ng kontak at mga miyembro ng sambahayan. Sa opisina ang mga rekord na nagtatakda ng pera at mga tuntunin — mga bill, resibo, booking, request at paglabag. Maaari kang maghain at sumubaybay sa lahat ng iyon, ngunit ang opisina lamang ang nag-aapruba, nagpepresyo at nagbabayad sa mga ito.',
+                    'body'  => 'Sa iyo ang sarili mong detalye: ang iyong larawan, password, impormasyon ng kontak at mga miyembro ng sambahayan. Sa opisina ang mga rekord na nagtatakda ng pera at mga tuntunin: mga bill, resibo, booking, request at paglabag. Maaari kang maghain at sumubaybay sa lahat ng iyon, ngunit ang opisina lamang ang nag-aapruba, nagpepresyo at nagbabayad sa mga ito.',
                     'notes' => [
                         'Walang inihain mo ang nagiging pera hanggang aprubahan ito ng opisina: ang bayad na isinumite mo ay naghihintay, at nakatayo pa rin ang bill hanggang maaprubahan ito.',
                     ],
@@ -174,7 +174,7 @@ return [
                 [
                     'title'         => 'Paano mag-book ng amenity',
                     'prerequisites' => [
-                        'Dapat iniaalok ang amenity sa mga homeowner — ang opisina ang nagpapasya niyan.',
+                        'Dapat iniaalok ang amenity sa mga homeowner: ang opisina ang nagpapasya niyan.',
                     ],
                     'steps'  => [
                         'Buksan ang Aking mga Booking at piliin ang Humiling ng booking.',
@@ -222,7 +222,7 @@ return [
                     'steps'  => [
                         'Buksan ang Mga Kahilingan at piliin ang Maghain ng request.',
                         'Piliin ang hinihiling mo.',
-                        'Punan ang mga field na lalabas — ang ilang request ay walang hinihingi maliban sa rekord na hawak na ng opisina.',
+                        'Punan ang mga field na lalabas: ang ilang request ay walang hinihingi maliban sa rekord na hawak na ng opisina.',
                         'Isumite ito.',
                     ],
                     'result' => [
@@ -285,7 +285,7 @@ return [
             'sections' => [
                 [
                     'title'  => 'Ang iyong bukas na bill',
-                    'body'   => 'Inililista ng statement ang mga bill na kailangan pang bayaran ng iyong sambahayan — dues at isahang singil nang sama-sama — kasama ang mga halaga at petsa ng pagbabayad.',
+                    'body'   => 'Inililista ng statement ang mga bill na kailangan pang bayaran ng iyong sambahayan (dues at isahang singil nang sama-sama) kasama ang mga halaga at petsa ng pagbabayad.',
                     'fields' => [
                         'Reference' => 'Ang sariling numero ng bill. Banggitin ito kapag nagtatanong sa opisina.',
                         'Uri'       => 'Kung saan nanggaling ang singil: buwanang dues, invoice, o bayad na booking.',
@@ -297,7 +297,7 @@ return [
                 [
                     'title'         => 'Paano magbayad ng bill',
                     'prerequisites' => [
-                        'Ang patunay ng bayad — ang deposit slip, resibo ng transfer o counter slip.',
+                        'Ang patunay ng bayad: ang deposit slip, resibo ng transfer o counter slip.',
                     ],
                     'steps'  => [
                         'Buksan ang Statement of Account at hanapin ang bill na binabayaran mo.',
@@ -377,7 +377,7 @@ return [
             'sections' => [
                 [
                     'title'  => 'Pagpapanatili nitong napapanahon',
-                    'body'   => 'Inaayos ng opisina ang iyong rekord ng resident — ang pangalan, detalye ng kontak at ang natitirang profile. Suriin ito dito at iwasto ang anumang nagbago.',
+                    'body'   => 'Inaayos ng opisina ang iyong rekord ng resident: ang pangalan, detalye ng kontak at ang natitirang profile. Suriin ito dito at iwasto ang anumang nagbago.',
                     'steps'  => [
                         'Buksan ang Personal na Impormasyon.',
                         'I-update ang mga field na nagbago.',
@@ -456,10 +456,10 @@ return [
                 [
                     'title'  => 'Mga pahina at detalye',
                     'fields' => [
-                        'Nawawala ang isang pahinang inaasahan ko' => 'Bawat pahina ng iyong account ay nasa sidebar. Kung may nawawala, magtanong sa opisina — walang setting na mababago ang portal.',
+                        'Nawawala ang isang pahinang inaasahan ko' => 'Bawat pahina ng iyong account ay nasa sidebar. Kung may nawawala, magtanong sa opisina: walang setting na mababago ang portal.',
                         'Mali ang mga miyembro ng aking sambahayan' => 'Buksan ang Sambahayan at pamahalaan ang iyong mga miyembro. Ang unit mismo ay rekord ng opisina.',
                         'Lipas na ang aking larawan o email' => 'Baguhin ito sa Profile.',
-                        'Mukhang mali ang isang pigura' => 'Magtanong sa opisina, ibanggit ang reference sa rekord — numero ng bill, booking o request. Pareho ang rekord na binabasa ng opisina at ng iyo.',
+                        'Mukhang mali ang isang pigura' => 'Magtanong sa opisina, ibanggit ang reference sa rekord: numero ng bill, booking o request. Pareho ang rekord na binabasa ng opisina at ng iyo.',
                     ],
                 ],
             ],
@@ -472,7 +472,7 @@ return [
                     'title'  => 'Mga karaniwang tanong',
                     'fields' => [
                         'Paano ko malalaman ang utang ko?' => 'Inililista ng Statement of Account ang bawat bill na kailangan pang bayaran ng iyong sambahayan, dues at singil nang sama-sama.',
-                        'Maaari ba akong magbayad ng cash?' => 'Oo — ibigay ito sa opisina at itatala nila ang resibo, na lalabas pagkatapos sa Aking mga Bayad.',
+                        'Maaari ba akong magbayad ng cash?' => 'Oo: ibigay ito sa opisina at itatala nila ang resibo, na lalabas pagkatapos sa Aking mga Bayad.',
                         'Bakit kailangan ng apruba ang bayad ko?' => 'Ang portal ay salita mo; ang mga libro ay sa opisina. Ang pag-apruba ang lugar kung saan inaako ng opisina ang responsibilidad sa pera.',
                         'Maaari ba akong mag-book para sa taong wala sa sambahayan?' => 'Ang mga reserbasyon ay pagmamay-ari ng account ng sambahayan. Magtanong sa opisina tungkol sa anumang hindi karaniwan.',
                         'Maaari bang magkaroon ng higit sa isang login ang aking sambahayan?' => 'Isang account kada sambahayan, naka-link sa isang resident. Ang pangalawang resident ng unit ay idinadagdag bilang miyembro sa halip.',
@@ -485,7 +485,7 @@ return [
                     'title'  => 'Mga gawi na nakakatipid ng oras',
                     'notes'  => [
                         'Maghanap sa sidebar kapag hindi mo matandaan kung saan nakatira ang isang pahina.',
-                        'Panatilihing napapanahon ang iyong email address sa Profile — dito sumusulat sa iyo ang opisina.',
+                        'Panatilihing napapanahon ang iyong email address sa Profile: dito sumusulat sa iyo ang opisina.',
                         'Ikabit ang malinaw na larawan ng iyong patunay ng bayad at kopyahin nang eksakto ang reference nito; mas mabilis itong maaprubahan.',
                         'Tingnan ang Aking mga Bayad pagkatapos sabihin ng opisina na naaprubahan na ang resibo, upang kumpirmahing naitala ito.',
                         'Panatilihing napapanahon ang mga miyembro ng iyong sambahayan, dahil binabasa ng opisina ang mga ito para sa kanilang mga rekord.',
@@ -511,7 +511,7 @@ return [
                         'Miyembro'             => 'Isang taong nakatira sa iyong unit, naitala sa ilalim ng Sambahayan.',
                         'Pending'              => 'Inihain, at naghihintay sa aksyon ng opisina.',
                         'Personal na impormasyon' => 'Ang mga detalye ng resident na inaayos ng opisina para sa iyo, kung saan ipi-print ang mga dokumento.',
-                        'Portal'               => 'Ang site na ito, sa /portal — ang panig ng iyong sambahayan sa mga rekord ng asosasyon.',
+                        'Portal'               => 'Ang site na ito, sa /portal: ang panig ng iyong sambahayan sa mga rekord ng asosasyon.',
                         'Resibo (Receipt)'     => 'Ang naitalang pera na kinakatawan ng isang bayad.',
                         'Request'              => 'Ang aplikasyon mo para sa isang dokumento o serbisyo mula sa opisina.',
                         'Resident'             => 'Ang taong na-profile ng opisina; ang iyong account ay naka-link sa rekord na iyon.',

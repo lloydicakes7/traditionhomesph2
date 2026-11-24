@@ -30,7 +30,7 @@ class DeleteSuppliers
         if ($used->isNotEmpty()) {
             throw ValidationException::withMessages([
                 'delete' => 'Cannot delete ' . $used->pluck('name')->implode(', ')
-                    . ' — expenses already name it.',
+                    . ': expenses already name it.',
             ]);
         }
 
@@ -47,7 +47,7 @@ class DeleteSuppliers
                 $by,
                 'deleted',
                 'supplier',
-                "Deleted supplier {$supplier->name} — its records keep the name they were filed under",
+                "Deleted supplier {$supplier->name}: its records keep the name they were filed under",
                 ['supplier_id' => $supplier->id]
             );
         }

@@ -12,7 +12,7 @@
             <x-customs.request-type-fields :form="$form" :selected-type="$selectedType"
                 :purpose-options="$purposeOptions" prefix="requestFileType"
                 :membership-profile="$membershipProfile" :respondent-unit="$respondentUnit"
-                :details-information="$detailsInformation" />
+                :details-information="$detailsInformation" :required-fields="$requiredFields" />
         </form>
         </div>
 

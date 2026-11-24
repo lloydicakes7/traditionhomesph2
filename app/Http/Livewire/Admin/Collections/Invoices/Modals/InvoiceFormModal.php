@@ -492,7 +492,7 @@ class InvoiceFormModal extends AdminModalComponent
      *
      * @return array<string, mixed>
      */
-    private function rules(): array
+    protected function rules(): array
     {
         $booking = $this->bookingId !== null;
 

@@ -5,11 +5,11 @@
      theirs out. Which of them shows is decided by the record, never by the
      reader:
 
-       • View    — always: the whole record, read-only.
-       • Respond — while the office may still answer it (again).
-       • Edit    — only a complaint the office filed itself; a portal filing is
+       • View   : always, the whole record, read-only.
+       • Respond: while the office may still answer it (again).
+       • Edit   : only a complaint the office filed itself; a portal filing is
                    the submitter's own record.
-       • Delete  — for one filed in error.
+       • Delete : for one filed in error.
 
      `$actionKey` namespaces the dropdown's id: the desktop row and the mobile
      card are both on the page, and only one of them is ever visible. The same

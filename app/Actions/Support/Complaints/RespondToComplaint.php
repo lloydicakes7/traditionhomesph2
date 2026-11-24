@@ -62,7 +62,7 @@ class RespondToComplaint
     {
         if (! $complaint->can_be_responded_to) {
             throw ValidationException::withMessages([
-                'responseStatus' => 'This complaint is closed — it takes no further response.',
+                'responseStatus' => 'This complaint is closed: it takes no further response.',
             ]);
         }
 

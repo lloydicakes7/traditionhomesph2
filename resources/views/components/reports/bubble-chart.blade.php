@@ -1,5 +1,5 @@
 {{--
-    A bubble chart — three figures per category at once, where a bar chart can
+    A bubble chart: three figures per category at once, where a bar chart can
     only carry two.
 
     An amenity's bookings, how many of them are still ahead, and how many were

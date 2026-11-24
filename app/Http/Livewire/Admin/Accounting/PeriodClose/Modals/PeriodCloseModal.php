@@ -80,7 +80,7 @@ class PeriodCloseModal extends AdminModalComponent
 
         app(ClosePeriod::class)->handle($this->closingPeriod, auth('web')->user(), $this->notes);
 
-        $this->emit('notify', 'success', $this->closingPeriodLabel . ' closed — nothing can be posted into it now.');
+        $this->emit('notify', 'success', $this->closingPeriodLabel . ' closed: nothing can be posted into it now.');
         $this->emit('period-updated');
 
         $this->resetModal();

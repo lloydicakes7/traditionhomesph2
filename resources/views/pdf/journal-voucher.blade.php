@@ -1,11 +1,11 @@
 @extends('pdf.layouts.report')
 {{--
-    JOURNAL VOUCHER — one entry's debit and credit lines.
+    JOURNAL VOUCHER: one entry's debit and credit lines.
     Builder: JournalVoucherBuilder.
 
     @var array|null     $voucher   null when no entry was chosen, else:
                                    [entryNo, date, classification, source, reference, description,
-                                    postedBy, lines => [[code, account, memo, debit, credit], ...]  (amounts pre-formatted, "—" when zero),
+                                    postedBy, lines => [[code, account, memo, debit, credit], ...]  (amounts pre-formatted, blank when zero),
                                     totalDebit, totalCredit, balanced (bool)]
     @var \Carbon\Carbon $printedAt
 --}}
@@ -79,7 +79,7 @@
         @if ($voucher['balanced'])
             @include('pdf.partials.printed-note', ['note' => 'equal debits and credits, every time.'])
         @else
-            <div class="printed-note"><span class="out-of-balance">OUT OF BALANCE — debits and credits differ. Do not file.</span></div>
+            <div class="printed-note"><span class="out-of-balance">OUT OF BALANCE: debits and credits differ. Do not file.</span></div>
         @endif
     @endif
 @endsection

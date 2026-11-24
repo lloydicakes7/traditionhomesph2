@@ -1,6 +1,6 @@
 {{--
-    A line chart for a figure that moves over time — a month-by-month trend, a
-    day-on-day movement — where a bar chart would ask the reader to compare
+    A line chart for a figure that moves over time: a month-by-month trend, a
+    day-on-day movement: where a bar chart would ask the reader to compare
     heights instead of read a shape.
 
     It is inline SVG rather than a charting library: the panel ships none, and a
@@ -9,8 +9,8 @@
     width, and an area fill under the line makes the direction readable even in
     a screenshot.
 
-    One line is the common case, passed as `data`/`theme`. A comparison — income
-    against expenses — is passed as `series`, a list of
+    One line is the common case, passed as `data`/`theme`. A comparison: income
+    against expenses: is passed as `series`, a list of
     ['label' => …, 'theme' => …, 'data' => …]: the lines then share one scale
     (their common peak) so reading them against each other is honest, a legend
     names each of them, and the area fill is dropped because overlapping fills

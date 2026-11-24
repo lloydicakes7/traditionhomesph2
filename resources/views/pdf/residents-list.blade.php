@@ -1,6 +1,6 @@
 @extends('pdf.layouts.report')
 {{--
-    RESIDENTS LIST — landscape; the units with a household on file and their members,
+    RESIDENTS LIST: landscape; the units with a household on file and their members,
     head first. Builder: ResidentsListBuilder (orientation() returns "landscape"). Contract: §3.
 
     @var array          $filters     [address ("All addresses" | label), block (?string), sortLabel,

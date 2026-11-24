@@ -81,7 +81,7 @@ class StatementOfAccount extends AdminComponent
     private function emptyMessage(array $homeowners): string
     {
         if (empty($homeowners)) {
-            return 'No statement to read — no homeowner has an outstanding bill.';
+            return 'No statement to read: no homeowner has an outstanding bill.';
         }
 
         return 'Pick a homeowner to read their statement of account.';

@@ -23,7 +23,7 @@ class DeleteComplaint
     {
         if ($by === null && ! $complaint->can_be_changed_by_homeowner) {
             throw ValidationException::withMessages([
-                'delete' => 'This complaint can no longer be deleted — the office has already acted on it.',
+                'delete' => 'This complaint can no longer be deleted: the office has already acted on it.',
             ]);
         }
 

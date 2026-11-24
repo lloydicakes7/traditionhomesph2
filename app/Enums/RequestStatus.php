@@ -52,9 +52,9 @@ class RequestStatus extends Enum
     {
         return [
             self::PENDING   => 'Submitted and waiting for the office to approve or cancel it.',
-            self::APPROVED  => 'Approved — download the transaction slip and bring it to the HOA office.',
-            self::COMPLETED => 'Completed — the office has released the document.',
-            self::CANCELLED => 'Cancelled — see the remarks for why.',
+            self::APPROVED  => 'Approved: download the transaction slip and bring it to the HOA office.',
+            self::COMPLETED => 'Completed: the office has released the document.',
+            self::CANCELLED => 'Cancelled: see the remarks for why.',
         ];
     }
 

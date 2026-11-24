@@ -102,7 +102,7 @@
                                 @php($purpose = $purposes[$index] ?? null)
                                 <td>
                                     @if ($purpose)
-                                        <span class="thha-cert-check">{!! $purpose['checked'] ? 'X' : '&#160;' !!}</span>{{ $purpose['label'] }}@if ($purpose['label'] === 'Others' && $other !== ''){{ ' — ' . $other }}@endif
+                                        <span class="thha-cert-check">{!! $purpose['checked'] ? 'X' : '&#160;' !!}</span>{{ $purpose['label'] }}@if ($purpose['label'] === 'Others' && $other !== ''){{ ': ' . $other }}@endif
                                     @endif
                                 </td>
                             @endforeach

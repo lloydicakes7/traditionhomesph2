@@ -1,12 +1,12 @@
 {{--
-    A report's records as cards — what the report's table becomes on a screen
+    A report's records as cards: what the report's table becomes on a screen
     too narrow to hold it.
 
     Every report table is two to fifteen columns of figures, so below `xl` the
     table stands down and one card per record stands up: the record's own name,
     then its column labels beside their figures (see the `.report-table-view` /
     `.report-card-view` rules in reports.css). A report writes its table once and
-    its rows once, and the stylesheet decides which of the two the reader sees —
+    its rows once, and the stylesheet decides which of the two the reader sees :
     nothing in the suite wraps a table in a `.table-responsive` any more, so no
     report scrolls sideways on a phone or on paper.
 
@@ -16,11 +16,11 @@
 
     Each row is:
         'group'    => a heading printed above the card when it changes (optional)
-        'title'    => the record's own name — the row's first column
+        'title'    => the record's own name: the row's first column
         'subtitle' => a second identifying line (optional)
         'facts'    => [['label' => …, 'value' => …, 'theme' => 'success',
                         'strong' => true, 'badge' => 'warning'], …]
-        'total'    => ['label' => 'Total', 'value' => …] — the footer figure
+        'total'    => ['label' => 'Total', 'value' => …]: the footer figure
 
     Usage:
         <x-reports.cards :rows="$cards" empty="Nothing was posted in this period." />

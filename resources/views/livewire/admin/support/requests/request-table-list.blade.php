@@ -138,7 +138,7 @@
                                 @endif
                             </td>
                             {{-- Whether the invoice this request carries has been
-                                 paid — the fact that releases its document. --}}
+                                 paid: the fact that releases its document. --}}
                             <td class="align-middle text-truncate" style="max-width:0;">
                                 @if (! $request->has_invoice)
                                     <span class="text-muted small">Not billed</span>

@@ -310,7 +310,7 @@ class AmenityBooking extends Model
 
         if ($this->current_rate_amount > 0) {
             $lines[] = [
-                'name'        => 'Amenity booking — ' . $this->amenity->name,
+                'name'        => 'Amenity booking: ' . $this->amenity->name,
                 'description' => $this->date_time_display . ' · ' . $this->booker_name,
                 'quantity'    => 1,
                 'unit_price'  => $this->current_rate_amount,
@@ -320,7 +320,7 @@ class AmenityBooking extends Model
 
         if ((float) $this->deposit_amount > 0) {
             $lines[] = [
-                'name'        => 'Deposit — ' . $this->amenity->name,
+                'name'        => 'Deposit: ' . $this->amenity->name,
                 'description' => $this->depositInvoiceDescription(),
                 'quantity'    => 1,
                 'unit_price'  => (float) $this->deposit_amount,

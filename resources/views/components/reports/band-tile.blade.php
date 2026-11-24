@@ -1,5 +1,5 @@
 {{--
-    One figure inside a report band — a label, its value, and an optional note,
+    One figure inside a report band: a label, its value, and an optional note,
     painted on top of the band rather than in a colour of its own.
 
     Usage:

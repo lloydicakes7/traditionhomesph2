@@ -40,8 +40,8 @@ class ViolationStatus extends Enum
     public static function descriptions(): array
     {
         return [
-            self::ACTIVE   => 'Unresolved — the association has not closed this violation yet.',
-            self::RESOLVED => 'Resolved — the office has closed this violation.',
+            self::ACTIVE   => 'Unresolved: the association has not closed this violation yet.',
+            self::RESOLVED => 'Resolved: the office has closed this violation.',
         ];
     }
 

@@ -49,7 +49,7 @@ class ExpensePostingService
     {
         if (! $money || ! $money->is_cash) {
             throw ValidationException::withMessages([
-                'account_id' => 'Choose a cash account — cash on hand or a bank account.',
+                'account_id' => 'Choose a cash account: cash on hand or a bank account.',
             ]);
         }
 
@@ -62,7 +62,7 @@ class ExpensePostingService
             'source_id'      => $expense->id,
             'reference_no'   => $expense->reference,
             'memo'           => 'Expense ' . $expense->reference
-                . ($expense->supplier ? ' — ' . $expense->supplier->name : ''),
+                . ($expense->supplier ? ': ' . $expense->supplier->name : ''),
             'lines'          => $this->lines($expense, $money),
         ];
     }
@@ -82,7 +82,7 @@ class ExpensePostingService
 
         if (! Account::query()->cash()->whereIn('id', $ids)->exists()) {
             throw ValidationException::withMessages([
-                'lines' => 'Choose a cash account — cash on hand or a bank account.',
+                'lines' => 'Choose a cash account: cash on hand or a bank account.',
             ]);
         }
     }

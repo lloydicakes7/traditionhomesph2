@@ -93,7 +93,7 @@ class CreatePastMonthlyDues
         foreach ($months as $month) {
             if (AccountingPeriod::locksPeriod($month)) {
                 throw ValidationException::withMessages([
-                    'from' => PeriodHelper::label($month) . ' is closed — reopen the period before billing it.',
+                    'from' => PeriodHelper::label($month) . ' is closed: reopen the period before billing it.',
                 ]);
             }
         }

@@ -31,7 +31,7 @@
                 </x-adminlte-input>
 
                 <x-adminlte-textarea name="remarks" label="Remarks (optional)" rows="3"
-                    placeholder="Anything worth keeping on record — what was issued, when it was released, who attended to it."
+                    placeholder="Anything worth keeping on record: what was issued, when it was released, who attended to it."
                     wire:model.defer="remarks" igroup-size="sm" />
             @endif
         </div>

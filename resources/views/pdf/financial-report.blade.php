@@ -1,11 +1,11 @@
 @extends('pdf.layouts.report')
 {{--
-    FINANCIAL REPORT — what the association earned and spent over a span of its
+    FINANCIAL REPORT: what the association earned and spent over a span of its
     books, and the cash it held at the end of it.
     Builder: FinancialReportBuilder.
 
     The sheet is read top to bottom: income, expenses, what the two come to, and
-    then the cash position — the money in total, what of it is in the bank, and
+    then the cash position: the money in total, what of it is in the bank, and
     what is left in the cash box.
 
     Its figures are set in the plain table (`.tbl.plain`): the accounts and their
@@ -20,7 +20,7 @@
     @var array          $letterhead  (signatories.treasurer, signatories.president)
     @var \Carbon\Carbon $printedAt @var string $generatedBy
 --}}
-@section('title', 'Financial Report — ' . $period['label'])
+@section('title', 'Financial Report: ' . $period['label'])
 @section('running_header', 'Financial Report · ' . $period['label'])
 
 @section('content')

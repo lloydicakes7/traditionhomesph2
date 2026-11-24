@@ -157,7 +157,7 @@ class PostToJournalModal extends AdminModalComponent
 
         if (! $this->isBalanced()) {
             throw ValidationException::withMessages([
-                'lines' => 'The entry is not balanced — what goes to the accounts must equal what comes from them.',
+                'lines' => 'The entry is not balanced: what goes to the accounts must equal what comes from them.',
             ]);
         }
 
@@ -184,7 +184,7 @@ class PostToJournalModal extends AdminModalComponent
     /**
      * @return array<string, mixed>
      */
-    private function rules(): array
+    protected function rules(): array
     {
         return [
             'entry_date'     => 'required|date',
@@ -197,7 +197,7 @@ class PostToJournalModal extends AdminModalComponent
     /**
      * @return array<string, string>
      */
-    private function messages(): array
+    protected function messages(): array
     {
         return [
             'entry_date.required'         => 'Give the entry a date.',

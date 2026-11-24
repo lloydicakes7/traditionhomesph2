@@ -59,7 +59,7 @@ class RecordCashFunding
             $by,
             'created',
             'Cash Funding',
-            'Added cash to ' . $to->label . ' — journal entry ' . $entry->entry_no,
+            'Added cash to ' . $to->label . ': journal entry ' . $entry->entry_no,
             ['journal_entry_id' => $entry->id]
         );
 

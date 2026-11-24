@@ -188,7 +188,7 @@
                             <td colspan="{{ count($report['buckets']) + 3 }}" class="text-center text-muted py-4">
                                 <i class="fas fa-fw fa-check-circle fa-2x mb-2"></i>
                                 <p class="mb-0">
-                                    Nothing is outstanding{{ $search || $block || $lot ? ' for that filter' : '' }} —
+                                    Nothing is outstanding{{ $search || $block || $lot ? ' for that filter' : '' }}:
                                     every unit is settled.
                                 </p>
                             </td>
@@ -213,6 +213,6 @@
         </div>
 
         <x-reports.cards class="card-body" :rows="$cards"
-            empty="Nothing is outstanding — every unit is settled." />
+            empty="Nothing is outstanding: every unit is settled." />
     </div>
 </div>

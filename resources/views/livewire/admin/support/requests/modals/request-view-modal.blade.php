@@ -63,7 +63,7 @@
                             {{ $request->status_label }}
                             {{ $request->processed_at ? $request->processed_at->format('M j, Y g:i A') : '' }}
                             @if ($request->processedByAdmin)
-                                — {{ $request->processedByAdmin->name }}
+                               : {{ $request->processedByAdmin->name }}
                             @endif
                         </div>
                         @if ($request->remarks)
@@ -77,7 +77,7 @@
         <x-slot name="footerSlot">
             <x-adminlte-button label="Close" theme="outline-secondary" data-dismiss="modal" class="btn-sm" />
             {{-- The document is issued once the request has been approved,
-                 which is the point of approving it — the same rule the row's
+                 which is the point of approving it: the same rule the row's
                  actions follow. --}}
             @if ($request && $request->is_approved && $request->printDocument())
                 @can('print.viewAny')

@@ -189,7 +189,7 @@ class RequestEditModal extends PortalModalComponent
         $request = $this->requests->find($this->editingRequestId);
 
         if (! $this->account()->can('updateOwn', $request)) {
-            $this->addError('form.type', 'This request has already been decided — it can no longer be edited.');
+            $this->addError('form.type', 'This request has already been decided: it can no longer be edited.');
 
             return;
         }

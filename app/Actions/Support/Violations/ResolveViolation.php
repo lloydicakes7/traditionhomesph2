@@ -23,7 +23,7 @@ class ResolveViolation
     {
         if (! $violation->can_be_resolved) {
             throw ValidationException::withMessages([
-                'resolutionNotes' => 'This violation has already been resolved — its status no longer changes.',
+                'resolutionNotes' => 'This violation has already been resolved: its status no longer changes.',
             ]);
         }
 

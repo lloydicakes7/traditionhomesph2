@@ -1,5 +1,5 @@
 {{--
-    The band a statement opens with — the financial position at a glance: the
+    The band a statement opens with: the financial position at a glance, the
     heading, and the two or three figures the statement is about, on the
     association's own colour.
 
