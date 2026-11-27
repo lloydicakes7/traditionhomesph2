@@ -50,6 +50,15 @@ class HoaMemberOrderingPaginationTest extends TestCase
         ]);
     }
 
+    private function sectionNames(string $groupName): array
+    {
+        return app(MemberListQuery::class)->sections()
+            ->firstWhere('name', $groupName)
+            ->members
+            ->pluck('name')
+            ->all();
+    }
+
     public function test_member_groups_follow_the_required_order_regardless_of_insertion_order(): void
     {
         $committee = $this->group(HoaMemberGroup::COMMITTEE);
@@ -66,6 +75,26 @@ class HoaMemberOrderingPaginationTest extends TestCase
             [HoaMemberGroup::EXECUTIVE, HoaMemberGroup::BOARD, HoaMemberGroup::COMMITTEE],
             $sections->pluck('name')->all()
         );
+    }
+
+    public function test_a_group_named_executive_officer_sorts_first_and_keeps_the_position_order(): void
+    {
+        $committee = $this->group(HoaMemberGroup::COMMITTEE);
+        $board = $this->group(HoaMemberGroup::BOARD);
+        $executive = $this->group('Executive Officer');
+
+        $this->member($committee, 'Committee Person', 'Election Committee');
+        $this->member($board, 'Board Person', 'Member');
+        $this->member($executive, 'Zoe Zulu', 'Auditor');
+        $this->member($executive, 'Amy Alpha', 'President');
+
+        $sections = app(MemberListQuery::class)->sections();
+
+        $this->assertSame(
+            ['Executive Officer', HoaMemberGroup::BOARD, HoaMemberGroup::COMMITTEE],
+            $sections->pluck('name')->all()
+        );
+        $this->assertSame(['Amy Alpha', 'Zoe Zulu'], $sections->first()->members->pluck('name')->all());
     }
 
     public function test_executive_officers_follow_the_position_hierarchy_not_their_names(): void
@@ -126,59 +155,70 @@ class HoaMemberOrderingPaginationTest extends TestCase
         $this->assertSame(['Amy Alpha', 'Zoe Zulu'], $names);
     }
 
-    public function test_board_members_follow_the_reference_sequence(): void
+    public function test_board_members_are_listed_in_the_order_they_were_added(): void
     {
         $board = $this->group(HoaMemberGroup::BOARD);
 
-        $names = [
-            'Rolando M. Mirano',
-            'Reginalda A. Payot',
-            'Rowena L. Echavez',
-            'Nelzon L. Zabate',
-            'Divina T. Larong',
-            'Lilia R. Bale',
-            'Paulino P. Coronel',
-            'Medin R. Maraon',
-            'Bernadette P. Alba',
-            'Rizza U. Sayre',
-        ];
+        $names = ['Zoe Zulu', 'Rizza U. Sayre', 'Amy Alpha'];
 
-        foreach (array_reverse($names) as $name) {
+        foreach ($names as $name) {
             $this->member($board, $name, 'Member');
         }
 
-        $actual = app(MemberListQuery::class)->sections()
-            ->firstWhere('name', HoaMemberGroup::BOARD)
-            ->members
-            ->pluck('name')
-            ->all();
-
-        $this->assertSame($names, $actual);
+        $this->assertSame($names, $this->sectionNames(HoaMemberGroup::BOARD));
     }
 
-    public function test_committee_members_follow_the_reference_sequence(): void
+    public function test_committee_members_are_listed_in_the_order_they_were_added(): void
     {
         $committee = $this->group(HoaMemberGroup::COMMITTEE);
 
-        $names = [
-            'John Paul R. Garrido',
-            'Baby Jane S. Sajol',
-            'Primrose L. Doroteo',
-            'Miguelito E. Loreño',
-            'Merlina H. Acosta',
-        ];
+        $names = ['Zoe Zulu', 'Amy Alpha', 'Merlina H. Acosta'];
 
-        foreach (array_reverse($names) as $name) {
+        foreach ($names as $name) {
             $this->member($committee, $name, 'Member');
         }
 
-        $actual = app(MemberListQuery::class)->sections()
-            ->firstWhere('name', HoaMemberGroup::COMMITTEE)
-            ->members
-            ->pluck('name')
-            ->all();
+        $this->assertSame($names, $this->sectionNames(HoaMemberGroup::COMMITTEE));
+    }
 
-        $this->assertSame($names, $actual);
+    public function test_editing_a_member_keeps_their_original_position(): void
+    {
+        $board = $this->group(HoaMemberGroup::BOARD);
+
+        $first = $this->member($board, 'First Added', 'Member');
+        $this->member($board, 'Second Added', 'Member');
+        $this->member($board, 'Third Added', 'Member');
+
+        $first->update(['name' => 'Zzzz Renamed']);
+
+        $this->assertSame(
+            ['Zzzz Renamed', 'Second Added', 'Third Added'],
+            $this->sectionNames(HoaMemberGroup::BOARD)
+        );
+    }
+
+    public function test_groups_outside_the_fixed_three_keep_their_creation_order_below_them(): void
+    {
+        $zulu = HoaMemberGroup::create(['name' => 'Zulu Group']);
+        $alpha = HoaMemberGroup::create(['name' => 'Alpha Group']);
+        $committee = $this->group(HoaMemberGroup::COMMITTEE);
+        $board = $this->group(HoaMemberGroup::BOARD);
+        $executive = $this->group(HoaMemberGroup::EXECUTIVE);
+
+        foreach ([$zulu, $alpha, $committee, $board, $executive] as $index => $group) {
+            $this->member($group, 'Member ' . $index, 'Member');
+        }
+
+        $this->assertSame(
+            [
+                HoaMemberGroup::EXECUTIVE,
+                HoaMemberGroup::BOARD,
+                HoaMemberGroup::COMMITTEE,
+                'Zulu Group',
+                'Alpha Group',
+            ],
+            app(MemberListQuery::class)->sections()->pluck('name')->all()
+        );
     }
 
     public function test_each_group_paginates_independently_at_thirty_members_per_page(): void
@@ -226,26 +266,34 @@ class HoaMemberOrderingPaginationTest extends TestCase
             ->assertDontSee('Board Member 31');
     }
 
-    public function test_the_public_members_page_uses_the_same_ordering_as_the_admin_page(): void
+    public function test_the_public_members_page_lists_members_in_creation_order_without_groups(): void
     {
-        $committee = $this->group(HoaMemberGroup::COMMITTEE);
-        $board = $this->group(HoaMemberGroup::BOARD);
         $executive = $this->group(HoaMemberGroup::EXECUTIVE);
+        $board = $this->group(HoaMemberGroup::BOARD);
 
-        $this->member($executive, 'Amy Alpha', 'Auditor');
         $this->member($executive, 'Zoe Zulu', 'President');
         $this->member($board, 'Rolando M. Mirano', 'Member');
-        $this->member($committee, 'John Paul R. Garrido', 'Election Committee');
+        $this->member($executive, 'Amy Alpha', 'Auditor');
 
         Livewire::test(PublicMemberList::class)
-            ->assertSeeInOrder([
-                HoaMemberGroup::EXECUTIVE,
-                'Zoe Zulu',
-                'Amy Alpha',
-                HoaMemberGroup::BOARD,
-                'Rolando M. Mirano',
-                HoaMemberGroup::COMMITTEE,
-                'John Paul R. Garrido',
-            ]);
+            ->assertSeeInOrder(['Zoe Zulu', 'Rolando M. Mirano', 'Amy Alpha'])
+            ->assertDontSee(HoaMemberGroup::EXECUTIVE)
+            ->assertDontSee(HoaMemberGroup::BOARD);
+    }
+
+    public function test_the_public_members_page_paginates_at_forty_members(): void
+    {
+        $board = $this->group(HoaMemberGroup::BOARD);
+
+        for ($i = 1; $i <= 41; $i++) {
+            $this->member($board, sprintf('Board Member %02d', $i), 'Member');
+        }
+
+        Livewire::test(PublicMemberList::class)
+            ->assertSee('Board Member 01')
+            ->assertDontSee('Board Member 41')
+            ->call('gotoPage', 2)
+            ->assertSee('Board Member 41')
+            ->assertDontSee('Board Member 01');
     }
 }

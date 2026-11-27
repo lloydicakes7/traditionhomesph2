@@ -12,6 +12,8 @@ class MemberListQuery
 {
     const PER_PAGE = 30;
 
+    const PUBLIC_PER_PAGE = 40;
+
     const PREVIEW_LIMIT = 6;
 
     const EXECUTIVE_POSITIONS = [
@@ -21,27 +23,6 @@ class MemberListQuery
         'Secretary'      => 2,
         'Treasurer'      => 3,
         'Auditor'        => 4,
-    ];
-
-    const BOARD_SEQUENCE = [
-        'Rolando M. Mirano',
-        'Reginalda A. Payot',
-        'Rowena L. Echavez',
-        'Nelzon L. Zabate',
-        'Divina T. Larong',
-        'Lilia R. Bale',
-        'Paulino P. Coronel',
-        'Medin R. Maraon',
-        'Bernadette P. Alba',
-        'Rizza U. Sayre',
-    ];
-
-    const COMMITTEE_SEQUENCE = [
-        'John Paul R. Garrido',
-        'Baby Jane S. Sajol',
-        'Primrose L. Doroteo',
-        'Miguelito E. Loreño',
-        'Merlina H. Acosta',
     ];
 
     // ===== Rows =====
@@ -139,10 +120,6 @@ class MemberListQuery
 
         if ($group->isExecutive()) {
             $query->inPositionOrder(self::EXECUTIVE_POSITIONS);
-        } elseif ($group->isBoard()) {
-            $query->inNameOrder(self::BOARD_SEQUENCE);
-        } elseif ($group->isCommittee()) {
-            $query->inNameOrder(self::COMMITTEE_SEQUENCE);
         } else {
             $query->ordered();
         }

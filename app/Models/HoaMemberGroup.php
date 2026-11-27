@@ -15,11 +15,20 @@ class HoaMemberGroup extends Model
 
     const COMMITTEE = 'Committee';
 
-    const DISPLAY_ORDER = [
+    const EXECUTIVE_NAMES = [
         self::EXECUTIVE,
         self::STAFF,
-        self::BOARD,
-        self::COMMITTEE,
+        'Executive Officer',
+        'Executive Officers',
+    ];
+
+    const FIXED_ORDER = [
+        self::EXECUTIVE      => 0,
+        self::STAFF          => 0,
+        'Executive Officers' => 0,
+        'Executive Officer'  => 0,
+        self::BOARD          => 1,
+        self::COMMITTEE      => 2,
     ];
 
     protected $fillable = [
@@ -44,17 +53,17 @@ class HoaMemberGroup extends Model
         $whens = [];
         $bindings = [];
 
-        foreach (array_values(self::DISPLAY_ORDER) as $rank => $name) {
-            $whens[] = 'WHEN ? THEN ' . $rank;
+        foreach (self::FIXED_ORDER as $name => $rank) {
+            $whens[] = 'WHEN ? THEN ' . (int) $rank;
             $bindings[] = strtolower($name);
         }
 
         return $query
             ->orderByRaw(
-                'CASE LOWER(name) ' . implode(' ', $whens) . ' ELSE ' . count(self::DISPLAY_ORDER) . ' END',
+                'CASE LOWER(TRIM(name)) ' . implode(' ', $whens) . ' ELSE ' . count(self::FIXED_ORDER) . ' END',
                 $bindings
             )
-            ->orderBy('name')
+            ->orderBy('created_at')
             ->orderBy('id');
     }
 
@@ -64,8 +73,15 @@ class HoaMemberGroup extends Model
 
     public function isExecutive(): bool
     {
-        return strcasecmp($this->name, self::EXECUTIVE) === 0
-            || strcasecmp($this->name, self::STAFF) === 0;
+        $name = strtolower(trim((string) $this->name));
+
+        foreach (self::EXECUTIVE_NAMES as $executive) {
+            if ($name === strtolower($executive)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public function isBoard(): bool

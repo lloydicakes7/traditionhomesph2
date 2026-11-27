@@ -32,20 +32,13 @@ class MemberList extends PublicComponent
 
     public function updatingSearch(): void
     {
-        $this->resetGroupPages();
+        $this->resetPage();
     }
 
     public function clearSearch(): void
     {
         $this->search = '';
-        $this->resetGroupPages();
-    }
-
-    public function resetGroupPages(): void
-    {
-        foreach ($this->query->pageNames() as $pageName) {
-            $this->setPage(1, $pageName);
-        }
+        $this->resetPage();
     }
 
     // =====================================================================
@@ -55,7 +48,7 @@ class MemberList extends PublicComponent
     public function render()
     {
         return view('livewire.public.members.member-list', [
-            'groups' => $this->query->sections((string) $this->search),
+            'members' => $this->query->paginate((string) $this->search, MemberListQuery::PUBLIC_PER_PAGE),
         ]);
     }
 }
