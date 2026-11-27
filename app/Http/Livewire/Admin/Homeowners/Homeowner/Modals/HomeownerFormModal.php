@@ -151,12 +151,7 @@ class HomeownerFormModal extends AdminModalComponent
             'profilePhoto'           => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
             'property.block'         => [$this->editingUserId ? 'nullable' : 'required', 'integer', 'min:1', 'max:9999'],
             'property.lot'           => [$this->editingUserId ? 'nullable' : 'required', 'integer', 'min:1', 'max:9999'],
-            'property.sqm'           => [
-                Rule::requiredIf(function () {
-                    return $this->householdIsNewUnit();
-                }),
-                'nullable', 'numeric', 'min:0', 'max:99999',
-            ],
+            'property.sqm'           => ['nullable', 'numeric', 'min:0', 'max:99999'],
             'property.type'          => [
                 Rule::requiredIf(function () {
                     return $this->householdIsNewUnit();

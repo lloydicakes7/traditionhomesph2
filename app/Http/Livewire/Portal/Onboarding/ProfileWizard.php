@@ -130,10 +130,7 @@ class ProfileWizard extends PortalComponent
         $rules = array_merge((new SubmitProfileRequest)->rules(), $this->sectoralTagRules('form'));
 
         if ($this->unit === null) {
-            $rules = array_merge($rules, [
-                'property.sqm'  => ['required', 'numeric', 'min:0', 'max:99999'],
-                'property.type' => ['required', Rule::in(PropertyType::values())],
-            ]);
+            $rules['property.type'] = ['required', Rule::in(PropertyType::values())];
         }
 
         if ($withHeadAge && $this->residentBecomesHead()) {

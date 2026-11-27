@@ -33,7 +33,7 @@
     @if ($unitNamed && $unit === null)
         <div class="col-12 col-md-6">
             <x-adminlte-input name="property.sqm" type="number" step="0.01" min="0" max="99999"
-                label="{{ __('households.floor_area') }} *" placeholder="e.g., 100"
+                label="{{ __('households.floor_area') }}" placeholder="e.g., 100"
                 wire:model.defer="property.sqm" igroup-size="sm">
                 <x-slot name="prependSlot"><div class="input-group-text"><i class="fas fa-fw fa-ruler-combined"></i></div></x-slot>
             </x-adminlte-input>

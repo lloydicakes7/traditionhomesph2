@@ -328,7 +328,7 @@ class RbiProfileFieldsTest extends TestCase
         $this->assertSame('RICO', $unit->currentHousehold->head_resident->first_name);
     }
 
-    public function test_the_homeowner_dialog_asks_for_the_floor_area_of_a_new_unit(): void
+    public function test_the_homeowner_dialog_creates_a_new_unit_without_a_floor_area(): void
     {
         Livewire::test(HomeownerFormModal::class)
             ->call('openCreate')
@@ -344,9 +344,12 @@ class RbiProfileFieldsTest extends TestCase
             ->set('property.lot', '4')
             ->set('property.type', 'duplex')
             ->call('save')
-            ->assertHasErrors(['property.sqm']);
+            ->assertHasNoErrors();
 
-        $this->assertSame(0, Property::query()->atUnit(11, 4)->count());
+        $unit = Property::query()->atUnit(11, 4)->firstOrFail();
+
+        $this->assertNull($unit->sqm);
+        $this->assertSame('duplex', $unit->type);
     }
 
     public function test_the_homeowner_dialog_keeps_the_household_on_file_while_editing(): void

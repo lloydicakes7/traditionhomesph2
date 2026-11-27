@@ -302,7 +302,7 @@ class ProfileVerificationTest extends TestCase
         $this->assertSame('father', Household::first()->headMember->relationship);
     }
 
-    public function test_a_named_unit_that_is_not_on_file_asks_for_its_floor_area_and_type(): void
+    public function test_a_named_unit_that_is_not_on_file_is_recorded_without_a_floor_area(): void
     {
         $user = $this->registered();
         $this->primaryAddress();
@@ -316,9 +316,12 @@ class ProfileVerificationTest extends TestCase
             ->set('property.type', 'house')
             ->set('idFile', UploadedFile::fake()->image('id.jpg'))
             ->call('submit')
-            ->assertHasErrors(['property.sqm']);
+            ->assertHasNoErrors();
 
-        $this->assertSame(0, Property::count());
+        $unit = Property::query()->atUnit(7, 12)->firstOrFail();
+
+        $this->assertNull($unit->sqm);
+        $this->assertSame('house', $unit->type);
     }
 
     public function test_a_unit_without_a_household_makes_the_resident_its_head(): void

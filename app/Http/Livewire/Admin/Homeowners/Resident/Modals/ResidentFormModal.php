@@ -146,12 +146,7 @@ class ResidentFormModal extends AdminModalComponent
         return array_merge($rules, [
             'property.block'         => ['required', 'integer', 'min:1', 'max:9999'],
             'property.lot'           => ['required', 'integer', 'min:1', 'max:9999'],
-            'property.sqm'           => [
-                Rule::requiredIf(function () {
-                    return $this->householdIsNewUnit();
-                }),
-                'nullable', 'numeric', 'min:0', 'max:99999',
-            ],
+            'property.sqm'           => ['nullable', 'numeric', 'min:0', 'max:99999'],
             'property.type'          => [
                 Rule::requiredIf(function () {
                     return $this->householdIsNewUnit();

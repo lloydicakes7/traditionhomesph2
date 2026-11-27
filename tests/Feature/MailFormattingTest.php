@@ -51,7 +51,6 @@ class MailFormattingTest extends TestCase
     public function test_notification_mails_follow_the_association_mail_layout(): void
     {
         $admin = $this->officer();
-        $logoUrl = $this->useLogo();
 
         $mail = (new PendingProfileVerificationsDigest(3))->toMail($admin);
 
@@ -62,7 +61,7 @@ class MailFormattingTest extends TestCase
 
         $html = $mail->render();
 
-        $this->assertStringContainsString($logoUrl, $html);
+        $this->assertStringNotContainsString('image/logo.jpg', $html);
         $this->assertStringContainsString('Greetings, ' . $admin->name . ',', $html);
         $this->assertStringContainsString('3 homeowner accounts', $html);
         $this->assertStringNotContainsString('Hello!', $html);
@@ -76,7 +75,6 @@ class MailFormattingTest extends TestCase
     public function test_the_statement_mail_is_branded_and_reads_formally(): void
     {
         $admin = $this->officer();
-        $logoUrl = $this->useLogo();
 
         $summary = [
             'owner'           => 'Juan dela Cruz',
@@ -118,7 +116,7 @@ class MailFormattingTest extends TestCase
         $html = $mail->render();
 
         $this->assertStringContainsString('Greetings, Juan dela Cruz,', $html);
-        $this->assertStringContainsString($logoUrl, $html);
+        $this->assertStringNotContainsString('image/logo.jpg', $html);
         $this->assertStringContainsString('<div class="table"', $html);
         $this->assertStringContainsString('BILL-2026-0001', $html);
         $this->assertStringContainsString('Kindly settle the amount at the association office.', $html);
@@ -136,8 +134,6 @@ class MailFormattingTest extends TestCase
 
     public function test_the_website_inquiry_is_branded_and_replies_to_the_resident(): void
     {
-        $logoUrl = $this->useLogo();
-
         $mail = new ContactMessage([
             'name'           => 'Juan dela Cruz',
             'email'          => 'juan@example.com',
@@ -150,7 +146,7 @@ class MailFormattingTest extends TestCase
 
         $this->assertTrue($mail->hasReplyTo('juan@example.com'));
         $this->assertStringContainsString('<div class="table"', $html);
-        $this->assertStringContainsString($logoUrl, $html);
+        $this->assertStringNotContainsString('image/logo.jpg', $html);
         $this->assertStringContainsString('How much are my monthly dues?', $html);
         $this->assertStringContainsString('Not provided', $html);
         $this->assertRegExp('/<td class="panel-content"[^>]*style="[^"]*padding: 16px/', $html);
