@@ -223,18 +223,37 @@ class CollectionSettingsTest extends TestCase
     public function test_the_instructions_print_their_placeholders_filled_in(): void
     {
         $this->save([
-            'invoice_instructions' => '<p>Hi {{OWNER_NAME}}, please pay {{AMOUNT_DUE}}.</p>'
+            'invoice_instructions' => '<p>Hi {{OWNER_NAME}}, please pay {{AMOUNT_DUE}} by {{DUE_DATE}}.</p>'
+                . '<p>{{PROPERTY}} · {{HOA_NAME}} · {{HOA_PORTAL_LINK}}</p>'
                 . '<p>{{PAYMENT_METHODS_TABLE}}</p>',
         ]);
 
         $rendered = app(CollectionSettingsQuery::class)->renderInstructions([
-            'OWNER_NAME' => 'Juan Dela Cruz',
-            'AMOUNT_DUE' => '₱1,500.00',
+            'OWNER_NAME'      => 'Juan Dela Cruz',
+            'AMOUNT_DUE'      => '₱1,500.00',
+            'DUE_DATE'        => 'Dec 5, 2026',
+            'PROPERTY'        => 'Block 4 Lot 12',
+            'HOA_NAME'        => 'Tradition Homes',
+            'HOA_PORTAL_LINK' => 'https://example.test/portal',
         ]);
 
-        $this->assertStringContainsString('Hi Juan Dela Cruz, please pay ₱1,500.00.', $rendered);
+        $this->assertStringContainsString('Hi Juan Dela Cruz, please pay ₱1,500.00 by Dec 5, 2026.', $rendered);
+        $this->assertStringContainsString('Block 4 Lot 12 · Tradition Homes · https://example.test/portal', $rendered);
         $this->assertStringNotContainsString('{{', $rendered);
         $this->assertStringNotContainsString('PAYMENT_METHODS_TABLE', $rendered);
+    }
+
+    public function test_every_offered_placeholder_has_a_value_when_none_is_passed(): void
+    {
+        $this->save([
+            'invoice_instructions' => '<p>{{OWNER_NAME}} {{PROPERTY}} {{AMOUNT_DUE}} {{DUE_DATE}} {{HOA_NAME}} {{HOA_PORTAL_LINK}}</p>',
+        ]);
+
+        $rendered = app(CollectionSettingsQuery::class)->renderInstructions();
+
+        $this->assertStringNotContainsString('{{', $rendered);
+        $this->assertStringContainsString('the due date on record', $rendered);
+        $this->assertStringContainsString(route('portal.dashboard'), $rendered);
     }
 
     public function test_instructions_written_as_plain_text_keep_their_line_breaks(): void

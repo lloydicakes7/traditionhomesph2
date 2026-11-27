@@ -33,6 +33,7 @@ class PendingProfileVerificationsDigest extends OfficerNotification
     public function toMail($notifiable): MailMessage
     {
         return (new MailMessage())
+            ->template('emails.notification')
             ->subject('Homeowner accounts are waiting for verification')
             ->greeting('Greetings, ' . $notifiable->name . ',')
             ->line($this->summary())

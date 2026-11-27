@@ -55,7 +55,7 @@ class MailFormattingTest extends TestCase
 
         $mail = (new PendingProfileVerificationsDigest(3))->toMail($admin);
 
-        $this->assertSame('notifications::email', $mail->markdown);
+        $this->assertSame('emails.notification', $mail->markdown);
         $this->assertNull($mail->view);
         $this->assertSame('Greetings, ' . $admin->name . ',', $mail->greeting);
         $this->assertStringNotContainsString('—', $mail->subject);
@@ -66,6 +66,11 @@ class MailFormattingTest extends TestCase
         $this->assertStringContainsString('Greetings, ' . $admin->name . ',', $html);
         $this->assertStringContainsString('3 homeowner accounts', $html);
         $this->assertStringNotContainsString('Hello!', $html);
+
+        $text = app(Markdown::class)->renderText('emails.notification', $mail->data());
+
+        $this->assertStringContainsString('Greetings, ' . $admin->name . ',', $text);
+        $this->assertStringNotContainsString('#', $text);
     }
 
     public function test_the_statement_mail_is_branded_and_reads_formally(): void
@@ -117,12 +122,16 @@ class MailFormattingTest extends TestCase
         $this->assertStringContainsString('<div class="table"', $html);
         $this->assertStringContainsString('BILL-2026-0001', $html);
         $this->assertStringContainsString('Kindly settle the amount at the association office.', $html);
+        $this->assertRegExp('/<td class="panel-content"[^>]*style="[^"]*padding: 16px/', $html);
         $this->assertStringNotContainsString('Hello!', $html);
 
         $text = app(Markdown::class)->renderText('emails.statement-of-account', $mail->data());
 
         $this->assertStringContainsString('BILL-2026-0001', $text);
-        $this->assertStringNotContainsString('Hello!', $text);
+        $this->assertStringContainsString('Monthly Dues total', $text);
+        $this->assertStringContainsString('Total outstanding: PHP 500.00', $text);
+        $this->assertStringNotContainsString('#', $text);
+        $this->assertStringNotContainsString('|', $text);
     }
 
     public function test_the_website_inquiry_is_branded_and_replies_to_the_resident(): void
@@ -144,6 +153,7 @@ class MailFormattingTest extends TestCase
         $this->assertStringContainsString($logoUrl, $html);
         $this->assertStringContainsString('How much are my monthly dues?', $html);
         $this->assertStringContainsString('Not provided', $html);
+        $this->assertRegExp('/<td class="panel-content"[^>]*style="[^"]*padding: 16px/', $html);
         $this->assertStringNotContainsString('Hello!', $html);
     }
 

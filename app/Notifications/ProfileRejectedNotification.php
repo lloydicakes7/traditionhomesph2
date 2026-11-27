@@ -4,6 +4,7 @@ namespace App\Notifications;
 
 use App\Enums\NotificationType;
 use App\Models\User;
+use App\Utility\HtmlHelper;
 use Illuminate\Notifications\Messages\MailMessage;
 
 /**
@@ -48,10 +49,11 @@ class ProfileRejectedNotification extends ThhaNotification
     public function toMail($notifiable): MailMessage
     {
         return (new MailMessage())
+            ->template('emails.notification')
             ->subject('Your Tradition Homes profile needs a correction')
             ->greeting('Greetings, ' . ($this->account->resident?->first_name ?? 'Homeowner') . ',')
             ->line('The office reviewed your profile and requested a correction.')
-            ->line('Details of the correction: ' . $this->note)
+            ->line('Details of the correction: ' . HtmlHelper::toText($this->note))
             ->line('Kindly update the information requested, then submit your profile for review again.')
             ->action('Open your profile', route('login'));
     }

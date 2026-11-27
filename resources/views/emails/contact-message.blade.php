@@ -1,20 +1,44 @@
 @component('mail::message')
-# {{ __('public.contact.mail_heading') }}
+<h1>{{ __('public.contact.mail_heading') }}</h1>
 
-The following inquiry was submitted through the association website.
+<p>The following inquiry was submitted through the association website.</p>
 
-@component('mail::panel')
+<table class="panel" width="100%" cellpadding="0" cellspacing="0" role="presentation">
+<tr>
+<td class="panel-content">
 {{ $inquiry }}
-@endcomponent
+</td>
+</tr>
+</table>
 
-@component('mail::table')
-| Detail | Information |
-| :----- | :---------- |
-| {{ __('public.contact.mail_from') }} | {{ $senderName }} |
-| {{ __('public.contact.sender_email') }} | {{ $senderEmail }} |
-| {{ __('public.contact.contact_number') }} | {{ $senderContact ?: 'Not provided' }} |
-| {{ __('public.contact.subject') }} | {{ $subjectLine }} |
-@endcomponent
+<div class="table">
+<table width="100%" cellpadding="0" cellspacing="0" role="presentation">
+<thead>
+<tr>
+<th align="left">Detail</th>
+<th align="left">Information</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>{{ __('public.contact.mail_from') }}</td>
+<td>{{ $senderName }}</td>
+</tr>
+<tr>
+<td>{{ __('public.contact.sender_email') }}</td>
+<td>{{ $senderEmail }}</td>
+</tr>
+<tr>
+<td>{{ __('public.contact.contact_number') }}</td>
+<td>{{ $senderContact ?: 'Not provided' }}</td>
+</tr>
+<tr>
+<td>{{ __('public.contact.subject') }}</td>
+<td>{{ $subjectLine }}</td>
+</tr>
+</tbody>
+</table>
+</div>
 
-{{ $hoa_name }}
+<p>{{ $hoa_name }}</p>
 @endcomponent

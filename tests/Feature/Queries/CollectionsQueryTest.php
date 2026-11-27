@@ -368,6 +368,25 @@ class CollectionsQueryTest extends TestCase
         $this->assertArrayHasKey($homeowner->id, app(StatementDataQuery::class)->accounts());
     }
 
+    public function test_the_statement_instructions_fill_every_offered_placeholder(): void
+    {
+        $homeowner = $this->occupiedUnit();
+        $this->due($homeowner, 'DUE-2026-09', '2026-09');
+
+        SettingsHelper::bulkSet([
+            'invoice_instructions' => '<p>{{OWNER_NAME}} {{PROPERTY}} {{AMOUNT_DUE}} '
+                . '{{DUE_DATE}} {{HOA_NAME}} {{HOA_PORTAL_LINK}}</p>',
+        ], CollectionSettingsQuery::GROUP);
+        SettingsHelper::forgetCache(CollectionSettingsQuery::CACHE_KEY);
+
+        $instructions = app(StatementDataQuery::class)->forUser($homeowner->id, '2026-09')['instructions'];
+
+        $this->assertStringNotContainsString('{{', $instructions);
+        $this->assertStringContainsString('Sep 10, 2026', $instructions);
+        $this->assertStringContainsString(route('portal.dashboard'), $instructions);
+        $this->assertStringNotContainsString('Not recorded', $instructions);
+    }
+
     // =====================================================================
     // Detail, portal, generator and settings
     // =====================================================================

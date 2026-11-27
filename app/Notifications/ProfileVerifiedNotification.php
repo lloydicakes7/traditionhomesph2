@@ -44,6 +44,7 @@ class ProfileVerifiedNotification extends ThhaNotification
     public function toMail($notifiable): MailMessage
     {
         return (new MailMessage())
+            ->template('emails.notification')
             ->subject('Your Tradition Homes profile is verified')
             ->greeting('Greetings, ' . ($this->account->resident?->first_name ?? 'Homeowner') . ',')
             ->line('The office has verified your personal information, your unit and your household.')

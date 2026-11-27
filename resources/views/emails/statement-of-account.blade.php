@@ -1,37 +1,69 @@
 @component('mail::message')
-# Greetings, {{ $summary['owner'] }},
+<h1>Greetings, {{ $summary['owner'] }},</h1>
 
-Below is your account with the association for **{{ $summary['period'] }}**.
+<p>Below is your account with the association for <strong>{{ $summary['period'] }}</strong>.</p>
 
-{{ $summary['property'] }}<br>
-{{ $summary['address'] }}
+<p>{{ $summary['property'] }}<br>
+{{ $summary['address'] }}</p>
 
 @foreach ($summary['groups'] as $group)
 @if ($group['bills']->isNotEmpty())
-### {{ $group['label'] }}
+<h2>{{ $group['label'] }}</h2>
 
-@php
-    $rows = collect($group['bills'])->map(function ($bill) {
-        $period = $bill->billing_period ? $bill->billing_period_display : $bill->bill_date_display;
-
-        return '| ' . $bill->reference . ' | ' . $bill->type_label . ' | ' . $period . ' | ' . $bill->total_display . ' | ' . $bill->balance_display . ' |';
-    })->implode("\n");
-@endphp
-
-@component('mail::table')
-| Reference | Type | Period or date | Amount | Balance |
-| :-------- | :--- | :------------- | -----: | ------: |
-{!! $rows !!}
-| **{{ $group['label'] }} total** | | | | **{{ $group['total_display'] }}** |
-@endcomponent
+<div class="table">
+<table width="100%" cellpadding="0" cellspacing="0" role="presentation">
+<thead>
+<tr>
+<th align="left">Reference</th>
+<th align="left">Type</th>
+<th align="left">Period or date</th>
+<th align="right">Amount</th>
+<th align="right">Balance</th>
+</tr>
+</thead>
+<tbody>
+@foreach ($group['bills'] as $bill)
+<tr>
+<td>{{ $bill->reference }}</td>
+<td>{{ $bill->type_label }}</td>
+<td>{{ $bill->billing_period ? $bill->billing_period_display : $bill->bill_date_display }}</td>
+<td align="right">{{ $bill->total_display }}</td>
+<td align="right">{{ $bill->balance_display }}</td>
+</tr>
+@endforeach
+</tbody>
+<tfoot>
+<tr>
+<td colspan="4" align="right"><strong>{{ $group['label'] }} total</strong></td>
+<td align="right"><strong>{{ $group['total_display'] }}</strong></td>
+</tr>
+</tfoot>
+</table>
+</div>
 @endif
 @endforeach
 
-**Total outstanding: {{ $summary['balance_display'] }}**
+@php
+    $hasBills = collect($summary['groups'])->sum(function ($group) {
+        return $group['bills']->count();
+    }) > 0;
+@endphp
 
-@if ($summary['instructions'])
-{!! $summary['instructions'] !!}
+@if (! $hasBills)
+<p>No charges are outstanding for this period.</p>
 @endif
 
-{{ $hoa_name }}
+<p><strong>Total outstanding: {{ $summary['balance_display'] }}</strong></p>
+
+@if ($summary['instructions'])
+<table class="panel" width="100%" cellpadding="0" cellspacing="0" role="presentation">
+<tr>
+<td class="panel-content">
+{!! $summary['instructions'] !!}
+</td>
+</tr>
+</table>
+@endif
+
+<p>{{ $hoa_name }}</p>
 @endcomponent

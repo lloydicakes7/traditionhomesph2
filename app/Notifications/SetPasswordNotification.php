@@ -37,6 +37,7 @@ class SetPasswordNotification extends Notification
     public function toMail($notifiable): MailMessage
     {
         return (new MailMessage())
+            ->template('emails.notification')
             ->subject(__('auth.set_password_subject'))
             ->greeting(__('auth.set_password_greeting', ['name' => $notifiable->name]))
             ->line(__('auth.set_password_intro'))

@@ -25,6 +25,15 @@ class CollectionSettingsQuery
 
     const GROUP = 'collections';
 
+    const PLACEHOLDERS = [
+        'OWNER_NAME',
+        'PROPERTY',
+        'AMOUNT_DUE',
+        'DUE_DATE',
+        'HOA_NAME',
+        'HOA_PORTAL_LINK',
+    ];
+
     const DEFAULTS = [
         'billing_method'       => BillingMethod::PER_SQM,
         'monthly_rate'         => 0,
@@ -97,33 +106,31 @@ class CollectionSettingsQuery
 
     public function placeholders(): array
     {
-        return [
-            '{{OWNER_NAME}}',
-            '{{PROPERTY}}',
-            '{{AMOUNT_DUE}}',
-            '{{DUE_DATE}}',
-            '{{HOA_NAME}}',
-            '{{HOA_PORTAL_LINK}}',
-        ];
+        return array_map(function (string $key) {
+            return '{{' . $key . '}}';
+        }, self::PLACEHOLDERS);
+    }
+
+    public function hoaName(): string
+    {
+        $settings = SettingsHelper::getByGroup('hoa_info');
+
+        return (string) ($settings['hoa_name'] ?? config('thha.hoa_name', ''));
     }
 
     public function renderInstructions(array $values = []): string
     {
         $instructions = (string) $this->get('invoice_instructions', '');
+        $filled = array_filter($values, function ($value) {
+            return $value !== null && $value !== '';
+        });
 
-        foreach ($values as $key => $value) {
+        foreach ($this->placeholderValues($filled) as $key => $value) {
             $instructions = str_replace('{{' . $key . '}}', $value, $instructions);
         }
 
-        foreach ($this->placeholders() as $placeholder) {
-            $instructions = str_replace($placeholder, '', $instructions);
-        }
-
-        // Token retired with the online-payment block: old saved text may still
-        // carry it, and a raw token must never reach a homeowner.
-        $instructions = str_replace('{{PAYMENT_METHODS_TABLE}}', '', $instructions);
-
-        $instructions = trim($instructions);
+        $instructions = preg_replace('/\{\{[A-Z0-9_]+\}\}/', '', $instructions);
+        $instructions = trim((string) $instructions);
 
         return HtmlHelper::isPlainText($instructions)
             ? HtmlHelper::toParagraphs($instructions)
@@ -157,15 +164,29 @@ class CollectionSettingsQuery
         return $config;
     }
 
+    private function placeholderValues(array $values): array
+    {
+        $defaults = [
+            'OWNER_NAME'      => 'Homeowner',
+            'PROPERTY'        => 'your unit',
+            'AMOUNT_DUE'      => 'the amount due',
+            'DUE_DATE'        => 'the due date on record',
+            'HOA_NAME'        => $this->hoaName(),
+            'HOA_PORTAL_LINK' => route('portal.dashboard'),
+        ];
+
+        return array_merge($defaults, $values);
+    }
+
     private function exampleValues(): array
     {
         return [
-            'OWNER_NAME'            => 'Juan Dela Cruz',
-            'PROPERTY'              => 'Block 4 Lot 12',
-            'AMOUNT_DUE'            => MoneyHelper::format(1500),
-            'DUE_DATE'              => Carbon::now()->addDays(7)->format('M j, Y'),
-            'HOA_NAME'              => config('thha.hoa_name'),
-            'HOA_PORTAL_LINK'       => url('/'),
+            'OWNER_NAME'      => 'Juan Dela Cruz',
+            'PROPERTY'        => 'Block 4 Lot 12',
+            'AMOUNT_DUE'      => MoneyHelper::format(1500),
+            'DUE_DATE'        => Carbon::now()->addDays(7)->format('M j, Y'),
+            'HOA_NAME'        => $this->hoaName(),
+            'HOA_PORTAL_LINK' => route('portal.dashboard'),
         ];
     }
 }

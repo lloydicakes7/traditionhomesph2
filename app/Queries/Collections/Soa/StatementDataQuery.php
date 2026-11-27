@@ -128,6 +128,12 @@ class StatementDataQuery
             ->get();
 
         $balance = (float) $bills->sum('balance');
+        $dueDate = $bills->pluck('due_date')
+            ->filter()
+            ->sortBy(function ($date) {
+                return $date->timestamp;
+            })
+            ->first();
 
         return [
             'owner'           => $owner,
@@ -138,10 +144,12 @@ class StatementDataQuery
             'balance'         => $balance,
             'balance_display' => MoneyHelper::format($balance),
             'instructions'    => $this->settingsQuery->renderInstructions([
-                'OWNER_NAME'            => $owner,
-                'PROPERTY'              => $propertyLabel,
-                'AMOUNT_DUE'            => MoneyHelper::format($balance),
-                'HOA_NAME'              => $this->settingsQuery->get('hoa_name', config('app.name')),
+                'OWNER_NAME'      => $owner,
+                'PROPERTY'        => $propertyLabel,
+                'AMOUNT_DUE'      => MoneyHelper::format($balance),
+                'DUE_DATE'        => $dueDate ? $dueDate->format('M j, Y') : 'No due date on record',
+                'HOA_NAME'        => $this->settingsQuery->hoaName(),
+                'HOA_PORTAL_LINK' => route('portal.dashboard'),
             ]),
         ];
     }

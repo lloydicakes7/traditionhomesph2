@@ -28,6 +28,7 @@ class HouseholdLinkRequested extends ThhaNotification
     public function toMail($notifiable): MailMessage
     {
         return (new MailMessage())
+            ->template('emails.notification')
             ->subject('A resident has requested to join your household')
             ->greeting('Greetings, ' . ($this->link->headAccount()?->resident?->first_name ?? 'Homeowner') . ',')
             ->line($this->residentName() . ' listed your unit at ' . $this->unitLabel() . ' as their address.')

@@ -210,9 +210,7 @@ class CollectionsSettings extends AdminComponent
             'penaltyTypes'     => AdjustmentType::labels(),
             'paymentMethods'   => $this->paymentMethodQuery->paginate(),
             'placeholders'     => $this->settingsQuery->placeholders(),
-            'instructionsPreview' => $this->settingsQuery->previewInstructions([
-                'HOA_NAME' => config('app.name'),
-            ]),
+            'instructionsPreview' => $this->settingsQuery->previewInstructions(),
         ]);
     }
 }

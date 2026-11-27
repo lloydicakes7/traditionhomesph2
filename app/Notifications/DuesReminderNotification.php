@@ -69,6 +69,7 @@ class DuesReminderNotification extends ThhaNotification
         $reference = $this->bill->reference ? ' (reference ' . $this->bill->reference . ')' : '';
 
         return (new MailMessage())
+            ->template('emails.notification')
             ->subject('Monthly Dues Reminder for ' . $this->bill->billing_period_display)
             ->greeting('Greetings, ' . ($notifiable->name ?: 'Homeowner') . ',')
             ->line('This is a reminder that your monthly association dues for '

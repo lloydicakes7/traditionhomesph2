@@ -4,6 +4,7 @@ namespace App\Notifications;
 
 use App\Enums\NotificationType;
 use App\Models\Violation;
+use App\Utility\HtmlHelper;
 use Illuminate\Notifications\Messages\MailMessage;
 
 /**
@@ -67,13 +68,14 @@ class ViolationIssuedNotification extends ThhaNotification
         $violation = $this->violation;
 
         return (new MailMessage())
+            ->template('emails.notification')
             ->subject('Notice of Violation: ' . $violation->type_label)
             ->greeting('Greetings, ' . $violation->resident_label . ',')
             ->line('The association has recorded a violation against your household.')
             ->line('Violation: ' . $violation->type_label)
             ->line('Date and time: ' . $violation->occurred_display)
             ->line('Location: ' . $violation->location)
-            ->line('Details: ' . $violation->description)
+            ->line('Details: ' . HtmlHelper::toText($violation->description))
             ->line('Kindly sign in to the homeowner portal to read the full notice.')
             ->action('Read the notice', route('portal.violations'));
     }

@@ -39,6 +39,7 @@ class OfficerAccountOpened extends Notification
     public function toMail($notifiable): MailMessage
     {
         return (new MailMessage())
+            ->template('emails.notification')
             ->subject(__('auth.officer_welcome_subject'))
             ->greeting(__('auth.officer_welcome_greeting', ['name' => $notifiable->name]))
             ->line(__('auth.officer_welcome_intro'))

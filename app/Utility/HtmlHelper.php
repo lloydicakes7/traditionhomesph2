@@ -102,6 +102,24 @@ class HtmlHelper
     }
 
     /**
+     * The readable text of a rich text value, with its block tags turned into
+     * line breaks and its entities decoded.
+     */
+    public static function toText(?string $html): string
+    {
+        $text = (string) $html;
+
+        $text = preg_replace('/<\s*br\s*\/?\s*>/i', "\n", $text);
+        $text = preg_replace('/<\s*\/\s*(p|div|li|h[1-6]|tr)\s*>/i', "\n", $text);
+        $text = strip_tags($text);
+        $text = html_entity_decode($text, ENT_QUOTES, 'UTF-8');
+        $text = preg_replace('/[ \t]+/', ' ', $text);
+        $text = preg_replace('/\n{3,}/', "\n\n", $text);
+
+        return trim($text);
+    }
+
+    /**
      * Walk a node's children, dropping what is not allowed and sanitizing the
      * rest.
      */
