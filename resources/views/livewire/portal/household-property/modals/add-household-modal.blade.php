@@ -10,11 +10,11 @@
             <form>
                 <div class="row">
                     <div class="col-6 col-md-3">
-                        <x-adminlte-input name="form.block" type="number" min="1" label="BLK"
+                        <x-adminlte-input name="form.block" type="text" maxlength="20" inputmode="numeric" label="BLK"
                             placeholder="BLK" wire:model.lazy="form.block" igroup-size="sm" />
                     </div>
                     <div class="col-6 col-md-3">
-                        <x-adminlte-input name="form.lot" type="number" min="1" label="LOT"
+                        <x-adminlte-input name="form.lot" type="text" maxlength="20" data-thha-uppercase label="LOT"
                             placeholder="LOT" wire:model.lazy="form.lot" igroup-size="sm" />
                     </div>
                     <div class="col-12 col-md-6">

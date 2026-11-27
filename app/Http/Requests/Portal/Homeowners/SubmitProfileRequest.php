@@ -5,6 +5,7 @@ namespace App\Http\Requests\Portal\Homeowners;
 use App\Enums\HouseholdType;
 use App\Enums\PropertyType;
 use App\Http\Requests\Homeowners\ResidentRequest;
+use App\Models\Property;
 use App\Rules\PhilippineMobileNumber;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -27,6 +28,13 @@ class SubmitProfileRequest extends FormRequest
 
     // ===== Rules =====
 
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'property' => Property::normalizeUnit((array) $this->input('property', [])),
+        ]);
+    }
+
     /**
      * @return array<string, array<int, mixed>>
      */
@@ -41,8 +49,8 @@ class SubmitProfileRequest extends FormRequest
         $rules['form.spouse_name'] = ['nullable', 'required_if:form.civil_status,married', 'string', 'max:255'];
 
         return $rules + [
-            'property.block' => ['required', 'integer', 'min:1', 'max:9999'],
-            'property.lot'   => ['required', 'integer', 'min:1', 'max:9999'],
+            'property.block' => ['required', 'string', 'max:20', 'regex:/^[0-9]+$/'],
+            'property.lot'   => ['required', 'string', 'max:20', 'regex:/^[A-Z0-9]+$/'],
             'property.sqm'   => ['nullable', 'numeric', 'min:0', 'max:99999'],
             'property.type'  => ['nullable', Rule::in(PropertyType::values())],
 

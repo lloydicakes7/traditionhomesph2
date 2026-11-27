@@ -144,8 +144,8 @@ class ResidentFormModal extends AdminModalComponent
         }
 
         return array_merge($rules, [
-            'property.block'         => ['required', 'integer', 'min:1', 'max:9999'],
-            'property.lot'           => ['required', 'integer', 'min:1', 'max:9999'],
+            'property.block'         => ['required', 'string', 'max:20', 'regex:/^[0-9]+$/'],
+            'property.lot'           => ['required', 'string', 'max:20', 'regex:/^[A-Z0-9]+$/'],
             'property.sqm'           => ['nullable', 'numeric', 'min:0', 'max:99999'],
             'property.type'          => [
                 Rule::requiredIf(function () {
@@ -245,14 +245,17 @@ class ResidentFormModal extends AdminModalComponent
 
     private function refreshUnit(): void
     {
+        $this->property = Property::normalizeUnit($this->property);
+
         $this->unit = $this->unitIsNamed()
-            ? $this->units->atUnit((int) $this->property['block'], (int) $this->property['lot'])
+            ? $this->units->atUnit($this->property['block'], $this->property['lot'])
             : null;
     }
 
     private function unitIsNamed(): bool
     {
-        return (int) ($this->property['block'] ?? 0) > 0 && (int) ($this->property['lot'] ?? 0) > 0;
+        return trim((string) ($this->property['block'] ?? '')) !== ''
+            && trim((string) ($this->property['lot'] ?? '')) !== '';
     }
 
     private function householdIsNewUnit(): bool
@@ -384,8 +387,8 @@ class ResidentFormModal extends AdminModalComponent
     private function createUnit(Admin $by): int
     {
         return $this->createProperty->handle([
-            'block'      => (int) $this->property['block'],
-            'lot'        => (int) $this->property['lot'],
+            'block'      => $this->property['block'],
+            'lot'        => $this->property['lot'],
             'address_id' => $this->units->associationAddress()->id,
             'sqm'        => $this->property['sqm'] ?: null,
             'type'       => $this->property['type'] ?: null,

@@ -19,6 +19,7 @@ use App\Http\Requests\Homeowners\ResidentRequest;
 use App\Rules\HouseholdHeadAge;
 use App\Models\Admin;
 use App\Models\Household\Household;
+use App\Models\Property;
 use App\Models\Resident;
 use App\Models\User;
 use App\Queries\Homeowners\Households\HouseholdUnitQuery;
@@ -149,8 +150,8 @@ class HomeownerFormModal extends AdminModalComponent
             ],
             'form.is_active'         => ['boolean'],
             'profilePhoto'           => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
-            'property.block'         => [$this->editingUserId ? 'nullable' : 'required', 'integer', 'min:1', 'max:9999'],
-            'property.lot'           => [$this->editingUserId ? 'nullable' : 'required', 'integer', 'min:1', 'max:9999'],
+            'property.block'         => [$this->editingUserId ? 'nullable' : 'required', 'string', 'max:20', 'regex:/^[0-9]+$/'],
+            'property.lot'           => [$this->editingUserId ? 'nullable' : 'required', 'string', 'max:20', 'regex:/^[A-Z0-9]+$/'],
             'property.sqm'           => ['nullable', 'numeric', 'min:0', 'max:99999'],
             'property.type'          => [
                 Rule::requiredIf(function () {
@@ -262,8 +263,10 @@ class HomeownerFormModal extends AdminModalComponent
 
     private function refreshUnit(): void
     {
+        $this->property = Property::normalizeUnit($this->property);
+
         $this->unit = $this->unitIsNamed()
-            ? $this->units->atUnit((int) $this->property['block'], (int) $this->property['lot'])
+            ? $this->units->atUnit($this->property['block'], $this->property['lot'])
             : null;
     }
 
@@ -365,13 +368,14 @@ class HomeownerFormModal extends AdminModalComponent
 
         $this->householdId = $household ? (int) $household->id : null;
         $this->unit = $property
-            ? $this->units->atUnit((int) $property->block, (int) $property->lot)
+            ? $this->units->atUnit((string) $property->block, (string) $property->lot)
             : null;
     }
 
     private function unitIsNamed(): bool
     {
-        return (int) ($this->property['block'] ?? 0) > 0 && (int) ($this->property['lot'] ?? 0) > 0;
+        return trim((string) ($this->property['block'] ?? '')) !== ''
+            && trim((string) ($this->property['lot'] ?? '')) !== '';
     }
 
     private function unitIsOwnHousehold(): bool
@@ -506,8 +510,8 @@ class HomeownerFormModal extends AdminModalComponent
         }
 
         return $this->createProperty->handle([
-            'block'      => (int) $this->property['block'],
-            'lot'        => (int) $this->property['lot'],
+            'block'      => $this->property['block'],
+            'lot'        => $this->property['lot'],
             'address_id' => $this->units->associationAddress()->id,
             'sqm'        => $this->property['sqm'] ?: null,
             'type'       => $this->property['type'] ?: null,

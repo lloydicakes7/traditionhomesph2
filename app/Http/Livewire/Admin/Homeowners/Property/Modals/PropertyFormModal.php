@@ -83,8 +83,8 @@ class PropertyFormModal extends AdminModalComponent
     protected function rules(): array
     {
         return [
-            'form.block'      => ['required', 'integer', 'min:1'],
-            'form.lot'        => ['required', 'integer', 'min:1',
+            'form.block'      => ['required', 'string', 'max:20', 'regex:/^[0-9]+$/'],
+            'form.lot'        => ['required', 'string', 'max:20', 'regex:/^[A-Z0-9]+$/',
                 Rule::unique('properties', 'lot')
                     ->where(fn ($query) => $query->where('block', $this->form['block']))
                     ->ignore($this->editingPropertyId),
@@ -173,6 +173,7 @@ class PropertyFormModal extends AdminModalComponent
         }
 
         $this->authorize($this->isEditing ? 'update' : 'create', Property::class);
+        $this->form = Property::normalizeUnit($this->form);
         $this->validate();
 
         if ($this->isEditing) {

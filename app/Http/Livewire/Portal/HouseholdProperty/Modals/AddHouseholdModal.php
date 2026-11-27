@@ -7,6 +7,7 @@ use App\Enums\HouseholdRelationship;
 use App\Enums\HouseholdType;
 use App\Http\Livewire\Concerns\ResolvesHomeownerAccount;
 use App\Http\Livewire\PortalModalComponent;
+use App\Models\Property;
 use App\Queries\Homeowners\Households\HouseholdUnitQuery;
 use Illuminate\Validation\Rule;
 
@@ -65,8 +66,8 @@ class AddHouseholdModal extends PortalModalComponent
     protected function rules(): array
     {
         return [
-            'form.block'        => ['required', 'integer', 'min:1', 'max:9999'],
-            'form.lot'          => ['required', 'integer', 'min:1', 'max:9999'],
+            'form.block'        => ['required', 'string', 'max:20', 'regex:/^[0-9]+$/'],
+            'form.lot'          => ['required', 'string', 'max:20', 'regex:/^[A-Z0-9]+$/'],
             'form.type'         => ['required', Rule::in(HouseholdType::values())],
             'form.relationship' => ['required', Rule::in(HouseholdRelationship::values())],
             'form.prev_address' => ['nullable', 'string', 'max:500'],
@@ -106,17 +107,15 @@ class AddHouseholdModal extends PortalModalComponent
             return;
         }
 
+        $this->form = Property::normalizeUnit($this->form);
         $this->unit = null;
         $this->resetErrorBag();
 
-        $block = (int) ($this->form['block'] ?? 0);
-        $lot = (int) ($this->form['lot'] ?? 0);
-
-        if ($block < 1 || $lot < 1) {
+        if ($this->form['block'] === '' || $this->form['lot'] === '') {
             return;
         }
 
-        $this->unit = $this->units->atUnit($block, $lot);
+        $this->unit = $this->units->atUnit($this->form['block'], $this->form['lot']);
     }
 
     // ===== Save =====
@@ -133,9 +132,10 @@ class AddHouseholdModal extends PortalModalComponent
             return;
         }
 
+        $this->form = Property::normalizeUnit($this->form);
         $this->validate();
 
-        $this->unit = $this->units->atUnit((int) $this->form['block'], (int) $this->form['lot']);
+        $this->unit = $this->units->atUnit($this->form['block'], $this->form['lot']);
 
         if ($this->unit && $this->unit['is_occupied']) {
             $this->addError(

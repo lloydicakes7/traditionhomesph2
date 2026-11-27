@@ -100,7 +100,7 @@
                             {{-- 2: Address and household --}}
                             @if ($number === 2)
                                 @php
-                                    $unitNamed = (int) ($property['block'] ?? 0) > 0 && (int) ($property['lot'] ?? 0) > 0;
+                                    $unitNamed = trim((string) ($property['block'] ?? '')) !== '' && trim((string) ($property['lot'] ?? '')) !== '';
                                     $note = match (true) {
                                         ! $unitNamed         => __('households.note.name_unit'),
                                         $unit === null       => __('households.note.new_unit'),

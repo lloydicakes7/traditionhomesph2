@@ -24,9 +24,18 @@ class PropertyKeyTest extends TestCase
     {
         $this->address();
 
-        $this->saveProperty(7, 12)->assertHasNoErrors();
+        $this->saveProperty(7, '12')->assertHasNoErrors();
 
         $this->assertSame(1, Property::count());
+    }
+
+    public function test_the_form_stores_a_lettered_lot_in_capitals(): void
+    {
+        $this->address();
+
+        $this->saveProperty(7, '1a')->assertHasNoErrors();
+
+        $this->assertSame('1A', Property::first()->lot);
     }
 
     public function test_the_form_refuses_a_block_and_lot_another_unit_holds(): void
@@ -39,7 +48,7 @@ class PropertyKeyTest extends TestCase
             'address_id' => Address::first()->id,
         ]);
 
-        $this->saveProperty(7, 12)->assertHasErrors('form.lot');
+        $this->saveProperty(7, '12')->assertHasErrors('form.lot');
 
         $this->assertSame(1, Property::count());
     }
@@ -47,12 +56,12 @@ class PropertyKeyTest extends TestCase
     /**
      * Open the property dialog and save these values.
      */
-    private function saveProperty(int $block, int $lot): \Livewire\Testing\TestableLivewire
+    private function saveProperty(int $block, string $lot): \Livewire\Testing\TestableLivewire
     {
         return Livewire::test(PropertyFormModal::class)
             ->call('openCreate')
             ->set('form.block', (string) $block)
-            ->set('form.lot', (string) $lot)
+            ->set('form.lot', $lot)
             ->call('save');
     }
 

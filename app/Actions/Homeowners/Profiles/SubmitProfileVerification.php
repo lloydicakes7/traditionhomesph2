@@ -66,7 +66,8 @@ class SubmitProfileVerification
 
             $this->storeId($resident, $idFile);
 
-            $property = $this->propertyFor((int) $data['property']['block'], (int) $data['property']['lot'], (array) $data['property']);
+            $unit = Property::normalizeUnit((array) $data['property']);
+            $property = $this->propertyFor($unit['block'], $unit['lot'], $unit);
 
             $link = $this->placeInHousehold($property, $resident, (array) ($data['household'] ?? []));
 
@@ -118,7 +119,7 @@ class SubmitProfileVerification
      *
      * @param  array<string, mixed>  $details
      */
-    private function propertyFor(int $block, int $lot, array $details): Property
+    private function propertyFor(string $block, string $lot, array $details): Property
     {
         $property = Property::query()->atUnit($block, $lot)->first();
 

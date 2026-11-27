@@ -24,7 +24,7 @@ class HouseholdUnitQuery
      *
      * @return array<string, mixed>|null
      */
-    public function atUnit(int $block, int $lot, ?int $residentId = null): ?array
+    public function atUnit(string $block, string $lot, ?int $residentId = null): ?array
     {
         $property = Property::query()
             ->atUnit($block, $lot)

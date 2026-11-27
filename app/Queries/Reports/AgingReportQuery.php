@@ -138,11 +138,11 @@ class AgingReportQuery
         return $bills->filter(function (array $bill) use ($filters) {
             $property = $bill['property'];
 
-            if (($filters['block'] ?? null) && (int) $property?->block !== (int) $filters['block']) {
+            if (($filters['block'] ?? null) && (string) $property?->block !== trim((string) $filters['block'])) {
                 return false;
             }
 
-            if (($filters['lot'] ?? null) && (int) $property?->lot !== (int) $filters['lot']) {
+            if (($filters['lot'] ?? null) && strcasecmp((string) $property?->lot, trim((string) $filters['lot'])) !== 0) {
                 return false;
             }
 

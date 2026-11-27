@@ -1,5 +1,5 @@
 @php
-    $unitNamed = (int) ($property['block'] ?? 0) > 0 && (int) ($property['lot'] ?? 0) > 0;
+    $unitNamed = trim((string) ($property['block'] ?? '')) !== '' && trim((string) ($property['lot'] ?? '')) !== '';
     $occupied = $unit !== null && $unit['is_occupied'];
     $ownHead = $ownHead ?? false;
     $canJoin = ($canJoin ?? true) && ! $ownHead;
@@ -16,14 +16,14 @@
 
 <div class="row">
     <div class="col-6">
-        <x-adminlte-input name="property.block" type="number" min="1"
+        <x-adminlte-input name="property.block" type="text" maxlength="20" inputmode="numeric"
             label="{{ __('households.block') }} *"
             wire:model.lazy="property.block" igroup-size="sm">
             <x-slot name="prependSlot"><div class="input-group-text"><i class="fas fa-fw fa-th"></i></div></x-slot>
         </x-adminlte-input>
     </div>
     <div class="col-6">
-        <x-adminlte-input name="property.lot" type="number" min="1"
+        <x-adminlte-input name="property.lot" type="text" maxlength="20" data-thha-uppercase
             label="{{ __('households.lot') }} *"
             wire:model.lazy="property.lot" igroup-size="sm">
             <x-slot name="prependSlot"><div class="input-group-text"><i class="fas fa-fw fa-th-large"></i></div></x-slot>

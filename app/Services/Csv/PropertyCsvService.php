@@ -14,9 +14,9 @@ use Illuminate\Support\Facades\Storage;
 /**
  * Properties CSV import, export and template.
  *
- * A row is skipped, with the reason and its line number, when block or lot is
- * not a positive number, the address does not match a saved address, the type
- * is not one the Properties page offers, or the unit is already saved.
+ * A row is skipped, with the reason and its line number, when the block or lot
+ * is not a valid unit code, the address does not match a saved address, the
+ * type is not one the Properties page offers, or the unit is already saved.
  */
 class PropertyCsvService
 {
@@ -148,12 +148,15 @@ class PropertyCsvService
             return 'block and lot are both required.';
         }
 
-        if (! ctype_digit($data['block']) || (int) $data['block'] < 1) {
-            return 'block must be a whole number greater than zero.';
+        $block = trim($data['block']);
+        $lot = strtoupper(trim($data['lot']));
+
+        if (! ctype_digit($block) || strlen($block) > 20) {
+            return 'block must use numbers only, at most 20 characters.';
         }
 
-        if (! ctype_digit($data['lot']) || (int) $data['lot'] < 1) {
-            return 'lot must be a whole number greater than zero.';
+        if (! preg_match('/^[A-Z0-9]+$/', $lot) || strlen($lot) > 20) {
+            return 'lot must use capital letters and numbers only, at most 20 characters.';
         }
 
         if ($data['sqm'] !== '' && (! is_numeric($data['sqm']) || (float) $data['sqm'] < 0)) {
@@ -175,8 +178,8 @@ class PropertyCsvService
         }
 
         return [
-            'block'      => (int) $data['block'],
-            'lot'        => (int) $data['lot'],
+            'block'      => $block,
+            'lot'        => $lot,
             'address_id' => $addressId,
             'sqm'        => $data['sqm'] !== '' ? (float) $data['sqm'] : null,
             'type'       => $type,

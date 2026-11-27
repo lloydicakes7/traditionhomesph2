@@ -165,10 +165,10 @@ final class DocumentText
      *
      * @return array<string, string>
      */
-    public static function blockLot(?int $block, ?int $lot): array
+    public static function blockLot(?string $block, ?string $lot): array
     {
-        $blockText = $block === null ? '' : (string) $block;
-        $lotText = $lot === null ? '' : (string) $lot;
+        $blockText = $block ?? '';
+        $lotText = $lot ?? '';
 
         return [
             'block' => $blockText,

@@ -128,7 +128,7 @@ class CsvImportRulesTest extends TestCase
 
         $this->assertSame(1, $result['imported']);
         $this->assertCount(4, $result['skipped']);
-        $this->assertStringContainsString('block must be a whole number', $result['skipped'][0]);
+        $this->assertStringContainsString('block must use numbers only', $result['skipped'][0]);
         $this->assertStringContainsString('does not match a saved address', $result['skipped'][1]);
         $this->assertStringContainsString('sqm', $result['skipped'][2]);
         $this->assertStringContainsString('type', $result['skipped'][3]);

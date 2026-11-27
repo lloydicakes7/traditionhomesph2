@@ -15,8 +15,8 @@ class CreatePropertiesTable extends Migration
     {
         Schema::create('properties', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('block');
-            $table->unsignedInteger('lot');
+            $table->string('block', 20);
+            $table->string('lot', 20);
             $table->foreignId('address_id')->constrained('addresses')->onDelete('cascade');
             $table->decimal('sqm', 10, 2)->nullable();
             $table->string('type', 50)->nullable();

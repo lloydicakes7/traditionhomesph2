@@ -204,8 +204,8 @@ class SinumpaangSalaysayDocumentQuery
         $property = $this->propertyOf($resident);
 
         $unit = DocumentText::blockLot(
-            $property && $property->block !== null ? (int) $property->block : null,
-            $property && $property->lot !== null ? (int) $property->lot : null
+            $property && $property->block !== null ? (string) $property->block : null,
+            $property && $property->lot !== null ? (string) $property->lot : null
         );
 
         if ($unit['label'] === '') {

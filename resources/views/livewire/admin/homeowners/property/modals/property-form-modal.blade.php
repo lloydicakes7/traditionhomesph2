@@ -54,13 +54,13 @@
 
                 <div class="row">
                     <div class="col-sm-6">
-                        <x-adminlte-input name="form.block" label="Block" type="number" min="1" placeholder="e.g., 1"
+                        <x-adminlte-input name="form.block" label="Block" type="text" maxlength="20" inputmode="numeric" placeholder="e.g., 1"
                             wire:model.defer="form.block" igroup-size="sm" enable-old-support>
                             <x-slot name="prependSlot"><div class="input-group-text"><i class="fas fa-fw fa-cube"></i></div></x-slot>
                         </x-adminlte-input>
                     </div>
                     <div class="col-sm-6">
-                        <x-adminlte-input name="form.lot" label="Lot" type="number" min="1" placeholder="e.g., 12"
+                        <x-adminlte-input name="form.lot" label="Lot" type="text" maxlength="20" data-thha-uppercase placeholder="e.g., 12 or 1A"
                             wire:model.defer="form.lot" igroup-size="sm" enable-old-support>
                             <x-slot name="prependSlot"><div class="input-group-text"><i class="fas fa-fw fa-cube"></i></div></x-slot>
                         </x-adminlte-input>

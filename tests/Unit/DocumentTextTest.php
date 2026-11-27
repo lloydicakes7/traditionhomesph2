@@ -63,7 +63,7 @@ class DocumentTextTest extends TestCase
 
     public function test_block_lot_names_a_unit(): void
     {
-        $unit = DocumentText::blockLot(4, 12);
+        $unit = DocumentText::blockLot('4', '12');
 
         $this->assertSame('4', $unit['block']);
         $this->assertSame('12', $unit['lot']);

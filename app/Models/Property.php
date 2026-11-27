@@ -61,8 +61,8 @@ class Property extends Model
      */
     public function getBlockLotLabelAttribute(): string
     {
-        if ($this->block === null || $this->lot === null) {
-            return 'None';
+        if ($this->block === null || $this->block === '' || $this->lot === null || $this->lot === '') {
+            return 'Not recorded';
         }
 
         return 'Blk ' . $this->block . ' Lot ' . $this->lot;
@@ -126,9 +126,11 @@ class Property extends Model
     /**
      * The unit carrying this block and lot; the pair is unique.
      */
-    public function scopeAtUnit(Builder $query, int $block, int $lot): Builder
+    public function scopeAtUnit(Builder $query, string $block, string $lot): Builder
     {
-        return $query->where('block', $block)->where('lot', $lot);
+        $unit = self::normalizeUnit(['block' => $block, 'lot' => $lot]);
+
+        return $query->where('block', $unit['block'])->where('lot', $unit['lot']);
     }
 
     /**
@@ -161,18 +163,35 @@ class Property extends Model
     // =====================================================================
 
     /**
-     * The property columns out of a submitted form: blank-to-NULL, and the
-     * block and lot stored as the numbers the office keys them by.
+     * The block and lot as the office stores them: trimmed, with the lot written
+     * in capital letters so 1a and 1A name the same unit.
+     *
+     * @param  array<string, mixed>  $data
+     * @return array<string, mixed>
+     */
+    public static function normalizeUnit(array $data): array
+    {
+        foreach (['block', 'lot'] as $field) {
+            if (! array_key_exists($field, $data) || $data[$field] === null) {
+                continue;
+            }
+
+            $value = trim((string) $data[$field]);
+
+            $data[$field] = $field === 'lot' ? strtoupper($value) : $value;
+        }
+
+        return $data;
+    }
+
+    /**
+     * The property columns out of a submitted form, with a blank floor area
+     * stored as null.
      */
     public static function payloadFrom(array $data): array
     {
+        $data = self::normalizeUnit($data);
         $data['sqm'] = ($data['sqm'] ?? '') !== '' ? $data['sqm'] : null;
-
-        foreach (['block', 'lot'] as $field) {
-            if (array_key_exists($field, $data) && $data[$field] !== '' && $data[$field] !== null) {
-                $data[$field] = (int) $data[$field];
-            }
-        }
 
         return $data;
     }

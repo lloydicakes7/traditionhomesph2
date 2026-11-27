@@ -10,6 +10,7 @@ use App\Http\Livewire\Concerns\ValidatesSectoralTags;
 use App\Http\Livewire\PortalComponent;
 use App\Rules\HouseholdHeadAge;
 use App\Http\Requests\Portal\Homeowners\SubmitProfileRequest;
+use App\Models\Property;
 use App\Queries\Homeowners\Households\HouseholdUnitQuery;
 use App\Queries\Homeowners\Profiles\OnboardingFormQuery;
 use Illuminate\Support\Facades\Log;
@@ -104,12 +105,13 @@ class ProfileWizard extends PortalComponent
 
     private function refreshUnit(): void
     {
+        $this->property = Property::normalizeUnit($this->property);
         $residentId = $this->account()->resident_id;
 
         $this->unit = $this->unitIsNamed()
             ? $this->units->atUnit(
-                (int) $this->property['block'],
-                (int) $this->property['lot'],
+                $this->property['block'],
+                $this->property['lot'],
                 $residentId !== null ? (int) $residentId : null
             )
             : null;
@@ -117,7 +119,8 @@ class ProfileWizard extends PortalComponent
 
     private function unitIsNamed(): bool
     {
-        return (int) ($this->property['block'] ?? 0) > 0 && (int) ($this->property['lot'] ?? 0) > 0;
+        return trim((string) ($this->property['block'] ?? '')) !== ''
+            && trim((string) ($this->property['lot'] ?? '')) !== '';
     }
 
     // ===== Validation =====

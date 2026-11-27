@@ -39,8 +39,8 @@ class HoaPermitDocumentQuery
         $resident = $this->resident($params['residentId'] ?? null);
         $property = $this->propertyOf($resident);
 
-        $block = ($property && $property->block !== null) ? (int) $property->block : null;
-        $lot = ($property && $property->lot !== null) ? (int) $property->lot : null;
+        $block = ($property && $property->block !== null) ? (string) $property->block : null;
+        $lot = ($property && $property->lot !== null) ? (string) $property->lot : null;
         $unit = DocumentText::blockLot($block, $lot);
 
         $purpose = DocumentText::clean($params['purpose'] ?? '');

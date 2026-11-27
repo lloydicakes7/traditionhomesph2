@@ -42,7 +42,8 @@ class CreateOwnHousehold
             throw new \RuntimeException('Your account already has a household.');
         }
 
-        $property = $this->propertyFor((int) $data['block'], (int) $data['lot']);
+        $unit = Property::normalizeUnit(['block' => $data['block'], 'lot' => $data['lot']]);
+        $property = $this->propertyFor($unit['block'], $unit['lot']);
 
         $household = DB::transaction(function () use ($property, $resident, $data) {
             $household = Household::create(Household::payloadFrom([
@@ -67,7 +68,7 @@ class CreateOwnHousehold
      * The unit the household will live in: one already on file and empty, or a
      * unit the office has no record of, written under the association address.
      */
-    private function propertyFor(int $block, int $lot): Property
+    private function propertyFor(string $block, string $lot): Property
     {
         $property = Property::query()->atUnit($block, $lot)->first();
 

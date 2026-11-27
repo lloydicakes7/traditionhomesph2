@@ -92,8 +92,8 @@ class MembershipFormDocumentQuery
         $data['owner_name'] = DocumentText::clean($household ? $this->headName($household) : '');
 
         $unit = DocumentText::blockLot(
-            $property && $property->block !== null ? (int) $property->block : null,
-            $property && $property->lot !== null ? (int) $property->lot : null
+            $property && $property->block !== null ? (string) $property->block : null,
+            $property && $property->lot !== null ? (string) $property->lot : null
         );
 
         $data['block'] = $unit['block'];
