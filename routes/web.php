@@ -15,6 +15,7 @@ use App\Http\Controllers\Public\HomeController;
 use App\Http\Controllers\Public\LogoController;
 use App\Http\Controllers\Public\MemberController;
 use App\Http\Controllers\Public\ServicesController;
+use App\Http\Controllers\Public\StorageController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -74,13 +75,6 @@ Route::post('/password/set', [SetPasswordController::class, 'update'])->name('pa
 |--------------------------------------------------------------------------
 */
 
-Route::get('storage/{path}', function ($path) {
-    $base = realpath(storage_path('app/public'));
-    $file = realpath($base.DIRECTORY_SEPARATOR.$path);
-
-    if ($file === false || strpos($file, $base) !== 0 || ! is_file($file)) {
-        abort(404);
-    }
-
-    return response()->file($file);
-})->where('path', '.*');
+Route::get('storage/{path}', [StorageController::class, 'show'])
+    ->where('path', '.*')
+    ->name('storage.show');

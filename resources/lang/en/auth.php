@@ -134,9 +134,9 @@ return [
     // ===== Consent =====
 
     'consent' => [
-        'title' => 'Terms, Certification and Data Privacy Consent',
+        'title' => 'Terms & Conditions and Data Privacy Consent',
         'accept_prefix' => 'I accept the',
-        'accept_link' => 'Terms, Certification and Data Privacy Consent',
+        'accept_link' => 'Terms & Conditions and Data Privacy Consent',
         'close' => 'Close',
         'paragraphs' => [
             'I hereby certify that all information and proof of residency provided in this registration form are true, accurate, and complete to the best of my knowledge. I agree to abide by the Terms and Conditions of the Tradition Homes Phase 2 Homeowners Association, Inc. (HLURB Reg. No. 02104) Management Information System, including maintaining the confidentiality of my account credentials and recognizing that official Association physical receipts and ledgers shall prevail in case of any billing discrepancy.',
