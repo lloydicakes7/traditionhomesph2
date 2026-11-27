@@ -10,7 +10,7 @@
             <form>
                 <div class="row">
                     <div class="col-6 col-md-3">
-                        <x-adminlte-input name="form.block" type="text" maxlength="20" inputmode="numeric" label="BLK"
+                        <x-adminlte-input name="form.block" type="text" maxlength="20" inputmode="numeric" data-thha-digits label="BLK"
                             placeholder="BLK" wire:model.lazy="form.block" igroup-size="sm" />
                     </div>
                     <div class="col-6 col-md-3">

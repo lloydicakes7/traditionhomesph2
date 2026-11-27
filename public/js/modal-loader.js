@@ -51,12 +51,14 @@
                 return;
             }
 
-            // A dialog the server opened (see `modal-open` below) already
-            // carries its loaded content: `load()` fetched the record and
-            // rendered before asking Bootstrap for the shell. Pulling the
-            // skeleton back over it would stick, because the refresh that
-            // follows re-renders the very same HTML. Show what the server
-            // rendered instead.
+            /*
+             * A dialog the server opened (see `modal-open` below) already
+             * carries its loaded content: `load()` fetched the record and
+             * rendered before asking Bootstrap for the shell. Pulling the
+             * skeleton back over it would stick, because the refresh that
+             * follows re-renders the very same HTML. Show what the server
+             * rendered instead.
+             */
             if (serverOpenedModalId === modal.id) {
                 serverOpenedModalId = null;
                 return;
@@ -109,10 +111,12 @@
                 return;
             }
 
-            // Mark the dialog as server-opened for the synchronous show below —
-            // `show.bs.modal` consumes the mark. If the dialog was already
-            // shown no event fires, so clear the mark here as well: a later
-            // open from a `data-toggle` trigger must still get its skeleton.
+            /*
+             * Mark the dialog as server-opened for the synchronous show below;
+             * `show.bs.modal` consumes the mark. If the dialog was already
+             * shown no event fires, so clear the mark here as well: a later
+             * open from a `data-toggle` trigger must still get its skeleton.
+             */
             serverOpenedModalId = id;
             $('#' + id).modal('show');
             serverOpenedModalId = null;
@@ -130,9 +134,34 @@
         });
     }
 
-    if (typeof window.Livewire !== 'undefined') {
-        attachListeners();
+    /*
+     * A dialog the page asks to be open on arrival, such as the request form
+     * reached from a document on the public Services page. It is opened only
+     * once Livewire has built its components: the show event emits the load
+     * event, and an emit before then reaches no one, leaving the skeleton up.
+     */
+    function openMarkedModals() {
+        if (typeof window.jQuery === 'undefined') {
+            return;
+        }
+
+        window.jQuery('[data-modal-auto-open]').find('.modal').each(function () {
+            window.jQuery(this).modal('show');
+        });
+    }
+
+    if (typeof window.Livewire === 'undefined') {
+        document.addEventListener('livewire:load', function () {
+            attachListeners();
+            openMarkedModals();
+        });
     } else {
-        document.addEventListener('livewire:load', attachListeners);
+        attachListeners();
+
+        if (window.Livewire.components && window.Livewire.components.initialRenderIsFinished) {
+            openMarkedModals();
+        } else {
+            document.addEventListener('livewire:load', openMarkedModals);
+        }
     }
 })();

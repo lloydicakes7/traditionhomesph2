@@ -17,7 +17,7 @@ return [
             'Pumunta sa Requests at piliin ang dokumentong kailangan ninyo.',
             'Ilagay ang layunin at iba pang hinihinging detalye, pagkatapos ay i-submit.',
             'Hintayin ang desisyon ng opisina. Kapag naaprubahan, babayaran ang kaugnay na bayarin.',
-            'Kapag bayad na, i-download ang dokumento mula sa inyong portal.',
+            'Kapag aprubado at bayad na, i-print ng opisina ang dokumento at ibibigay ito sa inyong pagbisita.',
         ],
         'documents'      => [
             'membership_form'    => 'Ang pormal na form ng pagiging miyembro ng asosasyon, kumpleto sa detalye ng inyong sambahayan.',
@@ -25,6 +25,8 @@ return [
             'hoa_permit'         => 'Permit para sa konstruksiyon, renovation, o pagpasok ng materyales sa subdivision.',
             'endorsement_letter' => 'Liham ng pag-endorso ng asosasyon para sa usaping dinala sa labas ng HOA.',
             'certification'      => 'Sertipikasyon na ang inyong sambahayan ay naninirahan sa Tradition Homes.',
+            'invitation_letter'  => 'Liham ng pag-imbita sa isang panauhin o tagapagsalita sa okasyon ng inyong sambahayan.',
+            'sinumpaang_salaysay' => 'Sumpaang salaysay na nagpapatunay ng isang pangyayari o pahayag ng sambahayan.',
         ],
         'request'        => 'Requests',
     ],

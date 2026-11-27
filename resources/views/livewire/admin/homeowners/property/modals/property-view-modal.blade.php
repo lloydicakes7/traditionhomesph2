@@ -18,7 +18,7 @@
                 <table class="table table-sm table-borderless">
                     <tr><td class="text-muted" style="width:30%;">Block / Lot</td><td class="font-weight-medium">{{ $viewProperty->block_lot_label }}</td></tr>
                     <tr><td class="text-muted">Address</td><td>{{ $viewProperty->address?->full_address ?? 'Not provided' }}</td></tr>
-                    <tr><td class="text-muted">SQM</td><td>{{ $viewProperty->sqm_type_display }}</td></tr>
+                    <tr><td class="text-muted">SQM</td><td>{{ $viewProperty->sqm_display }}</td></tr>
                     <tr><td class="text-muted">Type</td><td>{{ $viewProperty->type_enum?->label() ?? 'Not provided' }}</td></tr>
                     <tr><td class="text-muted">Homeowner</td>
                         <td>

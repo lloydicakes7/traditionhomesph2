@@ -1,6 +1,6 @@
-<div wire:ignore.self>
+<div wire:ignore.self @if ($preselectedType) data-modal-auto-open @endif>
     <x-adminlte-modal id="requestFileModal" title="File a Request"
-        icon="fas fa-fw fa-clipboard" theme="primary" size="xl" class="thha-request-modal"
+        icon="fas fa-fw fa-clipboard" theme="primary" size="lg" class="thha-request-modal"
         scrollable v-centered wire:ignore.self>
 
         <div data-modal-skeleton class="{{ $loaded ? 'd-none' : '' }}">

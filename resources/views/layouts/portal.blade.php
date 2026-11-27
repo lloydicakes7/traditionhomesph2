@@ -18,7 +18,7 @@
 
 @section('js')
     @include('layouts.partials.sidebar-scroll')
-    <script src="{{ asset('js/modal-loader.js') }}"></script>
+    <script src="{{ asset('js/modal-loader.js') }}?v={{ filemtime(public_path('js/modal-loader.js')) }}"></script>
     <script src="{{ asset('js/contact-input.js') }}"></script>
     <script src="{{ asset('js/form-input.js') }}"></script>
     <script src="{{ asset('js/required-field.js') }}?v={{ filemtime(public_path('js/required-field.js')) }}"></script>

@@ -497,7 +497,7 @@ class SupportRequestsPageTest extends TestCase
         $response->assertSee('data-target="#requestFormModal"', false);
         $response->assertSee('id="requestFormModal"', false);
         $response->assertSee('thha-request-modal', false);
-        $response->assertSee('modal-xl', false);
+        $response->assertSee('modal-lg', false);
 
         // Every dialog the page's rows can open is mounted once, beside the
         // list — including the two the Create Invoice action uses (the

@@ -28,7 +28,7 @@
                                     {{ $document['description'] }}
                                 </p>
 
-                                <a href="{{ route('portal.requests') }}" class="btn btn-primary btn-sm mt-auto">
+                                <a href="{{ route('portal.requests', ['document' => $document['value']]) }}" class="btn btn-primary btn-sm mt-auto">
                                     <i class="fas fa-fw fa-paper-plane mr-1"></i>{{ __('public.services.request') }}
                                 </a>
                             </div>

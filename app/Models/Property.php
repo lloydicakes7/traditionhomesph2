@@ -86,19 +86,9 @@ class Property extends Model
     /**
      * The combined SQM / Type display string with abbreviated type.
      */
-    public function getSqmTypeDisplayAttribute(): string
+    public function getSqmDisplayAttribute(): string
     {
-        $parts = [];
-
-        if ($this->sqm !== null) {
-            $parts[] = number_format($this->sqm, 2) . ' sqm';
-        }
-
-        if ($this->type) {
-            $parts[] = $this->type_enum ? $this->type_enum->shortLabel() : $this->type;
-        }
-
-        return ! empty($parts) ? implode(' / ', $parts) : 'Not recorded';
+        return $this->sqm ? number_format($this->sqm, 2) . ' sqm' : 'Not recorded';
     }
 
     /**
@@ -107,6 +97,24 @@ class Property extends Model
     public function getTypeEnumAttribute(): ?PropertyType
     {
         return $this->type ? PropertyType::tryFrom($this->type) : null;
+    }
+
+    /**
+     * The combined SQM / Type display string with abbreviated type.
+     */
+    public function getSqmTypeDisplayAttribute(): string
+    {
+        $parts = [];
+
+        if ($this->sqm !== null) {
+            $parts[] = number_format($this->sqm, 2) . ' sqm';
+        }
+
+        if ($this->type && $this->sqm) {
+            $parts[] = $this->type_enum ? $this->type_enum->shortLabel() : $this->type;
+        }
+
+        return ! empty($parts) ? implode(' / ', $parts) : 'Not recorded';
     }
 
     /**

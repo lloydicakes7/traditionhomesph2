@@ -58,6 +58,9 @@ class RequestFileModal extends PortalModalComponent
         'membership'         => [],
     ];
 
+    /** @var string Request type handed in by the Services page, until the form opens */
+    public $preselectedType = '';
+
     /** @var array<string, string> Modal load / close events (see public/js/modal-loader.js) */
     protected $listeners = [
         'openRequestFileModal'  => 'open',
@@ -74,6 +77,25 @@ class RequestFileModal extends PortalModalComponent
     {
         $this->fileRequest = $fileRequest;
         $this->profiles = $profiles;
+    }
+
+    /**
+     * Keep the document the homeowner picked on the public Services page.
+     *
+     * The page links here as `?document={type}`; the type is held until the
+     * dialog opens, and only a document the portal actually issues is kept.
+     *
+     * @param  string|null  $document
+     */
+    public function mount($document = null): void
+    {
+        $type = is_string($document) ? RequestType::tryFrom($document) : null;
+
+        if (! $type || ! $this->account()->resident_id) {
+            return;
+        }
+
+        $this->preselectedType = $type->value;
     }
 
     // =====================================================================
@@ -130,7 +152,9 @@ class RequestFileModal extends PortalModalComponent
     {
         $this->authorize('createOwn', Request::class);
 
-        $this->form = $this->emptyForm();
+        $this->form = array_merge($this->emptyForm(), ['type' => $this->preselectedType]);
+
+        $this->preselectedType = '';
 
         $this->resetValidation();
 
@@ -143,6 +167,8 @@ class RequestFileModal extends PortalModalComponent
     protected function resetModal(): void
     {
         $this->form = $this->emptyForm();
+
+        $this->preselectedType = '';
 
         $this->resetValidation();
 

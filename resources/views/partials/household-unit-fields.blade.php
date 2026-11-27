@@ -16,7 +16,7 @@
 
 <div class="row">
     <div class="col-6">
-        <x-adminlte-input name="property.block" type="text" maxlength="20" inputmode="numeric"
+        <x-adminlte-input name="property.block" type="text" maxlength="20" inputmode="numeric" data-thha-digits
             label="{{ __('households.block') }} *"
             wire:model.lazy="property.block" igroup-size="sm">
             <x-slot name="prependSlot"><div class="input-group-text"><i class="fas fa-fw fa-th"></i></div></x-slot>

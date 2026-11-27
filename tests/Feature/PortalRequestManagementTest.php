@@ -40,6 +40,21 @@ class PortalRequestManagementTest extends TestCase
             ->assertSee('data-target="#requestWithdrawModal"', false);
     }
 
+    public function test_the_page_opens_the_request_form_for_the_document_in_the_link(): void
+    {
+        $request = $this->request();
+
+        $this->actingAs($request->resident->user, 'homeowner')
+            ->get(route('portal.requests', ['document' => RequestType::CERTIFICATION]))
+            ->assertOk()
+            ->assertSee('data-modal-auto-open', false);
+
+        $this->actingAs($request->resident->user, 'homeowner')
+            ->get(route('portal.requests'))
+            ->assertOk()
+            ->assertDontSee('data-modal-auto-open', false);
+    }
+
     public function test_an_approved_request_keeps_view_but_loses_edit_and_delete(): void
     {
         $request = $this->request(RequestStatus::APPROVED);

@@ -54,7 +54,7 @@
 
                 <div class="row">
                     <div class="col-sm-6">
-                        <x-adminlte-input name="form.block" label="Block" type="text" maxlength="20" inputmode="numeric" placeholder="e.g., 1"
+                        <x-adminlte-input name="form.block" label="Block" type="text" maxlength="20" inputmode="numeric" data-thha-digits placeholder="e.g., 1"
                             wire:model.defer="form.block" igroup-size="sm" enable-old-support>
                             <x-slot name="prependSlot"><div class="input-group-text"><i class="fas fa-fw fa-cube"></i></div></x-slot>
                         </x-adminlte-input>

@@ -23,6 +23,10 @@
         return digits.replace(new RegExp('(.{' + PHILSYS_GROUP + '})(?=.)', 'g'), '$1' + DASH);
     }
 
+    function digitsOnly(value) {
+        return String(value).replace(/\D/g, '');
+    }
+
     $(document).on('input', '[data-thha-capitalize]', function () {
         const capitalized = capitalize(this.value);
 
@@ -30,6 +34,20 @@
             this.value = capitalized;
         }
     });
+
+    document.addEventListener('input', function (event) {
+        const input = event.target;
+
+        if (! (input instanceof Element) || ! input.matches('[data-thha-digits]')) {
+            return;
+        }
+
+        const digits = digitsOnly(input.value);
+
+        if (input.value !== digits) {
+            input.value = digits;
+        }
+    }, true);
 
     $(document).on('input', '[data-thha-uppercase]', function () {
         const uppercased = this.value.toUpperCase();

@@ -151,7 +151,7 @@
                                 @endif
                             </td>
                             <td class="align-middle">
-                                <div class="small font-weight-medium">{{ $property->sqm_type_display }}</div>
+                                <div class="small font-weight-medium">{{ $property->sqm_display }}</div>
                                 <span class="badge badge-{{ $property->type_enum?->badgeTheme() ?? 'secondary' }} mt-1">
                                     {{ $property->type_enum?->label() ?? 'Not provided' }}
                                 </span>
@@ -239,7 +239,7 @@
                                 @endcan
                             @endif
                         </div>
-                        <span class="text-muted small">{{ $property->sqm_type_display }}</span>
+                        <span class="text-muted small">{{ $property->sqm }}</span>
                     </div>
 
                     {{-- Actions --}}

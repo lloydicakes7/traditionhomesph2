@@ -13,11 +13,11 @@
                 </x-adminlte-input>
             </div>
             <div class="report-filter-field-sm">
-                <x-adminlte-input name="block" placeholder="Block..."
+                <x-adminlte-input name="block" placeholder="Block..." maxlength="20" inputmode="numeric" data-thha-digits
                     wire:model.debounce.400ms="block" igroup-size="sm" fgroup-class="mb-0" />
             </div>
             <div class="report-filter-field-sm">
-                <x-adminlte-input name="lot" placeholder="Lot..."
+                <x-adminlte-input name="lot" placeholder="Lot..." maxlength="20" data-thha-uppercase
                     wire:model.debounce.400ms="lot" igroup-size="sm" fgroup-class="mb-0" />
             </div>
 

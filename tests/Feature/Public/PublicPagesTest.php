@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Public;
 
+use App\Enums\RequestType;
 use App\Http\Livewire\Public\Contact\ContactForm;
 use App\Mail\ContactMessage;
 use App\Models\Content;
@@ -51,6 +52,15 @@ class PublicPagesTest extends TestCase
             ->assertSee('Paano humiling ng dokumento')
             ->assertSee('Mag-sign in sa Homeowner Portal')
             ->assertSee(route('portal.requests'), false);
+    }
+
+    public function test_each_service_document_links_to_its_own_request_form(): void
+    {
+        $this->get('/services')
+            ->assertOk()
+            ->assertSee(route('portal.requests', ['document' => RequestType::CERTIFICATION]), false)
+            ->assertSee(route('portal.requests', ['document' => RequestType::SINUMPAANG_SALAYSAY]), false)
+            ->assertSee('Sumpaang salaysay na nagpapatunay ng isang pangyayari o pahayag ng sambahayan.');
     }
 
     // ===== Contact =====

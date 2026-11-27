@@ -236,14 +236,39 @@ class RequestFilingTest extends TestCase
             ->assertDontSeeHtml('thha-household-member-card');
     }
 
-    public function test_the_portal_request_modal_uses_the_wide_layout(): void
+    public function test_the_portal_request_modal_uses_the_large_layout(): void
     {
         $this->signInHomeowner();
 
         Livewire::test(RequestFileModal::class)
             ->emit('openRequestFileModal')
             ->assertSeeHtml('thha-request-modal')
-            ->assertSeeHtml('modal-xl');
+            ->assertSeeHtml('modal-lg');
+    }
+
+    // =====================================================================
+    // Opened from the public Services page
+    // =====================================================================
+
+    public function test_the_modal_opens_with_the_document_chosen_on_the_services_page(): void
+    {
+        $this->signInHomeowner();
+
+        Livewire::test(RequestFileModal::class, ['document' => RequestType::CERTIFICATION])
+            ->assertSeeHtml('data-modal-auto-open')
+            ->emit('openRequestFileModal')
+            ->assertSet('form.type', RequestType::CERTIFICATION)
+            ->assertSet('preselectedType', '');
+    }
+
+    public function test_a_document_the_portal_does_not_issue_is_ignored(): void
+    {
+        $this->signInHomeowner();
+
+        Livewire::test(RequestFileModal::class, ['document' => 'rbi_form'])
+            ->assertDontSeeHtml('data-modal-auto-open')
+            ->emit('openRequestFileModal')
+            ->assertSet('form.type', '');
     }
 
     // =====================================================================

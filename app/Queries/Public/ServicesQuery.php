@@ -24,6 +24,7 @@ class ServicesQuery
 
         foreach (RequestType::cases() as $type) {
             $documents[] = [
+                'value'       => $type->value,
                 'label'       => $type->label(),
                 'icon'        => $type->icon(),
                 'description' => __('public.services.documents.' . $type->value),
