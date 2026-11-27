@@ -26,12 +26,12 @@
                     <h3 class="card-title mb-0 flex-grow-0">
                         <i class="fas fa-fw fa-layer-group mr-1"></i>{{ $group->name }}
                     </h3>
-                    <span class="badge badge-secondary ml-auto">{{ $group->members->count() }}</span>
+                    <span class="badge badge-secondary ml-auto">{{ $group->paginator->total() }}</span>
                 </div>
             </div>
 
             <div class="row mt-3">
-                @foreach ($group->visible_members as $member)
+                @foreach ($group->members as $member)
                     <div class="col-12 col-sm-6 col-lg-4 mb-3" wire:key="hoa-member-{{ $member->id }}">
                         <div class="card h-100 mb-0 shadow-sm">
                             <div class="card-body d-flex flex-column">
@@ -90,16 +90,9 @@
                 @endforeach
             </div>
 
-            @if ($group->hidden_members_count > 0 || isset($expanded[$group->section_key]))
-                <div class="text-center">
-                    @if (isset($expanded[$group->section_key]))
-                        <x-adminlte-button label="Show less" theme="link" icon="fas fa-fw fa-chevron-up"
-                            wire:click="showLess('{{ $group->section_key }}')" class="btn-sm" />
-                    @else
-                        <x-adminlte-button label="Show more ({{ $group->hidden_members_count }} more)"
-                            theme="link" icon="fas fa-fw fa-chevron-down"
-                            wire:click="showMore('{{ $group->section_key }}')" class="btn-sm" />
-                    @endif
+            @if ($group->paginator->hasPages())
+                <div class="mt-3" wire:key="member-group-pagination-{{ $group->section_key }}">
+                    {{ $group->paginator->links() }}
                 </div>
             @endif
         </div>

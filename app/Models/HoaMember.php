@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 
@@ -72,6 +73,46 @@ class HoaMember extends Model
 
     public function scopeOrdered($query)
     {
-        return $query->orderBy('name');
+        return $query->orderBy('name')->orderBy('id');
+    }
+
+    public function scopeInPositionOrder(Builder $query, array $positions): Builder
+    {
+        if ($positions === []) {
+            return $query->ordered();
+        }
+
+        $whens = [];
+        $bindings = [];
+
+        foreach ($positions as $position => $rank) {
+            $whens[] = 'WHEN ? THEN ' . (int) $rank;
+            $bindings[] = strtoupper($position);
+        }
+
+        return $query
+            ->orderByRaw('CASE UPPER(TRIM(position)) ' . implode(' ', $whens) . ' ELSE 999 END', $bindings)
+            ->orderBy('name')
+            ->orderBy('id');
+    }
+
+    public function scopeInNameOrder(Builder $query, array $names): Builder
+    {
+        if ($names === []) {
+            return $query->ordered();
+        }
+
+        $whens = [];
+        $bindings = [];
+
+        foreach (array_values($names) as $rank => $name) {
+            $whens[] = 'WHEN ? THEN ' . $rank;
+            $bindings[] = $name;
+        }
+
+        return $query
+            ->orderByRaw('CASE TRIM(name) ' . implode(' ', $whens) . ' ELSE 999 END', $bindings)
+            ->orderBy('name')
+            ->orderBy('id');
     }
 }

@@ -2,8 +2,8 @@
 
 namespace App\Http\Livewire\Public\Members;
 
-use App\Queries\HoaCenter\Members\MemberListQuery;
 use App\Http\Livewire\PublicComponent;
+use App\Queries\HoaCenter\Members\MemberListQuery;
 use Livewire\WithPagination;
 
 class MemberList extends PublicComponent
@@ -32,13 +32,20 @@ class MemberList extends PublicComponent
 
     public function updatingSearch(): void
     {
-        $this->resetPage();
+        $this->resetGroupPages();
     }
 
     public function clearSearch(): void
     {
         $this->search = '';
-        $this->resetPage();
+        $this->resetGroupPages();
+    }
+
+    public function resetGroupPages(): void
+    {
+        foreach ($this->query->pageNames() as $pageName) {
+            $this->setPage(1, $pageName);
+        }
     }
 
     // =====================================================================
@@ -48,7 +55,7 @@ class MemberList extends PublicComponent
     public function render()
     {
         return view('livewire.public.members.member-list', [
-            'members' => $this->query->paginate((string) $this->search),
+            'groups' => $this->query->sections((string) $this->search),
         ]);
     }
 }

@@ -5,14 +5,15 @@ namespace App\Http\Livewire\Admin\HoaCenter\Members;
 use App\Http\Livewire\AdminComponent;
 use App\Models\HoaMember;
 use App\Queries\HoaCenter\Members\MemberListQuery;
+use Livewire\WithPagination;
 
 class MemberList extends AdminComponent
 {
+    use WithPagination;
+
     protected $queryString = ['search'];
 
     public $search = '';
-
-    public $expanded = [];
 
     protected $listeners = [
         'member-saved' => '$refresh',
@@ -31,17 +32,19 @@ class MemberList extends AdminComponent
     }
 
     // =====================================================================
-    // Group Expansion
+    // Search
     // =====================================================================
 
-    public function showMore($key): void
+    public function updatedSearch(): void
     {
-        $this->expanded[(string) $key] = true;
+        $this->resetGroupPages();
     }
 
-    public function showLess($key): void
+    public function resetGroupPages(): void
     {
-        unset($this->expanded[(string) $key]);
+        foreach ($this->query->pageNames() as $pageName) {
+            $this->setPage(1, $pageName);
+        }
     }
 
     // =====================================================================
@@ -52,17 +55,8 @@ class MemberList extends AdminComponent
     {
         $this->authorize('viewAny', HoaMember::class);
 
-        $groups = $this->query->sections($this->search);
-
-        foreach ($groups as $group) {
-            $group->visible_members = isset($this->expanded[$group->section_key])
-                ? $group->members
-                : $group->members->take(MemberListQuery::VISIBLE_PER_GROUP);
-            $group->hidden_members_count = $group->members->count() - $group->visible_members->count();
-        }
-
         return view('livewire.admin.hoa-center.members.member-list', [
-            'groups' => $groups,
+            'groups' => $this->query->sections($this->search),
         ]);
     }
 }
