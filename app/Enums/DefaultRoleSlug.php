@@ -14,19 +14,6 @@ class DefaultRoleSlug extends Enum
     const VISITOR       = 'Visitor';
 
     /**
-     * Map of value → human-readable label.
-     *
-     * @return array<string, string>
-     */
-    public static function labels(): array
-    {
-        return [
-            self::ADMINISTRATOR => 'Administrator',
-            self::VISITOR       => 'Visitor',
-        ];
-    }
-
-    /**
      * Map of value → what the role is for. This is the copy the roles are
      * seeded with, so an install's own wording comes from one place.
      *
@@ -38,14 +25,6 @@ class DefaultRoleSlug extends Enum
             self::ADMINISTRATOR => 'Super admin with full system access',
             self::VISITOR       => 'Guest user with limited access',
         ];
-    }
-
-    /**
-     * Human-readable label for this instance.
-     */
-    public function label(): string
-    {
-        return self::labels()[$this->value] ?? $this->value;
     }
 
     /**
@@ -102,14 +81,6 @@ class DefaultRoleSlug extends Enum
     public static function isFullAccessSlug(?string $slug): bool
     {
         return in_array($slug, self::fullAccessSlugs(), true);
-    }
-
-    /**
-     * Whether this role always holds the whole catalogue.
-     */
-    public function hasFullAccess(): bool
-    {
-        return self::isFullAccessSlug($this->value);
     }
 
     /**

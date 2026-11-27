@@ -1,10 +1,10 @@
 <?php
 
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Database\Seeder;
 use App\Enums\DefaultRoleSlug;
 use App\Models\Admin;
-use App\Models\Role;
+use App\Services\Access\DefaultRoleService;
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class RoleAndAdminSeeder extends Seeder
 {
@@ -15,36 +15,25 @@ class RoleAndAdminSeeder extends Seeder
      */
     public function run()
     {
-        // -----------------------------------------------------------------------
-        // Create the two roles the system runs on.
-        // -----------------------------------------------------------------------
-        $adminRole = Role::firstOrCreate(
-            ['name' => DefaultRoleSlug::ADMINISTRATOR],
-            ['description' => DefaultRoleSlug::ADMINISTRATOR()->description()]
-        );
+        $roles = app(DefaultRoleService::class);
 
-        $visitorRole = Role::firstOrCreate(
-            ['name' => DefaultRoleSlug::VISITOR],
-            ['description' => DefaultRoleSlug::VISITOR()->description()]
-        );
+        $roles->ensure();
 
-        // -----------------------------------------------------------------------
-        // Create admin account
-        // -----------------------------------------------------------------------
-        $email    = config('account.admin.email');
+        $email = config('account.admin.email');
         $password = config('account.admin.password');
 
         if (empty($email) || empty($password)) {
             $this->command->error('ADMIN_EMAIL and ADMIN_PASSWORD must be set in .env');
+
             return;
         }
 
         Admin::firstOrCreate(
             ['email' => $email],
             [
-                'name'     => config('account.admin.name'),
+                'name' => config('account.admin.name'),
                 'password' => Hash::make($password),
-                'role_id'  => $adminRole->id,
+                'role_id' => $roles->role(DefaultRoleSlug::ADMINISTRATOR)->id,
             ]
         );
     }

@@ -121,16 +121,6 @@ class PermissionHelper
     }
 
     /**
-     * The group titles, in catalogue order.
-     *
-     * @return array<int, string>
-     */
-    public static function groupNames(): array
-    {
-        return array_keys(self::GROUPS);
-    }
-
-    /**
      * Every module in the catalogue, module => the actions it allows.
      *
      * @return array<string, array<int, string>>

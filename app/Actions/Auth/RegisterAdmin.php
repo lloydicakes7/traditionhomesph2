@@ -4,8 +4,8 @@ namespace App\Actions\Auth;
 
 use App\Enums\DefaultRoleSlug;
 use App\Models\Admin;
-use App\Models\Role;
 use App\Queries\Settings\AuthenticationSettingsQuery;
+use App\Services\Access\DefaultRoleService;
 use App\Utility\SettingsHelper;
 use Illuminate\Support\Facades\Hash;
 
@@ -18,6 +18,13 @@ use Illuminate\Support\Facades\Hash;
  */
 class RegisterAdmin
 {
+    private DefaultRoleService $roles;
+
+    public function __construct(DefaultRoleService $roles)
+    {
+        $this->roles = $roles;
+    }
+
     // ===== Handle =====
 
     public function handle(array $data): Admin
@@ -26,18 +33,12 @@ class RegisterAdmin
             throw new \RuntimeException('Registration is closed.');
         }
 
-        $roleId = Role::where('name', DefaultRoleSlug::VISITOR)->value('id');
-
-        if (! $roleId) {
-            throw new \RuntimeException('The Visitor role is missing; seed the default roles first.');
-        }
-
         return Admin::create([
-            'name'                => $data['name'],
-            'email'               => $data['email'],
-            'password'            => Hash::make($data['password']),
-            'role_id'             => $roleId,
-            'is_active'           => false,
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'password' => Hash::make($data['password']),
+            'role_id' => $this->roles->role(DefaultRoleSlug::VISITOR)->id,
+            'is_active' => false,
         ]);
     }
 
